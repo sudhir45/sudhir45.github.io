@@ -3,7 +3,7 @@ title: "AI in IT Infrastructure and Cybersecurity: Applications, Adoption, and T
 date: 2025-04-21 20:30:56 +0530
 categories: [Security]
 tags: [Network, Security, AI]
-image: assets\img\posts\AIinCyberSec.png 
+image: assets\img\posts\AIinCyberSec.png
 ---
 
 ---
