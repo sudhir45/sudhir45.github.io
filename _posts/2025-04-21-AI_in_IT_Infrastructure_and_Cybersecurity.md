@@ -6,7 +6,7 @@ tags: [Network, Security, AI]
 
 ---
 
-![AI in IT Infrastructure and Cybersecurity]({{ "assets\img\posts\AIinCyberSec.png" | relative_url }})
+
 
 ---
 
