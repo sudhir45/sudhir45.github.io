@@ -137,5 +137,3 @@ Each platform—Algosec, Tufin, and FireMon—offers strong NSPM capabilities. C
 A tailored evaluation or PoC is recommended before selection.
 
 ---
-
-**References**: (See original PDF for detailed source list.)
