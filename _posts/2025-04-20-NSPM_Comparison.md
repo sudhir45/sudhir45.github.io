@@ -90,7 +90,6 @@ Algosec, Tufin, and FireMon address these challenges with different strengths. T
 | **Scalability**      | Limited in large envs    | Scalable                 | Highly scalable               |
 
 #### 4.3 Feature Comparison Table
-(Refer to the document body for the full table.)
 
 ---
 
