@@ -12,7 +12,7 @@ order: 4
   <!-- Optional: Add a cool banner image here if you have one -->
   <!-- <img align="right" width="400" src="path/to/your/banner.gif_or_png" /> </picture>-->
 
-I'm a results-oriented **Senior Information Security Engineer** with approximately 3 years of experience passionate about securing enterprise systems, automating security processes, and enhancing overall security posture. I thrive in challenging environments where I can leverage my expertise to protect complex infrastructures and applications.
+I'm a results-oriented **Information Security Engineer** with approximately 3 years of experience passionate about securing enterprise systems, automating security processes, and enhancing overall security posture. I thrive in challenging environments where I can leverage my expertise to protect complex infrastructures and applications.
 
 ---
 
