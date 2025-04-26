@@ -46,7 +46,7 @@ I'm a results-oriented **Information Security Engineer** with approximately 3 ye
 ---
 
 ### 🔗 Connect with Me:
-
+<!--
 *   [![LinkedIn Badge](https://img.shields.io/badge/LinkedIn-Profile-blue?style=flat&logo=linkedin)](https://www.linkedin.com/in/dsudhir/) <!-- Replace with your actual LinkedIn profile URL -->
 *   [📄 View My Resume](https://sudhir45.github.io/Resume_Web/)
 
