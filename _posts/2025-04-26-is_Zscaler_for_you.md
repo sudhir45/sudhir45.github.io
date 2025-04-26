@@ -79,6 +79,30 @@ It's not all sunshine and rainbows. Be prepared for:
 
 Zscaler gets the Indian market. They have local data centers (ZENs) in Mumbai, Chennai, Bangalore, etc., ensuring good performance. Their features also align well with evolving regulations like India's Digital Personal Data Protection (DPDP) Act 2023.
 
+
+## Real-World Deployments in India
+
+Curious about how Indian giants are actually rolling out Zscaler? Here are some live examples:
+
+### Wipro
+- Deployed ZIA and ZPA to secure over 190,000 employees during the pandemic shift to remote work.
+- Integrated Zscaler with Azure Active Directory and Okta.
+- Result? Faster, safer access and a major reduction in VPN headaches.
+
+### Infosys
+- Rolled out ZPA to securely connect remote employees to internal systems.
+- Boosted threat protection using ZIA.
+- Met global compliance standards like GDPR and CCPA.
+
+### Persistent Systems
+- Enabled secure browsing for its developer teams with ZIA.
+- Used ZDX for real-time performance monitoring.
+- Integrated Zscaler with Microsoft Azure AD and ServiceNow.
+
+### Beyond the Giants
+- Mid-size IT firms and even startups in India are adopting Zscaler too, often via Managed Security Service Providers (MSSPs).
+
+
 ## The Bottom Line
 
 For large, cloud-savvy Indian IT companies wrestling with securing a modern, distributed workforce, Zscaler offers a powerful, scalable, and effective cloud-native security platform. It directly tackles the limitations of legacy approaches.
@@ -87,3 +111,19 @@ Is it the right move for *you*? It demands careful planning, investment, and get
 
 
 Good luck navigating the future of security!
+
+## Useful Resources
+
+- [Zscaler India Website](https://www.zscaler.com)
+- [Learn about ZIA](https://www.zscaler.com/products/zscaler-internet-access)
+- [Learn about ZPA](https://www.zscaler.com/products/zscaler-private-access)
+- [Learn about ZDX](https://www.zscaler.com/products/zscaler-digital-experience)
+- [What is Zero Trust Architecture?](https://www.zscaler.com/zero-trust)
+- [Wipro Adopts Zscaler for Remote Work - Press Release](https://www.wipro.com/newsroom/wipro-enhances-remote-workforce-with-zscaler/)
+- [Infosys and Zscaler Partnership Announcement](https://www.infosys.com/newsroom/press-releases/2020/zscaler-partnership-secure-remote-work.html)
+- [Persistent Systems Security Transformation - Case Study](https://www.persistent.com/news/persistent-partners-with-zscaler-for-cloud-security/)
+- [IDC Cloud Security Trends in India Report](https://www.idc.com/getdoc.jsp?containerId=prAP49900423)
+- [ServiceNow Integration with Zscaler](https://support.zscaler.com/s/article/How-to-integrate-Zscaler-and-ServiceNow)
+- [Zscaler's Browser Isolation Technology Explained](https://www.zscaler.com/products/browser-isolation)
+- [Wipro Annual Report 2023-24 (Security Investments)](https://www.wipro.com/investors/annual-reports/)
+- [Infosys Sustainability and Compliance Reports](https://www.infosys.com/sustainability/esg-reports.html)
