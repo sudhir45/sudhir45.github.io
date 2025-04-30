@@ -3,6 +3,7 @@ title: "AI in IT Infrastructure and Cybersecurity: What's Real, What's Hype, and
 date: 2025-04-21 20:30:56 +0530 # Okay, maybe not 2025, but let's roll with it
 categories: [Security, AI]
 tags: [Network, Security, AI, HandsOn, Tools] # Added some more relevant tags
+iamge: https://github.com/sudhir45/sudhir45.github.io/blob/9cc930b96ed401c83960da7dd1e9a279edc49a93/assets/img/posts/AIinCyberSec.png
 ---
 
 ## TL;DR
