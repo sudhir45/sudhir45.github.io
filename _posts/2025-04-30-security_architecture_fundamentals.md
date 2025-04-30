@@ -134,8 +134,6 @@ Mini use case: A misconfigured test system exposed S3 credentials to GitHub. Why
 - **Least Privilege Always**
 - **Assume Breach**
 
-[Insert Zero Trust network diagram here]
-
 ---
 
 ## Monitoring & Incident Response
