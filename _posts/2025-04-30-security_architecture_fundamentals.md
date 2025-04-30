@@ -213,4 +213,4 @@ Design for breach. Detect quickly. Respond faster. Audit everything.
 - [NIST SP 800-53: Security Controls](https://csrc.nist.gov/publications/detail/sp/800-53/rev-5/final)
 - [CIS Controls v8](https://www.cisecurity.org/controls/cis-controls-list)
 - [OWASP SAMM](https://owaspsamm.org/)
-- [Google BeyondCorp](https://cloud.google.com/beyondcorp)
+- [Google BeyondCorp](https://cloud.google.com/beyondcorp).
