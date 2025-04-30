@@ -19,6 +19,8 @@ Alright, let's cut to the chase. AI is barging into IT and security, and it's no
 Basically, AI is becoming another tool in our arsenal. It won't replace us (yet!), but it *can* make us better if we know how to use it and don't just trust the marketing slides.
 
 ---
+![Desktop View](/assets/img/posts/AIinCyberSec.png){: width="972" height="589" }
+_AI in IT Infrastructure and Cybersecurity_
 
 ## Setting the Scene: Why We're Even Talking About AI
 
