@@ -5,9 +5,7 @@ categories: [Certification, Security]
 tags: [Certification, CloudSec]
 ---
 
-A multi-cloud security roadmap starts with strong cloud fundamentals and builds to advanced topics like IAM, monitoring, encryption, and incident response. It’s crucial to begin by understanding each provider’s **Shared Responsibility Model** – e.g. AWS notes “Security and Compliance is a shared responsibility between AWS and the customer” – meaning providers secure the cloud infrastructure while users secure their data and configurations.
 
----
 
 ## Month 1–2: Cloud Basics
 
