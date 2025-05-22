@@ -6,11 +6,11 @@ order: 4
 
 # Hi there 👋, I'm Sudhir!
 
-<picture>
+<!--<picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://your-image-url-for-dark-mode.png">
   <source media="(prefers-color-scheme: light)" srcset="https://your-image-url-for-light-mode.png">
   <!-- Optional: Add a cool banner image here if you have one -->
-  <img align="right" width="400" src="path/to/your/banner.gif_or_png" /> </picture>
+  <!-- <img align="right" width="400" src="path/to/your/banner.gif_or_png" /> </picture>-->
 
 I'm a results-oriented **Information Security Engineer** with approximately 3 years of experience passionate about securing enterprise systems, automating security processes, and enhancing overall security posture. I thrive in challenging environments where I can leverage my expertise to protect complex infrastructures and applications.
 
@@ -52,16 +52,16 @@ I'm a results-oriented **Information Security Engineer** with approximately 3 ye
 
 ---
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://github-readme-stats.vercel.app/api?username=sudhir45&show_icons=true&theme=radical&hide_border=true&count_private=true" />
-  <source media="(prefers-color-scheme: light)" srcset="https://github-readme-stats.vercel.app/api?username=sudhir45&show_icons=true&theme=default&hide_border=true&count_private=true" />
-  <img src="https://github-readme-stats.vercel.app/api?username=sudhir45&show_icons=true&theme=default&hide_border=true&count_private=true" />
+<!--<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://github-readme-stats.vercel.app/api?username=your-github-username&show_icons=true&theme=radical&hide_border=true&count_private=true" />
+  <source media="(prefers-color-scheme: light)" srcset="https://github-readme-stats.vercel.app/api?username=your-github-username&show_icons=true&theme=default&hide_border=true&count_private=true" />
+  <img src="https://github-readme-stats.vercel.app/api?username=your-github-username&show_icons=true&theme=default&hide_border=true&count_private=true" />
 </picture>
   <!-- Adds a little space -->
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://github-readme-stats.vercel.app/api/top-langs/?username=sudhir45&layout=compact&theme=radical&hide_border=true" />
-  <source media="(prefers-color-scheme: light)" srcset="https://github-readme-stats.vercel.app/api/top-langs/?username=sudhir45&layout=compact&theme=default&hide_border=true" />
-  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=sudhir45&layout=compact&theme=default&hide_border=true" />
+<!--<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://github-readme-stats.vercel.app/api/top-langs/?username=your-github-username&layout=compact&theme=radical&hide_border=true" />
+  <source media="(prefers-color-scheme: light)" srcset="https://github-readme-stats.vercel.app/api/top-langs/?username=your-github-username&layout=compact&theme=default&hide_border=true" />
+  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=your-github-username&layout=compact&theme=default&hide_border=true" />
 </picture>
 
 ---
