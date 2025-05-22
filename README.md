@@ -1,6 +1,6 @@
-# Sudhir Dubey's Personal Blog
+# Sudhir's Personal Blog
 
-A personal blog by Sudhir Dubey focusing on Information Security, Cybersecurity, Cloud Security, and related technical topics.
+A personal blog by Sudhir focusing on Information Security, Cybersecurity, Cloud Security, and related technical topics.
 
 [Blog](https://sudhir45.github.io/)
 
