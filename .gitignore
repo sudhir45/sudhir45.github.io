@@ -25,7 +25,3 @@ package-lock.json
 # Misc
 _sass/vendors
 assets/js/dist
-
-# Personal notes and idea files
-assets/Topic_Ideas
-assets/names_ideas
