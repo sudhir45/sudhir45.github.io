@@ -128,108 +128,27 @@ This roadmap builds from cloud basics to advanced security in a structured timel
 
 ## Free Cloud Security Learning Resources
 
-**Topic/Skill:** Cloud Computing Basics  
-**Resource:** [Introduction to Cloud Computing](https://www.coursera.org/learn/introduction-to-cloud)  
-**Platform:** Coursera  
-**Notes:** Beginner-friendly  
-
-**Topic/Skill:** Cloud Computing Basics  
-**Resource:** [Free Cloud Computing Courses and Tutorials](https://www.udemy.com/topic/cloud-computing/free/)  
-**Platform:** Udemy  
-**Notes:** Wide variety of courses  
-
-**Topic/Skill:** Cloud Computing Basics  
-**Resource:** [Introduction to Cloud Computing Basics SkillUp](https://www.simplilearn.com/introduction-to-cloud-computing-basics-skillup)  
-**Platform:** Simplilearn  
-**Notes:** Includes certificate  
-
-**Topic/Skill:** Cloud Computing Basics  
-**Resource:** [Free Courses in Cloud Computing](https://www.mygreatlearning.com/cloud-computing/free-courses)  
-**Platform:** Great Learning  
-**Notes:** Covers various cloud topics  
-
-**Topic/Skill:** AWS Security Fundamentals  
-**Resource:** [AWS Security Fundamentals](https://aws.amazon.com/training/learn-about/security/)  
-**Platform:** AWS Training  
-**Notes:** Self-paced course  
-
-**Topic/Skill:** AWS IAM  
-**Resource:** [AWS: Identity and Access Management](https://www.coursera.org/learn/aws-identity-and-access-management)  
-**Platform:** Coursera  
-**Notes:** Focuses on IAM  
-
-**Topic/Skill:** Cloud Identity  
-**Resource:** [Introduction to Cloud Identity](https://www.classcentral.com/course/independent-introduction-to-cloud-identity-17822)  
-**Platform:** Google Cloud Skills Boost  
-**Notes:** Google Cloud specific  
-
-**Topic/Skill:** Network Security  
-**Resource:** [Fundamentals of Network Security](https://login.paloaltonetworks.com/lms/PreRegister?UserType=CUST)  
-**Platform:** Palo Alto Networks  
-**Notes:** Part of free cybersecurity courses  
-
-**Topic/Skill:** Cloud Security Operations  
-**Resource:** [Introducing Modern Security Operations Free Course](https://www.googlecloudcommunity.com/gc/SecOps-SIEM/Introducing-Modern-Security-Operations-Free-Course/m-p/784143)  
-**Platform:** Google Cloud Community  
-**Notes:** Focuses on SecOps  
-
-**Topic/Skill:** Cloud Security  
-**Resource:** [Free Cloud Security Training With Certificate](https://www.simplilearn.com/learn-cloud-security-basics-skillup)  
-**Platform:** Simplilearn  
-**Notes:** Covers various cloud security domains  
-
-**Topic/Skill:** Cloud Security  
-**Resource:** [Introduction to Cloud Security](https://www.mygreatlearning.com/academy/learn-for-free/courses/introduction-to-cloud-security)  
-**Platform:** Great Learning  
-**Notes:** Beginner level  
-
-**Topic/Skill:** Cloud Security  
-**Resource:** [EC-Council's Essentials Series](https://www.eccouncil.org/cybersecurity-exchange/cyber-novice/free-cybersecurity-courses-beginners/)  
-**Platform:** EC-Council  
-**Notes:** Includes Network Defense Essentials  
-
-**Topic/Skill:** Cloud Security  
-**Resource:** [CSA Research and Guidance](https://cloudsecurityalliance.org/research/guidance)  
-**Platform:** Cloud Security Alliance  
-**Notes:** Whitepapers and best practices  
-
-**Topic/Skill:** Cloud Security  
-**Resource:** [CSA Education Resources](https://cloudsecurityalliance.org/education/resources)  
-**Platform:** Cloud Security Alliance  
-**Notes:** Training materials and FAQs  
-
-**Topic/Skill:** NIST Cloud Security  
-**Resource:** [NIST Cloud Computing Related Publications](https://www.nist.gov/itl/nist-cloud-computing-related-publications)  
-**Platform:** NIST  
-**Notes:** Official NIST publications  
-
-**Topic/Skill:** NIST Cloud Security  
-**Resource:** [Small Business Cybersecurity Corner - Cloud Security](https://www.nist.gov/itl/smallbusinesscyber/guidance-topic/cloud-security)  
-**Platform:** NIST  
-**Notes:** Guidance for small businesses  
-
-**Topic/Skill:** Cloud Security  
-**Resource:** [Free Cybersecurity Education Courses](https://www.paloaltonetworks.com/cyberpedia/free-cybersecurity-education-courses)  
-**Platform:** Palo Alto Networks  
-**Notes:** Includes Fundamentals of Cloud Security  
-
-**Topic/Skill:** Cloud Security  
-**Resource:** [SANS Free Resources](https://www.sans.org/security-resources/)  
-**Platform:** SANS Institute  
-**Notes:** Webcasts, white papers, and more  
-
-**Topic/Skill:** Cloud Security  
-**Resource:** [SANS Cyber Aces](https://www.sans.org/cyberaces/)  
-**Platform:** SANS Institute  
-**Notes:** Free foundational cybersecurity training  
-
-**Topic/Skill:** Cloud Security  
-**Resource:** [Google Cloud Security Resources Hub](https://cloud.google.com/security/resources)  
-**Platform:** Google Cloud  
-**Notes:** Insights from Google Cloud experts  
-
-**Topic/Skill:** Cloud Security  
-**Resource:** [Cloud Security Fundamentals: Cloud Application Security](https://www.skillsoft.com/course/cloud-security-fundamentals-cloud-application-security-542c738f-5d46-453d-b19f-6ab4895ab0aa)  
-**Platform:** Skillsoft  
-**Notes:** Covers application security in the cloud  
+| Topic/Skill | Resource | Platform | Notes |
+|---|---|---|---|
+| Cloud Computing Basics | [Introduction to Cloud Computing](https://www.coursera.org/learn/introduction-to-cloud) | Coursera | Beginner-friendly |
+| Cloud Computing Basics | [Free Cloud Computing Courses and Tutorials](https://www.udemy.com/topic/cloud-computing/free/) | Udemy | Wide variety of courses |
+| Cloud Computing Basics | [Introduction to Cloud Computing Basics SkillUp](https://www.simplilearn.com/introduction-to-cloud-computing-basics-skillup) | Simplilearn | Includes certificate |
+| Cloud Computing Basics | [Free Courses in Cloud Computing](https://www.mygreatlearning.com/cloud-computing/free-courses) | Great Learning | Covers various cloud topics |
+| AWS Security Fundamentals | [AWS Security Fundamentals](https://aws.amazon.com/training/learn-about/security/) | AWS Training | Self-paced course |
+| AWS IAM | [AWS: Identity and Access Management](https://www.coursera.org/learn/aws-identity-and-access-management) | Coursera | Focuses on IAM |
+| Cloud Identity | [Introduction to Cloud Identity](https://www.classcentral.com/course/independent-introduction-to-cloud-identity-17822) | Google Cloud Skills Boost | Google Cloud specific |
+| Network Security | [Fundamentals of Network Security](https://login.paloaltonetworks.com/lms/PreRegister?UserType=CUST) | Palo Alto Networks | Part of free cybersecurity courses |
+| Cloud Security Operations | [Introducing Modern Security Operations Free Course](https://www.googlecloudcommunity.com/gc/SecOps-SIEM/Introducing-Modern-Security-Operations-Free-Course/m-p/784143) | Google Cloud Community | Focuses on SecOps |
+| Cloud Security | [Free Cloud Security Training With Certificate](https://www.simplilearn.com/learn-cloud-security-basics-skillup) | Simplilearn | Covers various cloud security domains |
+| Cloud Security | [Introduction to Cloud Security](https://www.mygreatlearning.com/academy/learn-for-free/courses/introduction-to-cloud-security) | Great Learning | Beginner level |
+| Cloud Security | [EC-Council's Essentials Series](https://www.eccouncil.org/cybersecurity-exchange/cyber-novice/free-cybersecurity-courses-beginners/) | EC-Council | Includes Network Defense Essentials |
+| Cloud Security | [CSA Research and Guidance](https://cloudsecurityalliance.org/research/guidance) | Cloud Security Alliance | Whitepapers and best practices |
+| Cloud Security | [CSA Education Resources](https://cloudsecurityalliance.org/education/resources) | Cloud Security Alliance | Training materials and FAQs |
+| NIST Cloud Security | [NIST Cloud Computing Related Publications](https://www.nist.gov/itl/nist-cloud-computing-related-publications) | NIST | Official NIST publications |
+| NIST Cloud Security | [Small Business Cybersecurity Corner - Cloud Security](https://www.nist.gov/itl/smallbusinesscyber/guidance-topic/cloud-security) | NIST | Guidance for small businesses |
+| Cloud Security | [Free Cybersecurity Education Courses](https://www.paloaltonetworks.com/cyberpedia/free-cybersecurity-education-courses) | Palo Alto Networks | Includes Fundamentals of Cloud Security |
+| Cloud Security | [SANS Free Resources](https://www.sans.org/security-resources/) | SANS Institute | Webcasts, white papers, and more |
+| Cloud Security | [SANS Cyber Aces](https://www.sans.org/cyberaces/) | SANS Institute | Free foundational cybersecurity training |
+| Cloud Security | [Google Cloud Security Resources Hub](https://cloud.google.com/security/resources) | Google Cloud | Insights from Google Cloud experts |
+| Cloud Security | [Cloud Security Fundamentals: Cloud Application Security](https://www.skillsoft.com/course/cloud-security-fundamentals-cloud-application-security-542c738f-5d46-453d-b19f-6ab4895ab0aa) | Skillsoft | Covers application security in the cloud |
 
