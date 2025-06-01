@@ -1,0 +1,45 @@
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "{{ page.title | escape }}",
+  "author": {
+    "@type": "Person",
+    "name": "{{ site.social.name | escape }}"
+  },
+  "datePublished": "{{ page.date | date_to_xmlschema }}",
+  {% if page.last_modified_at %}
+  "dateModified": "{{ page.last_modified_at | date_to_xmlschema }}",
+  {% else %}
+  "dateModified": "{{ page.date | date_to_xmlschema }}",
+  {% endif %}
+  "description": "{{ page.description | escape }}",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "{{ page.url | absolute_url | escape }}"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "{{ site.title | escape }}",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "{{ site.avatar | absolute_url | escape }}"
+    }
+  },
+  {% if page.image %}
+  "image": {
+    "@type": "ImageObject",
+    "url": "{% if page.image.path %}{{ page.image.path | absolute_url | escape }}{% else %}{{ page.image | absolute_url | escape }}{% endif %}",
+    "width": 1200,
+    "height": 630
+  }
+  {% else %}
+  "image": {
+    "@type": "ImageObject",
+    "url": "{{ site.social_preview_image | absolute_url | escape }}",
+    "width": 1200,
+    "height": 630
+  }
+  {% endif %}
+}
+</script>

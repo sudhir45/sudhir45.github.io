@@ -3,6 +3,8 @@ title: "Security Architecture: Principles for Designing Secure Systems and Netwo
 date: 2025-04-30 01:56:19 +0530
 categories: [Architecture, Security, Network]
 tags: [Network Security, Architecture]
+description: This post explains security architecture as the blueprint for digital fortresses, covering core principles like defense in depth, least privilege, and Zero Trust. It discusses firewalls, secure networking, compliance (GDPR, HIPAA, ISO 27001), IAM, threat modeling, incident response, and cloud security best practices.
+keywords: [Architecture, Security, Network, Network Security, Security Architecture, Secure Design, Cybersecurity, Defense in Depth, IAM]
 ---
 
 # Security Architecture: Principles for Designing Secure Systems and Networks
@@ -22,8 +24,8 @@ Welcome to the world of **Security Architecture**, where paranoia isn't a flaw�
 - Compliance isn’t optional—design with it in mind.
 
 ---
-![light mode only](assets/img/posts/Secure_Architecture.png){: .light .w-75 .shadow .rounded-10 w='700' h='668' }
-![dark mode only](assets/img/posts/Secure_Architecture_Dark.png){: .dark .w-75 .shadow .rounded-10 w='700' h='668' }
+![Diagram illustrating security architecture principles with interconnected components representing defense in depth, for light mode.](assets/img/posts/Secure_Architecture.png){: .light .w-75 .shadow .rounded-10 w='700' h='668' }
+![Diagram illustrating security architecture principles with interconnected components representing defense in depth, for dark mode.](assets/img/posts/Secure_Architecture_Dark.png){: .dark .w-75 .shadow .rounded-10 w='700' h='668' }
 
 ## What Is Security Architecture, Really?
 

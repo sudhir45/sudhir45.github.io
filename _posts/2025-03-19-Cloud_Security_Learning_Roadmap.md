@@ -3,6 +3,8 @@ title: "Cloud Security Learning Roadmap (AWS, Azure, GCP))"
 date: 2025-03-19 11:39:16 +0530
 categories: [Certification, Security]
 tags: [Certification, CloudSec]
+description: This post outlines a 12-month learning roadmap for cloud security across AWS, Azure, and GCP, starting with cloud basics and progressing to advanced topics like multi-cloud security and DevSecOps.
+keywords: [Certification, Security, CloudSec, AWS, Azure, GCP, Cloud Security, Learning Roadmap, Cybersecurity, IT Training]
 ---
 
 
@@ -115,7 +117,7 @@ tags: [Certification, CloudSec]
 
 ---
 
-![Cloud Computing Diagram](https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Cloud_computing_icon.svg/800px-Cloud_computing_icon.svg.png)
+![Diagram illustrating cloud computing concepts including IaaS, PaaS, SaaS, and shared responsibility model, relevant to a cloud security learning roadmap.](https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Cloud_computing_icon.svg/800px-Cloud_computing_icon.svg.png)
 
 *Figure:* Simplified cloud computing diagram showing users accessing shared apps and data in the cloud. Early on, focus on core cloud concepts (IaaS/PaaS/SaaS, virtualization, shared responsibility) before diving into security details.
 

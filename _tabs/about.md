@@ -2,6 +2,7 @@
 # the default layout is 'page'
 icon: fas fa-info-circle
 order: 4
+description: Learn more about Sudhir Dubey and the FortMatrix logs blog, focusing on cybersecurity, cloud security, and technical writing.
 ---
 
 # Hi there 👋, I'm Sudhir!
