@@ -14,5 +14,5 @@ end
 gem "wdm", "~> 0.2.0", :platforms => [:mingw, :x64_mingw, :mswin]
 
 gem "jekyll-feed", "~> 0.17.0"
-
+gem "jekyll-sitemap"
 gem 'nokogiri', '>= 1.18.8'
