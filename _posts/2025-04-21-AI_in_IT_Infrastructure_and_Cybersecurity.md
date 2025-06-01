@@ -3,6 +3,8 @@ title: "AI in IT Infrastructure and Cybersecurity: What's Real, What's Hype, and
 date: 2025-04-21 20:30:56 +0530 # Okay, maybe not 2025, but let's roll with it
 categories: [Security, AI]
 tags: [Network, Security, AI, HandsOn, Tools] # Added some more relevant tags
+description: AI is increasingly impacting IT infrastructure and cybersecurity. This post explores what's real versus hype, discusses practical AI tools for threat detection, incident response, and AIOps, and offers advice for engineers on leveraging AI effectively.
+keywords: [Security, AI, Network, HandsOn, Tools, Artificial Intelligence, Cybersecurity, AIOps, Machine Learning, Threat Detection, IT Infrastructure]
 ---
 
 ## TL;DR
@@ -19,7 +21,7 @@ Alright, let's cut to the chase. AI is barging into IT and security, and it's no
 Basically, AI is becoming another tool in our arsenal. It won't replace us (yet!), but it *can* make us better if we know how to use it and don't just trust the marketing slides.
 
 ---
-![Desktop View](/assets/img/posts/AIinCyberSec.png){: width="972" height="589" }
+![Conceptual image depicting AI in IT infrastructure and cybersecurity, showing network connections and data analysis.](/assets/img/posts/AIinCyberSec.png){: width="972" height="589" }
 _AI in IT Infrastructure and Cybersecurity_
 
 ## Setting the Scene: Why We're Even Talking About AI

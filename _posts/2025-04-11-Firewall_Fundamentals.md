@@ -3,6 +3,8 @@ title: "Firewalls: Still Your Network's Bouncer in 2025 (And How Not to Mess It 
 date: 2025-04-11 13:09:56 +0530
 categories: [Firewall, Security, Network]
 tags: [Network Security, Firewall, Network Architecture]
+description: Firewalls are foundational to cybersecurity. This post discusses what they do, smart deployment strategies, best practices, and current trends like AI and Zero Trust in firewall technology.
+keywords: [Network Security, Firewall, Network Architecture, Cybersecurity, NGFW, Firewall Best Practices, Security, Network]
 ---
 
 Alright team, let's talk firewalls.
