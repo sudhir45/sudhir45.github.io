@@ -18,10 +18,10 @@ I'm a **Security Engineer** with approximately 3 years of experience passionate 
 
 ### What I Do:
 
-*   Enhance security posture for large-scale corporate and client network infrastructures (experienced with 5000+ devices).
-*   Develop, implement, and manage security standards, configurations, and policies for network devices (Firewalls, Switches, Routers, NIPS).
+*   Enhance security posture for large-scale corporate and client network infrastructures.
+*   Develop, implement, and manage security standards, configurations, and policies for network devices
 *   Manage security compliance frameworks like **ISO 27001** and **PCI DSS**, including audits and process improvements.
-*   Automate security tasks and compliance checks, achieving significant efficiency gains (e.g., **reduced manual configuration effort by 40%**).
+*   Automate security tasks and compliance checks, achieving significant efficiency gains.
 *   Perform security assessments and manage configurations for both **On-Premise** and **Cloud environments (AWS, GCP, Azure)**.
 *   Conduct vulnerability assessments, manage remediation plans, and respond to security incidents.
 
