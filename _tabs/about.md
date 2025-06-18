@@ -38,12 +38,13 @@ I'm a **Security Engineer** with approximately 3 years of experience passionate 
 
 ---
 
-### Connect with Me:
+<!--### Connect with Me:
 <!--
-*   [![LinkedIn Badge](https://img.shields.io/badge/LinkedIn-Profile-blue?style=flat&logo=linkedin)](https://www.linkedin.com/in/dsudhir/) <!-- Replace with your actual LinkedIn profile URL -->
+*   [![LinkedIn Badge](https://img.shields.io/badge/LinkedIn-Profile-blue?style=flat&logo=linkedin)](https://www.linkedin.com/in/dsudhir/) <!-- Replace with your actual LinkedIn profile URL
 *   [📄 View My Resume](https://sudhir45.github.io/Resume_Web/)
 
 ---
+-->
 
 <!--<picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://github-readme-stats.vercel.app/api?username=your-github-username&show_icons=true&theme=radical&hide_border=true&count_private=true" />
