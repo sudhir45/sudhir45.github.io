@@ -6,7 +6,6 @@
 
 $btn-border-width: 3px;
 $btn-mb: 0.5rem;
-// $sidebar-display: 'sidebar-display'; // No longer primarily using this for collapse logic
 
 #sidebar {
   @include mx.pl-pr(0);
@@ -15,221 +14,132 @@ $btn-mb: 0.5rem;
   left: 0;
   height: 100%;
   overflow-y: auto;
-  width: v.$sidebar-width; // Default expanded width
+  // Default state: collapsed (width 0, content hidden)
+  width: 0;
   background: var(--sidebar-bg);
-  border-right: 1px solid var(--sidebar-border-color);
-  transition: width 0.35s ease; // Animation for width change
-  z-index: 1020; // Default z-index
+  border-right: 1px solid var(--sidebar-border-color); // Consider removing border when width is 0
+  transition: width 0.35s ease, border-color 0.35s ease; // Added border-color transition
+  z-index: 1020;
 
-  /* Hide scrollbar */
   -ms-overflow-style: none;
   scrollbar-width: none;
-  &::-webkit-scrollbar {
-    display: none;
-  }
-
-  // Remove the original theme's transform-based collapse for small screens,
-  // as the new width-based collapse should be universal.
-  // @include bp.lt(bp.get(lg)) {
-  //   @include mx.slide;
-  //   transform: translateX(-#{v.$sidebar-width});
-  //   [#{$sidebar-display}] & { // This was for the theme's JS
-  //     transform: translateX(0);
-  //   }
-  // }
-
-  @include bp.xxxl {
-    // Keep theme's adjustment for very large screens if desired, or remove if new logic handles it
-    // For now, let's assume v.$sidebar-width is the only expanded width we care about.
-    // width: v.$sidebar-width-large;
-  }
-
-  // Styles for content inside the sidebar (avatar, title, nav)
-  // These should be hidden or handled when sidebar is collapsed
-  // e.g., by setting opacity to 0 and overflow: hidden on #sidebar
+  &::-webkit-scrollbar { display: none; }
 
   #avatar, .profile-wrapper, .site-title, .site-subtitle, nav, .sidebar-bottom {
-    transition: opacity 0.3s ease;
-    opacity: 1;
+    transition: opacity 0.3s ease; // Slightly faster opacity transition
+    opacity: 0; // Hidden by default (when collapsed)
+    pointer-events: none;
   }
 
-  &.sidebar-collapsed {
-    width: 0 !important; // Collapsed width
-    overflow: hidden; // Hide content that would overflow
-
-    #avatar, .profile-wrapper, .site-title, .site-subtitle, nav, .sidebar-bottom {
-      opacity: 0;
-      pointer-events: none; // Prevent interaction with hidden elements
-    }
-  }
-
-  // Toggle button style
-  #sidebar-toggle { // More specific selector
+  // Toggle button style (should always be visible if possible)
+  #sidebar-trigger {
     position: absolute;
     top: 10px;
     right: 10px;
-    z-index: 1050; // Above other sidebar content
-    // Ensure it's visible even when sidebar is collapsed (if it moves outside)
-    // This might need adjustment if the button is part of the 0-width area.
-    // For now, assuming it stays visible or is handled by JS if sidebar is 0 width.
+    z-index: 1050;
+    // This button might be an issue if sidebar width is 0.
+    // A common pattern is to have the button outside the collapsible element,
+    // or to give the sidebar a min-width to house the button.
+    // For now, let's assume it's visible. Consider its position relative to the 0-width sidebar.
   }
 
-  // Other existing styles for sidebar elements (%sidebar-link-hover, a, #avatar, etc.)
-  // should largely remain the same, but ensure they don't conflict with collapse.
-  %sidebar-link-hover {
-    &:hover {
-      color: var(--sidebar-active-color);
-    }
-  }
-
-  a {
-    @extend %sidebar-links;
-  }
-
+  // --- Styles for sidebar elements (avatar, nav, etc.) ---
+  %sidebar-link-hover { &:hover { color: var(--sidebar-active-color); } }
+  a { @extend %sidebar-links; } // This placeholder might need to be defined or imported if not already.
   #avatar {
-    display: block;
-    width: 6.5rem;
-    height: 6.5rem;
-    overflow: hidden;
-    box-shadow: var(--avatar-border-color) 0 0 0 2px;
-    transform: translateZ(0);
-
-    @include bp.sm {
-      width: 7rem;
-      height: 7rem;
-    }
-
-    img {
-      transition: transform 0.5s;
-      &:hover {
-        transform: scale(1.2);
-      }
-    }
+    display: block; width: 6.5rem; height: 6.5rem; overflow: hidden;
+    box-shadow: var(--avatar-border-color) 0 0 0 2px; transform: translateZ(0);
+    @include bp.sm { width: 7rem; height: 7rem; }
+    img { transition: transform 0.5s; &:hover { transform: scale(1.2); } }
   }
-
   .profile-wrapper {
-    @include mx.mt-mb(2.5rem);
-    @extend %clickable-transition;
-    padding-left: 2.5rem;
-    padding-right: 1.25rem;
-    width: 100%;
+    @include mx.mt-mb(2.5rem); @extend %clickable-transition; // This placeholder might need to be defined.
+    padding-left: 2.5rem; padding-right: 1.25rem; width: 100%;
     @include bp.lg { margin-top: 3rem; }
-    @include bp.xxxl {
-      margin-top: 3.5rem;
-      margin-bottom: 2.5rem;
-      padding-left: 3.5rem;
-    }
+    @include bp.xxxl { margin-top: 3.5rem; margin-bottom: 2.5rem; padding-left: 3.5rem; }
   }
-
   .site-title {
-    @extend %clickable-transition;
-    @extend %sidebar-link-hover;
-    font-family: inherit;
-    font-weight: 900;
-    font-size: 1.75rem;
-    line-height: 1.2;
-    letter-spacing: 0.25px;
-    margin-top: 1.25rem;
-    margin-bottom: 0.5rem;
-    width: fit-content;
-    color: var(--site-title-color);
+    @extend %clickable-transition; @extend %sidebar-link-hover;
+    font-family: inherit; font-weight: 900; font-size: 1.75rem; line-height: 1.2;
+    letter-spacing: 0.25px; margin-top: 1.25rem; margin-bottom: 0.5rem;
+    width: fit-content; color: var(--site-title-color);
   }
-
   .site-subtitle {
-    font-size: 95%;
-    color: var(--site-subtitle-color);
-    margin-top: 0.25rem;
-    word-spacing: 1px;
-    user-select: none;
+    font-size: 95%; color: var(--site-subtitle-color); margin-top: 0.25rem;
+    word-spacing: 1px; user-select: none;
   }
-
   ul {
     margin-bottom: 2rem;
     li.nav-item {
-      opacity: 0.9;
-      width: 100%;
-      @include mx.pl-pr(1.5rem);
+      // opacity: 0.9; // Opacity is handled by parent #sidebar for collapse
+      width: 100%; @include mx.pl-pr(1.5rem);
       @include bp.xxxl { @include mx.pl-pr(2.75rem); }
       a.nav-link {
-        @include mx.pt-pb(0.6rem);
-        display: flex;
-        align-items: center;
-        border-radius: 0.75rem;
-        font-weight: 600;
+        @include mx.pt-pb(0.6rem); display: flex; align-items: center;
+        border-radius: 0.75rem; font-weight: 600;
         &:hover { background-color: var(--sidebar-hover-bg); }
         i { font-size: 95%; opacity: 0.8; margin-right: 1.5rem; }
         span { font-size: 90%; letter-spacing: 0.2px; }
       }
       &.active {
         .nav-link {
-          color: var(--sidebar-active-color);
-          background-color: var(--sidebar-hover-bg);
-          span { opacity: 1; }
+          color: var(--sidebar-active-color); background-color: var(--sidebar-hover-bg);
+          // span { opacity: 1; } // Opacity handled by parent
         }
       }
       &:not(:first-child) { margin-top: 0.25rem; }
     }
   }
-
   .sidebar-bottom {
-    padding-left: 2rem;
-    padding-right: 1rem;
-    margin-bottom: 1.5rem;
-    @include bp.xxxl {
-      padding-left: 2.75rem;
-      margin-bottom: 1.75rem;
-    }
+    padding-left: 2rem; padding-right: 1rem; margin-bottom: 1.5rem;
+    @include bp.xxxl { padding-left: 2.75rem; margin-bottom: 1.75rem; }
     $btn-size: 1.75rem;
-    %button {
-      width: $btn-size;
-      height: $btn-size;
-      margin-bottom: $btn-mb;
-      border-radius: 50%;
-      color: var(--sidebar-btn-color);
-      background-color: var(--sidebar-btn-bg);
-      text-align: center;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    %button { // This placeholder needs to be defined or imported.
+      width: $btn-size; height: $btn-size; margin-bottom: $btn-mb; border-radius: 50%;
+      color: var(--sidebar-btn-color); background-color: var(--sidebar-btn-bg);
+      text-align: center; display: flex; align-items: center; justify-content: center;
       &:not(:focus-visible) { box-shadow: var(--sidebar-border-color) 0 0 0 1px; }
       &:hover { background-color: var(--sidebar-hover-bg); }
     }
-    a {
-      @extend %button;
-      @extend %sidebar-link-hover;
-      @extend %clickable-transition;
+    a { // Assuming %button is defined and available
+      @extend %button; @extend %sidebar-link-hover; @extend %clickable-transition;
       &:not(:last-child) {
         margin-right: v.$sb-btn-gap;
         @include bp.xxxl { margin-right: v.$sb-btn-gap-lg; }
       }
     }
     i { line-height: $btn-size; }
-    #mode-toggle {
-      @extend %button;
-      @extend %sidebar-links;
-      @extend %sidebar-link-hover;
-    }
-    .icon-border {
-      @extend %no-cursor;
-      @include mx.ml-mr(calc((v.$sb-btn-gap - $btn-border-width) / 2));
-      background-color: var(--sidebar-btn-color);
-      content: '';
-      width: $btn-border-width;
-      height: $btn-border-width;
-      border-radius: 50%;
-      margin-bottom: $btn-mb;
+    #mode-toggle { @extend %button; @extend %sidebar-links; @extend %sidebar-link-hover; } // Assuming %button is defined
+    .icon-border { // Assuming %no-cursor is defined or placeholder.
+      @extend %no-cursor; @include mx.ml-mr(calc((v.$sb-btn-gap - $btn-border-width) / 2));
+      background-color: var(--sidebar-btn-color); content: ''; width: $btn-border-width;
+      height: $btn-border-width; border-radius: 50%; margin-bottom: $btn-mb;
       @include bp.xxxl { @include mx.ml-mr(calc((v.$sb-btn-gap-lg - $btn-border-width) / 2)); }
     }
   }
 }
 
+// Main content area
 #main-wrapper {
   position: relative;
-  margin-left: v.$sidebar-width;
+  margin-left: 0; // Default margin when sidebar is collapsed
   transition: margin-left 0.35s ease;
-  padding-top: v.$topbar-height;
+  padding-top: v.$topbar-height; // Assuming this is from the theme
 }
 
-#sidebar.sidebar-collapsed ~ #main-wrapper {
-  margin-left: 0;
+// Styles when sidebar is expanded (body has 'sidebar-display' attribute)
+body[sidebar-display] {
+  #sidebar {
+    width: v.$sidebar-width; // Expanded width
+    border-right-color: var(--sidebar-border-color); // Ensure border color is correct
+
+    #avatar, .profile-wrapper, .site-title, .site-subtitle, nav, .sidebar-bottom {
+      opacity: 1; // Visible
+      pointer-events: auto;
+    }
+  }
+
+  #main-wrapper {
+    margin-left: v.$sidebar-width; // Margin when sidebar is expanded
+  }
 }
