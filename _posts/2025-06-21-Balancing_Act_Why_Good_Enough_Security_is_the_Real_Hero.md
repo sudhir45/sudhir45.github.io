@@ -8,9 +8,9 @@ pin: true
 
 ## Introduction
 
-![Security vs. Usability Seesaw](/assets/img/posts/seasawsecurity.png){: .float-start .me-4 .mb-3 width="250"}Picture this: It's late, you're tired, and you just want to log in to your bank, Netflix, or email. You type in your go-to password—maybe it's `Fluffy123` or, if you're feeling fancy, `Fluffy123!July?`. Denied. After a few more tries, you finally remember the cryptic mess the system demanded: `F1uffY@m1t3sL4z3r$!`. Success! But now, where did you write that down? Sticky note? Old phone? Facepalm.
+Picture this: It's late, you're tired, and you just want to log in to your bank, Netflix, or email. You type in your go-to password—maybe it's `Fluffy123` or, if you're feeling fancy, `Fluffy123!July?`. Denied. After a few more tries, you finally remember the cryptic mess the system demanded: `F1uffY@m1t3sL4z3r$!`. Success! But now, where did you write that down? Sticky note? Old phone? Facepalm.
 
-In cybersecurity, we're always chasing the idea of "perfect security." We pile on controls, roll out the newest threat detection tools, and aim to eliminate every possible vulnerability. But here's the truth—**perfect security isn't real**. What really matters isn't perfection, but having solid, "good enough" security that actually works in the real world.
+![Security vs. Usability Seesaw](/assets/img/posts/seasawsecurity.png){: .light .w-50 .left }![Security vs. Usability Seesaw (Dark)](/assets/img/posts/seasawsecuritydark.png){: .dark .w-50 .left }   In cybersecurity, we're always chasing the idea of "perfect security." We pile on controls, roll out the newest threat detection tools, and aim to eliminate every possible vulnerability. But here's the truth—**perfect security isn't real**. What really matters isn't perfection, but having solid, "good enough" security that actually works in the real world.
 
 This isn't just a theoretical debate for cybersecurity nerds; it's a measurable phenomenon affecting every click, tap, and swipe of your digital life. When security measures are perceived as overly burdensome, they can, counterintuitively, diminish overall security as users resort to insecure behaviors like writing down complex passwords or reusing simple ones across platforms.
 
@@ -73,7 +73,7 @@ The goal isn't Fort Knox for your email; that's unusable. The goal is reasonable
 Let's face it—when it comes to security, humans can be predictably irrational. We know we're supposed to use strong, unique passwords... yet over half of us still reuse the same ones because, well, it's just easier. We know public Wi-Fi is risky, but hey—free internet is free internet.
 
 ### The numbers back it up:
-
+![A frustrated user at their computer](/assets/img/posts/frustratedguy.png){: .light .w-50 .right }![A frustrated user at their computer (Dark)](/assets/img/posts/frustratedguydark.png){: .dark .w-50 .right }
 1. **52% of users** reuse the same password across three or more accounts, even though strong, unique passwords are widely recommended. [ref](https://www.army.mil/article/280417/secure_our_world_cecom_recommends_strong_passwords_and_password_managers)
 
 2. **78% of people** admit to reusing passwords at least once across multiple sites. [ref](https://www.securitymagazine.com/articles/100765-78-of-people-use-the-same-password-across-multiple-accounts)
