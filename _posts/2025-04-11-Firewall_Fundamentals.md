@@ -1,6 +1,7 @@
 ---
 title: "Firewalls: Still Your Network's Bouncer in 2025 (And How Not to Mess It Up)"
 date: 2025-04-11 13:09:56 +0530
+description: "A deep dive into firewall fundamentals, covering types (NGFW, Cloud), deployment strategies (Perimeter, DMZ), and best practices for hardening, logging, and rule management."
 categories: [Firewall, Security, Network]
 tags: [Network Security, Firewall, Network Architecture]
 ---

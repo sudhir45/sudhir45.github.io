@@ -1,6 +1,7 @@
 ---
 title: "AI in IT Infrastructure and Cybersecurity: What's Real, What's Hype, and What Tools We Can Actually Use"
 date: 2025-04-21 20:30:56 +0530 # Okay, maybe not 2025, but let's roll with it
+description: "A practical look at AI's role in IT and cybersecurity, covering AIOps, threat detection, and a review of real-world tools like Microsoft Copilot, Darktrace, and more."
 categories: [Security, AI]
 tags: [Network, Security, AI, HandsOn, Tools] # Added some more relevant tags
 ---

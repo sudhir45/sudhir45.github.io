@@ -1,6 +1,7 @@
 ---
 title: "Cloud Security Learning Roadmap (AWS, Azure, GCP))"
 date: 2025-03-19 11:39:16 +0530
+description: "A 12-month structured roadmap for learning multi-cloud security, covering fundamentals, IAM, networking, data protection, and advanced topics for AWS, Azure, and GCP."
 categories: [Certification, Security]
 tags: [Certification, CloudSec]
 ---

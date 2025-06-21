@@ -1,6 +1,7 @@
 ---
 title: "Security Architecture: Principles for Designing Secure Systems and Networks"
 date: 2025-04-30 01:56:19 +0530
+description: "An overview of core security architecture principles, including defense in depth, zero trust, IAM, network segmentation, and compliance for designing secure systems."
 categories: [Architecture, Security, Network]
 tags: [Network Security, Architecture]
 ---
@@ -9,7 +10,7 @@ tags: [Network Security, Architecture]
 
 *So, your boss just said, "Make it secure." And you thought: "Define... secure?"*
 
-Welcome to the world of **Security Architecture**, where paranoia isn't a flaw—it's a feature. Whether you're managing a sprawling hybrid cloud or trying to keep that one legacy server from emailing your secrets to North Korea, this post is for you. Let’s walk through how real-world security is designed, built, and *hopefully* not breached by Tuesday.
+Welcome to the world of **Security Architecture**, where paranoia isn't a flaw—it's a feature. Whether you're managing a sprawling hybrid cloud or trying to keep that one legacy server from emailing your secrets to North Korea, this post is for you. Let's walk through how real-world security is designed, built, and *hopefully* not breached by Tuesday.
 
 ---
 
@@ -19,7 +20,7 @@ Welcome to the world of **Security Architecture**, where paranoia isn't a flaw�
 - Use Zero Trust: never assume trust, always verify.
 - Implement least privilege and strong IAM controls.
 - Segment networks, monitor continuously, and automate response.
-- Compliance isn’t optional—design with it in mind.
+- Compliance isn't optional—design with it in mind.
 
 ---
 ![light mode only](assets/img/posts/Secure_Architecture.png){: .light .w-75 .shadow .rounded-10 w='700' h='668' }
@@ -29,7 +30,7 @@ Welcome to the world of **Security Architecture**, where paranoia isn't a flaw�
 
 Security architecture is like the blueprint for a fortress—except the fortress is digital, the bricks are firewalls and policies, and the invaders wear hoodies and run Python scripts.
 
-It’s the structured approach we use to define where to put our defenses, how strong to make them, and what to do when—inevitably—something slips through.
+It's the structured approach we use to define where to put our defenses, how strong to make them, and what to do when—inevitably—something slips through.
 
 Think of it as a mix of:
 
@@ -71,7 +72,7 @@ Simple systems are easier to secure.
 
 ---
 
-## Secure Networking: It’s Not Just Plug and Pray
+## Secure Networking: It's Not Just Plug and Pray
 
 ### Segmentation
 Keep prod, dev, QA far apart.
@@ -80,15 +81,15 @@ Keep prod, dev, QA far apart.
 Enforce VLANs, ACLs, NAC.
 
 ### Monitoring
-IDS/IPS only work if alerts aren’t ignored.
+IDS/IPS only work if alerts aren't ignored.
 
 ---
 
 ## Compliance: The "Do It or Get Fined" Club
 
 ### GDPR
-- “Right to be forgotten” isn’t just a breakup line.
-- 72-hour breach notification? Don’t miss it.
+- "Right to be forgotten" isn't just a breakup line.
+- 72-hour breach notification? Don't miss it.
 
 ### HIPAA
 - Treat ePHI like state secrets.
@@ -120,7 +121,7 @@ IDS/IPS only work if alerts aren’t ignored.
 ## Threat Modeling & Risk Assessment
 
 - **Threat Modeling**: Map paths attackers might take.
-- **Risk Assessment**: Prioritize what’s worst, not just what’s easiest.
+- **Risk Assessment**: Prioritize what's worst, not just what's easiest.
 
 Mini use case: A misconfigured test system exposed S3 credentials to GitHub. Why? No access review, no audit trail.
 
@@ -153,7 +154,7 @@ Mini use case: A misconfigured test system exposed S3 credentials to GitHub. Why
 5. Report (regulators, legal, execs)  
 6. Debrief (w/ logs, lessons, coffee)
 
-> GDPR breach? You’ve got 72 hours. Start running.
+> GDPR breach? You've got 72 hours. Start running.
 
 ---
 
@@ -188,11 +189,11 @@ Cloud tools to explore: AWS GuardDuty, Azure Defender, GCP SCC.
 
 ## Conclusion
 
-Security architecture isn’t a one-and-done checklist. It’s a living strategy—designed to evolve with the threats, the business, and the tech stack.
+Security architecture isn't a one-and-done checklist. It's a living strategy—designed to evolve with the threats, the business, and the tech stack.
 
 Design for breach. Detect quickly. Respond faster. Audit everything.
 
-> Secure systems aren’t built with hope—they’re architected with intent.
+> Secure systems aren't built with hope—they're architected with intent.
 
 ---
 
