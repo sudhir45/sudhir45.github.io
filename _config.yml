@@ -42,11 +42,12 @@ social:
   email: sudhirdubey558@gmail.com # change to your email address
   links:
     # The first element serves as the copyright owner's link
+    - https://www.linkedin.com/in/dsudhir/
     #- https://twitter.com/username # change to your Twitter homepage
     - https://github.com/sudhir45 # change to your GitHub homepage
     # Uncomment below to add more social links
     # - https://www.facebook.com/username
-    - https://www.linkedin.com/in/dsudhir/
+    
 
 # Site Verification Settings
 webmaster_verifications:
