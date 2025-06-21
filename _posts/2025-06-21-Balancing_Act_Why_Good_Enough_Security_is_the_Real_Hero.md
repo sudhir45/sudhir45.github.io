@@ -1,6 +1,7 @@
 ---
 title: "Balancing Act: Why Good Enough Security is the Real Hero"
 date: 2025-06-21 11:23:00 +0530
+description: "An exploration of why 'good enough' security is often better than perfect security, and how to find the right balance between safety and usability."
 categories: [Security, Strategy]
 tags: [Security, Risk Management, Practical Security, Security Strategy]
 pin: true
@@ -34,7 +35,7 @@ Let's see this inverse tango play out in the wild:
 
 **Security Castle:** Password plus a code to your phone, maybe a fingerprint. More steps, but much safer.
 
-**Reality:** MFA is that "annoying extra step" that stops hackers cold—even if they steal your password, they can't get in without your phone or fingerprint.
+**Reality:** MFA is that "annoying extra step" that stops hackers cold—even if they steal your password, they can't get in without your phone or fingerprint. It's a foundational principle of a modern [Zero Trust]({% post_url 2025-04-27-Zero_Trust_Fundamentals %}) approach.
 
 ### 3. Public Wi-Fi: The Siren Song of "Free"
 
@@ -56,7 +57,7 @@ Let's see this inverse tango play out in the wild:
 
 **Zoom's "Easy Join" vs. Zoombombing:** Early pandemic Zoom meetings were super easy to join—until trolls crashed the party. Security features (waiting rooms, passwords) added friction but stopped chaos.
 
-**Corporate Networks & BYOD:** Employees want the freedom to access everything from anywhere, often using their personal devices—it's convenient and fits how we work today. But for IT teams, it's a security headache. Suddenly, sensitive company data is being accessed from all kinds of personal devices, turning security into a constant challenge. Striking the right balance means putting things like VPNs, strict access controls, and device management in place—extra steps, yes, but crucial for keeping things secure.
+**Corporate Networks & BYOD:** Employees want the freedom to access everything from anywhere, often using their personal devices—it's convenient and fits how we work today. But for IT teams, it's a security headache. Suddenly, sensitive company data is being accessed from all kinds of personal devices, turning security into a constant challenge. Striking the right balance means putting things like VPNs, strict access controls, and device management in place—extra steps, yes, but crucial for keeping a [secure architecture]({% post_url 2025-04-30-security_architecture_fundamentals %}).
 
 ## Balancing Security and Usability: There's Light at the End of the Tunnel
 
