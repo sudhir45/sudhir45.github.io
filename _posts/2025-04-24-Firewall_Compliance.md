@@ -8,8 +8,6 @@ tags: [Network, Security, Firewall, Compliance, Audit, Best Practices]
 pin: true
 ---
 
-# Firewalls & Compliance: Stop Pretending It's Just an Audit Problem
-
 You’ve got a firewall, great. That’s like having a gate in front of your house. But if it's wide open, unlocked, and you never bother checking who’s walking in? Then it's just decoration.
 
 Here’s the thing : just having a firewall means jack if you don’t manage it properly. And I’m not just talking about security. I’m talking about **Compliance**—those rules and regulations that can land you in deep trouble if ignored. Fines, lawsuits, public shaming and what not.
