@@ -5,7 +5,6 @@ date: 2025-04-24 21:01:56 +0530
 description: "A comprehensive guide to firewall compliance, covering key standards like PCI DSS, ISO 27001, and HIPAA, and best practices for policy, change management, and auditing."
 categories: [Compliance, Security, Firewall]
 tags: [Network, Security, Firewall, Compliance, Audit, Best Practices]
-pin: true
 ---
 
 You’ve got a firewall, great. That’s like having a gate in front of your house. But if it's wide open, unlocked, and you never bother checking who’s walking in? Then it's just decoration.
