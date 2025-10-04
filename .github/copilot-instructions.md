@@ -30,6 +30,7 @@ Purpose: Help an AI coding agent become productive in this Jekyll blog repositor
 
 - Safe edit examples (explicit):
   - Add a new post: create `_posts/2025-10-04-my-post.md` with front matter matching `CONTRIBUTING.md`, add assets to `assets/img/`, run `bash tools/test.sh` and fix link errors reported by htmlproofer.
+  - When asked to "create a new post" or similar, the agent should create the new file in `_posts/` with only the YAML front-matter (metadata) populated — including `title`, `date`, `categories`, `tags`, and `author` — and leave the post body empty unless the user explicitly requests content. This makes drafts safe for review before content is added.
   - Fix a broken internal link: run `bash tools/test.sh`, find the htmlproofer error, update the Markdown link, re-run tests.
 
 - What not to change without approval:
@@ -37,3 +38,17 @@ Purpose: Help an AI coding agent become productive in this Jekyll blog repositor
   - The `permalink` default or `baseurl` without updating existing post links and running the site build.
 
 If anything here is unclear or you want the agent to follow stricter rules (formatting, linting, commit conventions), tell me which areas to expand.
+
+Serve site locally:
+
+- When asked to "serve" or "run" the site locally, use these exact commands in a shell inside the repository root:
+
+  1. Install gems (idempotent):
+
+    bundle install
+
+  2. Start the Jekyll development server with livereload and bind to localhost:
+
+    bundle exec jekyll s -l -H 127.0.0.1
+
+  These commands match the project's `tools/run.sh` behavior and ensure the site is available at http://127.0.0.1:4000 by default.
