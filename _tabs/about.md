@@ -72,7 +72,7 @@ I'm currently focused on:
         <source media="(prefers-color-scheme: dark)" srcset="https://github-readme-stats.vercel.app/api?username=sudhir45&show_icons=true&theme=radical&hide_border=true&count_private=true" />
         <source media="(prefers-color-scheme: light)" srcset="https://github-readme-stats.vercel.app/api?username=sudhir45&show_icons=true&theme=default&hide_border=true&count_private=true" />
         <img src="https://github-readme-stats.vercel.app/api?username=sudhir45&show_icons=true&theme=default&hide_border=true&count_private=true" class="img-fluid rounded" alt="GitHub Stats" style="width:100%;" />
-      </picture>
+</picture>
     </div>
   </div>
   <div class="col-md-6">
@@ -81,7 +81,7 @@ I'm currently focused on:
         <source media="(prefers-color-scheme: dark)" srcset="https://github-readme-stats.vercel.app/api/top-langs/?username=sudhir45&layout=compact&theme=radical&hide_border=true" />
         <source media="(prefers-color-scheme: light)" srcset="https://github-readme-stats.vercel.app/api/top-langs/?username=sudhir45&layout=compact&theme=default&hide_border=true" />
         <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=sudhir45&layout=compact&theme=default&hide_border=true" class="img-fluid rounded" alt="Top Languages" style="width:100%;" />
-      </picture>
+</picture>
     </div>
   </div>
 </div>
@@ -155,17 +155,6 @@ I'm always interested in connecting with fellow security professionals, discussi
 * **Speaking Engagements** - Sharing knowledge about security automation and best practices
 * **Open Source Collaboration** - Contributing to security tools and frameworks
 
----
-
-## Current Focus
-
-I'm currently focused on:
-* **AI Security Research** - Exploring vulnerabilities in LLM applications and developing defense strategies
-* **Security Automation** - Building tools that make security teams more efficient and effective
-* **Knowledge Sharing** - Writing about real-world security challenges and solutions
-
-*Ready to discuss how we can work together to build more secure systems? Let's connect!*
-
 <style>
 /* About Page Custom Styles */
 .github-stats img {
@@ -185,144 +174,123 @@ I'm currently focused on:
   filter: brightness(0.9) contrast(1.1);
 }
 
-.contact-card {
-  transition: all 0.3s ease;
-  border: 1px solid #e9ecef;
-}
-
-.contact-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 20px rgba(0,0,0,0.1) !important;
-}
-
-.contact-card .card-body {
-  padding: 1.25rem;
-}
-
-.contact-card i {
-  transition: transform 0.2s ease;
-}
-
-.contact-card:hover i {
-  transform: scale(1.1);
-}
-
-.bg-gradient {
-  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-  color: white;
-}
-
-.bg-gradient .card-text {
-  color: rgba(255,255,255,0.8) !important;
-}
-
-.bg-gradient .btn-success {
-  background-color: rgba(255,255,255,0.2);
-  border-color: rgba(255,255,255,0.3);
-  color: white;
-}
-
-.bg-gradient .btn-success:hover {
-  background-color: rgba(255,255,255,0.3);
-  border-color: rgba(255,255,255,0.5);
-  color: white;
-}
-
-[data-theme="dark"] .contact-card {
-  background-color: var(--bs-dark);
-  border-color: var(--bs-gray-700);
-}
-
-[data-theme="dark"] .contact-card .card-title {
-  color: var(--bs-light);
-}
-
-[data-theme="dark"] .contact-card .card-text {
-  color: var(--bs-gray-300);
-}
-
-[data-theme="dark"] .contact-card .text-primary {
-  color: #6ea8fe !important;
-}
-
-[data-theme="dark"] .contact-card .text-dark {
-  color: #adb5bd !important;
-}
-
-[data-theme="dark"] .contact-card .text-danger {
-  color: #f5c2c7 !important;
-}
-
-[data-theme="dark"] .contact-card .text-success {
-  color: #75b798 !important;
-}
-
 /* Make both github stat and contact cards look visually similar */
 .card.github-card, .contact-card {
   background: #fff;
   border-radius: 0.75rem;
   box-shadow: 0 2px 8px rgba(0,0,0,0.12);
   border: 1px solid #e9ecef;
-  padding: 0.7rem 0.7rem 0.5rem 0.7rem;
+  padding: 0.8rem 0.8rem 0.6rem 0.8rem;
   margin-bottom: 8px;
-  min-height: 90px;  /* previously 180px */
-  max-width: 60%;    /* Scale cards to 60% of parent */
-  font-size: 0.84em; /* Compact text */
+  min-height: 120px;
+  transition: box-shadow 0.22s cubic-bezier(.21, .97, .6, .99), background 0.26s;
 }
-.card.github-card { width: 100%; min-width:0; max-width:100%; font-size:initial; }
-.get-in-touch-row { justify-content: center !important; }
 
 .card.github-card img,
-.card.github-card picture { width: 100%; }
+.card.github-card picture { 
+  width: 100%; 
+}
+
 .card.github-card {
   display: flex;
   align-items: center;
   justify-content: center;
 }
+
 .card.github-card:hover,
-.contact-card:hover { box-shadow: 0 6px 24px rgba(15,23,42,.13) !important; }
+.contact-card:hover { 
+  box-shadow: 0 6px 24px rgba(15,23,42,.13) !important; 
+}
+
 /* Dark theme card backgrounds */
 [data-theme="dark"] .card.github-card,
-[data-theme="dark"] .contact-card { background: #23272b; border-color: #23272b; }
-[data-theme="dark"] .card.github-card img { filter: brightness(.89) contrast(1.12); }
+[data-theme="dark"] .contact-card { 
+  background: #23272b; 
+  border-color: #23272b; 
+}
+
+[data-theme="dark"] .card.github-card img { 
+  filter: brightness(.89) contrast(1.12); 
+}
+
 /* bg-gradient resume special for both themes */
 .bg-gradient {
   background: linear-gradient(135deg, #28a745 0%, #20c997 100%) !important;
   color: #fff !important;
   border: none !important;
 }
+
 [data-theme="dark"] .bg-gradient {
   background: linear-gradient(135deg, #137c32 0%, #088c73 100%) !important;
   color: #fff !important;
 }
+
 .bg-gradient .btn,
 .bg-gradient .btn:visited,
 .bg-gradient .btn-success {
-  background: rgba(255,255,255,0.13) !important; color: #fff !important; border-color: rgba(255,255,255,0.3) !important;
+  background: rgba(255,255,255,0.13) !important; 
+  color: #fff !important; 
+  border-color: rgba(255,255,255,0.3) !important;
 }
+
 .bg-gradient .btn:hover {
   background: rgba(255,255,255,0.24) !important;
 }
-/* Contact icon sizing and alignment still applies */
-.contact-card i { font-size: 1rem !important; }
-.contact-card .btn { font-size: 0.8em; padding: 0.35em 0.85em; }
-.contact-card i, .contact-card .card-title { font-size: 0.95em; }
 
-@media (max-width: 992px) { /* Tablet - cards a bit wider */
-  .contact-card { max-width: 75% !important; }
+/* Contact icon sizing and alignment still applies */
+.contact-card i { 
+  font-size: 0.9rem !important; 
 }
-@media (max-width: 768px) { /* Mobile - cards almost fill parent */
-  .github-stats .row {
-    --bs-gutter-x: 1rem;
+
+.contact-card { 
+  margin: auto; 
+  border: 3px solid #000 !important; 
+}
+
+.contact-card .card-title {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.contact-card .btn {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.6rem;
+}
+
+.card-body { 
+  min-height: 80px; 
+  padding: 0.6rem !important;
+}
+
+.card-body.flex-column { 
+  display: flex; 
+  flex-direction: column; 
+  justify-content: space-between; 
+}
+
+@media (max-width: 992px) { 
+  .col-lg-3 { 
+    flex: 0 0 50%; 
+    max-width: 50%; 
+  } 
+}
+
+@media (max-width: 768px) { 
+  .col-md-6, .col-lg-3 { 
+    flex: 0 0 100%; 
+    max-width: 100%; 
+  } 
+  .card-body {
+    min-height: 60px;
+    padding: 0.5rem !important;
   }
-  .contact-card { max-width: 90% !important; min-height: 0; font-size: 0.94em; }
-  .contact-card .btn { font-size: 0.96em; padding: 0.45em 1em; }
-  .contact-card .card-title { font-size: 1em; }
-  .contact-card .card-body { padding: 0.85rem; }
+  .contact-card .btn {
+    font-size: 0.7rem;
+    padding: 0.2rem 0.5rem;
+  }
+  .contact-card .card-title {
+    font-size: 0.85rem;
+  }
 }
-.contact-card { margin:auto; border: 3px solid #000 !important; }
-.card-body { min-height: 120px; }
-.card-body.flex-column { display: flex; flex-direction:column; justify-content:space-between; }
-@media (max-width: 992px) { .col-lg-3 { flex: 0 0 50%; max-width:50%; } }
-@media (max-width: 768px) { .col-md-6, .col-lg-3 { flex: 0 0 100%; max-width:100%; } .card-body {min-height:80px;} }
 </style>
+
