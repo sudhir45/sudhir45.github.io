@@ -1,0 +1,1361 @@
+---
+layout: null
+title: Modern Pokédex
+permalink: /pokedex/
+---
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modern Pokédex</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+    :root {
+      /* Base Colors */
+      --bg-light: #f8fafc;
+      /* slate-50 */
+      --bg-dark: #0f172a;
+      /* slate-900 */
+      --text-light: #020617;
+      /* slate-950 */
+      --text-dark: #f1f5f9;
+      /* slate-100 */
+
+      /* Card / Modal Colors */
+      --card-light: #ffffff;
+      /* white */
+      --card-dark: #1e293b;
+      /* slate-800 */
+      --border-light: #e2e8f0;
+      /* slate-200 */
+      --border-dark: #334155;
+      /* slate-700 */
+      --subtle-light: #94a3b8;
+      /* slate-400 */
+      --subtle-dark: #64748b;
+      /* slate-500 */
+      --overlay-light: rgba(255, 255, 255, 0.7);
+      --overlay-dark: rgba(30, 41, 59, 0.7);
+
+      /* Type Colors */
+      --type-normal: #A8A77A;
+      --type-fire: #F08030;
+      --type-water: #6890F0;
+      --type-electric: #F8D030;
+      --type-grass: #78C850;
+      --type-ice: #98D8D8;
+      --type-fighting: #C03028;
+      --type-poison: #A040A0;
+      --type-ground: #E0C068;
+      --type-flying: #A890F0;
+      --type-psychic: #F85888;
+      --type-bug: #A8B820;
+      --type-rock: #B8A038;
+      --type-ghost: #705898;
+      --type-dragon: #7038F8;
+      --type-dark: #705848;
+      --type-steel: #B8B8D0;
+      --type-fairy: #EE99AC;
+    }
+
+    /* Base */
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-light);
+      color: var(--text-light);
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    body.dark {
+      background-color: var(--bg-dark);
+      color: var(--text-dark);
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg-light);
+    }
+
+    body.dark ::-webkit-scrollbar-track {
+      background: var(--bg-dark);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border-light);
+      border-radius: 10px;
+    }
+
+    body.dark ::-webkit-scrollbar-thumb {
+      background: var(--border-dark);
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--subtle-light);
+    }
+
+    body.dark ::-webkit-scrollbar-thumb:hover {
+      background: var(--subtle-dark);
+    }
+
+    /* Controls */
+    .control-bg {
+      background-color: var(--card-light);
+      border: 1px solid var(--border-light);
+      color: var(--text-light);
+    }
+
+    body.dark .control-bg {
+      background-color: var(--card-dark);
+      border-color: var(--border-dark);
+      color: var(--text-dark);
+    }
+
+    /* Card */
+    .card {
+      background-color: var(--card-light);
+      border: 1px solid var(--border-light);
+      transition: transform 0.2s, box-shadow 0.2s, background-color 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    body.dark .card {
+      background-color: var(--card-dark);
+      border-color: var(--border-dark);
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+    }
+
+    body.dark .card:hover {
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .card-id {
+      position: absolute;
+      top: 10px;
+      right: 12px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--subtle-light);
+    }
+
+    body.dark .card-id {
+      color: var(--subtle-dark);
+    }
+
+    .card-img-container {
+      position: relative;
+      z-index: 2;
+    }
+
+    .card-type-glow {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background-color: var(--type-normal);
+      opacity: 0.15;
+      filter: blur(20px);
+      transition: opacity 0.3s;
+      z-index: 1;
+    }
+
+    body.dark .card-type-glow {
+      opacity: 0.25;
+      filter: blur(30px);
+    }
+
+    .type-pill {
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    /* Quick Stats Overlay */
+    .quick-stats-overlay {
+      position: absolute;
+      inset: 0;
+      background-color: var(--overlay-light);
+      backdrop-filter: blur(8px);
+      opacity: 0;
+      transition: opacity 0.2s;
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    body.dark .quick-stats-overlay {
+      background-color: var(--overlay-dark);
+    }
+
+    .card:hover .quick-stats-overlay {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .quick-stat-bar {
+      background-color: var(--border-light);
+    }
+
+    body.dark .quick-stat-bar {
+      background-color: var(--border-dark);
+    }
+
+    /* Modal */
+    .modal-backdrop {
+      background-color: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .modal-content {
+      background-color: var(--card-light);
+      border: 1px solid var(--border-light);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    }
+
+    body.dark .modal-content {
+      background-color: var(--card-dark);
+      border-color: var(--border-dark);
+    }
+
+    .modal-left {
+      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23e2e8f0' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      border-right: 1px solid var(--border-light);
+      position: relative;
+    }
+
+    body.dark .modal-left {
+      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23334155' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      border-right-color: var(--border-dark);
+    }
+
+    .modal-type-glow {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 250px;
+      height: 250px;
+      border-radius: 50%;
+      background-color: var(--type-normal);
+      opacity: 0.2;
+      filter: blur(40px);
+      transition: opacity 0.3s;
+      z-index: 1;
+    }
+
+    body.dark .modal-type-glow {
+      opacity: 0.3;
+      filter: blur(60px);
+    }
+
+    .modal-img {
+      position: relative;
+      z-index: 2;
+    }
+
+    .modal-stat-bar {
+      background-color: var(--border-light);
+    }
+
+    body.dark .modal-stat-bar {
+      background-color: var(--border-dark);
+    }
+
+    .meta-item {
+      background-color: var(--bg-light);
+      border: 1px solid var(--border-light);
+    }
+
+    body.dark .meta-item {
+      background-color: var(--bg-dark);
+      border-color: var(--border-dark);
+    }
+
+    .evo-chain {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .evo-chain:last-child {
+      margin-bottom: 0;
+    }
+
+    .evo-branch {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-left: 10px;
+    }
+
+    .evo-branch > .evo-chain {
+      margin-bottom: 0;
+    }
+
+    .evo-stage {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .evo-img {
+      width: 72px;
+      height: 72px;
+      object-fit: contain;
+      image-rendering: pixelated;
+      background: var(--bg-light);
+      border-radius: 50%;
+      border: 1px solid var(--border-light);
+      padding: 4px;
+      transition: background-color 0.2s, border-color 0.2s;
+    }
+
+    body.dark .evo-img {
+      background: var(--bg-dark);
+      border-color: var(--border-dark);
+    }
+
+    .evo-stage.clickable:hover .evo-img {
+      background-color: var(--border-light);
+      border-color: var(--subtle-light);
+      cursor: pointer;
+    }
+
+    body.dark .evo-stage.clickable:hover .evo-img {
+      background-color: var(--border-dark);
+      border-color: var(--subtle-dark);
+    }
+
+    .evo-name {
+      font-size: 0.875rem;
+      font-weight: 500;
+      margin-top: 4px;
+      text-transform: capitalize;
+    }
+
+    .evo-details {
+      font-size: 0.8rem;
+      color: var(--subtle-light);
+      min-height: 1.25rem;
+      /* Reserve space */
+    }
+
+    body.dark .evo-details {
+      color: var(--subtle-dark);
+    }
+
+    .evo-arrow {
+      font-size: 1.25rem;
+      color: var(--subtle-light);
+    }
+
+    body.dark .evo-arrow {
+      color: var(--subtle-dark);
+    }
+
+    /* Animation for modal popup */
+    @keyframes popup {
+      from {
+        opacity: 0;
+        transform: scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+    .animate-popup {
+      animation: popup 0.2s ease-out;
+    }
+  </style>
+</head>
+
+<body class="min-h-screen p-4 md:p-8 transition-colors duration-300">
+
+  <!-- Header -->
+  <header class="w-full max-w-7xl mx-auto mb-6">
+    <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+      <h1 class="text-3xl font-bold text-center">Modern Pokédex</h1>
+      <div class="flex items-center gap-2">
+        <button id="surpriseMe"
+          class="control-bg p-2 rounded-lg shadow-sm hover:ring-2 hover:ring-blue-500 transition duration-150"
+          title="Surprise Me!">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path
+              d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0zM12 9v4M12 17h.01">
+            </path>
+          </svg>
+        </button>
+        <button id="darkToggle"
+          class="control-bg p-2 rounded-lg shadow-sm hover:ring-2 hover:ring-blue-500 transition duration-150"
+          title="Toggle Dark Mode">
+          <!-- Sun Icon -->
+          <svg class="dark:hidden" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <!-- Moon Icon -->
+          <svg class="hidden dark:block" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Controls -->
+  <div class="w-full max-w-7xl mx-auto mb-6 p-4 control-bg rounded-lg shadow-sm">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <!-- Search -->
+      <div class="relative">
+        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </span>
+        <input id="search"
+          class="w-full pl-10 pr-4 py-2 control-bg border border-transparent rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+          placeholder="Search by name...">
+      </div>
+
+      <!-- Type Filter -->
+      <select id="typeFilter"
+        class="w-full px-4 py-2 control-bg rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 border border-transparent focus:border-transparent transition appearance-none">
+        <option value="">All Types</option>
+      </select>
+
+      <!-- Generation Filter -->
+      <select id="genFilter"
+        class="w-full px-4 py-2 control-bg rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 border border-transparent focus:border-transparent transition appearance-none">
+        <option value="">All Generations</option>
+        <option value="I">Generation 1</option>
+        <option value="II">Generation 2</option>
+        <option value="III">Generation 3</option>
+        <option value="IV">Generation 4</option>
+        <option value="V">Generation 5</option>
+        <option value="VI">Generation 6</option>
+        <option value="VII">Generation 7</option>
+        <option value="VIII">Generation 8</option>
+        <option value="IX">Generation 9</option>
+      </select>
+
+      <!-- Sort & Clear -->
+      <div class="flex gap-2">
+        <select id="sortControl"
+          class="w-full px-4 py-2 control-bg rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 border border-transparent focus:border-transparent transition appearance-none">
+          <option value="id-asc">Sort by ID (Asc)</option>
+          <option value="id-desc">Sort by ID (Desc)</option>
+          <option value="name-asc">Sort by Name (A-Z)</option>
+          <option value="name-desc">Sort by Name (Z-A)</option>
+          <option value="bst-desc">Sort by BST (High)</option>
+          <option value="bst-asc">Sort by BST (Low)</option>
+        </select>
+        <button id="clearFilters"
+          class="control-bg p-2 rounded-lg shadow-sm hover:ring-2 hover:ring-red-500 transition duration-150"
+          title="Clear Filters">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pokédex Grid -->
+  <main id="grid" class="w-full max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6"
+    aria-live="polite">
+  </main>
+
+  <!-- Load More / Loading -->
+  <div id="loader" class="flex justify-center items-center w-full py-10">
+    <button id="loadMore"
+      class="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold shadow-md hover:bg-blue-700 transition duration-200">
+      Load More Pokémon
+    </button>
+    <div id="loadingSpinner" class="hidden text-blue-600">
+      <svg class="animate-spin h-8 w-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor"
+          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+        </path>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Back to Top Button -->
+  <button id="backToTop"
+    class="fixed bottom-6 right-6 control-bg p-3 rounded-full shadow-lg opacity-0 invisible transition-all duration-300 hover:ring-2 hover:ring-blue-500"
+    title="Back to Top">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="12" y1="19" x2="12" y2="5"></line>
+      <polyline points="5 12 12 5 19 12"></polyline>
+    </svg>
+  </button>
+
+  <!-- Modal -->
+  <div id="modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop hidden"
+    onclick="if(event.target===this) closeModal()">
+    <div
+      class="modal-content max-w-4xl w-full max-h-[90vh] rounded-2xl shadow-xl overflow-hidden flex flex-col md:flex-row animate-popup">
+      <!-- Modal Left (Image) -->
+      <div
+        class="modal-left w-full md:w-2/5 flex flex-col items-center justify-center p-6 gap-4 relative">
+        <div class="modal-type-glow" id="modalGlow"></div>
+        <img id="modalImage" src="" alt="Pokemon image"
+          class="modal-img h-64 w-64 object-contain transition-transform duration-300 ease-in-out"
+          style="image-rendering: pixelated;">
+        <h2 id="modalName" class="text-3xl font-bold text-center capitalize"></h2>
+        <div id="modalTypes" class="flex gap-3"></div>
+        <button id="shinyToggle"
+          class="absolute top-4 right-4 control-bg p-2 rounded-full text-xl shadow-md hover:ring-2 hover:ring-yellow-400 transition">✨</button>
+      </div>
+
+      <!-- Modal Right (Data) -->
+      <div class="w-full md:w-3/5 p-6 overflow-y-auto">
+        <button class="close-btn absolute top-4 right-4 text-3xl font-bold leading-none" aria-label="Close"
+          onclick="closeModal()">&times;</button>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Col 1 -->
+          <div>
+            <h3 class="font-bold text-lg mb-2">Description</h3>
+            <p id="modalDescription" class="text-sm leading-relaxed mb-4"></p>
+
+            <h3 class="font-bold text-lg mb-2">Abilities</h3>
+            <p id="modalAbilities" class="text-sm capitalize mb-4"></p>
+
+            <h3 class="font-bold text-lg mb-2">Details</h3>
+            <div class="grid grid-cols-2 gap-3">
+              <div id="modalHeight" class="meta-item p-3 rounded-lg text-sm"></div>
+              <div id="modalWeight" class="meta-item p-3 rounded-lg text-sm"></div>
+              <div id="modalBaseXP" class="meta-item p-3 rounded-lg text-sm"></div>
+              <div id="modalHabitat" class="meta-item p-3 rounded-lg text-sm"></div>
+              <div id="modalEggGroups" class="meta-item p-3 rounded-lg text-sm col-span-2"></div>
+            </div>
+          </div>
+
+          <!-- Col 2 -->
+          <div>
+            <h3 class="font-bold text-lg mb-2">Base Stats</h3>
+            <div id="modalStats" class="space-y-2 mb-4"></div>
+          </div>
+        </div>
+
+        <!-- Evolution Chain (Full Width) -->
+        <div class="mt-6 border-t pt-4 border-[var(--border-light)] dark:border-[var(--border-dark)]">
+          <h3 class="font-bold text-lg mb-4">Evolution Chain</h3>
+          <div id="modalEvoChain" class="flex flex-wrap items-start gap-4 overflow-x-auto pb-2">
+            <!-- Evolution chain will be populated here -->
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <script>
+    const POKE_API_BASE = 'https://pokeapi.co/api/v2';
+    const POKE_ARTWORK_URL = (id) => `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
+    const POKE_SPRITE_URL = (id) => `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`;
+    const POKE_SPRITE_SHINY_URL = (id) => `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/${id}.png`;
+
+    const typeColors = {
+      normal: 'var(--type-normal)',
+      fire: 'var(--type-fire)',
+      water: 'var(--type-water)',
+      electric: 'var(--type-electric)',
+      grass: 'var(--type-grass)',
+      ice: 'var(--type-ice)',
+      fighting: 'var(--type-fighting)',
+      poison: 'var(--type-poison)',
+      ground: 'var(--type-ground)',
+      flying: 'var(--type-flying)',
+      psychic: 'var(--type-psychic)',
+      bug: 'var(--type-bug)',
+      rock: 'var(--type-rock)',
+      ghost: 'var(--type-ghost)',
+      dragon: 'var(--type-dragon)',
+      dark: 'var(--type-dark)',
+      steel: 'var(--type-steel)',
+      fairy: 'var(--type-fairy)',
+    };
+
+    const typeGlows = {
+      normal: '#A8A77A',
+      fire: '#F08030',
+      water: '#6890F0',
+      electric: '#F8D030',
+      grass: '#78C850',
+      ice: '#98D8D8',
+      fighting: '#C03028',
+      poison: '#A040A0',
+      ground: '#E0C068',
+      flying: '#A890F0',
+      psychic: '#F85888',
+      bug: '#A8B820',
+      rock: '#B8A038',
+      ghost: '#705898',
+      dragon: '#7038F8',
+      dark: '#705848',
+      steel: '#B8B8D0',
+      fairy: '#EE99AC',
+    };
+
+    const statColors = {
+      hp: '#FF5959',
+      attack: '#F08030',
+      defense: '#F8D030',
+      'special-attack': '#6890F0',
+      'special-defense': '#78C850',
+      speed: '#F85888',
+    };
+
+    let pokedex = []; // Main array to hold all fetched Pokémon data
+    let typeCache = new Map(); // Cache for type relation data
+    let currentOffset = 0;
+    const LIMIT = 50; // Number of Pokémon to load at a time
+    let isFetching = false;
+    let isShiny = false;
+    let currentModalPokemon = null;
+
+    // DOM Elements
+    const grid = document.getElementById('grid');
+    const searchInput = document.getElementById('search');
+    const typeFilter = document.getElementById('typeFilter');
+    const genFilter = document.getElementById('genFilter');
+    const sortControl = document.getElementById('sortControl');
+    const clearFiltersBtn = document.getElementById('clearFilters');
+    const loadMoreBtn = document.getElementById('loadMore');
+    const loadingSpinner = document.getElementById('loadingSpinner');
+    const darkToggle = document.getElementById('darkToggle');
+    const backToTopBtn = document.getElementById('backToTop');
+    const modal = document.getElementById('modal');
+    const shinyToggle = document.getElementById('shinyToggle');
+    const surpriseMeBtn = document.getElementById('surpriseMe');
+
+    // --- Utility Functions ---
+
+    /**
+     * Safe fetch wrapper with error handling.
+     * @param {string} url - The URL to fetch.
+     * @returns {Promise<any>} - The JSON response or null on error.
+     */
+    async function safeFetch(url) {
+      try {
+        const res = await fetch(url);
+        if (!res.ok) throw new Error(`Fetch failed: ${res.status}`);
+        return await res.json();
+      } catch (err) {
+        console.warn('Fetch error:', url, err);
+        return null;
+      }
+    }
+
+    /**
+     * Capitalizes a string (e.g., "mr-mime" -> "Mr. Mime").
+     * @param {string} s - The string to capitalize.
+     * @returns {string} - The capitalized string.
+     */
+    function capitalizeName(s) {
+      if (!s) return '';
+      return s.split('-').map(part => part.charAt(0).toUpperCase() + part.slice(1)).join(' ');
+    }
+
+    /**
+     * Debounce function to limit rapid firing of events.
+     * @param {Function} func - The function to debounce.
+     * @param {number} delay - The delay in milliseconds.
+     * @returns {Function} - The debounced function.
+     */
+    function debounce(func, delay) {
+      let timeout;
+      return function(...args) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(this, args), delay);
+      };
+    }
+
+    /**
+     * Gets the appropriate stat color.
+     * @param {number} value - The stat value.
+     * @returns {string} - A hex color code.
+     */
+    function getStatColor(value) {
+      if (value < 60) return '#FF5959'; // Red
+      if (value < 100) return '#F8D030'; // Yellow
+      return '#78C850'; // Green
+    }
+
+    // --- Dark Mode ---
+
+    /**
+     * Toggles dark mode and saves the preference.
+     */
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark');
+      const isDark = document.body.classList.contains('dark');
+      localStorage.setItem('pokedex-dark-mode', isDark);
+    }
+
+    /**
+     * Initializes dark mode from localStorage.
+     */
+    function initDarkMode() {
+      if (localStorage.getItem('pokedex-dark-mode') === 'true') {
+        document.body.classList.add('dark');
+      }
+    }
+
+    // --- Back to Top ---
+
+    /**
+     * Shows or hides the "Back to Top" button based on scroll position.
+     */
+    function handleScroll() {
+      if (window.scrollY > 300) {
+        backToTopBtn.classList.remove('opacity-0', 'invisible');
+      } else {
+        backToTopBtn.classList.add('opacity-0', 'invisible');
+      }
+    }
+
+    /**
+     * Scrolls the window to the top.
+     */
+    function scrollToTop() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // --- Pokémon Data Fetching ---
+
+    /**
+     * Loads Pokémon data, either from cache or by fetching.
+     */
+    async function loadFromCacheOrFetch() {
+      const cacheKey = 'pokedex-cache';
+      const cachedData = sessionStorage.getItem(cacheKey);
+
+      if (cachedData) {
+        pokedex = JSON.parse(cachedData);
+        currentOffset = pokedex.length;
+        console.log('Loaded', pokedex.length, 'Pokémon from cache.');
+      } else {
+        await fetchPokemon(); // Load initial batch
+      }
+      populateFilters();
+      renderPokedex();
+    }
+
+    /**
+     * Fetches a batch of Pokémon from the API.
+     */
+    async function fetchPokemon() {
+      if (isFetching) return;
+      isFetching = true;
+      showLoading(true);
+
+      const data = await safeFetch(`${POKE_API_BASE}/pokemon?limit=${LIMIT}&offset=${currentOffset}`);
+      if (!data || !data.results) {
+        isFetching = false;
+        showLoading(false);
+        return;
+      }
+
+      const pokemonPromises = data.results.map(p => safeFetch(p.url));
+      const results = await Promise.all(pokemonPromises);
+
+      for (const data of results) {
+        if (!data) continue; // Skip failed fetches
+
+        const types = data.types.map(t => t.type.name);
+        const stats = data.stats.map(s => ({ name: s.stat.name, value: s.base_stat }));
+        const bst = stats.reduce((acc, stat) => acc + stat.value, 0);
+
+        pokedex.push({
+          id: data.id,
+          name: data.name,
+          types: types,
+          stats: stats,
+          bst: bst,
+          height: data.height, // decimeters
+          weight: data.weight, // hectograms
+          base_experience: data.base_experience,
+          generation: null, // Will be populated by species fetch
+          speciesUrl: data.species.url,
+          sprite: POKE_SPRITE_URL(data.id),
+          spriteShiny: POKE_SPRITE_SHINY_URL(data.id),
+          artwork: POKE_ARTWORK_URL(data.id),
+        });
+      }
+
+      // Fetch species data in parallel for gen info
+      const speciesPromises = pokedex.slice(currentOffset).map(p => {
+        if (p.speciesUrl) return safeFetch(p.speciesUrl);
+        return Promise.resolve(null);
+      });
+      const speciesResults = await Promise.all(speciesPromises);
+
+      speciesResults.forEach((speciesData, index) => {
+        const pokemon = pokedex[currentOffset + index];
+        if (speciesData && speciesData.generation) {
+          const genName = speciesData.generation.name; // "generation-i"
+          pokemon.generation = genName.split('-')[1].toUpperCase(); // "I"
+        }
+      });
+      
+      currentOffset += LIMIT;
+      isFetching = false;
+      showLoading(false);
+      saveToCache();
+      populateFilters(); // Update filters with new data
+      renderPokedex();
+    }
+
+    /**
+     * Fetches a single random Pokémon and opens its modal.
+     */
+    async function fetchRandomPokemon() {
+      if (isFetching) return;
+      isFetching = true;
+      showLoading(true, 'Finding a random Pokémon...');
+
+      const randomId = Math.floor(Math.random() * 1025) + 1; // Total Pokémon as of Gen 9
+
+      // Check if we already have it
+      let pokemon = pokedex.find(p => p.id === randomId);
+
+      if (!pokemon) {
+        const data = await safeFetch(`${POKE_API_BASE}/pokemon/${randomId}`);
+        if (data) {
+          const types = data.types.map(t => t.type.name);
+          const stats = data.stats.map(s => ({ name: s.stat.name, value: s.base_stat }));
+          const bst = stats.reduce((acc, stat) => acc + stat.value, 0);
+
+          pokemon = {
+            id: data.id,
+            name: data.name,
+            types: types,
+            stats: stats,
+            bst: bst,
+            height: data.height,
+            weight: data.weight,
+            base_experience: data.base_experience,
+            generation: null,
+            speciesUrl: data.species.url,
+            sprite: POKE_SPRITE_URL(data.id),
+            spriteShiny: POKE_SPRITE_SHINY_URL(data.id),
+            artwork: POKE_ARTWORK_URL(data.id),
+          };
+          
+          // We don't add this to the main `pokedex` array to not mess with pagination
+        }
+      }
+
+      isFetching = false;
+      showLoading(false);
+      
+      if (pokemon) {
+        openModal(pokemon);
+      } else {
+        // Simple non-blocking message
+        console.error('Failed to fetch a random Pokémon. Please try again.');
+      }
+    }
+
+
+    /**
+     * Shows or hides the loading indicators.
+     * @param {boolean} isLoading - Whether to show the loader.
+     * @param {string} [text] - Optional text for the "Load More" button.
+     */
+    function showLoading(isLoading, text = 'Loading...') {
+      if (isLoading) {
+        loadMoreBtn.classList.add('hidden');
+        loadingSpinner.classList.remove('hidden');
+        if (text) {
+          loadMoreBtn.textContent = text;
+          loadMoreBtn.disabled = true;
+        }
+      } else {
+        loadMoreBtn.classList.remove('hidden');
+        loadingSpinner.classList.add('hidden');
+        loadMoreBtn.textContent = 'Load More Pokémon';
+        loadMoreBtn.disabled = false;
+      }
+    }
+
+    /**
+     * Saves the current pokedex to session storage.
+     */
+    function saveToCache() {
+      sessionStorage.setItem('pokedex-cache', JSON.stringify(pokedex));
+    }
+
+    // --- UI Rendering ---
+
+    /**
+     * Populates the type and generation filters based on loaded Pokémon.
+     */
+    function populateFilters() {
+      // Types
+      const allTypes = [...new Set(pokedex.flatMap(p => p.types))].sort();
+      const currentType = typeFilter.value; // Preserve selection
+      typeFilter.innerHTML = '<option value="">All Types</option>'; // Reset
+      allTypes.forEach(t => {
+        const opt = document.createElement('option');
+        opt.value = t;
+        opt.textContent = capitalizeName(t);
+        typeFilter.appendChild(opt);
+      });
+      typeFilter.value = currentType; // Restore selection
+      
+      // Generations
+      const allGens = [...new Set(pokedex.map(p => p.generation).filter(Boolean))];
+      // Sort "I", "II", "III" etc.
+      allGens.sort((a, b) => {
+        const romanToInt = { 'I': 1, 'II': 2, 'III': 3, 'IV': 4, 'V': 5, 'VI': 6, 'VII': 7, 'VIII': 8, 'IX': 9 };
+        return (romanToInt[a] || 0) - (romanToInt[b] || 0);
+      });
+      
+      const currentGen = genFilter.value; // Preserve selection
+      genFilter.innerHTML = '<option value="">All Generations</option>'; // Reset
+      allGens.forEach(g => {
+        const opt = document.createElement('option');
+        opt.value = g;
+        opt.textContent = `Generation ${g}`;
+        genFilter.appendChild(opt);
+      });
+      genFilter.value = currentGen; // Restore selection
+    }
+
+    /**
+     * Clears all active filters and re-renders the grid.
+     */
+    function clearFilters() {
+      searchInput.value = '';
+      typeFilter.value = '';
+      genFilter.value = '';
+      sortControl.value = 'id-asc';
+      renderPokedex();
+    }
+    
+    /**
+     * Creates the HTML for a single stat bar (for quick stats).
+     * @param {string} name - The name of the stat (e.g., "HP").
+     * @param {number} value - The value of the stat.
+     * @returns {string} - The HTML string for the stat bar.
+     */
+    function createQuickStatBar(name, value) {
+      const percentage = Math.min(100, (value / 255) * 100); // Max stat is 255
+      const color = getStatColor(value);
+      return `
+        <div class="grid grid-cols-4 items-center gap-1 text-xs">
+          <span class="font-medium text-right">${name}</span>
+          <span class="text-right">${value}</span>
+          <div class="col-span-2 quick-stat-bar h-1.5 rounded-full">
+            <div class="h-1.5 rounded-full" style="width: ${percentage}%; background-color: ${color};"></div>
+          </div>
+        </div>
+      `;
+    }
+
+    /**
+     * Renders the Pokédex grid based on current filters and sorting.
+     */
+    function renderPokedex() {
+      grid.innerHTML = ''; // Clear the grid
+
+      const query = searchInput.value.toLowerCase();
+      const selectedType = typeFilter.value;
+      const selectedGen = genFilter.value;
+      const sortValue = sortControl.value;
+
+      // 1. Filter
+      let filteredPokemon = pokedex.filter(p => {
+        const nameMatch = p.name.toLowerCase().includes(query);
+        const typeMatch = selectedType === '' || p.types.includes(selectedType);
+        const genMatch = selectedGen === '' || p.generation === selectedGen;
+        return nameMatch && typeMatch && genMatch;
+      });
+
+      // 2. Sort
+      filteredPokemon.sort((a, b) => {
+        switch (sortValue) {
+          case 'id-asc': return a.id - b.id;
+          case 'id-desc': return b.id - a.id;
+          case 'name-asc': return a.name.localeCompare(b.name);
+          case 'name-desc': return b.name.localeCompare(a.name);
+          case 'bst-desc': return b.bst - a.bst;
+          case 'bst-asc': return a.bst - b.bst;
+          default: return a.id - b.id;
+        }
+      });
+
+      // 3. Render
+      filteredPokemon.forEach(p => {
+        const card = document.createElement('div');
+        card.className = 'card rounded-lg shadow-md cursor-pointer p-4 flex flex-col items-center';
+        card.onclick = () => openModal(p);
+
+        const primaryType = p.types[0];
+        const glowColor = typeGlows[primaryType] || '#A8A77A';
+        const typesHtml = p.types.map(t =>
+          `<span class="type-pill text-xs font-semibold px-2.5 py-0.5 rounded-full text-white" style="background-color: ${typeColors[t] || '#888'}">
+            ${capitalizeName(t)}
+          </span>`
+        ).join('');
+        
+        const quickStatsHtml = `
+          <div class="font-bold text-center mb-1">BST: ${p.bst}</div>
+          ${p.stats.map(s => createQuickStatBar(capitalizeName(s.name), s.value)).join('')}
+        `;
+
+        card.innerHTML = `
+          <span class="card-id">#${String(p.id).padStart(3, '0')}</span>
+          <div class="card-img-container h-32 w-32 mb-2">
+            <div class="card-type-glow" style="background-color: ${glowColor};"></div>
+            <img src="${p.artwork}" alt="${p.name}" class="h-full w-full object-contain relative z-10" loading="lazy" onerror="this.onerror=null; this.src='${p.sprite}'">
+          </div>
+          <h3 class="font-bold text-lg text-center capitalize">${capitalizeName(p.name)}</h3>
+          <div class="flex gap-2 mt-2">${typesHtml}</div>
+          
+          <!-- Quick Stats Overlay -->
+          <div class="quick-stats-overlay flex flex-col justify-center p-4 rounded-lg">
+            ${quickStatsHtml}
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    // --- Modal Logic ---
+
+    /**
+     * Opens the modal with a specific Pokémon's details.
+     * @param {object} p - The Pokémon data object.
+     */
+    async function openModal(p) {
+      currentModalPokemon = p; // Store for shiny toggle
+      isShiny = false; // Reset shiny state
+
+      // 1. Basic Info
+      document.getElementById('modalName').textContent = capitalizeName(p.name);
+      document.getElementById('modalGlow').style.backgroundColor = typeGlows[p.types[0]] || '#A8A77A';
+      updateModalImage(); // Sets default image
+      
+      document.getElementById('modalTypes').innerHTML = p.types.map(t =>
+        `<span class="type-pill text-sm font-semibold px-3 py-1 rounded-full text-white" style="background-color: ${typeColors[t] || '#888'}">
+          ${capitalizeName(t)}
+        </span>`
+      ).join('');
+
+      // 2. Stats
+      const statsHtml = p.stats.map(s => {
+        const percentage = Math.min(100, (s.value / 255) * 100);
+        const color = getStatColor(s.value);
+        return `
+          <div class="grid items-center gap-2 text-sm" style="grid-template-columns: 90px 30px 1fr;">
+            <span class="font-medium capitalize text-right">${capitalizeName(s.name)}</span>
+            <span class="font-semibold text-right">${s.value}</span>
+            <div class="modal-stat-bar h-2.5 rounded-full">
+              <div class="h-2.5 rounded-full" style="width: ${percentage}%; background-color: ${color}; transition: width 0.5s ease-out;"></div>
+            </div>
+          </div>
+        `;
+      }).join('') + `
+        <div class="grid items-center gap-2 text-sm mt-3" style="grid-template-columns: 90px 30px 1fr;">
+          <span class="font-bold capitalize text-right">BST</span>
+          <span class="font-bold text-right">${p.bst}</span>
+          <div class="col-span-1"></div>
+        </div>
+      `;
+      document.getElementById('modalStats').innerHTML = statsHtml;
+
+      // 3. Meta Details
+      document.getElementById('modalHeight').innerHTML = `<strong>Height:</strong> ${p.height / 10} m`;
+      document.getElementById('modalWeight').innerHTML = `<strong>Weight:</strong> ${p.weight / 10} kg`;
+      document.getElementById('modalBaseXP').innerHTML = `<strong>Base XP:</strong> ${p.base_experience}`;
+      
+      // Reset details that require fetching
+      document.getElementById('modalDescription').textContent = 'Loading description...';
+      document.getElementById('modalAbilities').innerHTML = '<strong>Abilities:</strong> Loading...';
+      document.getElementById('modalHabitat').innerHTML = '<strong>Habitat:</strong> Loading...';
+      document.getElementById('modalEggGroups').innerHTML = '<strong>Egg Groups:</strong> Loading...';
+      document.getElementById('modalEvoChain').innerHTML = '<div class="text-sm">Loading evolution chain...</div>';
+
+      // 4. Show Modal
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden'; // Prevent background scrolling
+      
+      // 5. Fetch Species Data (Description, Evo, etc.)
+      const species = await safeFetch(p.speciesUrl);
+      if (species) {
+        // Description
+        const enEntry = species.flavor_text_entries.find(e => e.language.name === 'en');
+        const description = enEntry ? enEntry.flavor_text.replace(//g, ' ') : 'No description available.';
+        document.getElementById('modalDescription').textContent = description;
+
+        // Habitat
+        document.getElementById('modalHabitat').innerHTML = `<strong>Habitat:</strong> ${species.habitat ? capitalizeName(species.habitat.name) : 'Unknown'}`;
+
+        // Egg Groups
+        const eggGroups = species.egg_groups.map(g => capitalizeName(g.name)).join(', ');
+        document.getElementById('modalEggGroups').innerHTML = `<strong>Egg Groups:</strong> ${eggGroups || 'Unknown'}`;
+
+        // Evolution Chain
+        if (species.evolution_chain && species.evolution_chain.url) {
+          fetchEvolutionChain(species.evolution_chain.url);
+        }
+      }
+      
+      // 6. Fetch Full Pokemon Data (Abilities)
+      const data = await safeFetch(`${POKE_API_BASE}/pokemon/${p.id}`);
+      if (data) {
+        const abilities = data.abilities.map(a => {
+          return a.is_hidden ? `<span title="Hidden Ability">${capitalizeName(a.ability.name)}*</span>` : capitalizeName(a.ability.name);
+        }).join(', ');
+        document.getElementById('modalAbilities').innerHTML = `<strong>Abilities:</strong> ${abilities}`;
+      }
+    }
+    
+    /**
+     * Toggles the modal image between default and shiny.
+     */
+    function updateModalImage() {
+      if (!currentModalPokemon) return;
+      const imgEl = document.getElementById('modalImage');
+      const p = currentModalPokemon;
+      
+      const primaryUrl = isShiny ? p.spriteShiny : p.sprite;
+      const fallbackUrl = isShiny ? p.sprite : p.artwork; // Fallback to default sprite if shiny fails
+      
+      imgEl.src = primaryUrl;
+      imgEl.onerror = () => {
+        imgEl.onerror = null; // Prevent infinite loop
+        imgEl.src = fallbackUrl;
+      };
+      
+      // Add/remove pulse effect for shiny
+      if (isShiny) {
+        shinyToggle.classList.add('animate-pulse', 'ring-2', 'ring-yellow-400');
+      } else {
+        shinyToggle.classList.remove('animate-pulse', 'ring-2', 'ring-yellow-400');
+      }
+    }
+
+    /**
+     * Fetches and renders the evolution chain.
+     * @param {string} url - The URL of the evolution chain.
+     */
+    async function fetchEvolutionChain(url) {
+      const evoData = await safeFetch(url);
+      if (!evoData || !evoData.chain) {
+        document.getElementById('modalEvoChain').innerHTML = '<div class="text-sm">No evolution data found.</div>';
+        return;
+      }
+
+      const evoHtml = await parseEvoChain(evoData.chain);
+      document.getElementById('modalEvoChain').innerHTML = evoHtml;
+    }
+
+    /**
+     * Recursively parses the evolution chain and builds HTML.
+     * @param {object} chain - The evolution chain object from the API.
+     * @returns {Promise<string>} - The HTML string for the chain.
+     */
+    async function parseEvoChain(chain) {
+      let html = '<div class="evo-chain">';
+
+      // 1. Current Stage
+      const stageHtml = await createEvoStage(chain.species.name);
+      html += stageHtml;
+
+      // 2. Next Stages (Branches)
+      if (chain.evolves_to.length > 0) {
+        html += '<div class="evo-arrow">→</div>';
+
+        if (chain.evolves_to.length > 1) {
+          // Handle branches (e.g., Eevee)
+          html += '<div class="evo-branch">';
+          const branchPromises = chain.evolves_to.map(async (branch) => {
+            const details = getEvoDetails(branch.evolution_details[0]);
+            const branchHtml = await parseEvoChain(branch); // Recursive call
+            return `<div class="evo-chain"><div class="evo-details">${details}</div>${branchHtml}</div>`;
+          });
+          const branchesHtml = await Promise.all(branchPromises);
+          html += branchesHtml.join('');
+          html += '</div>';
+        } else {
+          // Single evolution
+          const next = chain.evolves_to[0];
+          const details = getEvoDetails(next.evolution_details[0]);
+          html += `<div class="evo-details">${details}</div>`;
+          html += await parseEvoChain(next); // Recursive call
+        }
+      }
+
+      html += '</div>';
+      return html;
+    }
+
+    /**
+     * Creates the HTML for a single Pokémon in the evolution chain.
+     * @param {string} name - The name of the Pokémon.
+     * @returns {Promise<string>} - The HTML string for the stage.
+     */
+    async function createEvoStage(name) {
+      // Find the Pokémon in our loaded list, or fetch its ID
+      let pokemon = pokedex.find(p => p.name === name);
+      let id;
+      if (pokemon) {
+        id = pokemon.id;
+      } else {
+        // Try to fetch species data to get the ID
+        const species = await safeFetch(`${POKE_API_BASE}/pokemon-species/${name}`);
+        if (species) {
+          // Extract ID from pokemon_species.url or other fields if available
+          const urlParts = species.url.split('/');
+          id = urlParts[urlParts.length - 2];
+        } else {
+          return '<div class="evo-stage">?</div>'; // Failed to find
+        }
+      }
+
+      const sprite = POKE_SPRITE_URL(id);
+      const isLoaded = !!pokemon;
+      const clickableClass = isLoaded ? 'clickable' : '';
+      const clickHandler = isLoaded ? `onclick="closeAndOpen('${name}')"` : '';
+      
+      return `
+        <div class="evo-stage ${clickableClass}" ${clickHandler} title="${isLoaded ? `Click to view ${capitalizeName(name)}` : `${capitalizeName(name)} not loaded`}">
+          <img src="${sprite}" alt="${name}" class="evo-img" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/72x72/transparent/transparent?text=?'">
+          <span class="evo-name">${capitalizeName(name)}</span>
+        </div>
+      `;
+    }
+    
+    /**
+     * Helper to close the current modal and open a new one from the evo chain.
+     * @param {string} name - The name of the Pokémon to open.
+     */
+    function closeAndOpen(name) {
+      const pokemon = pokedex.find(p => p.name === name);
+      if (pokemon) {
+        closeModal();
+        // Timeout to allow the close animation to finish
+        setTimeout(() => {
+          openModal(pokemon);
+        }, 300); // Must be slightly less than modal-content animation-duration
+      }
+    }
+
+
+    /**
+     * Formats the evolution details into a readable string.
+     * @param {object} details - The evolution_details object.
+     * @returns {string} - The formatted detail string (e.g., "Lvl 16").
+     */
+    function getEvoDetails(details) {
+      if (!details) return '';
+      if (details.trigger.name === 'level-up') {
+        if (details.min_level) return `Lvl ${details.min_level}`;
+        return 'Level Up';
+      }
+      if (details.trigger.name === 'trade') {
+        if (details.trade_species) return `Trade for ${capitalizeName(details.trade_species.name)}`;
+        return 'Trade';
+      }
+      if (details.trigger.name === 'use-item') {
+        if (details.item) return `Use ${capitalizeName(details.item.name)}`;
+        return 'Use Item';
+      }
+      if (details.min_happiness) return `High Happiness`;
+      if (details.location) return `Level up at ${capitalizeName(details.location.name)}`;
+      if (details.known_move) return `Knows ${capitalizeName(details.known_move.name)}`;
+      
+      return capitalizeName(details.trigger.name); // Fallback
+    }
+
+    /**
+     * Closes the modal.
+     */
+    function closeModal() {
+      modal.classList.add('hidden');
+      document.body.style.overflow = 'auto'; // Restore scrolling
+      currentModalPokemon = null;
+    }
+
+    // --- Event Listeners ---
+    document.addEventListener('DOMContentLoaded', () => {
+      initDarkMode();
+      loadFromCacheOrFetch();
+
+      // Debounced search
+      searchInput.addEventListener('input', debounce(renderPokedex, 300));
+
+      // Filters and Sort
+      typeFilter.addEventListener('change', renderPokedex);
+      genFilter.addEventListener('change', renderPokedex);
+      sortControl.addEventListener('change', renderPokedex);
+      clearFiltersBtn.addEventListener('click', clearFilters);
+
+      // Buttons
+      loadMoreBtn.addEventListener('click', fetchPokemon);
+      darkToggle.addEventListener('click', toggleDarkMode);
+      surpriseMeBtn.addEventListener('click', fetchRandomPokemon);
+      
+      shinyToggle.addEventListener('click', () => {
+        isShiny = !isShiny;
+        updateModalImage();
+      });
+
+      // Back to Top
+      window.addEventListener('scroll', handleScroll);
+      backToTopBtn.addEventListener('click', scrollToTop);
+      
+      // Keyboard navigation
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+          closeModal();
+        }
+      });
+    });
+
+  </script>
+</body>
+
+</html>
+
