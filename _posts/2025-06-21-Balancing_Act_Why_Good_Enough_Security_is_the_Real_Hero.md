@@ -7,15 +7,15 @@ tags: [Security, Risk Management, Practical Security, Security Strategy]
 pin: true
 ---
 
-Picture this. It's late. You're wiped. All you want is to log in to your bank, Netflix, or email. You type your go-to password—maybe `Fluffy123`, or if you’re feeling fancy, `Fluffy123@July?`. Denied.
+Picture this. It's late. You're wiped. All you want is to log in to your bank, Netflix, or email. You type your go-to password - maybe `Fluffy123`, or if you’re feeling fancy, `Fluffy123@July?`. Denied.
 
 Three tries and some mild swearing later, you remember the cryptic mess the system forced on you: `F1uffY@m1t3sL4z3r$!`.
 
-Success! But wait—where did you even write that down? Sticky note? Notes app? Facepalm.
+Success! But wait - where did you even write that down? Sticky note? Notes app? Facepalm.
 
 ![Security vs. Usability Seesaw](/assets/img/posts/seasawsecurity.png){: .light .w-50 .left }![Security vs. Usability Seesaw (Dark)](/assets/img/posts/seasawsecuritydark.png){: .dark .w-50 .left }
 
-Here’s the thing—**perfect security doesn’t exist**. And even if it did, you probably wouldn’t want it. We keep stacking tools, patches, and policies like we’re building a digital Tihar Jail. But users aren’t robots. They’ll always find the quickest path to “it just works,” even if that path includes `123456` as a password.
+Here’s the thing - **perfect security doesn’t exist**. And even if it did, you probably wouldn’t want it. We keep stacking tools, patches, and policies like we’re building a digital Tihar Jail. But users aren’t robots. They’ll always find the quickest path to “it just works,” even if that path includes `123456` as a password.
 
 And that’s where it gets real: **the more secure something becomes, the less usable it usually is**. And the more annoying it gets, the more people bend the rules.
 
@@ -33,7 +33,7 @@ Let’s see this classic security-usability tug-of-war in action.
 
 - **Convenience Land:** Just a password. Fast, but fragile.
 - **Security Castle:** Password + OTP + fingerprint + mother's name + blood sample. Secure, but exhausting.
-- **Reality:** MFA is annoying for you—and devastating for attackers. Even if your password leaks, they can’t get past your second factor. That’s why it’s a pillar of the [Zero Trust]({% post_url 2025-04-27-Zero_Trust_Fundamentals %}) model. Paranoia with purpose.
+- **Reality:** MFA is annoying for you - and devastating for attackers. Even if your password leaks, they can’t get past your second factor. That’s why it’s a pillar of the [Zero Trust]({% post_url 2025-04-27-Zero_Trust_Fundamentals %}) model. Paranoia with purpose.
 
 ### 3. Public Wi-Fi: The Siren Song of “Free”
 
@@ -57,9 +57,9 @@ In the early pandemic, Zoom was too easy. Anyone with a link could hop into your
 
 ### BYOD = Bring Your Own Drama
 
-Employees want to work on their own devices—laptops, phones, tablets. Makes sense. But for IT teams, it’s a nightmare. Sensitive company data suddenly lives on random personal devices that may or may not have antivirus, firewalls, or even screen locks.
+Employees want to work on their own devices - laptops, phones, tablets. Makes sense. But for IT teams, it’s a nightmare. Sensitive company data suddenly lives on random personal devices that may or may not have antivirus, firewalls, or even screen locks.
 
-The fix? Stuff like VPNs, device management, and role-based access. Not perfect, but necessary. Security can’t be a buzzkill—but it can’t be an afterthought either.
+The fix? Stuff like VPNs, device management, and role-based access. Not perfect, but necessary. Security can’t be a buzzkill - but it can’t be an afterthought either.
 
 <br>
 
@@ -74,17 +74,17 @@ You don’t need Fort Knox for your email. And you don’t want to fight six aut
 
 ## No Patch for Human Error (Yet)
 
-Honestly, people are the weakest link. Not because we’re dumb—because we’re lazy. And because convenience is addictive.
+Honestly, people are the weakest link. Not because we’re dumb - because we’re lazy. And because convenience is addictive.
 
 Here’s what the numbers say:
 
-- **52%** reuse passwords across 3+ sites  
-- **78%** admit to password reuse  
-- **"Convenience"** beats "security" in most financial decisions—by a factor of six  
-- **11%** think reusing passwords isn’t risky. That’s not optimism. That’s denial.  
+- **52%** reuse passwords across 3+ sites
+- **78%** admit to password reuse
+* **"Convenience"** beats "security" in most financial decisions - by a factor of six
+- **11%** think reusing passwords isn’t risky. That’s not optimism. That’s denial.
 - **Cyberattacks happen every 39 seconds.** Last year? 33 billion records breached.
 
-So yeah, we know better—but we still pick the easy way out. Until it bites us.
+So yeah, we know better - but we still pick the easy way out. Until it bites us.
 
 ## The Bottom Line: Choose the Balance That Works
 
@@ -97,7 +97,7 @@ Perfect security? Useless if it’s too annoying to follow. The real win is **"g
 
 ## Final Thoughts: A Letter to Reasonable Security
 
-Look, perfect security is like that friend who insists on doing everything by the book—annoying, rigid, and no fun at parties.
+Look, perfect security is like that friend who insists on doing everything by the book - annoying, rigid, and no fun at parties.
 
 What you need is that *jugaadu* friend. The one who knows how to keep things safe but also knows when to chill. "Good enough" security is that friend. The one that lets you get things done without leaving the front door wide open.
 
@@ -106,6 +106,8 @@ Security isn’t about fear. It’s about decisions. Smart, simple ones.
 - Netflix at 2 AM? You want convenience.
 - Accessing your bank account? Time to up your game.
 
-Neither is wrong—just be conscious of the tradeoff.
+Neither is wrong - just be conscious of the tradeoff.
 
 **Stay alert. Stay grounded. And change that password already.**
+
+

@@ -10,17 +10,17 @@ tags: [Network Security, Architecture]
 
 *So, your boss just said, "Make it secure." And you thought: "Define... secure?"*
 
-Welcome to the world of **Security Architecture**, where paranoia isn't a flaw—it's a feature. Whether you're managing a sprawling hybrid cloud or trying to keep that one legacy server from emailing your secrets to North Korea, this post is for you. Let's walk through how real-world security is designed, built, and *hopefully* not breached by Tuesday.
+Welcome to the world of **Security Architecture**, where paranoia isn't a flaw - it's a feature. Whether you're managing a sprawling hybrid cloud or trying to keep that one legacy server from emailing your secrets to North Korea, this post is for you. Let's walk through how real-world security is designed, built, and *hopefully* not breached by Tuesday.
 
 ---
 
 ## TL;DR
 
-- Apply defense in depth—security at every layer.
+- Apply defense in depth - security at every layer.
 - Use Zero Trust: never assume trust, always verify.
 - Implement least privilege and strong IAM controls.
 - Segment networks, monitor continuously, and automate response.
-- Compliance isn't optional—design with it in mind.
+- Compliance isn't optional - design with it in mind.
 
 ---
 ![light mode only](assets/img/posts/Secure_Architecture.png){: .light .w-75 .shadow .rounded-10 w='700' h='668' }
@@ -28,9 +28,9 @@ Welcome to the world of **Security Architecture**, where paranoia isn't a flaw�
 
 ## What Is Security Architecture, Really?
 
-Security architecture is like the blueprint for a fortress—except the fortress is digital, the bricks are firewalls and policies, and the invaders wear hoodies and run Python scripts.
+Security architecture is like the blueprint for a fortress - except the fortress is digital, the bricks are firewalls and policies, and the invaders wear hoodies and run Python scripts.
 
-It's the structured approach we use to define where to put our defenses, how strong to make them, and what to do when—inevitably—something slips through.
+It's the structured approach we use to define where to put our defenses, how strong to make them, and what to do when - inevitably - something slips through.
 
 Think of it as a mix of:
 
@@ -52,7 +52,7 @@ If Dave from HR can reboot prod, start sweating.
 Nobody gets full power without checks and logs.
 
 ### 4. **Secure by Design**
-Don't bolt security on—bake it in.
+Don't bolt security on - bake it in.
 
 ### 5. **Keep It Simple (KISS)**
 Simple systems are easier to secure.
@@ -68,7 +68,7 @@ Simple systems are easier to secure.
 - **Proxy Firewalls**
 - **Next-Gen Firewalls (NGFWs)**
 
-> Treat firewall rules like expired milk—review often.
+> Treat firewall rules like expired milk - review often.
 
 ---
 
@@ -114,7 +114,7 @@ IDS/IPS only work if alerts aren't ignored.
 - Secure service accounts.
 - Use federation (SAML, OIDC) when possible.
 
-> MFA isn't optional—it's oxygen.
+> MFA isn't optional - it's oxygen.
 
 ---
 
@@ -147,11 +147,11 @@ Mini use case: A misconfigured test system exposed S3 credentials to GitHub. Why
 
 #### Incident Response Playbook
 
-1. Detect  
-2. Contain  
-3. Eradicate  
-4. Recover  
-5. Report (regulators, legal, execs)  
+1. Detect
+2. Contain
+3. Eradicate
+4. Recover
+5. Report (regulators, legal, execs)
 6. Debrief (w/ logs, lessons, coffee)
 
 > GDPR breach? You've got 72 hours. Start running.
@@ -189,11 +189,11 @@ Cloud tools to explore: AWS GuardDuty, Azure Defender, GCP SCC.
 
 ## Conclusion
 
-Security architecture isn't a one-and-done checklist. It's a living strategy—designed to evolve with the threats, the business, and the tech stack.
+Security architecture isn't a one-and-done checklist. It's a living strategy - designed to evolve with the threats, the business, and the tech stack.
 
 Design for breach. Detect quickly. Respond faster. Audit everything.
 
-> Secure systems aren't built with hope—they're architected with intent.
+> Secure systems aren't built with hope - they're architected with intent.
 
 ---
 
@@ -215,3 +215,5 @@ Design for breach. Detect quickly. Respond faster. Audit everything.
 - [CIS Controls v8](https://www.cisecurity.org/controls/cis-controls-list)
 - [OWASP SAMM](https://owaspsamm.org/)
 - [Google BeyondCorp](https://cloud.google.com/beyondcorp).
+
+

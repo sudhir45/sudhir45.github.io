@@ -7,11 +7,11 @@ tags: [Network Security, Firewall, Network Architecture]
 ---
 # TL;DR:
 
-- **The old "trust the internal network" model is dead** — users, apps, and threats are everywhere now.
+- **The old "trust the internal network" model is dead** - users, apps, and threats are everywhere now.
 - **Zero Trust assumes breach by default** and demands continuous verification of users, devices, and applications.
 - **Key tactics**: Verify explicitly, enforce least privilege, segment aggressively, monitor everything.
 - **Industries like healthcare, finance, and IT are adopting Zero Trust fast** to survive modern threats and meet tough regulations.
-- **Bottom Line**: Zero Trust isn't optional — it's how you future-proof your security architecture against today's realities.
+- **Bottom Line**: Zero Trust isn't optional - it's how you future-proof your security architecture against today's realities.
 
 ---
 
@@ -27,14 +27,13 @@ tags: [Network Security, Firewall, Network Architecture]
 
 ---
 
-
 ## Introduction: Why the Old Model is Broken
 
 Once upon a time, cybersecurity meant building a giant digital wall and trusting everything inside it. Fast forward to today: networks are scattered across offices, homes, coffee shops, cloud platforms, and maybe even that sketchy free Wi-Fi at the airport.
 
-If you're still betting on a perimeter-based defense, you're basically guarding your castle with a wooden fence — while attackers arrive in stealth jets.
+If you're still betting on a perimeter-based defense, you're basically guarding your castle with a wooden fence - while attackers arrive in stealth jets.
 
-**Zero Trust Architecture (ZTA)** fixes this. It assumes nothing and no one can be trusted by default — because they can't.
+**Zero Trust Architecture (ZTA)** fixes this. It assumes nothing and no one can be trusted by default - because they can't.
 
 ---
 
@@ -43,7 +42,7 @@ If you're still betting on a perimeter-based defense, you're basically guarding 
 Zero Trust isn't a shiny product you install. It's a strategy, a mindset, and yes, a bit of a lifestyle change for your IT team.
 
 **Core Philosophy:**
-- **Verify Everything**: Authenticate every user, device, and app — every time.
+- **Verify Everything**: Authenticate every user, device, and app - every time.
 - **Assume Breach**: Plan like attackers are already inside.
 - **Least Privilege**: Users and devices get only the minimal access they need.
 - **Micro-Segmentation**: Cut the network into isolated zones.
@@ -54,7 +53,7 @@ Zero Trust isn't a shiny product you install. It's a strategy, a mindset, and ye
 ## Why Zero Trust Is Not Just the Latest Buzzword
 
 - **Advanced Threats**: Attackers move silently and quickly once inside.
-- **Remote Work**: Users connect from everywhere — not just corporate offices.
+- **Remote Work**: Users connect from everywhere - not just corporate offices.
 - **Cloud is Everywhere**: Traditional firewalls don't protect your SaaS apps.
 - **Compliance Pressure**: Regulations like HIPAA, PCI DSS, GDPR, and DORA require stronger access control and auditability.
 
@@ -84,20 +83,20 @@ Zero Trust isn't a shiny product you install. It's a strategy, a mindset, and ye
 
 ## How to Actually Start Zero Trust (Without Triggering a Nervous Breakdown)
 
-Implementing Zero Trust is a journey — not a weekend project.
+Implementing Zero Trust is a journey - not a weekend project.
 
 ### Practical Steps:
 
 1. **Inventory Everything**: You can't protect what you don't know you have.
 2. **Map Access Flows**: Understand who needs to access what, and how.
 3. **Design Micro-Segments**: Create small, controlled environments.
-4. **Define Access Policies**: Be strict — users must earn access.
+4. **Define Access Policies**: Be strict - users must earn access.
 5. **Monitor Continuously**: Log everything and hunt anomalies like a hawk.
 
 ### Key Tools You'll Need:
 
 - **Identity and Access Management** (`IAM`)
-- **Multi-Factor Authentication** (`MFA`) — yes, even for internal users
+- **Multi-Factor Authentication** (`MFA`) - yes, even for internal users
 - **Endpoint Detection & Response** (`EDR/XDR`)
 - **Zero Trust Network Access** (`ZTNA`)
 - **Security Information and Event Management** (`SIEM`) and **User Behavior Analytics** (`UEBA`)
@@ -126,10 +125,12 @@ Implementing Zero Trust is a journey — not a weekend project.
 
 Zero Trust isn't about paranoia. It's about surviving the current reality.
 
-Attackers are faster, stealthier, and more determined than ever.  
+Attackers are faster, stealthier, and more determined than ever.
 If you're still relying on perimeter defenses alone, you're defending your network like it's 1999.
 
-**Zero Trust gives you visibility, control, and resilience** — no matter where your users, devices, or data are.
+**Zero Trust gives you visibility, control, and resilience** - no matter where your users, devices, or data are.
 
-**Ditch the moat. Build a fortress with laser tripwires, motion sensors, and locks that check who you are every time you move.**  
+**Ditch the moat. Build a fortress with laser tripwires, motion sensors, and locks that check who you are every time you move.**
 Your network (and your future self) will thank you.
+
+

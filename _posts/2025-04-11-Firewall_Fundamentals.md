@@ -70,7 +70,7 @@ Two common DMZ setups:
 
 ### 3. Internal Segmentation (Zero Trust Lite)
 
-Don't just guard the perimeter! Use **internal firewalls (ISFWs)** to segment your network internally. Put firewalls between departments (e.g., Finance vs. Engineering), between production and development environments, or around critical assets. This contains breaches – if one area gets hit, the firewalls slow or stop the attacker moving laterally (East-West traffic). This is a core concept moving towards Zero Trust.
+Don't just guard the perimeter! Use **internal firewalls (ISFWs)** to segment your network internally. Put firewalls between departments (e.g., Finance vs. Engineering), between production and development environments, or around critical assets. This contains breaches - if one area gets hit, the firewalls slow or stop the attacker moving laterally (East-West traffic). This is a core concept moving towards Zero Trust.
 
 ### 4. High Availability (HA) - Don't Skip This!
 
@@ -117,7 +117,7 @@ A shiny NGFW is useless (or even dangerous) if it's poorly configured. These are
 ### Audit and Clean Up Rules Regularly
 - **Review your firewall ruleset** at least quarterly, if not more often.
 - **Remove unused or stale rules.** They clutter the policy and can create unexpected holes.
-- **Look for shadowed rules** – rules that will never be hit because a broader rule above them catches the traffic first.
+- **Look for shadowed rules** - rules that will never be hit because a broader rule above them catches the traffic first.
 - **Document your rules!** Why does this rule exist? Who requested it? When was it last verified?
 
 ### Control Egress (Outbound) Traffic Too!
@@ -136,7 +136,7 @@ The game is always changing. Here's what's shaping the firewall world now:
 
 ### AI and Machine Learning Takes the Wheel
 - Firewalls are getting smarter. Platforms like [Fortinet's FortiAI](https://www.fortinet.com/products/ai-powered-security-operations) or capabilities within [Palo Alto's Cortex](https://www.paloaltonetworks.com/cortex) use ML to spot anomalies, predict threats, and even suggest or automate policy adjustments.
-- The goal: Faster detection and response than humanly possible. It's promising, but watch out for hype – "AI-driven" means different things to different vendors.
+- The goal: Faster detection and response than humanly possible. It's promising, but watch out for hype - "AI-driven" means different things to different vendors.
 
 ### Zero Trust Architecture (ZTA) Isn't Just Buzz
 - **"Never trust, always verify."** ZTA assumes breaches *will* happen. Access is granted per-session, based on strict verification of user and device identity/health, regardless of whether they're inside or outside the network perimeter.
@@ -185,7 +185,6 @@ Stay vigilant, stay safe.
 
 ## Sources & References
 
-
 - [NIST SP 800-41: Guidelines on Firewalls and Firewall Policy](https://csrc.nist.gov/publications/detail/sp/800-41/rev-1/final)
 - [PCI DSS v4.0 Documentation](https://www.pcisecuritystandards.org/document_library?category=pcidss&document=pci_dss)
 - [Cisco - What is a Firewall](https://www.cisco.com/c/en/us/products/security/firewalls/what-is-a-firewall.html)
@@ -196,3 +195,6 @@ Stay vigilant, stay safe.
 - [NIST SP 800-207: Zero Trust Architecture](https://csrc.nist.gov/publications/detail/sp/800-207/final)
 - [Gartner SASE Overview](https://www.gartner.com/en/information-technology/glossary/secure-access-service-edge-sase)
 - [Verizon 2024 DBIR Report](https://www.verizon.com/business/resources/reports/dbir/) (*Good for understanding current threats firewalls help mitigate*)
+
+
+

@@ -8,9 +8,9 @@ tags: [CTF, Writeup, HandsOn]
 
 ### TL;DR
 
-Event: iHack CTF 2025  
-Team: Solo  
-Score / Rank: Won  
+Event: iHack CTF 2025
+Team: Solo
+Score / Rank: Won
 
 Hey everyone! Here's a quick walkthrough of how I tackled some of the challenges from iHack CTF 2025.
 
@@ -22,15 +22,13 @@ Approach:
 1. Open the `/rules` page in a browser.
 2. View page source and search for HTML comments.
 
-
 Reproduction:
 1. Visit `/rules`
 2. View page source
 
-
 ### Hail Caesar - Crypto
 
-Summary: Two Base64 blobs — the second decoded to scrambled JS; a Caesar-style shift recovered a small decryptor which was then applied to the first blob.
+Summary: Two Base64 blobs - the second decoded to scrambled JS; a Caesar-style shift recovered a small decryptor which was then applied to the first blob.
 
 Approach:
 1. Base64-decode both strings (CyberChef or a local decoder).
@@ -51,10 +49,9 @@ s += decrypt('h', 0);
 console.log(s);
 ```
 
-
 ### From Mars - Reverse
 
-This last one was a real head-scratcher—a full-on reverse engineering problem.
+This last one was a real head-scratcher - a full-on reverse engineering problem.
 
 * **File Triage:**
 
@@ -88,20 +85,22 @@ This last one was a real head-scratcher—a full-on reverse engineering problem.
     ```python
     # numbers I pulled from the program
     data = [
-        0x76, 0x7c, 0x7c, 0x7c, 0x94, 0xab, 0x9d, 0x91, 0xb5, 0xc7, 0xcd, 0xcd, 
-        0xce, 0xec, 0xf9, 0xfe, 0xf8, 0xe1, 0x115, 0x114, 0x102, 0x135, 0x136, 
+        0x76, 0x7c, 0x7c, 0x7c, 0x94, 0xab, 0x9d, 0x91, 0xb5, 0xc7, 0xcd, 0xcd,
+        0xce, 0xec, 0xf9, 0xfe, 0xf8, 0xe1, 0x115, 0x114, 0x102, 0x135, 0x136,
         0x13c, 0x14e, 0x16a, 0x0
     ]
-    
+
     shift = 7
     pad = 13
-    
+
     # logic from the program, rewritten in Python
     flag = "".join(chr((n - (i * shift) - pad) & 0xFF) for i, n in enumerate(data) if n != 0)
-    
+
     print(flag)
     ```
 
  Why & 0xFF - The compiled program produced single bytes; some constant values exceed 0xFF. Masking with & 0xFF emulates the original wrap-around.
 
 Looking back, I probably could have solved this a different way. Using a debugger like x64dbg would have let me run the program, pause it right after that special function finished, and just grab the flag straight out of the memory. It would've saved me some coding, but hey, both ways get you the flag!
+
+
