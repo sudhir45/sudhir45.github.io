@@ -4,7 +4,16 @@ icon: fas fa-info-circle
 order: 4
 ---
 
-This is WiP, BRB..
+Hi there, I'm Sudhir!
+
+A Security Engineer making sure the Organization is secure doesn't catch fire.
+
+I currently oversee the security posture of over thousands of network devices, navigating the complex intersection of strict compliance standards and vulnerability assessment. My background is a mix of offensive and defensive security.
+
+I started my career analyzing digital forensics for the Gurugram Police, and now I police network traffic for enterprise giants.
+
+I believe the best security is efficient security, I'm an automation enthusiast (because manual entry is the enemy) and a repeated CTF winner who knows exactly how to break into a network - which is precisely why I'm so good at keeping everyone else out.
+
 ---
 
 ## My GitHub Activity
@@ -93,11 +102,6 @@ I'm always interested in connecting with fellow security professionals, discussi
   </div>
 </div>
 
-### What I'm Looking For
-* **Security Engineering Roles** - Senior positions in network security, cloud security, or security architecture
-* **Consulting Opportunities** - Helping organizations improve their security posture
-* **Speaking Engagements** - Sharing knowledge about security automation and best practices
-* **Open Source Collaboration** - Contributing to security tools and frameworks
 
 <style>
 /* About Page Custom Styles */
