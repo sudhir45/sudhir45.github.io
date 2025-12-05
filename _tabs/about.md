@@ -41,10 +41,6 @@ I believe the best security is efficient security, I'm an automation enthusiast 
 
 ---
 
-## Let's Connect!
-
-I'm always interested in connecting with fellow security professionals, discussing new challenges, and exploring collaboration opportunities.
-
 ### Get in Touch
 
 <div class="row justify-content-center align-items-stretch gy-3 gx-3 get-in-touch-row">
