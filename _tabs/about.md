@@ -6,10 +6,10 @@ order: 4
 
 Hi there, I'm Sudhir!
 
-A Security Engineer making sure the Organization is secure doesn't catch fire.
+A security engineer focused on keeping the whole place safe without letting anything go up in flames.
 
-I currently oversee the security posture of over thousands of network devices, navigating the complex intersection of strict compliance standards and vulnerability assessment. My background is a mix of offensive and defensive security.
+I handle the security posture of thousands of network devices, balancing strict compliance work with steady vulnerability hunting. My background spans both sides of the field: breaking things and defending them.
 
-I started my career analyzing digital forensics for the Gurugram Police, and now I police network traffic for enterprise giants.
+I began in digital forensics with the Gurugram Police, then to monitoring and securing large enterprise networks.
 
-I believe the best security is efficient security, I'm an automation enthusiast (because manual entry is the enemy) and a repeated CTF winner who knows exactly how to break into a network - which is precisely why I'm so good at keeping everyone else out.
+I keep security lean. Automation wherever possible. And years of CTF work mean I understand the break-in paths attackers look for, which makes shutting those doors a lot easier.
