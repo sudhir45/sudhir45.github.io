@@ -12,19 +12,22 @@ order: 1
     <div class="timeline-marker"></div>
     <div class="timeline-content">
       <div class="timeline-header">
-        <h3 class="job-title">Security Engineer</h3>
-        <span class="company">Infosys</span>
+        <h3 class="job-title">Senior Information Security Engineer</h3>
+        <span class="company">Infosys Ltd. @ISG</span>
       </div>
       <div class="timeline-date">
         <i class="fas fa-calendar-alt"></i>
-        <span>Jan 2023 - Present</span>
+        <span>July 2023 – Present</span>
+        <span class="timeline-location"><i class="fas fa-map-marker-alt"></i> Mumbai</span>
       </div>
       <div class="timeline-description">
         <ul>
-          <li>Managing security posture across thousands of network devices</li>
-          <li>Balancing strict compliance work with vulnerability hunting</li>
-          <li>Implementing automation for security operations</li>
-          <li>Leading incident response and threat analysis initiatives</li>
+          <li>Conducted compliance evaluations for network infrastructure, implementing remediation plans across 5000+ devices</li>
+          <li>Managed security configurations compliance (ISO 27001, PCI DSS) for organizational subsidiary through audits and process improvements</li>
+          <li>Reduced manual security configuration tasks by 40% through process automation and standardization</li>
+          <li>Developed standardized security configurations for Firewalls, Switches, Routers, and NIPS</li>
+          <li>Managed Skybox Security Suite for automated compliance checks and vulnerability reporting</li>
+          <li>Executed POC for AlgoSec tool to evaluate network compliance automation</li>
         </ul>
       </div>
     </div>
@@ -34,19 +37,19 @@ order: 1
     <div class="timeline-marker"></div>
     <div class="timeline-content">
       <div class="timeline-header">
-        <h3 class="job-title">Security Analyst</h3>
-        <span class="company">TechCorp Solutions</span>
+        <h3 class="job-title">Information Security Engineer</h3>
+        <span class="company">Infosys Ltd. @ISG</span>
       </div>
       <div class="timeline-date">
         <i class="fas fa-calendar-alt"></i>
-        <span>Jun 2021 - Dec 2022</span>
+        <span>Oct 2021 – June 2023</span>
+        <span class="timeline-location"><i class="fas fa-map-marker-alt"></i> Mumbai</span>
       </div>
       <div class="timeline-description">
         <ul>
-          <li>SOC operations and 24/7 security monitoring</li>
-          <li>Incident response and threat investigation</li>
-          <li>SIEM administration and alert tuning</li>
-          <li>Vulnerability assessment and remediation tracking</li>
+          <li>Performed device assessments against network security policies, identifying vulnerabilities for mitigation</li>
+          <li>Validated security configurations for Cisco ASAs, Checkpoint, FTDs, and Switches/Routers</li>
+          <li>Handled security queries, metrics collection, and tracked vulnerability remediation</li>
         </ul>
       </div>
     </div>
@@ -56,41 +59,18 @@ order: 1
     <div class="timeline-marker"></div>
     <div class="timeline-content">
       <div class="timeline-header">
-        <h3 class="job-title">Digital Forensics Intern</h3>
-        <span class="company">Gurugram Police - Cyber Cell</span>
+        <h3 class="job-title">Cyber Security Intern</h3>
+        <span class="company">Gurugram Police</span>
       </div>
       <div class="timeline-date">
         <i class="fas fa-calendar-alt"></i>
-        <span>Jan 2021 - May 2021</span>
+        <span>Jun 2021 – July 2021</span>
+        <span class="timeline-location"><i class="fas fa-map-marker-alt"></i> Gurugram</span>
       </div>
       <div class="timeline-description">
         <ul>
-          <li>Digital evidence collection and preservation</li>
-          <li>Forensic analysis of compromised systems</li>
-          <li>Supporting cybercrime investigations</li>
-          <li>Documentation and chain of custody management</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-
-  <div class="timeline-item">
-    <div class="timeline-marker"></div>
-    <div class="timeline-content">
-      <div class="timeline-header">
-        <h3 class="job-title">CTF Player & Security Researcher</h3>
-        <span class="company">Independent</span>
-      </div>
-      <div class="timeline-date">
-        <i class="fas fa-calendar-alt"></i>
-        <span>2019 - Present</span>
-      </div>
-      <div class="timeline-description">
-        <ul>
-          <li>Active participation in CTF competitions</li>
-          <li>Specializing in reverse engineering and forensics</li>
-          <li>Understanding attacker methodologies to strengthen defenses</li>
-          <li>Contributing to security community knowledge sharing</li>
+          <li>Analyzed compromised systems and network traffic using FTK Imager, Wireshark, and Burp Suite</li>
+          <li>Supported cybercrime investigations and analyzed case studies</li>
         </ul>
       </div>
     </div>

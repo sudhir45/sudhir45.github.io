@@ -94,6 +94,7 @@
 .timeline-date {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 0.5rem;
   font-size: 0.875rem;
   color: #6c757d;
@@ -103,6 +104,16 @@
 .timeline-date i {
   color: #6c757d;
   font-size: 0.8rem;
+}
+
+.timeline-location {
+  margin-left: 0.5rem;
+  padding-left: 0.75rem;
+  border-left: 1px solid #dee2e6;
+}
+
+.timeline-location i {
+  margin-right: 0.25rem;
 }
 
 /* Description list */
