@@ -3,7 +3,7 @@
 # Order: determines position in sidebar (after regular tabs)
 
 - title: Terminal
-  url: https://sudhir45.github.io/terminal_proj/
+  url: https://sudhir.is-a.dev/terminal_proj/
   icon: fas fa-terminal
   order: 4
 
