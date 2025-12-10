@@ -2,8 +2,8 @@
 title: "Recent Cisco Switch & Firewall Vulnerabilities"
 subtitle: "Summary of notable CVEs affecting Cisco switches and firewalls (Oct 2025)"
 date: 2025-10-04 11:07:12 +0530
-categories: [network, security]
-tags: [cisco, vulnerability, ios-xe, switch, firewall, security]
+categories: [Network, Security]
+tags: [Cisco, Vulnerability, Switch, Firewall, Security]
 description: "Critical IOS XE vulnerabilities are being actively exploited, patch immediately. Click to read more "
 image: /assets/img/posts/cisco_vulnerability.png
 image_alt: "Cisco IOS XE vulnerability - management interface exposure"
