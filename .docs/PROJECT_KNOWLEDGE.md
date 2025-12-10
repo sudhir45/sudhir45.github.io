@@ -117,13 +117,15 @@ REMEMBER:
 ## ACTIVE CUSTOMIZATIONS
 
 1. About page styles (_sass/addon/about.scss)
-2. **Experience Timeline** (_tabs/experience.md + _sass/addon/experience.scss)
-3. Git-based lastmod plugin (_plugins/posts-lastmod-hook.rb)
-4. Social links (_data/contact.yml)
-5. Share buttons (_data/share.yml)
-6. Google Analytics
-7. Giscus comments
-8. PWA enabled
+2. **Experience Timeline** (_tabs/experience.md + assets/css/experience.css)
+3. **Certifications Tab** (_tabs/certifications.md)
+4. **Sidebar** - "HOME" renamed to "BLOG" (_includes/sidebar.html line 25)
+5. Git-based lastmod plugin (_plugins/posts-lastmod-hook.rb)
+6. Social links (_data/contact.yml)
+7. Share buttons (_data/share.yml)
+8. Google Analytics
+9. Giscus comments
+10. PWA enabled
 
 ---
 
