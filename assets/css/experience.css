@@ -13,9 +13,9 @@
   left: 0;
   top: 0;
   bottom: 0;
-  width: 3px;
-  background: linear-gradient(180deg, #086adb 0%, #1894d4 50%, #6cb4ee 100%);
-  border-radius: 3px;
+  width: 2px;
+  background: #6c757d;
+  border-radius: 2px;
 }
 
 /* Individual timeline items */
@@ -32,21 +32,22 @@
 /* Timeline marker (the dot) */
 .timeline-marker {
   position: absolute;
-  left: -8px;
+  left: -6px;
   top: 5px;
-  width: 19px;
-  height: 19px;
-  background: linear-gradient(135deg, #086adb 0%, #1894d4 100%);
+  width: 14px;
+  height: 14px;
+  background: #adb5bd;
   border-radius: 50%;
-  border: 3px solid #fff;
-  box-shadow: 0 2px 8px rgba(8, 106, 219, 0.4);
+  border: 2px solid #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
   z-index: 1;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
 }
 
 .timeline-item:hover .timeline-marker {
-  transform: scale(1.2);
-  box-shadow: 0 4px 16px rgba(8, 106, 219, 0.6);
+  transform: scale(1.15);
+  background: #6c757d;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
 }
 
 /* Timeline content card */
@@ -83,8 +84,8 @@
   display: inline-block;
   font-size: 0.95rem;
   font-weight: 500;
-  color: #086adb;
-  background: rgba(8, 106, 219, 0.1);
+  color: #495057;
+  background: rgba(108, 117, 125, 0.1);
   padding: 0.15rem 0.6rem;
   border-radius: 4px;
 }
@@ -100,7 +101,7 @@
 }
 
 .timeline-date i {
-  color: #086adb;
+  color: #6c757d;
   font-size: 0.8rem;
 }
 
@@ -124,7 +125,7 @@
   content: '▸';
   position: absolute;
   left: -1rem;
-  color: #1894d4;
+  color: #6c757d;
   font-size: 0.8rem;
 }
 
@@ -137,17 +138,18 @@
    ============================================ */
 
 html[data-mode="dark"] .experience-timeline::before {
-  background: linear-gradient(180deg, #1894d4 0%, #6cb4ee 50%, #93c8f5 100%);
+  background: #495057;
 }
 
 html[data-mode="dark"] .timeline-marker {
-  background: linear-gradient(135deg, #1894d4 0%, #6cb4ee 100%);
+  background: #6c757d;
   border-color: #1e2328;
-  box-shadow: 0 2px 8px rgba(24, 148, 212, 0.5);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
 }
 
 html[data-mode="dark"] .timeline-item:hover .timeline-marker {
-  box-shadow: 0 4px 16px rgba(24, 148, 212, 0.7);
+  background: #adb5bd;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
 }
 
 html[data-mode="dark"] .timeline-content {
@@ -165,8 +167,8 @@ html[data-mode="dark"] .timeline-header .job-title {
 }
 
 html[data-mode="dark"] .timeline-header .company {
-  color: #6cb4ee;
-  background: rgba(24, 148, 212, 0.15);
+  color: #adb5bd;
+  background: rgba(108, 117, 125, 0.2);
 }
 
 html[data-mode="dark"] .timeline-date {
@@ -174,7 +176,7 @@ html[data-mode="dark"] .timeline-date {
 }
 
 html[data-mode="dark"] .timeline-date i {
-  color: #6cb4ee;
+  color: #adb5bd;
 }
 
 html[data-mode="dark"] .timeline-description ul li {
@@ -182,7 +184,7 @@ html[data-mode="dark"] .timeline-description ul li {
 }
 
 html[data-mode="dark"] .timeline-description ul li::before {
-  color: #6cb4ee;
+  color: #adb5bd;
 }
 
 /* ============================================
@@ -192,17 +194,18 @@ html[data-mode="dark"] .timeline-description ul li::before {
 
 @media (prefers-color-scheme: dark) {
   html:not([data-mode]) .experience-timeline::before {
-    background: linear-gradient(180deg, #1894d4 0%, #6cb4ee 50%, #93c8f5 100%);
+    background: #495057;
   }
 
   html:not([data-mode]) .timeline-marker {
-    background: linear-gradient(135deg, #1894d4 0%, #6cb4ee 100%);
+    background: #6c757d;
     border-color: #1e2328;
-    box-shadow: 0 2px 8px rgba(24, 148, 212, 0.5);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
   }
 
   html:not([data-mode]) .timeline-item:hover .timeline-marker {
-    box-shadow: 0 4px 16px rgba(24, 148, 212, 0.7);
+    background: #adb5bd;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
   }
 
   html:not([data-mode]) .timeline-content {
@@ -220,8 +223,8 @@ html[data-mode="dark"] .timeline-description ul li::before {
   }
 
   html:not([data-mode]) .timeline-header .company {
-    color: #6cb4ee;
-    background: rgba(24, 148, 212, 0.15);
+    color: #adb5bd;
+    background: rgba(108, 117, 125, 0.2);
   }
 
   html:not([data-mode]) .timeline-date {
@@ -229,7 +232,7 @@ html[data-mode="dark"] .timeline-description ul li::before {
   }
 
   html:not([data-mode]) .timeline-date i {
-    color: #6cb4ee;
+    color: #adb5bd;
   }
 
   html:not([data-mode]) .timeline-description ul li {
@@ -237,7 +240,7 @@ html[data-mode="dark"] .timeline-description ul li::before {
   }
 
   html:not([data-mode]) .timeline-description ul li::before {
-    color: #6cb4ee;
+    color: #adb5bd;
   }
 }
 
