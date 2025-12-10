@@ -1,0 +1,13 @@
+# External Links for Sidebar
+# These links will open directly in a new tab when clicked
+# Order: determines position in sidebar (after regular tabs)
+
+- title: Terminal
+  url: https://sudhir45.github.io/terminal_proj/
+  icon: fas fa-terminal
+  order: 4
+
+- title: Pokedex
+  url: https://sudhir.is-a.dev/PokeDex/
+  icon: fas fa-gamepad
+  order: 5
