@@ -25,10 +25,10 @@
           <span>BLOG</span>
         </a>
       </li>
-      <!-- the real tabs (categories hidden) -->
+      <!-- the real tabs (categories and certifications hidden) -->
       {% for tab in site.tabs %}
         {% assign tab_title = tab.title | downcase %}
-        {% unless tab_title == 'categories' %}
+        {% unless tab_title == 'categories' or tab_title == 'certifications' %}
         <li class="nav-item{% if tab.url == page.url %}{{ " active" }}{% endif %}">
           <a href="{{ tab.url | relative_url }}" class="nav-link">
             <i class="fa-fw {{ tab.icon }}"></i>
