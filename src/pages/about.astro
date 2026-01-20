@@ -2,47 +2,8 @@
 import { AppConfig } from '@/utils/AppConfig';
 import Base from '@/layouts/Base.astro';
 import Section from '@/components/Section.astro';
-import TimelineItem from '@/components/TimelineItem.astro';
 
 const { title, description } = AppConfig;
-
-const experiences = [
-	{
-		title: "Senior Information Security Engineer",
-		company: "Infosys Ltd. @ISG",
-		location: "Mumbai",
-		dateRange: "July 2023 – Present",
-		bullets: [
-			"Conducted compliance evaluations for network infrastructure, implementing remediation plans across 5000+ devices",
-			"Managed security configurations compliance (ISO 27001, PCI DSS) for organizational subsidiary through audits and process improvements",
-			"Reduced manual security configuration tasks by 40% through process automation and standardization",
-			"Developed standardized security configurations for Firewalls, Switches, Routers, and NIPS",
-			"Managed Skybox Security Suite for automated compliance checks and vulnerability reporting",
-			"Executed POC for AlgoSec tool to evaluate network compliance automation"
-		]
-	},
-	{
-		title: "Information Security Engineer",
-		company: "Infosys Ltd. @ISG",
-		location: "Mumbai",
-		dateRange: "Oct 2021 – June 2023",
-		bullets: [
-			"Performed device assessments against network security policies, identifying vulnerabilities for mitigation",
-			"Validated security configurations for Cisco ASAs, Checkpoint, FTDs, and Switches/Routers",
-			"Handled security queries, metrics collection, and tracked vulnerability remediation"
-		]
-	},
-	{
-		title: "Cyber Security Intern",
-		company: "Gurugram Police",
-		location: "Gurugram",
-		dateRange: "Jun 2021 – July 2021",
-		bullets: [
-			"Analyzed compromised systems and network traffic using FTK Imager, Wireshark, and Burp Suite",
-			"Supported cybercrime investigations and analyzed case studies"
-		]
-	}
-];
 
 const contactLinks = [
 	{
@@ -125,26 +86,18 @@ const contactLinks = [
 				</div>
 			</div>
 
-			<!-- Experience Timeline -->
+			<!-- Operational Impact Section -->
 			<div>
 				<h2 class="mb-6 text-2xl font-bold text-gray-900 dark:text-white">
-					<span class="text-orange-600">Experience</span>
+					<span class="text-orange-600">Operational</span> Impact
 				</h2>
-				<p class="mb-6 text-gray-600 dark:text-gray-400">
-					My professional journey in CyberSecurity
-				</p>
-				
-				<div class="mt-8">
-					{experiences.map((exp, index) => (
-						<TimelineItem
-							title={exp.title}
-							company={exp.company}
-							location={exp.location}
-							dateRange={exp.dateRange}
-							bullets={exp.bullets}
-							isLast={index === experiences.length - 1}
-						/>
-					))}
+				<div class="prose prose-stone max-w-none text-gray-700 dark:prose-invert dark:text-gray-300">
+					<p>
+						I currently secure the network infrastructure for a major global enterprise, managing compliance and security configurations across over 5,000 devices. My day-to-day involves auditing firewalls, switches, and routers against standards like ISO 27001 and PCI DSS, effectively bridging the gap between theoretical policy and operational reality.
+					</p>
+					<p>
+						I focus heavily on automation—reducing manual compliance tasks by 40% and deploying standardized configurations to minimize drift. Whether it's orchestrating remediation plans or validating security posture with tools like Skybox, my goal is to build resilient systems that are tough to break but easy to manage.
+					</p>
 				</div>
 			</div>
 		</div>
