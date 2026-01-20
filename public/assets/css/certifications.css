@@ -1,0 +1,52 @@
+/* Certifications & Publications List - Chirpy Theme Compatible */
+
+/* List styling */
+.cert-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.5rem 0;
+}
+
+.cert-list li {
+  padding: 0.6rem 0;
+  border-bottom: 1px solid #e9ecef;
+  font-size: 0.95rem;
+  color: #495057;
+}
+
+.cert-list li:last-child {
+  border-bottom: none;
+}
+
+.cert-list li strong {
+  color: #1a1a2e;
+  font-weight: 600;
+}
+
+/* ============================================
+   DARK MODE STYLES
+   ============================================ */
+
+html[data-mode="dark"] .cert-list li {
+  border-color: #2d3339;
+  color: #ced4da;
+}
+
+html[data-mode="dark"] .cert-list li strong {
+  color: #e9ecef;
+}
+
+/* ============================================
+   SYSTEM DARK MODE (prefers-color-scheme)
+   ============================================ */
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-mode]) .cert-list li {
+    border-color: #2d3339;
+    color: #ced4da;
+  }
+
+  html:not([data-mode]) .cert-list li strong {
+    color: #e9ecef;
+  }
+}

@@ -1,0 +1,308 @@
+/* Experience Timeline Styles - Chirpy Theme Compatible */
+
+.experience-timeline {
+  position: relative;
+  padding: 20px 0;
+  margin-left: 20px;
+}
+
+/* The vertical timeline line */
+.experience-timeline::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: #6c757d;
+  border-radius: 2px;
+}
+
+/* Individual timeline items */
+.timeline-item {
+  position: relative;
+  padding-left: 40px;
+  padding-bottom: 40px;
+}
+
+.timeline-item:last-child {
+  padding-bottom: 0;
+}
+
+/* Timeline marker (the dot) */
+.timeline-marker {
+  position: absolute;
+  left: -6px;
+  top: 5px;
+  width: 14px;
+  height: 14px;
+  background: #adb5bd;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+  z-index: 1;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+}
+
+.timeline-item:hover .timeline-marker {
+  transform: scale(1.15);
+  background: #6c757d;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+/* Timeline content card */
+.timeline-content {
+  background: #fff;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  border: 1px solid #e9ecef;
+  padding: 1.25rem 1.5rem;
+  transition: box-shadow 0.22s cubic-bezier(.21, .97, .6, .99), 
+              transform 0.22s ease,
+              background 0.26s;
+}
+
+.timeline-content:hover {
+  box-shadow: 0 6px 24px rgba(15, 23, 42, 0.13);
+  transform: translateX(5px);
+}
+
+/* Header with job title and company */
+.timeline-header {
+  margin-bottom: 0.5rem;
+}
+
+.timeline-header .job-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1a1a2e;
+  margin: 0 0 0.25rem 0;
+  line-height: 1.3;
+}
+
+.timeline-header .company {
+  display: inline-block;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #495057;
+  background: rgba(108, 117, 125, 0.1);
+  padding: 0.15rem 0.6rem;
+  border-radius: 4px;
+}
+
+/* Date display */
+.timeline-date {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: #6c757d;
+  margin-bottom: 0.75rem;
+}
+
+.timeline-date i {
+  color: #6c757d;
+  font-size: 0.8rem;
+}
+
+.timeline-location {
+  margin-left: 0.5rem;
+  padding-left: 0.75rem;
+  border-left: 1px solid #dee2e6;
+}
+
+.timeline-location i {
+  margin-right: 0.25rem;
+}
+
+/* Description list */
+.timeline-description ul {
+  margin: 0;
+  padding-left: 1.25rem;
+  list-style-type: none;
+}
+
+.timeline-description ul li {
+  position: relative;
+  padding-left: 0.5rem;
+  margin-bottom: 0.4rem;
+  font-size: 0.9rem;
+  color: #495057;
+  line-height: 1.5;
+}
+
+.timeline-description ul li::before {
+  content: '▸';
+  position: absolute;
+  left: -1rem;
+  color: #6c757d;
+  font-size: 0.8rem;
+}
+
+.timeline-description ul li:last-child {
+  margin-bottom: 0;
+}
+
+/* ============================================
+   DARK MODE STYLES
+   ============================================ */
+
+html[data-mode="dark"] .experience-timeline::before {
+  background: #495057;
+}
+
+html[data-mode="dark"] .timeline-marker {
+  background: #6c757d;
+  border-color: #1e2328;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+html[data-mode="dark"] .timeline-item:hover .timeline-marker {
+  background: #adb5bd;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+html[data-mode="dark"] .timeline-content {
+  background: #23272b !important;
+  border-color: #2d3339 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+html[data-mode="dark"] .timeline-content:hover {
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4);
+}
+
+html[data-mode="dark"] .timeline-header .job-title {
+  color: #e9ecef;
+}
+
+html[data-mode="dark"] .timeline-header .company {
+  color: #adb5bd;
+  background: rgba(108, 117, 125, 0.2);
+}
+
+html[data-mode="dark"] .timeline-date {
+  color: #adb5bd;
+}
+
+html[data-mode="dark"] .timeline-date i {
+  color: #adb5bd;
+}
+
+html[data-mode="dark"] .timeline-description ul li {
+  color: #ced4da;
+}
+
+html[data-mode="dark"] .timeline-description ul li::before {
+  color: #adb5bd;
+}
+
+/* ============================================
+   SYSTEM DARK MODE (prefers-color-scheme)
+   Applies when user hasn't explicitly set a mode
+   ============================================ */
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-mode]) .experience-timeline::before {
+    background: #495057;
+  }
+
+  html:not([data-mode]) .timeline-marker {
+    background: #6c757d;
+    border-color: #1e2328;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  }
+
+  html:not([data-mode]) .timeline-item:hover .timeline-marker {
+    background: #adb5bd;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  }
+
+  html:not([data-mode]) .timeline-content {
+    background: #23272b !important;
+    border-color: #2d3339 !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+  }
+
+  html:not([data-mode]) .timeline-content:hover {
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4);
+  }
+
+  html:not([data-mode]) .timeline-header .job-title {
+    color: #e9ecef;
+  }
+
+  html:not([data-mode]) .timeline-header .company {
+    color: #adb5bd;
+    background: rgba(108, 117, 125, 0.2);
+  }
+
+  html:not([data-mode]) .timeline-date {
+    color: #adb5bd;
+  }
+
+  html:not([data-mode]) .timeline-date i {
+    color: #adb5bd;
+  }
+
+  html:not([data-mode]) .timeline-description ul li {
+    color: #ced4da;
+  }
+
+  html:not([data-mode]) .timeline-description ul li::before {
+    color: #adb5bd;
+  }
+}
+
+/* ============================================
+   RESPONSIVE STYLES
+   ============================================ */
+
+
+@media (max-width: 768px) {
+  .experience-timeline {
+    margin-left: 10px;
+  }
+
+  .timeline-item {
+    padding-left: 30px;
+    padding-bottom: 30px;
+  }
+
+  .timeline-marker {
+    width: 15px;
+    height: 15px;
+    left: -6px;
+  }
+
+  .timeline-content {
+    padding: 1rem 1.25rem;
+  }
+
+  .timeline-header .job-title {
+    font-size: 1.1rem;
+  }
+
+  .timeline-header .company {
+    font-size: 0.85rem;
+  }
+
+  .timeline-description ul li {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .experience-timeline {
+    margin-left: 5px;
+  }
+
+  .timeline-item {
+    padding-left: 25px;
+  }
+
+  .timeline-content {
+    padding: 0.875rem 1rem;
+  }
+}

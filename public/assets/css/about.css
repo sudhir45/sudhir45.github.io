@@ -1,0 +1,117 @@
+/* About Page Custom Styles */
+.github-stats img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease-in-out;
+}
+
+.github-stats img:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+[data-theme="dark"] .github-stats img {
+  filter: brightness(0.9) contrast(1.1);
+}
+
+/* Make both github stat and contact cards look visually similar */
+.card.github-card, .contact-card {
+  background: #fff;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  border: 1px solid #e9ecef;
+  padding: 1.2rem 1.2rem 1.0rem 1.2rem;
+  margin-bottom: 10px;
+  min-height: 180px;
+  transition: box-shadow 0.22s cubic-bezier(.21, .97, .6, .99), background 0.26s;
+}
+
+.card.github-card img,
+.card.github-card picture { 
+  width: 100%; 
+}
+
+.card.github-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card.github-card:hover,
+.contact-card:hover { 
+  box-shadow: 0 6px 24px rgba(15,23,42,.13) !important; 
+}
+
+/* Dark theme card backgrounds */
+[data-theme="dark"] .card.github-card,
+[data-theme="dark"] .contact-card { 
+  background: #23272b; 
+  border-color: #23272b; 
+}
+
+[data-theme="dark"] .card.github-card img { 
+  filter: brightness(.89) contrast(1.12); 
+}
+
+/* bg-gradient resume special for both themes */
+.bg-gradient {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%) !important;
+  color: #fff !important;
+  border: none !important;
+}
+
+[data-theme="dark"] .bg-gradient {
+  background: linear-gradient(135deg, #137c32 0%, #088c73 100%) !important;
+  color: #fff !important;
+}
+
+.bg-gradient .btn,
+.bg-gradient .btn:visited,
+.bg-gradient .btn-success {
+  background: rgba(255,255,255,0.13) !important; 
+  color: #fff !important; 
+  border-color: rgba(255,255,255,0.3) !important;
+}
+
+.bg-gradient .btn:hover {
+  background: rgba(255,255,255,0.24) !important;
+}
+
+/* Contact icon sizing and alignment still applies */
+.contact-card i { 
+  font-size: 1rem !important; 
+}
+
+.contact-card { 
+  margin: auto; 
+  border: 3px solid #000 !important; 
+}
+
+.card-body { 
+  min-height: 120px; 
+}
+
+.card-body.flex-column { 
+  display: flex; 
+  flex-direction: column; 
+  justify-content: space-between; 
+}
+
+@media (max-width: 992px) { 
+  .col-lg-3 { 
+    flex: 0 0 50%; 
+    max-width: 50%; 
+  } 
+}
+
+@media (max-width: 768px) { 
+  .col-md-6, .col-lg-3 { 
+    flex: 0 0 100%; 
+    max-width: 100%; 
+  } 
+  .card-body {
+    min-height: 80px;
+  }
+}

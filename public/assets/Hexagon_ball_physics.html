@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rotating Hexagon with Multiple Balls</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        #animationContainer {
+            display: flex;
+            flex-wrap: wrap; /* Allow controls to wrap on smaller screens */
+            justify-content: center;
+            align-items: flex-start; /* Align items to the top */
+            gap: 20px; /* Space between canvas and controls */
+            width: 100%;
+            max-width: 1000px; /* Max width for the container */
+        }
+        canvas {
+            border: 1px solid #ccc;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        #controls {
+            display: flex;
+            flex-direction: column;
+            gap: 15px; /* Space between control groups */
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            min-width: 250px; /* Minimum width for controls panel */
+        }
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px; /* Space between label and input */
+        }
+        .control-group label {
+            font-weight: bold;
+            color: #555;
+        }
+        .control-group input[type="range"] {
+            width: 100%;
+            cursor: pointer;
+        }
+        .control-group input[type="number"] { /* Though not used, kept for consistency if added later */
+            width: 70px;
+            padding: 5px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        .control-group span {
+            font-size: 0.9em;
+            color: #333;
+            min-width: 30px; /* Ensure consistent alignment for values */
+            display: inline-block;
+        }
+        .control-group button {
+            padding: 8px 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .control-group button:hover {
+            background-color: #0056b3;
+        }
+        #ballCountDisplay {
+            font-weight: bold;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            #animationContainer {
+                flex-direction: column;
+                align-items: center; /* Center items when stacked */
+            }
+            #controls {
+                width: 90%; /* Controls take more width on smaller screens */
+                max-width: 400px;
+            }
+            canvas {
+                width: 90%; /* Canvas takes more width */
+                max-width: 400px; /* Max width for canvas on small screens */
+                height: auto; /* Adjust height proportionally */
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <h1>Rotating Hexagon & Bouncing Balls</h1>
+
+    <div id="animationContainer">
+        <canvas id="animationCanvas"></canvas>
+        <div id="controls">
+            <div class="control-group">
+                <label for="hexagonRotationSpeedInput">Hexagon Speed:</label>
+                <div>
+                    <input type="range" id="hexagonRotationSpeedInput" min="0" max="0.1" step="0.001" value="0.01">
+                    <span id="hexagonRotationSpeedValue">0.010</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label for="hexagonSizeInput">Hexagon Size:</label>
+                <div>
+                    <input type="range" id="hexagonSizeInput" min="50" max="250" step="1" value="150">
+                    <span id="hexagonSizeValue">150</span> px
+                </div>
+            </div>
+            <div class="control-group">
+                <label for="ballRadiusInput">New Ball Radius:</label>
+                <div>
+                    <input type="range" id="ballRadiusInput" min="5" max="30" step="1" value="10">
+                    <span id="ballRadiusValue">10</span> px
+                </div>
+            </div>
+            <div class="control-group">
+                <label for="gravityInput">Gravity:</label>
+                <div>
+                    <input type="range" id="gravityInput" min="0" max="1" step="0.01" value="0.2">
+                    <span id="gravityValue">0.20</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label for="restitutionInput">Bounciness:</label>
+                <div>
+                    <input type="range" id="restitutionInput" min="0" max="1" step="0.01" value="0.8">
+                    <span id="restitutionValue">0.80</span>
+                </div>
+            </div>
+             <div class="control-group">
+                <button id="addBallButton">Add Ball</button>
+            </div>
+             <div class="control-group">
+                <button id="resetBallsButton">Reset Balls</button>
+            </div>
+            <div class="control-group">
+                <label>Ball Count: <span id="ballCountDisplay">0</span></label>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Canvas and Context
+        const canvas = document.getElementById('animationCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Canvas dimensions
+        canvas.width = 500;
+        canvas.height = 400;
+        
+        // Control Elements
+        const rotSpeedInput = document.getElementById('hexagonRotationSpeedInput');
+        const rotSpeedValueDisplay = document.getElementById('hexagonRotationSpeedValue');
+        const hexSizeInput = document.getElementById('hexagonSizeInput');
+        const hexSizeValueDisplay = document.getElementById('hexagonSizeValue');
+        const ballRadiusInput = document.getElementById('ballRadiusInput');
+        const ballRadiusValueDisplay = document.getElementById('ballRadiusValue');
+        const gravityInput = document.getElementById('gravityInput');
+        const gravityValueDisplay = document.getElementById('gravityValue');
+        const restitutionInput = document.getElementById('restitutionInput');
+        const restitutionValueDisplay = document.getElementById('restitutionValue');
+        const addBallButton = document.getElementById('addBallButton');
+        const resetBallsButton = document.getElementById('resetBallsButton');
+        const ballCountDisplay = document.getElementById('ballCountDisplay');
+
+
+        // Animation Parameters
+        let hexagonRotationSpeed = parseFloat(rotSpeedInput.value);
+        let hexagonSize = parseInt(hexSizeInput.value);
+        let currentHexagonAngle = 0;
+        let gravity = parseFloat(gravityInput.value);
+        let restitution = parseFloat(restitutionInput.value); // Bounciness
+        let newBallRadius = parseInt(ballRadiusInput.value);
+
+        // Balls Array
+        let balls = [];
+        
+        const hexCenter = { x: canvas.width / 2, y: canvas.height / 2 };
+
+        // --- Event Listeners for Controls ---
+        rotSpeedInput.addEventListener('input', (e) => {
+            hexagonRotationSpeed = parseFloat(e.target.value);
+            rotSpeedValueDisplay.textContent = hexagonRotationSpeed.toFixed(3);
+        });
+        hexSizeInput.addEventListener('input', (e) => {
+            hexagonSize = parseInt(e.target.value);
+            hexSizeValueDisplay.textContent = hexagonSize;
+            // Consider resetting balls if size changes drastically, or implement better boundary handling.
+        });
+        ballRadiusInput.addEventListener('input', (e) => {
+            newBallRadius = parseInt(e.target.value);
+            ballRadiusValueDisplay.textContent = newBallRadius;
+        });
+        gravityInput.addEventListener('input', (e) => {
+            gravity = parseFloat(e.target.value);
+            gravityValueDisplay.textContent = gravity.toFixed(2);
+        });
+        restitutionInput.addEventListener('input', (e) => {
+            restitution = parseFloat(e.target.value);
+            restitutionValueDisplay.textContent = restitution.toFixed(2);
+        });
+        
+        addBallButton.addEventListener('click', () => {
+            addNewBall(canvas.width / 2, canvas.height / 2, (Math.random() - 0.5) * 3, (Math.random() - 0.5) * 2);
+        });
+
+        resetBallsButton.addEventListener('click', resetAllBalls);
+
+        function updateBallCountDisplay() {
+            ballCountDisplay.textContent = balls.length;
+        }
+
+        // --- Ball Management ---
+        function addNewBall(x, y, vx, vy) {
+            balls.push({
+                x: x,
+                y: y,
+                vx: vx, 
+                vy: vy, 
+                radius: newBallRadius, // Use current radius setting for new balls
+                color: `hsl(${Math.random() * 360}, 70%, 60%)` // Assign a random color
+            });
+            updateBallCountDisplay();
+        }
+
+        function resetAllBalls() {
+            balls.length = 0; // Clear the array
+            addNewBall(canvas.width / 2, canvas.height / 2, (Math.random() - 0.5) * 2, (Math.random() - 0.5) * 1);
+            updateBallCountDisplay();
+        }
+        
+        // --- Drawing Functions ---
+        function drawHexagon() {
+            ctx.beginPath();
+            ctx.strokeStyle = '#007bff'; 
+            ctx.lineWidth = 3;
+            for (let i = 0; i < 6; i++) {
+                const angle = currentHexagonAngle + (i * Math.PI / 3); 
+                const x = hexCenter.x + hexagonSize * Math.cos(angle);
+                const y = hexCenter.y + hexagonSize * Math.sin(angle);
+                if (i === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+            }
+            ctx.closePath();
+            ctx.stroke();
+        }
+
+        function drawBalls() {
+            balls.forEach(ball => {
+                ctx.beginPath();
+                ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+                ctx.fillStyle = ball.color;
+                ctx.fill();
+                ctx.closePath();
+            });
+        }
+
+        // --- Collision Detection and Response (for a single ball) ---
+        function handleHexagonCollisionForBall(ball) {
+            const hexagonVertices = [];
+            for (let i = 0; i < 6; i++) {
+                const angle = currentHexagonAngle + (i * Math.PI / 3);
+                hexagonVertices.push({
+                    x: hexCenter.x + hexagonSize * Math.cos(angle),
+                    y: hexCenter.y + hexagonSize * Math.sin(angle)
+                });
+            }
+
+            for (let i = 0; i < 6; i++) {
+                const p1 = hexagonVertices[i];
+                const p2 = hexagonVertices[(i + 1) % 6];
+
+                const lineVec = { x: p2.x - p1.x, y: p2.y - p1.y };
+                const pointVec = { x: ball.x - p1.x, y: ball.y - p1.y };
+                const lineLenSq = lineVec.x * lineVec.x + lineVec.y * lineVec.y;
+
+                if (lineLenSq === 0) continue;
+
+                const t = (pointVec.x * lineVec.x + pointVec.y * lineVec.y) / lineLenSq;
+                let closestPoint;
+                if (t < 0) {
+                    closestPoint = p1;
+                } else if (t > 1) {
+                    closestPoint = p2;
+                } else {
+                    closestPoint = { x: p1.x + t * lineVec.x, y: p1.y + t * lineVec.y };
+                }
+
+                const distVec = { x: ball.x - closestPoint.x, y: ball.y - closestPoint.y };
+                const distanceSq = distVec.x * distVec.x + distVec.y * distVec.y;
+
+                if (distanceSq < ball.radius * ball.radius) { // Collision
+                    const distance = Math.sqrt(distanceSq);
+                    let collisionNormal;
+
+                    if (distance < 1e-6) { 
+                        let wallNormalX = p1.y - p2.y; 
+                        let wallNormalY = p2.x - p1.x;
+                        const wallNormalMag = Math.sqrt(wallNormalX * wallNormalX + wallNormalY * wallNormalY);
+                        if (wallNormalMag > 0) {
+                            collisionNormal = { x: wallNormalX / wallNormalMag, y: wallNormalY / wallNormalMag };
+                            const segMidVec = {x: (p1.x + p2.x)/2 - hexCenter.x, y: (p1.y + p2.y)/2 - hexCenter.y};
+                            if (collisionNormal.x * segMidVec.x + collisionNormal.y * segMidVec.y < 0) {
+                                collisionNormal.x *= -1;
+                                collisionNormal.y *= -1;
+                            }
+                        } else {
+                             collisionNormal = { x: 0, y: 1 }; // Fallback
+                        }
+                    } else {
+                        collisionNormal = { x: distVec.x / distance, y: distVec.y / distance };
+                    }
+                    
+                    const penetrationDepth = ball.radius - distance;
+                    const epsilonPush = 0.1; 
+                    ball.x += collisionNormal.x * (penetrationDepth + epsilonPush);
+                    ball.y += collisionNormal.y * (penetrationDepth + epsilonPush);
+                    
+                    const r_local = { x: closestPoint.x - hexCenter.x, y: closestPoint.y - hexCenter.y };
+                    const v_wall = { 
+                        x: -hexagonRotationSpeed * r_local.y, 
+                        y:  hexagonRotationSpeed * r_local.x 
+                    };
+
+                    const v_rel = { x: ball.vx - v_wall.x, y: ball.vy - v_wall.y };
+                    const dot_vrel_n = v_rel.x * collisionNormal.x + v_rel.y * collisionNormal.y;
+
+                    if (dot_vrel_n < 0) {
+                        const impulse_scalar = -(1 + restitution) * dot_vrel_n;
+                        ball.vx += impulse_scalar * collisionNormal.x;
+                        ball.vy += impulse_scalar * collisionNormal.y;
+                    }
+                }
+            }
+        }
+        
+        // --- Animation Loop ---
+        function gameLoop() {
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Update hexagon rotation
+            currentHexagonAngle += hexagonRotationSpeed;
+
+            // Update each ball
+            balls.forEach(ball => {
+                // Apply gravity
+                ball.vy += gravity; 
+
+                // Update ball position
+                ball.x += ball.vx;
+                ball.y += ball.vy;
+
+                // Handle collisions with hexagon walls for this ball
+                handleHexagonCollisionForBall(ball);
+            });
+            
+            // Draw elements
+            drawHexagon();
+            drawBalls(); // Draw all balls
+
+            requestAnimationFrame(gameLoop);
+        }
+
+        // Start the animation
+        resetAllBalls(); // Initialize with one ball
+        gameLoop();
+    </script>
+</body>
+</html>
