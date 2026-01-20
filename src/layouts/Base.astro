@@ -3,18 +3,18 @@ import Footer from '@/components/Footer.astro';
 import Navbar from '@/components/Navbar.astro';
 import { AppConfig } from '@/utils/AppConfig';
 import '@/styles/global.css';
-import PostHog from '@/components/posthog.astro';
 import GoogleAnalytics from '@/components/GoogleAnalytics.astro';
 
 export interface Props {
 	head: {
 		title: string;
 		description: string;
+		image?: string;
 	};
 }
 
 const {
-	head: { title, description }
+	head: { title, description, image }
 } = Astro.props as Props;
 ---
 
@@ -26,6 +26,18 @@ const {
 		<meta name="description" content={description} />
 		<meta name="author" content={AppConfig.author} />
 
+		<!-- Open Graph / Facebook -->
+		<meta property="og:type" content="website" />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		{image && <meta property="og:image" content={image} />}
+
+		<!-- Twitter -->
+		<meta property="twitter:card" content="summary_large_image" />
+		<meta property="twitter:title" content={title} />
+		<meta property="twitter:description" content={description} />
+		{image && <meta property="twitter:image" content={image} />}
+
 		<link rel="sitemap" href="/sitemap-index.xml" />
 		<link rel="alternate" type="application/rss+xml" href="/rss.xml" />
 		<link rel="icon" type="image/svg+xml" href="/assets/img/favicons/favicon.svg" />
@@ -33,7 +45,6 @@ const {
 		<link rel="shortcut icon" href="/assets/img/favicons/favicon.ico" />
 		<link rel="apple-touch-icon" href="/assets/img/favicons/apple-touch-icon.png" />
 		<GoogleAnalytics />
-		<PostHog />
 	</head>
 	<body
 		class="flex min-h-screen flex-col bg-stone-100 font-mono text-gray-950 dark:bg-stone-900 dark:text-white"

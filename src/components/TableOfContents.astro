@@ -1,0 +1,33 @@
+---
+---
+<nav class="toc">
+  <ul class="flex flex-col gap-2 text-sm">
+    {
+      Astro.props.headings.map((heading: any) => (
+        <li
+          class={`pl-${(heading.depth - 2) * 4} text-stone-500 hover:text-orange-600 dark:text-stone-400 dark:hover:text-orange-400`}
+        >
+          <a href={`#${heading.slug}`}>{heading.text}</a>
+        </li>
+      ))
+    }
+  </ul>
+</nav>
+
+<script>
+  // Optional: Add intersection observer for active state highlighting
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      const id = entry.target.getAttribute('id');
+      if (entry.intersectionRatio > 0) {
+        document.querySelector(`.toc a[href="#${id}"]`)?.classList.add('font-bold', 'text-orange-600');
+      } else {
+        document.querySelector(`.toc a[href="#${id}"]`)?.classList.remove('font-bold', 'text-orange-600');
+      }
+    });
+  });
+
+  document.querySelectorAll('h2[id], h3[id]').forEach((section) => {
+    observer.observe(section);
+  });
+</script>
