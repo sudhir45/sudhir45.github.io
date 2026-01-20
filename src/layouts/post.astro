@@ -5,6 +5,7 @@ import PostHeader from '@/components/PostHeader.astro';
 import PostContent from '@/components/PostContent.astro';
 
 import TableOfContents from '@/components/TableOfContents.astro';
+import Giscus from '@/components/Giscus.astro';
 
 const { description } = AppConfig;
 
@@ -33,6 +34,7 @@ const ogImageUrl = `${siteUrl}/og/${cleanSlug}.png`;
 				img={{ src: frontmatter.image.src, alt: frontmatter.image.alt }}
 			/>
 			<PostContent><slot /></PostContent>
+			<Giscus />
 		</div>
 		
 		<!-- Sidebar TOC for Desktop -->
