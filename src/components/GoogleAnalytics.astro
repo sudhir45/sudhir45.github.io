@@ -4,10 +4,10 @@ const GA_MEASUREMENT_ID = 'G-YZERYVC8E1';
 ---
 
 <!-- Google Analytics -->
+<script is:inline src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`} async></script>
 <script is:inline define:vars={{ GA_MEASUREMENT_ID }}>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
   gtag('config', GA_MEASUREMENT_ID);
 </script>
-<script is:inline src={`https://www.googletagmanager.com/gtag/js?id=G-YZERYVC8E1`} async></script>
