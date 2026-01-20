@@ -63,7 +63,7 @@
 <script>
     import Fuse from 'fuse.js';
 
-    let fuse;
+    let fuse: any;
     const modal = document.getElementById('search-modal');
     const trigger = document.getElementById('search-trigger');
     const input = document.getElementById('search-input') as HTMLInputElement;
@@ -109,7 +109,7 @@
     }
 
     // Render a single result item
-    function createResultItem(item) {
+    function createResultItem(item: any) {
         const li = document.createElement('li');
         li.className = 'group flex cursor-pointer select-none items-center rounded-lg p-3 hover:bg-orange-50 dark:hover:bg-stone-800';
         li.role = 'option';
@@ -147,7 +147,7 @@
                 emptyState?.classList.remove('hidden');
             } else {
                 emptyState?.classList.add('hidden');
-                results.forEach(({ item }) => {
+                results.forEach(({ item }: { item: any }) => {
                     resultsList?.appendChild(createResultItem(item));
                 });
             }
