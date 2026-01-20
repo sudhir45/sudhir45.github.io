@@ -17,4 +17,9 @@ export const SOCIALS = [
 		url: 'https://linkedin.com/in/dsudhir',
 		icon: 'linkedin',
 	},
+	{
+		name: 'Email',
+		url: 'mailto:sudhirdubey558@gmail.com',
+		icon: 'email',
+	},
 ];

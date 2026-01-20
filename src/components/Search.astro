@@ -1,0 +1,176 @@
+<div id="search-container" class="ml-3">
+    <button
+        id="search-trigger"
+        class="flex cursor-pointer p-2 text-stone-500 transition hover:text-orange-600 dark:text-stone-400 dark:hover:text-orange-400"
+        aria-label="Search posts"
+    >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+    </button>
+</div>
+
+<!-- Search Modal Overlay -->
+<div
+    id="search-modal"
+    class="fixed inset-0 z-50 hidden bg-stone-900/80 backdrop-blur-sm transition-opacity"
+    role="dialog"
+    aria-modal="true"
+>
+    <!-- Modal Content -->
+    <div class="mx-auto mt-20 max-w-2xl px-4">
+        <div class="overflow-hidden rounded-xl bg-white shadow-2xl ring-1 ring-black/5 dark:bg-stone-900 dark:ring-white/10">
+            <!-- Search Input -->
+            <div class="relative border-b border-stone-200 dark:border-stone-800">
+                <svg
+                    class="pointer-events-none absolute left-4 top-3.5 h-5 w-5 text-stone-400"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                >
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+                <input
+                    id="search-input"
+                    class="h-12 w-full border-0 bg-transparent pl-11 pr-4 text-gray-900 placeholder:text-gray-500 focus:ring-0 sm:text-sm dark:text-white"
+                    placeholder="Search posts..."
+                    type="text"
+                    autocomplete="off"
+                />
+            </div>
+
+            <!-- Results List -->
+            <ul
+                id="search-results"
+                class="max-h-96 overflow-y-auto p-2 scroll-py-2 text-sm text-gray-800 dark:text-gray-200"
+                role="listbox"
+            >
+                <!-- Results will be injected here -->
+                <li id="empty-state" class="hidden select-none px-4 py-8 text-center text-stone-500">
+                    No results found.
+                </li>
+            </ul>
+            
+            <!-- Footer -->
+            <div class="border-t border-stone-200 bg-stone-50 px-4 py-2.5 text-xs text-stone-500 dark:border-stone-800 dark:bg-stone-900/50">
+                Press <kbd class="font-sans text-stone-900 dark:text-stone-400">ESC</kbd> to close
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    import Fuse from 'fuse.js';
+
+    let fuse;
+    const modal = document.getElementById('search-modal');
+    const trigger = document.getElementById('search-trigger');
+    const input = document.getElementById('search-input') as HTMLInputElement;
+    const resultsList = document.getElementById('search-results');
+    const emptyState = document.getElementById('empty-state');
+
+    // Fetch data once and initialize Fuse
+    async function initSearch() {
+        if (fuse) return;
+        
+        try {
+            const res = await fetch('/search.json');
+            const data = await res.json();
+            
+            fuse = new Fuse(data, {
+                keys: [
+                    { name: 'title', weight: 1 },
+                    { name: 'description', weight: 0.7 },
+                    { name: 'tags', weight: 0.5 }
+                ],
+                includeScore: true,
+                threshold: 0.3,
+            });
+        } catch (e) {
+            console.error('Failed to load search index', e);
+        }
+    }
+
+    function openModal() {
+        modal?.classList.remove('hidden');
+        input?.focus();
+        initSearch();
+        document.body.style.overflow = 'hidden'; // Prevent scrolling
+    }
+
+    function closeModal() {
+        modal?.classList.add('hidden');
+        if (input) input.value = '';
+        if (resultsList) resultsList.innerHTML = ''; // Clear results but keep empty state hidden by logic
+        resultsList?.appendChild(emptyState!);
+        emptyState?.classList.add('hidden');
+        document.body.style.overflow = '';
+    }
+
+    // Render a single result item
+    function createResultItem(item) {
+        const li = document.createElement('li');
+        li.className = 'group flex cursor-pointer select-none items-center rounded-lg p-3 hover:bg-orange-50 dark:hover:bg-stone-800';
+        li.role = 'option';
+        li.innerHTML = `
+            <a href="${item.slug}" class="flex-1">
+                <div class="font-medium text-gray-900 group-hover:text-orange-600 dark:text-white dark:group-hover:text-orange-400">
+                    ${item.title}
+                </div>
+                <div class="mt-1 line-clamp-1 text-stone-500 dark:text-stone-400">
+                    ${item.description}
+                </div>
+            </a>
+        `;
+        return li;
+    }
+
+    // Handle Input
+    input?.addEventListener('input', (e) => {
+        const query = (e.target as HTMLInputElement).value;
+        
+        // Clear previous results (except empty state)
+        Array.from(resultsList?.children || []).forEach(child => {
+            if (child.id !== 'empty-state') child.remove();
+        });
+
+        if (!query) {
+            emptyState?.classList.add('hidden');
+            return;
+        }
+
+        if (fuse) {
+            const results = fuse.search(query);
+            
+            if (results.length === 0) {
+                emptyState?.classList.remove('hidden');
+            } else {
+                emptyState?.classList.add('hidden');
+                results.forEach(({ item }) => {
+                    resultsList?.appendChild(createResultItem(item));
+                });
+            }
+        }
+    });
+
+    // Event Listeners
+    trigger?.addEventListener('click', openModal);
+
+    // Close on click outside
+    modal?.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+    });
+
+    // Close on ESC
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !modal?.classList.contains('hidden')) {
+            closeModal();
+        }
+        // Optional: Open with Ctrl+K or Cmd+K
+        if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+            e.preventDefault();
+            openModal();
+        }
+    });
+</script>
