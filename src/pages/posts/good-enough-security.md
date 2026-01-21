@@ -4,7 +4,7 @@ title: "Balancing Act: Why Good Enough Security is the Real Hero"
 pubDate: 2025-06-21
 description: "An exploration of why 'good enough' security is often better than perfect security, and how to find the right balance between safety and usability."
 author: "Sudhir"
-isPinned: true
+isPinned: false
 excerpt: "An exploration of why 'good enough' security is often better than perfect security, and how to find the right balance between safety and usability."
 image:
   src: 

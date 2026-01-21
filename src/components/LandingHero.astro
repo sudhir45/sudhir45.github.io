@@ -1,0 +1,290 @@
+---
+import Section from './Section.astro';
+import Social from './Social.astro';
+import { SOCIALS } from '@/utils/AppConfig';
+
+const site = Astro.site;
+---
+
+<div class="landing-hero relative overflow-hidden">
+	<!-- Animated Network Graph Background - Fixed, very subtle -->
+	<canvas id="network-canvas" class="fixed inset-0 h-screen w-screen opacity-40 dark:opacity-30" style="z-index: -1;" aria-hidden="true"></canvas>
+
+	<Section>
+		<div class="relative z-10 py-8">
+			<!-- Terminal-style greeting with typewriter effect -->
+			<div class="terminal-line mb-2 flex items-baseline">
+				<span class="terminal-prompt text-4xl font-bold text-gray-500 dark:text-gray-400 select-none">&gt;</span>
+				<span class="ml-3 text-4xl font-bold">
+					<span id="typewriter-text"></span><span id="blinking-exclaim" class="hidden text-orange-600">!</span>
+				</span>
+			</div>
+
+			<div class="mt-6 space-y-4 text-sm text-gray-700 dark:text-gray-300">
+				<p>
+					A security engineer focused on keeping the whole place safe without letting anything go up in flames.
+				</p>
+				<p>
+					I handle the security posture of thousands of network devices, balancing strict compliance work with steady vulnerability hunting. My background spans both sides of the field: <span class="font-semibold text-orange-600">breaking things</span> and <span class="font-semibold text-orange-600">defending them</span>.
+				</p>
+				<p>
+					I began in digital forensics with the Gurugram Police, then to monitoring and securing Infosys.
+				</p>
+				<p>
+					I keep security lean. Automation wherever possible. And years of <span class="font-semibold text-orange-600">CTF work</span> mean I understand the break-in paths attackers look for, which makes shutting those doors a lot easier.
+				</p>
+			</div>
+
+			<!-- Status Pill - After intro, before social links -->
+			<div class="mt-6">
+				<span class="inline-flex items-center gap-2 rounded-full border border-green-500/30 bg-green-500/10 px-3 py-1 text-xs font-medium text-green-600 dark:border-green-400/30 dark:bg-green-400/10 dark:text-green-400">
+					<span class="relative flex h-2 w-2">
+						<span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-500 opacity-75"></span>
+						<span class="relative inline-flex h-2 w-2 rounded-full bg-green-500"></span>
+					</span>
+					Currently: Securing Infosys Enterprise
+				</span>
+			</div>
+
+			<!-- Social links -->
+			<div class="mt-6 flex">
+				<Social href={SOCIALS.find(s => s.name === 'GitHub')?.url || '#'}>
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						class="h-4 w-4"
+						fill="currentColor"
+						viewBox="0 0 24 24"
+					>
+						<path
+							d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
+						></path>
+					</svg>
+				</Social>
+				<Social href={SOCIALS.find(s => s.name === 'LinkedIn')?.url || '#'}>
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						class="h-4 w-4"
+						fill="currentColor"
+						viewBox="0 0 24 24"
+					>
+						<path
+							d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.968v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0v8.399h4.988v-10.131c0-7.88-8.922-7.593-11.018-3.714v-2.155z"
+						></path>
+					</svg>
+				</Social>
+				<Social href={`${site}rss.xml`}>
+					<svg viewBox="0 0 24 24" width="1.2em" height="1.2em"
+						><path
+							fill="currentColor"
+							d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19 7.38 20 6.18 20C5 20 4 19 4 17.82a2.18 2.18 0 0 1 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27V4.44m0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93V10.1Z"
+						></path></svg
+					>
+				</Social>
+			</div>
+		</div>
+	</Section>
+</div>
+
+<style>
+	/* Blinking exclamation mark */
+	#blinking-exclaim {
+		animation: blink-exclaim 1s step-end infinite;
+	}
+
+	@keyframes blink-exclaim {
+		0%, 100% { opacity: 1; }
+		50% { opacity: 0; }
+	}
+
+	/* Canvas styling */
+	#network-canvas {
+		pointer-events: none;
+	}
+
+	/* Respect reduced motion preference */
+	@media (prefers-reduced-motion: reduce) {
+		#blinking-exclaim {
+			animation: none;
+			opacity: 1;
+		}
+	}
+</style>
+
+<script>
+	// Network Graph Animation
+	const canvas = document.getElementById('network-canvas') as HTMLCanvasElement;
+	const ctx = canvas.getContext('2d')!;
+	
+	// Configuration - subtle background effect
+	const config = {
+		nodeCount: 35,
+		connectionDistance: 120,
+		nodeSpeed: 0.2,
+		nodeSize: 1.5,
+		lineOpacity: 0.08,
+		nodeOpacity: 0.15
+	};
+
+	// Get theme-aware color
+	function getNodeColor(): string {
+		const isDark = document.documentElement.classList.contains('dark');
+		return isDark ? 'rgba(249, 115, 22, ' : 'rgba(234, 88, 12, '; // orange-500/600
+	}
+
+	// Node class
+	class Node {
+		x: number;
+		y: number;
+		vx: number;
+		vy: number;
+
+		constructor(canvasWidth: number, canvasHeight: number) {
+			this.x = Math.random() * canvasWidth;
+			this.y = Math.random() * canvasHeight;
+			this.vx = (Math.random() - 0.5) * config.nodeSpeed;
+			this.vy = (Math.random() - 0.5) * config.nodeSpeed;
+		}
+
+		update(canvasWidth: number, canvasHeight: number) {
+			this.x += this.vx;
+			this.y += this.vy;
+
+			// Bounce off edges
+			if (this.x < 0 || this.x > canvasWidth) this.vx *= -1;
+			if (this.y < 0 || this.y > canvasHeight) this.vy *= -1;
+
+			// Keep in bounds
+			this.x = Math.max(0, Math.min(canvasWidth, this.x));
+			this.y = Math.max(0, Math.min(canvasHeight, this.y));
+		}
+	}
+
+	let nodes: Node[] = [];
+	let animationId: number;
+
+	function resizeCanvas() {
+		canvas.width = window.innerWidth;
+		canvas.height = window.innerHeight;
+		
+		// Reinitialize nodes on resize
+		nodes = [];
+		for (let i = 0; i < config.nodeCount; i++) {
+			nodes.push(new Node(canvas.width, canvas.height));
+		}
+	}
+
+	function draw() {
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+		const colorBase = getNodeColor();
+
+		// Draw connections
+		for (let i = 0; i < nodes.length; i++) {
+			for (let j = i + 1; j < nodes.length; j++) {
+				const nodeA = nodes[i];
+				const nodeB = nodes[j];
+				if (!nodeA || !nodeB) continue;
+				
+				const dx = nodeA.x - nodeB.x;
+				const dy = nodeA.y - nodeB.y;
+				const distance = Math.sqrt(dx * dx + dy * dy);
+
+				if (distance < config.connectionDistance) {
+					const opacity = (1 - distance / config.connectionDistance) * config.lineOpacity;
+					ctx.beginPath();
+					ctx.strokeStyle = colorBase + opacity + ')';
+					ctx.lineWidth = 1;
+					ctx.moveTo(nodeA.x, nodeA.y);
+					ctx.lineTo(nodeB.x, nodeB.y);
+					ctx.stroke();
+				}
+			}
+		}
+
+		// Draw and update nodes
+		for (const node of nodes) {
+			node.update(canvas.width, canvas.height);
+			
+			ctx.beginPath();
+			ctx.fillStyle = colorBase + config.nodeOpacity + ')';
+			ctx.arc(node.x, node.y, config.nodeSize, 0, Math.PI * 2);
+			ctx.fill();
+		}
+
+		animationId = requestAnimationFrame(draw);
+	}
+
+	// Check for reduced motion preference
+	const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+	
+	if (!prefersReducedMotion) {
+		resizeCanvas();
+		window.addEventListener('resize', resizeCanvas);
+		draw();
+	}
+
+	// Cleanup on page navigation (for Astro)
+	document.addEventListener('astro:before-swap', () => {
+		cancelAnimationFrame(animationId);
+		window.removeEventListener('resize', resizeCanvas);
+	});
+
+	// Enhanced typewriter effect with cyber animation
+	// Generate random cyber text
+	const cyberChars = 'Xx01@#$%_^&*{}[]|\\/<>~`ABCDEFabcdef0123456789';
+	function generateCyberText(length: number): string {
+		let result = '';
+		for (let i = 0; i < length; i++) {
+			result += cyberChars.charAt(Math.floor(Math.random() * cyberChars.length));
+		}
+		return result;
+	}
+	const cyberText = generateCyberText(16);
+	const realText = "Hi there, I'm Sudhir";
+	const typewriterElement = document.getElementById('typewriter-text');
+	const blinkingExclaim = document.getElementById('blinking-exclaim');
+	
+	let phase = 'cyber'; // 'cyber' -> 'backspace' -> 'real'
+	let index = 0;
+
+	function typeWriter() {
+		if (phase === 'cyber') {
+			// Phase 1: Type cyber text
+			if (index < cyberText.length) {
+				typewriterElement!.textContent += cyberText.charAt(index);
+				index++;
+				setTimeout(typeWriter, 50);
+			} else {
+				// Pause before backspacing
+				setTimeout(() => {
+					phase = 'backspace';
+					typeWriter();
+				}, 500);
+			}
+		} else if (phase === 'backspace') {
+			// Phase 2: Backspace the cyber text
+			const currentText = typewriterElement!.textContent || '';
+			if (currentText.length > 0) {
+				typewriterElement!.textContent = currentText.slice(0, -1);
+				setTimeout(typeWriter, 30);
+			} else {
+				// Start typing real text
+				phase = 'real';
+				index = 0;
+				setTimeout(typeWriter, 200);
+			}
+		} else if (phase === 'real') {
+			// Phase 3: Type real text
+			if (index < realText.length) {
+				typewriterElement!.textContent += realText.charAt(index);
+				index++;
+				setTimeout(typeWriter, 80);
+			} else {
+				// Show blinking exclamation mark after typing is complete
+				blinkingExclaim!.classList.remove('hidden');
+			}
+		}
+	}
+
+	// Start the animation
+	typeWriter();
+</script>

@@ -1,6 +1,5 @@
 ---
 import { formatDate } from '@/utils/data.util';
-import Tags from './Tags.astro';
 import PinnedBadge from './PinnedBadge.astro';
 
 interface Props {
@@ -31,8 +30,7 @@ const isPinned = post.frontmatter.isPinned === true;
 
 				<p class="pb-4 text-lg font-bold">{post.frontmatter.title}</p>
 
-				<Tags tags={post.frontmatter.tags} />
-				<p class="line-clamp-6 pt-4">{post.frontmatter.excerpt}</p>
+				<p class="line-clamp-3">{post.frontmatter.excerpt}</p>
 			</div>
 			<p class="pt-4 underline">read more →</p>
 		</div>

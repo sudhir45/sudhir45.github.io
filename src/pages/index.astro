@@ -1,7 +1,9 @@
 ---
 import { AppConfig } from '@/utils/AppConfig';
 import Base from '@/layouts/Base.astro';
-import Hero from '@/components/Hero.astro';
+import LandingHero from '@/components/LandingHero.astro';
+import SecurityTip from '@/components/SecurityTip.astro';
+import FeaturedPost from '@/components/FeaturedPost.astro';
 import LatestPosts from '@/components/LatestPosts.astro';
 import { sortPostsByDate } from '@/utils/data.util';
 import { MarkdownInstance } from 'astro';
@@ -17,6 +19,8 @@ const latestPosts = allPosts.slice(0, 3);
 ---
 
 <Base head={{ title, description }}>
-	<Hero />
+	<LandingHero />
+	<SecurityTip />
+	<FeaturedPost />
 	<LatestPosts posts={latestPosts} />
 </Base>

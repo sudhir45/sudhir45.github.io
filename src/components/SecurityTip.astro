@@ -1,0 +1,41 @@
+---
+import Section from './Section.astro';
+
+// Security tips that rotate on each page load - expanded collection
+const securityTips = [
+	"Enable MFA everywhere. Your password alone isn't enough.",
+	"Treat every email link as suspicious until proven otherwise.",
+	"Update today, or regret tomorrow.",
+	"The best security is the one you actually use.",
+	"Zero Trust: Never trust, always verify.",
+	"Your attack surface is only as small as your weakest link.",
+	"If you didn't request it, don't click it.",
+	"Backups are your last line of defense. Test them.",
+	"Complexity is the enemy of security.",
+	"The cloud is just someone else's computer. Secure it like yours.",
+	"Assume breach. Plan accordingly.",
+	"Least privilege: give access to what's needed, nothing more.",
+	"Security is a process, not a product.",
+	"Patch faster than attackers can exploit.",
+	"Your password manager is your best friend.",
+	"Defense in depth: one layer is never enough.",
+	"Social engineering bypasses every firewall.",
+	"Log everything. You'll thank yourself later.",
+	"Encrypt at rest, encrypt in transit.",
+	"The human is always the weakest link. Train them.",
+];
+
+// Random tip selection at build time / page load
+const randomTip = securityTips[Math.floor(Math.random() * securityTips.length)];
+---
+
+<Section>
+	<div class="rounded-lg border border-gray-200 bg-white px-5 py-4 shadow-sm dark:border-gray-700 dark:bg-stone-800">
+		<p class="text-xs font-medium uppercase tracking-wide text-orange-600">
+			Security Tip
+		</p>
+		<p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+			"{randomTip}"
+		</p>
+	</div>
+</Section>

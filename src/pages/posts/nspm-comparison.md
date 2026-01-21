@@ -4,7 +4,7 @@ title: "Skybox Ghosted You? : A Real-World Comparison of Possible Alternatives"
 pubDate: 2025-04-20
 description: "A practical comparison of the top Network Security Policy Management (NSPM) tools: Algosec, Tufin, and FireMon, focusing on their core strengths, use cases, and key differences."
 author: "Sudhir"
-isPinned: true
+isPinned: false
 excerpt: "A practical comparison of the top Network Security Policy Management (NSPM) tools: Algosec, Tufin, and FireMon, focusing on their core strengths, use cases, and key differences."
 image:
   src: 

@@ -4,7 +4,7 @@ title: "iHackCTF 2025: How I Solved Some Challenges"
 pubDate: 2025-09-02
 description: "Writeup : my approach."
 author: "Sudhir"
-isPinned: true
+isPinned: false
 excerpt: "Writeup : my approach."
 image:
   src: 
