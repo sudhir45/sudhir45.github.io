@@ -6,9 +6,6 @@ description: "A guide to Zero Trust architecture, explaining its core principles
 author: "Sudhir"
 isPinned: false
 excerpt: "A guide to Zero Trust architecture, explaining its core principles, why it's essential for modern security, and how to implement it with key technologies like IAM, MFA, and ZTNA."
-image:
-  src: 
-  alt: 
 tags: ["Network Security", "Firewall", "Network Architecture"]
 ---
 

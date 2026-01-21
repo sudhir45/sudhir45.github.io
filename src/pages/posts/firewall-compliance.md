@@ -6,9 +6,6 @@ description: "A comprehensive guide to firewall compliance, covering key standar
 author: "Sudhir"
 isPinned: false
 excerpt: "A comprehensive guide to firewall compliance, covering key standards like PCI DSS, ISO 27001, and HIPAA, and best practices for policy, change management, and auditing."
-image:
-  src: 
-  alt: 
 tags: ["Network", "Security", "Firewall", "Compliance", "Audit", "Best Practices"]
 ---
 

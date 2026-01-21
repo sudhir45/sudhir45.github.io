@@ -31,7 +31,7 @@ const ogImageUrl = `${siteUrl}/og/${cleanSlug}.png`;
 				minutesRead={frontmatter.minutesRead}
 				pubDate={frontmatter.pubDate}
 				isPinned={frontmatter.isPinned}
-				img={{ src: frontmatter.image.src, alt: frontmatter.image.alt }}
+				img={{ src: frontmatter.image?.src, alt: frontmatter.image?.alt }}
 			/>
 			<PostContent><slot /></PostContent>
 			<Giscus />

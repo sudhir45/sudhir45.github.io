@@ -6,9 +6,6 @@ description: "An exploration of why 'good enough' security is often better than 
 author: "Sudhir"
 isPinned: false
 excerpt: "An exploration of why 'good enough' security is often better than perfect security, and how to find the right balance between safety and usability."
-image:
-  src: 
-  alt: 
 tags: ["Security", "Risk Management", "Practical Security", "Security Strategy"]
 ---
 

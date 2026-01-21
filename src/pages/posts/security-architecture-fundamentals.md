@@ -6,9 +6,6 @@ description: "An overview of core security architecture principles, including de
 author: "Sudhir"
 isPinned: false
 excerpt: "An overview of core security architecture principles, including defense in depth, zero trust, IAM, network segmentation, and compliance for designing secure systems."
-image:
-  src: /images/Secure_Architecture.png
-  alt: "Security Architecture"
 tags: ["Network Security", "Architecture"]
 ---
 

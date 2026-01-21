@@ -6,9 +6,6 @@ description: "Writeup : my approach."
 author: "Sudhir"
 isPinned: false
 excerpt: "Writeup : my approach."
-image:
-  src: 
-  alt: 
 tags: ["CTF", "Writeup", "HandsOn"]
 ---
 

@@ -6,9 +6,6 @@ description: "Chatbots and LLMs can follow instructions too well. Here's how mal
 author: "Sudhir"
 isPinned: false
 excerpt: "Chatbots and LLMs can follow instructions too well. Here's how malicious prompts bypass filters and what you can do"
-image:
-  src: /images/Prompt_Injection_light.png
-  alt: "Prompt Injection"
 tags: ["AI", "Security", "LLM", "Chatbot"]
 ---
 

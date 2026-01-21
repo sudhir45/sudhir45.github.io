@@ -6,9 +6,6 @@ description: "A deep dive into firewall fundamentals, covering types (NGFW, Clou
 author: "Sudhir"
 isPinned: false
 excerpt: "A deep dive into firewall fundamentals, covering types (NGFW, Cloud), deployment strategies (Perimeter, DMZ), and best practices for hardening, logging, and rule management."
-image:
-  src: 
-  alt: 
 tags: ["Network Security", "Firewall", "Network Architecture"]
 ---
 

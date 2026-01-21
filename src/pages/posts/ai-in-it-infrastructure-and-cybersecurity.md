@@ -6,9 +6,6 @@ description: "A practical look at AI's role in IT and cybersecurity, covering AI
 author: "Sudhir"
 isPinned: false
 excerpt: "A practical look at AI's role in IT and cybersecurity, covering AIOps, threat detection, and a review of real-world tools like Microsoft Copilot, Darktrace, and more."
-image:
-  src: /images/AIinCyberSec.png
-  alt: "AI in IT Infrastructure and Cybersecurity"
 tags: ["Network", "Security", "AI", "HandsOn", "Tools"]
 ---
 
