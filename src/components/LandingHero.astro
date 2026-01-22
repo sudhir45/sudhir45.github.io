@@ -35,17 +35,6 @@ const site = Astro.site;
 				</p>
 			</div>
 
-			<!-- Status Pill - After intro, before social links -->
-			<div class="mt-6">
-				<span class="inline-flex items-center gap-2 rounded-full border border-green-500/30 bg-green-500/10 px-3 py-1 text-xs font-medium text-green-600 dark:border-green-400/30 dark:bg-green-400/10 dark:text-green-400">
-					<span class="relative flex h-2 w-2">
-						<span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-500 opacity-75"></span>
-						<span class="relative inline-flex h-2 w-2 rounded-full bg-green-500"></span>
-					</span>
-					Currently: Securing Infosys Enterprise
-				</span>
-			</div>
-
 			<!-- Social links -->
 			<div class="mt-6 flex">
 				<Social href={SOCIALS.find(s => s.name === 'GitHub')?.url || '#'}>
