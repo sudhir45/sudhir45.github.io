@@ -1,11 +1,11 @@
 ---
 layout: ../../layouts/post.astro
-title: "Balancing Act: Why Good Enough Security is the Real Hero"
+title: "Why Theoretical Security Fails in Production"
 pubDate: 2025-06-21
-description: "An exploration of why 'good enough' security is often better than perfect security, and how to find the right balance between safety and usability."
+description: "Why theoretical security fails in production, and how 'good enough' controls actually survive enterprise environments."
 author: "Sudhir"
 isPinned: false
-excerpt: "An exploration of why 'good enough' security is often better than perfect security, and how to find the right balance between safety and usability."
+excerpt: "Why theoretical security fails in production, and how 'good enough' controls actually survive enterprise environments."
 tags: ["Security", "Risk Management", "Practical Security", "Security Strategy"]
 ---
 

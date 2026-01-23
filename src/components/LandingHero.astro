@@ -20,18 +20,15 @@ const site = Astro.site;
 				</span>
 			</div>
 
-			<div class="mt-6 space-y-4 text-sm text-gray-700 dark:text-gray-300">
-				<p>
-					A security engineer focused on keeping the whole place safe without letting anything go up in flames.
-				</p>
-				<p>
-					I handle the security posture of thousands of network devices, balancing strict compliance work with steady vulnerability hunting. My background spans both sides of the field: <span class="font-semibold text-orange-600">breaking things</span> and <span class="font-semibold text-orange-600">defending them</span>.
-				</p>
-				<p>
-					I began in digital forensics with the Gurugram Police, then to monitoring and securing Infosys.
-				</p>
-				<p>
-					I keep security lean. Automation wherever possible. And years of <span class="font-semibold text-orange-600">CTF work</span> mean I understand the break-in paths attackers look for, which makes shutting those doors a lot easier.
+			<p class="mt-2 text-lg font-medium text-orange-600">Security Engineer</p>
+			<p class="mt-3 text-sm text-gray-700 dark:text-gray-300">
+				Defending enterprise networks by identifying failure points and reducing real attack paths through practical controls, continuous compliance, and resilient automation.
+			</p>
+
+			<div class="mt-6">
+				<p class="text-xs font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400"></p>
+				<p class="mt-2 text-sm text-gray-700 dark:text-gray-300">
+					I started in digital forensics with the <span class="font-semibold text-orange-600">Gurugram Police</span>, working directly on real-world investigations, then moved into securing and monitoring large-scale enterprise infrastructure at <span class="font-semibold text-orange-600">Infosys</span>. I keep security lean and practical: automate wherever possible, reduce unnecessary complexity, and assume attackers will find a way in. Understanding how systems break is what makes defending them effectively possible.
 				</p>
 			</div>
 
@@ -228,7 +225,7 @@ const site = Astro.site;
 		return result;
 	}
 	const cyberText = generateCyberText(16);
-	const realText = "Hi there, I'm Sudhir";
+	const realText = "I'm Sudhir";
 	const typewriterElement = document.getElementById('typewriter-text');
 	const blinkingExclaim = document.getElementById('blinking-exclaim');
 	
