@@ -1,147 +1,80 @@
 ---
-import { AppConfig } from '@/utils/AppConfig';
+import { AppConfig, SOCIALS } from '@/utils/AppConfig';
 import Base from '@/layouts/Base.astro';
 import Section from '@/components/Section.astro';
+import Social from '@/components/Social.astro';
 
 const { title, description } = AppConfig;
-
-const contactLinks = [
-	{
-		label: "Email",
-		value: "sudhirdubey558@gmail.com",
-		href: "mailto:sudhirdubey558@gmail.com",
-		icon: "email"
-	},
-	{
-		label: "LinkedIn",
-		value: "dsudhir",
-		href: "https://linkedin.com/in/dsudhir",
-		icon: "linkedin"
-	},
-	{
-		label: "GitHub",
-		value: "sudhir45",
-		href: "https://github.com/sudhir45",
-		icon: "github"
-	}
-];
 ---
 
 <Base head={{ title: `About | ${title}`, description }}>
 	<Section>
 		<div class="mx-auto max-w-[850px] py-8">
-			
-			<!-- About Section -->
 			<div class="mb-12">
-				<h1 class="text-4xl font-bold text-gray-900 dark:text-white">
-					<span class="text-orange-600">About</span>
-				</h1>
-				<div class="mt-6 space-y-4 text-gray-700 dark:text-gray-300">
-					<p>
-						I work in <span class="font-semibold text-orange-600">defensive security</span> with ownership over <span class="font-semibold text-orange-600">enterprise network security posture</span> across large, heterogeneous environments. My focus is on keeping infrastructure resilient under operational and regulatory pressure, where scale, availability, and risk reduction must be balanced continuously.
+				<div class="space-y-6 text-base leading-relaxed text-stone-700 dark:text-stone-300">
+					<p class="text-lg font-medium text-stone-900 dark:text-stone-100">
+						I secure enterprise networks. When something breaks, I fix it. When something shouldn't exist, I remove it. When compliance asks questions, I have answers.
 					</p>
+					
 					<p>
-						I lead and contribute to <span class="font-semibold text-orange-600">security hardening</span>, <span class="font-semibold text-orange-600">continuous compliance</span>, and <span class="font-semibold text-orange-600">risk-based vulnerability management</span> across thousands of network devices in <span class="font-semibold text-orange-600">ISO 27001</span> and <span class="font-semibold text-orange-600">PCI DSS</span> environments. This includes defining and enforcing security baselines, identifying systemic failure points, and driving <span class="font-semibold text-orange-600">automation</span> that reduces manual effort while improving consistency and coverage.
+						I own defensive security across thousands of network devices in ISO 27001 and PCI DSS environments. Firewalls, switches, routers, load balancers—if it's on the network, it's in scope. My job is to ensure these systems don't become attack vectors, which means hardening configurations, closing gaps, and maintaining continuous compliance at scale.
 					</p>
+					
 					<p>
-						My background includes early work in <span class="font-semibold text-orange-600">digital forensics</span> with the <span class="font-semibold text-orange-600">Gurugram Police</span>, supporting real-world cybercrime investigations. That experience informs how I approach defense today: prioritize realistic threat paths, assume imperfect conditions, and design controls that survive human error and operational constraints.
+						Before enterprise security, I worked digital forensics with the Gurugram Police. I've seen how attacks actually happen: not through zero-days, but through misconfigurations, default credentials, and human error. That experience shapes everything I do. I don't design for perfect conditions—I design for the reality that people will make mistakes, systems will drift, and attackers will find the weakest link.
 					</p>
+					
 					<p>
-						I work across diverse network infrastructure and security platforms, using <span class="font-semibold text-orange-600">NSPM</span> and <span class="font-semibold text-orange-600">vulnerability management tooling</span> to maintain <span class="font-semibold text-orange-600">audit readiness</span>, track remediation at scale, and provide clear visibility into security posture. A core part of my role is translating security requirements into repeatable, operationally viable controls.
+						I use NSPM and vulnerability management tools to maintain audit readiness and track remediation across heterogeneous environments. When auditors show up, the evidence is already there. When vulnerabilities are discovered, they're prioritized and tracked until closure. When baselines drift, automation flags it before it becomes an incident.
 					</p>
+					
 					<p>
-						This site documents applied security work, operational decisions, and lessons learned from defending enterprise infrastructure at scale.
+						This site documents the work: how I approach security problems, what actually works in production, and what doesn't. No theory. No marketing. Just the decisions and trade-offs that keep infrastructure secure under real-world constraints.
 					</p>
 				</div>
 
-				<!-- Small Contact Buttons -->
-				<div class="mt-8 flex flex-wrap gap-4">
-					{contactLinks.map((contact) => (
-						<a
-							href={contact.href}
-							target="_blank"
-							rel="noopener noreferrer"
-							class="flex items-center gap-2 rounded-lg bg-stone-200 px-4 py-2 text-sm font-medium text-gray-900 transition-colors hover:bg-orange-100 hover:text-orange-600 dark:bg-stone-800 dark:text-gray-100 dark:hover:bg-stone-700 dark:hover:text-orange-400"
+				<!-- Social Links -->
+				<div class="mt-10 flex items-center gap-4">
+					<Social href={SOCIALS.find(s => s.name === 'GitHub')?.url || '#'}>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							class="h-4 w-4"
+							fill="currentColor"
+							viewBox="0 0 24 24"
 						>
-							{contact.icon === "email" && (
-								<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-								</svg>
-							)}
-							{contact.icon === "linkedin" && (
-								<svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
-									<path d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.968v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0v8.399h4.988v-10.131c0-7.88-8.922-7.593-11.018-3.714v-2.155z"></path>
-								</svg>
-							)}
-							{contact.icon === "github" && (
-								<svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
-									<path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"></path>
-								</svg>
-							)}
-							{contact.label}
-						</a>
-					))}
+							<path
+								d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
+							></path>
+						</svg>
+					</Social>
+					<Social href={SOCIALS.find(s => s.name === 'LinkedIn')?.url || '#'}>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							class="h-4 w-4"
+							fill="currentColor"
+							viewBox="0 0 24 24"
+						>
+							<path
+								d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.968v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0v8.399h4.988v-10.131c0-7.88-8.922-7.593-11.018-3.714v-2.155z"
+							></path>
+						</svg>
+					</Social>
+					<Social href={SOCIALS.find(s => s.name === 'Email')?.url || '#'}>
+						<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+						</svg>
+					</Social>
 				</div>
-			</div>
 
-			<!-- Areas of Ownership Section -->
-			<div class="mb-12">
-				<h2 class="mb-6 text-2xl font-bold text-gray-900 dark:text-white">
-					Areas of <span class="text-orange-600">Ownership</span>
-				</h2>
-				<ul class="space-y-2 text-gray-700 dark:text-gray-300">
-					<li class="flex items-start gap-2">
-						<span class="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-orange-600"></span>
-						Enterprise-wide defensive security and posture management
-					</li>
-					<li class="flex items-start gap-2">
-						<span class="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-orange-600"></span>
-						Security baseline design and enforcement across diverse devices
-					</li>
-					<li class="flex items-start gap-2">
-						<span class="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-orange-600"></span>
-						Continuous compliance and audit readiness
-					</li>
-					<li class="flex items-start gap-2">
-						<span class="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-orange-600"></span>
-						Risk-based vulnerability management and remediation tracking
-					</li>
-					<li class="flex items-start gap-2">
-						<span class="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-orange-600"></span>
-						Security automation and operational resilience
-					</li>
-				</ul>
-			</div>
-
-			<!-- Current Focus Section -->
-			<div class="mb-12">
-				<h2 class="mb-6 text-2xl font-bold text-gray-900 dark:text-white">
-					Current <span class="text-orange-600">Focus</span>
-				</h2>
-				<ul class="space-y-2 text-gray-700 dark:text-gray-300">
-					<li class="flex items-start gap-2">
-						<span class="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-orange-600"></span>
-						Reducing systemic attack paths caused by configuration drift
-					</li>
-					<li class="flex items-start gap-2">
-						<span class="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-orange-600"></span>
-						Improving accuracy and signal quality in compliance and vulnerability data
-					</li>
-					<li class="flex items-start gap-2">
-						<span class="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-orange-600"></span>
-						Designing security controls that scale across teams, vendors, and environments
-					</li>
-				</ul>
-			</div>
-
-			<!-- Resume Link -->
-			<div>
-				<a href="/Resume.pdf" target="_blank" class="flex w-fit items-center gap-2 rounded-lg bg-stone-200 px-4 py-2 text-sm font-medium text-gray-900 transition-colors hover:bg-orange-100 hover:text-orange-600 dark:bg-stone-800 dark:text-gray-100 dark:hover:bg-stone-700 dark:hover:text-orange-400">
-					<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-					</svg>
-					Resume
-				</a>
+				<!-- Resume Link -->
+				<div class="mt-6 flex items-center">
+					<a href="/Resume.pdf" target="_blank" rel="noopener noreferrer" class="group inline-flex items-center gap-2 rounded-lg border border-stone-200 bg-white px-4 py-2.5 text-sm font-medium text-stone-700 transition-all hover:border-orange-300 hover:bg-orange-50 hover:text-orange-600 dark:border-stone-800 dark:bg-stone-900 dark:text-stone-300 dark:hover:border-orange-900/50 dark:hover:bg-orange-950/30 dark:hover:text-orange-500">
+						<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform group-hover:scale-110" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+						</svg>
+						Resume
+					</a>
+				</div>
 			</div>
 		</div>
 	</Section>

@@ -21,33 +21,74 @@ const {
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+		<meta name="theme-color" content="#ea580c" media="(prefers-color-scheme: light)" />
+		<meta name="theme-color" content="#1c1917" media="(prefers-color-scheme: dark)" />
+		
 		<title>{title}</title>
 		<meta name="description" content={description} />
 		<meta name="author" content={AppConfig.author} />
+		<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+		
+		<!-- Canonical URL -->
+		<link rel="canonical" href={Astro.url.href} />
 
 		<!-- Open Graph / Facebook -->
 		<meta property="og:type" content="website" />
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
+		<meta property="og:url" content={Astro.url.href} />
+		<meta property="og:site_name" content={AppConfig.title} />
+		<meta property="og:locale" content="en_IN" />
 		{image && <meta property="og:image" content={image} />}
+		{image && <meta property="og:image:width" content="1200" />}
+		{image && <meta property="og:image:height" content="630" />}
+		{image && <meta property="og:image:alt" content={title} />}
 
 		<!-- Twitter -->
-		<meta property="twitter:card" content="summary_large_image" />
-		<meta property="twitter:title" content={title} />
-		<meta property="twitter:description" content={description} />
-		{image && <meta property="twitter:image" content={image} />}
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		{image && <meta name="twitter:image" content={image} />}
+		{image && <meta name="twitter:image:alt" content={title} />}
 
-		<link rel="sitemap" href="/sitemap-index.xml" />
-		<link rel="alternate" type="application/rss+xml" href="/rss.xml" />
+		<!-- Preconnect to external domains -->
+		<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+		<link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+		<link rel="dns-prefetch" href="https://giscus.app" />
+
+		<!-- Favicons -->
 		<link rel="icon" type="image/svg+xml" href="/assets/img/favicons/favicon.svg" />
 		<link rel="icon" type="image/png" href="/assets/img/favicons/favicon-96x96.png" sizes="96x96" />
 		<link rel="shortcut icon" href="/assets/img/favicons/favicon.ico" />
 		<link rel="apple-touch-icon" href="/assets/img/favicons/apple-touch-icon.png" />
+		<link rel="manifest" href="/manifest.json" />
+
+		<!-- Sitemap & RSS -->
+		<link rel="sitemap" href="/sitemap-index.xml" />
+		<link rel="alternate" type="application/rss+xml" href="/rss.xml" title={AppConfig.title} />
+
+		<!-- Structured Data -->
+		<script type="application/ld+json" is:inline set:html={JSON.stringify({
+			"@context": "https://schema.org",
+			"@type": "Blog",
+			"name": AppConfig.site_name,
+			"description": AppConfig.description,
+			"url": Astro.site?.toString() || "https://sudhir45.github.io",
+			"author": {
+				"@type": "Person",
+				"name": AppConfig.author
+			},
+			"publisher": {
+				"@type": "Person",
+				"name": AppConfig.author
+			}
+		})} />
+
 		<GoogleAnalytics />
 	</head>
 	<body
-		class="flex min-h-screen flex-col bg-stone-100 font-mono text-gray-950 dark:bg-stone-900 dark:text-white"
+		class="flex min-h-screen flex-col bg-white font-mono text-stone-900 antialiased dark:bg-stone-950 dark:text-stone-100"
 	>
 		<Navbar />
 		<div class="flex-1">

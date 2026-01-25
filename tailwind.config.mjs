@@ -15,11 +15,21 @@ export default {
 	theme: {
 		extend: {
 			typography: {
-				DEFAULT: { css: disabledCss },
+				DEFAULT: { 
+					css: {
+						...disabledCss,
+						maxWidth: 'none',
+						color: 'inherit',
+					}
+				},
 				sm: { css: disabledCss },
 				lg: { css: disabledCss },
 				xl: { css: disabledCss },
 				'2xl': { css: disabledCss }
+			},
+			spacing: {
+				'18': '4.5rem',
+				'88': '22rem',
 			}
 		}
 	},

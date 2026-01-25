@@ -5,17 +5,23 @@ const year = new Date();
 ---
 
 <Section>
-	<footer class="text-center">
-		<div class="pb-4">
-			<a class="underline hover:text-orange-600" href="/rss.xml">RSS</a> - <a
-				class="underline hover:text-orange-600"
-				href="/sitemap-index.xml">Sitemap</a
-			> - <a class="underline hover:text-orange-600" href="/tags">Tags</a>
+	<footer class="border-t border-stone-200/60 py-8 dark:border-stone-800/60">
+		<div class="flex flex-col items-center justify-between gap-4 text-sm text-stone-600 dark:text-stone-500 sm:flex-row">
+			<div class="flex items-center gap-4">
+				<a class="transition-colors hover:text-orange-600 dark:hover:text-orange-500" href="/rss.xml">RSS</a>
+				<span class="text-stone-300 dark:text-stone-700">·</span>
+				<a class="transition-colors hover:text-orange-600 dark:hover:text-orange-500" href="/sitemap-index.xml">Sitemap</a>
+				<span class="text-stone-300 dark:text-stone-700">·</span>
+				<a class="transition-colors hover:text-orange-600 dark:hover:text-orange-500" href="/tags">Tags</a>
+			</div>
+			<div>
+				© {year.getFullYear()} <a
+					class="font-medium transition-colors hover:text-orange-600 dark:hover:text-orange-500"
+					href="https://sudhir.is-a.dev"
+					target="_blank"
+					rel="noopener noreferrer"
+				>Sudhir</a>
+			</div>
 		</div>
-		© {year.getFullYear()} <a
-			class="underline hover:text-orange-600"
-			href="https://sudhir.is-a.dev"
-			target="_blank">Sudhir</a
-		>
 	</footer>
 </Section>

@@ -10,29 +10,37 @@ const { post } = Astro.props;
 const isPinned = post.frontmatter.isPinned === true;
 ---
 
-<a href={post.url}>
+<a 
+	href={post.url} 
+	class="group block h-full focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-stone-950"
+	aria-label={`Read post: ${post.frontmatter.title}`}
+>
 	<div
-		class="h-full rounded-2xl bg-stone-200/50 from-orange-900 via-amber-700 to-white p-[1px] text-sm shadow-[inset_0_0_0_1px_rgba(255,255,255,0.4)] hover:bg-gradient-to-r dark:bg-gray-900"
+		class="flex h-full flex-col rounded-xl border border-stone-200 bg-white p-6 shadow-sm transition-all duration-200 hover:border-orange-300 hover:shadow-md dark:border-stone-800 dark:bg-stone-900 dark:hover:border-orange-900/50"
 	>
-		<div
-			class="flex h-full w-full flex-col rounded-[1rem] bg-stone-300 p-4 text-gray-900 opacity-90 dark:bg-stone-800 dark:text-white"
-		>
-			<div class="flex-auto">
-				<div class="flex flex-col justify-between gap-2 pb-4 text-xs">
-					<div class="flex items-center gap-2">
-						{isPinned && <PinnedBadge size="sm" />}
-						<p>{formatDate(post.frontmatter.pubDate)}</p>
-					</div>
-					<div>
-						<p class="font-bold">{post.frontmatter.minutesRead}</p>
-					</div>
+		<div class="flex flex-auto flex-col">
+			<div class="mb-4 flex items-center justify-between gap-2 text-xs text-stone-500 dark:text-stone-500">
+				<div class="flex items-center gap-2">
+					{isPinned && <PinnedBadge size="sm" />}
+					<time>{formatDate(post.frontmatter.pubDate)}</time>
 				</div>
-
-				<p class="pb-4 text-lg font-bold">{post.frontmatter.title}</p>
-
-				<p class="line-clamp-3">{post.frontmatter.excerpt}</p>
+				<span class="font-medium">{post.frontmatter.minutesRead}</span>
 			</div>
-			<p class="pt-4 underline">read more →</p>
+
+			<h3 class="mb-3 text-xl font-semibold leading-tight text-stone-900 transition-colors group-hover:text-orange-600 dark:text-stone-100 dark:group-hover:text-orange-500">
+				{post.frontmatter.title}
+			</h3>
+
+			<p class="mb-4 line-clamp-3 text-sm leading-relaxed text-stone-600 dark:text-stone-400">
+				{post.frontmatter.excerpt}
+			</p>
+		</div>
+		
+		<div class="mt-auto flex items-center gap-1 text-sm font-medium text-orange-600 transition-transform group-hover:gap-2 dark:text-orange-500">
+			<span>Read more</span>
+			<svg class="h-4 w-4 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+			</svg>
 		</div>
 	</div>
 </a>

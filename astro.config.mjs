@@ -31,6 +31,7 @@ const options = {
 // https://astro.build/config
 export default defineConfig({
 	site: 'https://sudhir45.github.io',
+	compressHTML: true,
 
 	markdown: {
 		syntaxHighlight: false,
@@ -43,6 +44,16 @@ export default defineConfig({
 	output: 'static',
 
 	vite: {
-		plugins: [tailwindcss()]
+		plugins: [tailwindcss()],
+		build: {
+			cssMinify: 'lightningcss',
+			rollupOptions: {
+				output: {
+					manualChunks: {
+						'vendor': ['react', 'react-dom']
+					}
+				}
+			}
+		}
 	}
 });

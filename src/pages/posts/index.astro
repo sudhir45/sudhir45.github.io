@@ -17,14 +17,16 @@ allPosts.sort(sortPostsByDate);
 ---
 
 <Base head={{ title, description }}>
-	<Section><Heading title="Posts" /></Section>
 	<Section>
-		{
-			allPosts.map((post: any) => (
-				<div class="mb-4 basis-1 last:mb-0">
+		<Heading title="All Posts" />
+	</Section>
+	<Section>
+		<div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+			{
+				allPosts.map((post: any) => (
 					<Card post={post} />
-				</div>
-			))
-		}
+				))
+			}
+		</div>
 	</Section>
 </Base>

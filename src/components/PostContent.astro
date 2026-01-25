@@ -3,11 +3,11 @@ import Section from './Section.astro';
 ---
 
 <Section>
-	<div
-		class="content prose dark:prose-invert prose-code:rounded-lg prose-code:bg-stone-800 prose-code:p-1 prose-code:text-orange-600 prose-img:rounded-lg prose-img:shadow-xl prose-img:dark:shadow-stone-800 mt-8 max-w-none text-base leading-8 text-black dark:text-white"
+	<article
+		class="content prose prose-stone max-w-none text-base leading-relaxed dark:prose-invert prose-headings:font-semibold prose-headings:tracking-tight prose-headings:text-stone-900 dark:prose-headings:text-stone-100 prose-h1:text-3xl prose-h2:text-2xl prose-h3:text-xl prose-p:text-stone-700 dark:prose-p:text-stone-300 prose-a:text-orange-600 prose-a:no-underline hover:prose-a:underline dark:prose-a:text-orange-500 prose-strong:text-stone-900 dark:prose-strong:text-stone-100 prose-code:rounded-md prose-code:bg-stone-100 prose-code:px-1.5 prose-code:py-0.5 prose-code:text-sm prose-code:text-orange-600 dark:prose-code:bg-stone-900 dark:prose-code:text-orange-500 prose-pre:bg-stone-950 dark:prose-pre:bg-stone-950 prose-pre:border prose-pre:border-stone-800 prose-img:rounded-xl prose-img:border prose-img:border-stone-200 dark:prose-img:border-stone-800 prose-blockquote:border-l-orange-500 prose-blockquote:bg-stone-50 dark:prose-blockquote:bg-stone-900/50 prose-blockquote:py-2 prose-blockquote:px-4 prose-blockquote:rounded-r-lg prose-ul:marker:text-orange-600 dark:prose-ul:marker:text-orange-500 prose-li:marker:font-semibold"
 	>
 		<slot />
-	</div>
+	</article>
 </Section>
 
 <!-- Tailwind doesn't fully support some of the complex CSS selectors needed for code highlighting,

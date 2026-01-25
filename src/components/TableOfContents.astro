@@ -1,33 +1,46 @@
 ---
 ---
 <nav class="toc">
-  <ul class="flex flex-col gap-2 text-sm">
+  <ul class="flex flex-col gap-1.5 text-sm">
     {
-      Astro.props.headings.map((heading: any) => (
-        <li
-          class={`pl-${(heading.depth - 2) * 4} text-stone-500 hover:text-orange-600 dark:text-stone-400 dark:hover:text-orange-400`}
-        >
-          <a href={`#${heading.slug}`}>{heading.text}</a>
-        </li>
-      ))
+      Astro.props.headings.map((heading: any) => {
+        const padding = heading.depth === 2 ? 'pl-0' : heading.depth === 3 ? 'pl-4' : 'pl-8';
+        return (
+          <li class={padding}>
+            <a 
+              href={`#${heading.slug}`}
+              class="block rounded-md px-2 py-1.5 text-stone-600 transition-colors hover:bg-stone-100 hover:text-orange-600 dark:text-stone-400 dark:hover:bg-stone-900 dark:hover:text-orange-500"
+            >
+              {heading.text}
+            </a>
+          </li>
+        );
+      })
     }
   </ul>
 </nav>
 
 <script>
-  // Optional: Add intersection observer for active state highlighting
+  // Intersection observer for active TOC highlighting
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       const id = entry.target.getAttribute('id');
-      if (entry.intersectionRatio > 0) {
-        document.querySelector(`.toc a[href="#${id}"]`)?.classList.add('font-bold', 'text-orange-600');
-      } else {
-        document.querySelector(`.toc a[href="#${id}"]`)?.classList.remove('font-bold', 'text-orange-600');
+      const link = document.querySelector(`.toc a[href="#${id}"]`);
+      if (link) {
+        if (entry.intersectionRatio > 0.1) {
+          link.classList.add('bg-orange-50', 'text-orange-600', 'font-medium', 'dark:bg-orange-950/30', 'dark:text-orange-500');
+          link.classList.remove('text-stone-600', 'dark:text-stone-400');
+        } else {
+          link.classList.remove('bg-orange-50', 'text-orange-600', 'font-medium', 'dark:bg-orange-950/30', 'dark:text-orange-500');
+          link.classList.add('text-stone-600', 'dark:text-stone-400');
+        }
       }
     });
+  }, {
+    rootMargin: '-20% 0% -70% 0%'
   });
 
-  document.querySelectorAll('h2[id], h3[id]').forEach((section) => {
+  document.querySelectorAll('h2[id], h3[id], h4[id]').forEach((section) => {
     observer.observe(section);
   });
 </script>

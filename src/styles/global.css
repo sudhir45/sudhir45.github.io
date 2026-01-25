@@ -4,9 +4,49 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* Tailwind doesn't fully support some of the complex CSS selectors needed for code highlighting,
-so we need to keep some custom CSS but applied through Tailwind's plugin system
-These styles are for code highlighting that can't be easily implemented with just Tailwind */
+/* Performance: Reduce layout shifts */
+@layer base {
+    img {
+        @apply h-auto max-w-full;
+        content-visibility: auto;
+    }
+    
+    /* Smooth scrolling with respect for user preferences */
+    @media (prefers-reduced-motion: no-preference) {
+        html {
+            scroll-behavior: smooth;
+        }
+    }
+}
+
+/* Professional Typography & Spacing */
+@layer base {
+    html {
+        @apply antialiased;
+        font-feature-settings: "kern" 1, "liga" 1;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+        @apply font-mono;
+        letter-spacing: -0.01em;
+    }
+
+    /* Smooth transitions for theme changes */
+    * {
+        @apply transition-colors duration-200;
+    }
+
+    /* Focus styles for accessibility */
+    a:focus-visible,
+    button:focus-visible {
+        @apply outline-none ring-2 ring-orange-500/50 ring-offset-2 ring-offset-stone-100 dark:ring-offset-stone-900;
+    }
+}
+
+/* Refined Code Highlighting */
 @layer utilities {
     .content pre {
         @apply p-0;
@@ -21,19 +61,19 @@ These styles are for code highlighting that can't be easily implemented with jus
     }
 
     .content pre > code span[data-line] {
-        @apply border-l-8 border-transparent px-2;
+        @apply border-l-4 border-transparent px-4;
     }
 
     .content pre > code span:first-of-type {
-        @apply rounded-t-lg pt-2;
+        @apply rounded-t-lg pt-4;
     }
 
     .content pre > code span:last-of-type {
-        @apply rounded-b-lg pb-2;
+        @apply rounded-b-lg pb-4;
     }
 
     .content pre > code .highlighted {
-        @apply border-l-8 !border-gray-300/60 bg-gray-200/5;
+        @apply border-l-4 border-orange-500/30 bg-orange-500/5 dark:bg-orange-500/10;
     }
 
     .content pre > code[data-line-numbers] {
@@ -43,12 +83,13 @@ These styles are for code highlighting that can't be easily implemented with jus
     .content pre > code[data-line-numbers] > span[data-line]::before {
         counter-increment: line;
         content: counter(line);
-        @apply mr-8 inline-block w-4 text-left text-[#7ca2dfad];
+        @apply mr-6 inline-block w-6 text-left text-stone-400 dark:text-stone-600;
+        font-variant-numeric: tabular-nums;
     }
 
     .content pre > code > span[data-line]::before {
         content: '';
-        @apply inline-block w-4 text-right;
+        @apply inline-block w-0;
     }
 
     .content pre > code[data-line-numbers-max-digits='2'] > span[data-line]::before {
@@ -56,6 +97,25 @@ These styles are for code highlighting that can't be easily implemented with jus
     }
 
     .content code[data-line-numbers-max-digits='3'] > span[data-line]::before {
-        @apply w-12;
+        @apply w-10;
+    }
+}
+
+/* Professional Scrollbar */
+@layer utilities {
+    ::-webkit-scrollbar {
+        @apply w-2 h-2;
+    }
+
+    ::-webkit-scrollbar-track {
+        @apply bg-transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        @apply bg-stone-300 dark:bg-stone-700 rounded-full;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        @apply bg-stone-400 dark:bg-stone-600;
     }
 }

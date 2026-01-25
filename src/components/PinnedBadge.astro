@@ -19,7 +19,8 @@ const badgeSize = badgeSizeClasses[size];
 ---
 
 <span
-	class={`inline-flex items-center rounded-full bg-orange-100 ${badgeSize} font-medium text-orange-800 dark:bg-orange-900 dark:text-orange-200 ${className}`}
+	class={`inline-flex items-center gap-1 rounded-md border border-orange-200 bg-orange-50 ${badgeSize} font-medium text-orange-700 dark:border-orange-900/50 dark:bg-orange-950/30 dark:text-orange-400 ${className}`}
 >
 	<PinIcon size={size} />
+	<span>Pinned</span>
 </span>

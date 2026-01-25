@@ -4,24 +4,27 @@ import Search from './Search.astro';
 ---
 
 <Section>
-	<div class="flex items-center justify-between">
-		<div class="text-3xl font-bold">
-			<a href="/"><span class="text-orange-600">Fort</span>Matrix <span class="text-gray-500">Logs</span></a
-			>
+	<div class="flex items-center justify-between border-b border-stone-200/60 pb-4 dark:border-stone-800/60">
+		<div class="text-2xl font-semibold tracking-tight">
+			<a href="/" class="group flex items-baseline gap-1 transition-colors hover:text-orange-600 dark:hover:text-orange-500">
+				<span class="text-orange-600 dark:text-orange-500">Fort</span>
+				<span class="text-stone-600 dark:text-stone-400">Matrix</span>
+				<span class="text-stone-400 dark:text-stone-600 text-lg font-normal">Logs</span>
+			</a>
 		</div>
-		<div class="flex items-center">
+		<div class="flex items-center gap-6">
 			<!-- Desktop Navigation -->
 			<nav>
-				<ul class="hidden flex-row sm:flex">
-					<li><a href="/about" class="mr-3 hover:text-orange-600">ABOUT</a></li>
-					<li><a href="/tags" class="mr-3 hover:text-orange-600">TAGS</a></li>
-					<li><a href="/posts" class="hover:text-orange-600">BLOG</a></li>
+				<ul class="hidden flex-row items-center gap-6 text-sm font-medium sm:flex">
+					<li><a href="/about" class="text-stone-600 transition-colors hover:text-orange-600 dark:text-stone-400 dark:hover:text-orange-500">About</a></li>
+					<li><a href="/tags" class="text-stone-600 transition-colors hover:text-orange-600 dark:text-stone-400 dark:hover:text-orange-500">Tags</a></li>
+					<li><a href="/posts" class="text-stone-600 transition-colors hover:text-orange-600 dark:text-stone-400 dark:hover:text-orange-500">Blog</a></li>
 				</ul>
 			</nav>
 			<!-- Desktop Theme Switcher -->
-			<div class="ml-3 hidden flex-col justify-center sm:flex">
+			<div class="hidden flex-col justify-center sm:flex">
 				<input type="checkbox" id="light-switch-desktop" class="light-switch sr-only" />
-				<label class="tada relative cursor-pointer p-2" for="light-switch-desktop">
+				<label class="relative cursor-pointer rounded-lg p-2 transition-colors hover:bg-stone-100 dark:hover:bg-stone-900" for="light-switch-desktop">
 					<svg class="dark:hidden" width="16" height="16" xmlns="http://www.w3.org/2000/svg">
 						<path
 							class="fill-stone-800"
@@ -45,10 +48,18 @@ import Search from './Search.astro';
 			</div>
 			
 			<!-- Search Button -->
-			<Search />
+			<div class="hidden sm:block">
+				<Search />
+			</div>
 
 			<!-- Mobile Menu Button -->
-			<button id="mobile-menu-button" class="p-2 sm:hidden" aria-label="Toggle mobile menu">
+			<button 
+				id="mobile-menu-button" 
+				class="rounded-lg p-2 transition-colors hover:bg-stone-100 dark:hover:bg-stone-900 sm:hidden" 
+				aria-label="Toggle mobile menu"
+				aria-expanded="false"
+				aria-controls="mobile-menu"
+			>
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
 					class="h-6 w-6"
@@ -66,17 +77,23 @@ import Search from './Search.astro';
 	<!-- Mobile Menu -->
 	<div
 		id="mobile-menu"
-		class="mt-4 hidden rounded-lg border border-gray-200 bg-white pb-2 shadow-md transition-all duration-300 sm:hidden dark:border-gray-200 dark:bg-stone-900"
+		class="mt-4 hidden rounded-xl border border-stone-200 bg-white pb-3 shadow-lg transition-all duration-200 sm:hidden dark:border-stone-800 dark:bg-stone-900"
 	>
-		<nav class="flex flex-col p-3">
-			<a href="/about" class="border-b border-gray-200 py-2 hover:text-orange-600">ABOUT</a>
-			<a href="/tags" class="border-b border-gray-200 py-2 hover:text-orange-600">TAGS</a>
-			<a href="/posts" class="border-b border-gray-200 py-2 hover:text-orange-600">BLOG</a>
+		<nav class="flex flex-col p-2">
+			<a href="/about" class="rounded-lg px-4 py-2.5 text-sm font-medium text-stone-700 transition-colors hover:bg-stone-100 hover:text-orange-600 dark:text-stone-300 dark:hover:bg-stone-800 dark:hover:text-orange-500">About</a>
+			<a href="/tags" class="rounded-lg px-4 py-2.5 text-sm font-medium text-stone-700 transition-colors hover:bg-stone-100 hover:text-orange-600 dark:text-stone-300 dark:hover:bg-stone-800 dark:hover:text-orange-500">Tags</a>
+			<a href="/posts" class="rounded-lg px-4 py-2.5 text-sm font-medium text-stone-700 transition-colors hover:bg-stone-100 hover:text-orange-600 dark:text-stone-300 dark:hover:bg-stone-800 dark:hover:text-orange-500">Blog</a>
+
+			<!-- Mobile Search -->
+			<div class="px-2 py-2">
+				<Search />
+			</div>
 
 			<!-- Mobile Theme Switcher -->
-			<div class="flex items-center py-2">
+			<div class="flex items-center border-t border-stone-200 px-2 py-2 dark:border-stone-800">
 				<input type="checkbox" id="light-switch-mobile" class="light-switch sr-only" />
-				<label class="tada relative cursor-pointer p-2" for="light-switch-mobile">
+				<label class="relative flex w-full cursor-pointer items-center justify-between rounded-lg px-4 py-2.5 transition-colors hover:bg-stone-100 dark:hover:bg-stone-800" for="light-switch-mobile">
+					<span class="text-sm font-medium text-stone-700 dark:text-stone-300">Theme</span>
 					<svg class="dark:hidden" width="16" height="16" xmlns="http://www.w3.org/2000/svg">
 						<path
 							class="fill-stone-800"
@@ -144,7 +161,8 @@ import Search from './Search.astro';
 	if (mobileMenuButton && mobileMenu) {
 		mobileMenuButton.addEventListener('click', () => {
 			const expanded = mobileMenuButton.getAttribute('aria-expanded') === 'true' || false;
-			mobileMenuButton.setAttribute('aria-expanded', (!expanded).toString());
+			const newExpanded = !expanded;
+			mobileMenuButton.setAttribute('aria-expanded', newExpanded.toString());
 			mobileMenu.classList.toggle('hidden');
 
 			// Change burger icon to X when menu is open

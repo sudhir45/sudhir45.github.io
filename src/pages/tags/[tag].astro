@@ -2,7 +2,6 @@
 import Section from '@/components/Section.astro';
 import Card from '@/components/Card.astro';
 import Base from '@/layouts/Base.astro';
-import Heading from '@/components/Heading.astro';
 import { AppConfig } from '@/utils/AppConfig';
 import { MarkdownInstance } from 'astro';
 import { sortPostsByDate } from '@/utils/data.util';
@@ -46,20 +45,37 @@ const { posts } = Astro.props;
 
 <Base head={{ title, description }}>
 	<Section>
-		<Heading title={`Posts with #${tag}`} />
-		<div class="pt-2 text-center">
-			<a href="/tags" class="underline hover:text-orange-600">all tags →</a>
+		<div class="mb-8">
+			<div class="mb-4 flex items-center justify-between">
+				<div>
+					<h1 class="text-3xl font-semibold tracking-tight text-stone-900 dark:text-stone-100 md:text-4xl">
+						<span class="text-orange-600 dark:text-orange-500">{tag}</span>
+					</h1>
+					<p class="mt-2 text-sm text-stone-600 dark:text-stone-400">
+						{posts.length} {posts.length === 1 ? 'post' : 'posts'}
+					</p>
+				</div>
+				<a 
+					href="/tags" 
+					class="group inline-flex items-center gap-1.5 rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm font-medium text-stone-700 transition-all hover:border-orange-300 hover:bg-orange-50 hover:text-orange-600 dark:border-stone-800 dark:bg-stone-900 dark:text-stone-300 dark:hover:border-orange-900/50 dark:hover:bg-orange-950/30 dark:hover:text-orange-500"
+				>
+					<svg class="h-4 w-4 transition-transform group-hover:-translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+					</svg>
+					All tags
+				</a>
+			</div>
 		</div>
 	</Section>
 	<Section>
-		{
-			posts
-				.filter((post: any) => post.frontmatter.tags?.includes(tag))
-				.map((post: any) => (
-					<div class="mb-4 basis-1 last:mb-0">
+		<div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+			{
+				posts
+					.filter((post: any) => post.frontmatter.tags?.includes(tag))
+					.map((post: any) => (
 						<Card post={post} />
-					</div>
-				))
-		}
+					))
+			}
+		</div>
 	</Section>
 </Base>

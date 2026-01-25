@@ -23,18 +23,34 @@ const formattedDate = formatDate(pubDate);
 ---
 
 <Section>
-	<div class="flex flex-col items-center">
-		<div class="relative px-14 pt-6 pb-4 text-center">
-			{isPinned && <PinnedBadge size="md" class="absolute top-6 left-10 -translate-y-1/2" />}
-			<p class="text-4xl font-bold">{title}</p>
-		</div>
-		<div class="pb-4">
+	<div class="flex flex-col items-center pb-8">
+		{isPinned && (
+			<div class="mb-4">
+				<PinnedBadge size="md" />
+			</div>
+		)}
+		<h1 class="mb-6 max-w-4xl text-center text-4xl font-bold leading-tight tracking-tight text-stone-900 dark:text-stone-100 md:text-5xl">
+			{title}
+		</h1>
+		<div class="mb-6 flex flex-wrap items-center justify-center gap-3">
 			<Tags tags={tags} withHref={true} />
 		</div>
-		<div class="text-sm">
-			<span>{formattedDate}</span> - <span>{minutesRead}</span>
+		<div class="mb-8 flex items-center gap-3 text-sm text-stone-600 dark:text-stone-400">
+			<time>{formattedDate}</time>
+			<span class="text-stone-300 dark:text-stone-700">·</span>
+			<span>{minutesRead}</span>
 		</div>
 
-		{img.src ? <img src={img.src} alt={img.alt} /> : null}
+		{img.src && (
+			<div class="mb-8 w-full max-w-4xl overflow-hidden rounded-xl border border-stone-200 dark:border-stone-800">
+				<img 
+					src={img.src} 
+					alt={img.alt} 
+					class="w-full object-cover" 
+					loading="lazy"
+					decoding="async"
+				/>
+			</div>
+		)}
 	</div>
 </Section>
