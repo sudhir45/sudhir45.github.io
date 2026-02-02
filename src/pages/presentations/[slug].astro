@@ -1,0 +1,63 @@
+---
+import { AppConfig } from '@/utils/AppConfig';
+import Base from '@/layouts/Base.astro';
+import Section from '@/components/Section.astro';
+import PresentationViewer from '@/components/PresentationViewer.astro';
+import presentations from '@/data/presentations.json';
+
+export function getStaticPaths() {
+	return presentations.map((pres) => ({
+		params: { slug: pres.slug },
+		props: { presentation: pres }
+	}));
+}
+
+const { presentation } = Astro.props;
+const title = `${presentation.title} | ${AppConfig.site_name}`;
+const description = presentation.description;
+---
+
+<Base head={{ title, description }}>
+	<Section>
+		<div class="py-8">
+			<!-- Breadcrumb -->
+			<nav class="mb-6 text-sm" aria-label="Breadcrumb">
+				<ol class="flex items-center gap-2 text-stone-500 dark:text-stone-500">
+					<li>
+						<a href="/presentations" class="transition-colors hover:text-orange-600 dark:hover:text-orange-500">
+							Presentations
+						</a>
+					</li>
+					<li>
+						<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+						</svg>
+					</li>
+					<li class="truncate text-stone-700 dark:text-stone-300">
+						{presentation.title}
+					</li>
+				</ol>
+			</nav>
+
+			<!-- Viewer -->
+			<PresentationViewer 
+				slug={presentation.slug}
+				title={presentation.title}
+				slideCount={presentation.slideCount}
+			/>
+
+			<!-- Back link -->
+			<div class="mt-8">
+				<a 
+					href="/presentations" 
+					class="inline-flex items-center gap-2 text-sm font-medium text-orange-600 transition-colors hover:text-orange-700 dark:text-orange-500 dark:hover:text-orange-400"
+				>
+					<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+					</svg>
+					Back to all presentations
+				</a>
+			</div>
+		</div>
+	</Section>
+</Base>

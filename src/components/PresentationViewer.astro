@@ -1,0 +1,1168 @@
+---
+interface Props {
+	slug: string;
+	title: string;
+	slideCount: number;
+}
+
+const { slug, title, slideCount } = Astro.props;
+
+// Generate array of slide paths
+const slides = Array.from({ length: slideCount }, (_, i) => ({
+	number: i + 1,
+	src: `/presentations/${slug}/slide-${i + 1}.jpg`
+}));
+---
+
+<div class="presentation-viewer" data-slide-count={slideCount} data-slug={slug}>
+	<!-- Progress Bar (top) -->
+	<div class="progress-bar-container">
+		<div class="progress-bar" role="progressbar" aria-valuemin="1" aria-valuemax={slideCount} aria-valuenow="1">
+			<div class="progress-fill"></div>
+		</div>
+	</div>
+
+	<!-- Viewer Container with Glassmorphism -->
+	<div class="viewer-container group">
+		
+		<!-- Top Bar with Glass Effect -->
+		<div class="top-bar">
+			<h2 class="viewer-title">{title}</h2>
+			<div class="top-bar-controls">
+				<!-- Slide Counter -->
+				<div class="slide-counter">
+					<span class="slide-current">1</span>
+					<span class="slide-separator">/</span>
+					<span class="slide-total">{slideCount}</span>
+				</div>
+				<!-- Keyboard Shortcuts -->
+				<button class="control-btn shortcuts-btn" aria-label="Keyboard shortcuts" title="Keyboard shortcuts (?)">
+					<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+					</svg>
+				</button>
+				<!-- Fullscreen Button -->
+				<button class="control-btn fullscreen-btn" aria-label="Toggle fullscreen">
+					<svg class="fullscreen-expand w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+					</svg>
+					<svg class="fullscreen-compress w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 9V4.5M9 9H4.5M9 9L3.75 3.75M9 15v4.5M9 15H4.5M9 15l-5.25 5.25M15 9h4.5M15 9V4.5M15 9l5.25-5.25M15 15h4.5M15 15v4.5m0-4.5l5.25 5.25" />
+					</svg>
+				</button>
+			</div>
+		</div>
+
+		<!-- Slide Display Area -->
+		<div class="slide-container">
+			<!-- Blur Placeholder -->
+			<div class="slide-placeholder"></div>
+			
+			<!-- Loading Spinner -->
+			<div class="slide-loading">
+				<div class="spinner"></div>
+			</div>
+			
+			<!-- Dual Slide Images for Crossfade -->
+			<img 
+				class="slide-image slide-image-a active"
+				src={slides[0]?.src ?? ''}
+				alt={`Slide 1 of ${slideCount}`}
+				data-slides={JSON.stringify(slides)}
+			/>
+			<img 
+				class="slide-image slide-image-b"
+				src=""
+				alt=""
+			/>
+
+			<!-- Zoom Overlay -->
+			<div class="zoom-overlay hidden">
+				<img class="zoom-image" src="" alt="Zoomed slide" />
+				<button class="zoom-close" aria-label="Close zoom">
+					<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+					</svg>
+				</button>
+				<p class="zoom-hint">Scroll to zoom • Drag to pan • Click to close</p>
+			</div>
+
+			<!-- Navigation Arrows -->
+			<button class="nav-btn prev-btn" aria-label="Previous slide">
+				<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+				</svg>
+			</button>
+			<button class="nav-btn next-btn" aria-label="Next slide">
+				<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+				</svg>
+			</button>
+
+			<!-- Zoom Button -->
+			<button class="zoom-btn" aria-label="Zoom slide">
+				<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+				</svg>
+			</button>
+		</div>
+
+		<!-- Thumbnail Strip -->
+		<div class="thumbnail-strip">
+			{slides.map((slide) => (
+				<button 
+					class="thumbnail-btn"
+					data-slide-num={slide.number}
+					aria-label={`Go to slide ${slide.number}`}
+				>
+					<img 
+						src={slide.src} 
+						alt={`Thumbnail ${slide.number}`}
+						loading="lazy"
+					/>
+					<span class="thumbnail-number">{slide.number}</span>
+				</button>
+			))}
+		</div>
+	</div>
+
+	<!-- Keyboard Shortcuts Modal -->
+	<div class="shortcuts-modal hidden" role="dialog" aria-modal="true" aria-labelledby="shortcuts-title">
+		<div class="shortcuts-backdrop"></div>
+		<div class="shortcuts-content">
+			<h3 id="shortcuts-title">Keyboard Shortcuts</h3>
+			<div class="shortcuts-grid">
+				<div class="shortcut-row">
+					<kbd>←</kbd> <kbd>→</kbd>
+					<span>Navigate slides</span>
+				</div>
+				<div class="shortcut-row">
+					<kbd>Home</kbd> <kbd>End</kbd>
+					<span>First / Last slide</span>
+				</div>
+				<div class="shortcut-row">
+					<kbd>F</kbd>
+					<span>Toggle fullscreen</span>
+				</div>
+				<div class="shortcut-row">
+					<kbd>Z</kbd>
+					<span>Zoom current slide</span>
+				</div>
+				<div class="shortcut-row">
+					<kbd>G</kbd>
+					<span>Grid overview</span>
+				</div>
+				<div class="shortcut-row">
+					<kbd>Esc</kbd>
+					<span>Exit fullscreen / zoom</span>
+				</div>
+				<div class="shortcut-row">
+					<kbd>?</kbd>
+					<span>Show this help</span>
+				</div>
+			</div>
+			<button class="shortcuts-close">Got it</button>
+		</div>
+	</div>
+
+	<!-- Hints -->
+	<p class="viewer-hints">
+		<span class="hint-desktop">Press <kbd>?</kbd> for shortcuts • Click slide to zoom</span>
+		<span class="hint-mobile">Swipe to navigate • Tap slide to zoom</span>
+	</p>
+</div>
+
+<style>
+	/* CSS Variables for theming */
+	.presentation-viewer {
+		--glass-bg: rgba(0, 0, 0, 0.6);
+		--glass-border: rgba(255, 255, 255, 0.1);
+		--glass-blur: 12px;
+		--accent: rgb(234, 88, 12);
+		--accent-glow: rgba(234, 88, 12, 0.4);
+		--transition-slide: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+		--transition-ui: 0.2s ease;
+	}
+
+	/* Progress Bar */
+	.progress-bar-container {
+		position: relative;
+		height: 3px;
+		background: rgba(120, 113, 108, 0.3);
+		border-radius: 3px;
+		margin-bottom: 1rem;
+		overflow: hidden;
+		cursor: pointer;
+	}
+
+	.progress-bar-container:hover {
+		height: 6px;
+	}
+
+	.progress-fill {
+		height: 100%;
+		width: calc(100% / var(--slide-count, 1));
+		background: linear-gradient(90deg, var(--accent), #f97316);
+		border-radius: 3px;
+		transition: width var(--transition-slide), transform var(--transition-slide);
+		box-shadow: 0 0 10px var(--accent-glow);
+	}
+
+	/* Viewer Container */
+	.viewer-container {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		overflow: hidden;
+		border-radius: 1rem;
+		border: 1px solid var(--glass-border);
+		background: linear-gradient(180deg, rgba(28, 25, 23, 0.95) 0%, rgba(12, 10, 9, 0.98) 100%);
+		box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+	}
+
+	/* Top Bar - Glassmorphism */
+	.top-bar {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 0.875rem 1.25rem;
+		background: var(--glass-bg);
+		backdrop-filter: blur(var(--glass-blur));
+		-webkit-backdrop-filter: blur(var(--glass-blur));
+		border-bottom: 1px solid var(--glass-border);
+	}
+
+	.viewer-title {
+		font-size: 0.9375rem;
+		font-weight: 600;
+		color: #fafaf9;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		max-width: 60%;
+	}
+
+	.top-bar-controls {
+		display: flex;
+		align-items: center;
+		gap: 0.75rem;
+	}
+
+	.slide-counter {
+		display: flex;
+		align-items: center;
+		gap: 0.375rem;
+		font-size: 0.875rem;
+		font-weight: 500;
+		color: #a8a29e;
+		font-variant-numeric: tabular-nums;
+	}
+
+	.slide-current {
+		color: #fafaf9;
+		min-width: 1.5ch;
+		text-align: right;
+	}
+
+	.control-btn {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 0.5rem;
+		border-radius: 0.5rem;
+		color: #a8a29e;
+		background: transparent;
+		border: none;
+		cursor: pointer;
+		transition: all var(--transition-ui);
+	}
+
+	.control-btn:hover {
+		color: #fafaf9;
+		background: rgba(255, 255, 255, 0.1);
+	}
+
+	/* Slide Container */
+	.slide-container {
+		position: relative;
+		aspect-ratio: 16 / 9;
+		background: #0a0a0a;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		overflow: hidden;
+	}
+
+	/* Blur Placeholder */
+	.slide-placeholder {
+		position: absolute;
+		inset: 0;
+		background-size: cover;
+		background-position: center;
+		filter: blur(20px);
+		transform: scale(1.1);
+		opacity: 0.5;
+		transition: opacity 0.3s ease;
+	}
+
+	/* Loading Spinner - only show for slow loads */
+	.slide-loading {
+		position: absolute;
+		inset: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: transparent;
+		z-index: 10;
+		opacity: 0;
+		transition: opacity 0.2s ease;
+		pointer-events: none;
+	}
+
+	.slide-loading.visible {
+		opacity: 1;
+	}
+
+	.slide-loading.hidden {
+		opacity: 0;
+		pointer-events: none;
+	}
+
+	.spinner {
+		width: 3rem;
+		height: 3rem;
+		border: 3px solid rgba(120, 113, 108, 0.3);
+		border-top-color: var(--accent);
+		border-radius: 50%;
+		animation: spin 0.8s linear infinite;
+	}
+
+	@keyframes spin {
+		to { transform: rotate(360deg); }
+	}
+
+	/* Slide Image with Crossfade Transition */
+	.slide-image {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: contain;
+		z-index: 5;
+		opacity: 0;
+		transition: opacity 0.3s ease;
+		cursor: zoom-in;
+		pointer-events: none;
+	}
+
+	.slide-image.active {
+		opacity: 1;
+		z-index: 6;
+		pointer-events: auto;
+	}
+
+
+	/* Navigation Buttons - Glassmorphism */
+	.nav-btn {
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+		padding: 0.875rem;
+		background: var(--glass-bg);
+		backdrop-filter: blur(var(--glass-blur));
+		-webkit-backdrop-filter: blur(var(--glass-blur));
+		border: 1px solid var(--glass-border);
+		border-radius: 50%;
+		color: #fafaf9;
+		cursor: pointer;
+		opacity: 0;
+		transition: all var(--transition-ui);
+		z-index: 20;
+	}
+
+	.prev-btn { left: 1rem; }
+	.next-btn { right: 1rem; }
+
+	.slide-container:hover .nav-btn,
+	.nav-btn:focus {
+		opacity: 1;
+	}
+
+	.nav-btn:hover {
+		background: rgba(234, 88, 12, 0.8);
+		border-color: var(--accent);
+		transform: translateY(-50%) scale(1.1);
+		box-shadow: 0 0 20px var(--accent-glow);
+	}
+
+	.nav-btn:disabled {
+		opacity: 0.3;
+		cursor: not-allowed;
+	}
+
+	/* Zoom Button */
+	.zoom-btn {
+		position: absolute;
+		bottom: 1rem;
+		right: 1rem;
+		padding: 0.625rem;
+		background: var(--glass-bg);
+		backdrop-filter: blur(var(--glass-blur));
+		-webkit-backdrop-filter: blur(var(--glass-blur));
+		border: 1px solid var(--glass-border);
+		border-radius: 0.5rem;
+		color: #a8a29e;
+		cursor: pointer;
+		opacity: 0;
+		transition: all var(--transition-ui);
+		z-index: 20;
+	}
+
+	.slide-container:hover .zoom-btn {
+		opacity: 1;
+	}
+
+	.zoom-btn:hover {
+		color: #fafaf9;
+		background: rgba(255, 255, 255, 0.15);
+	}
+
+	/* Zoom Overlay */
+	.zoom-overlay {
+		position: fixed;
+		inset: 0;
+		background: rgba(0, 0, 0, 0.95);
+		z-index: 100;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		cursor: grab;
+	}
+
+	.zoom-overlay:active {
+		cursor: grabbing;
+	}
+
+	.zoom-overlay.hidden {
+		display: none;
+	}
+
+	.zoom-image {
+		max-width: none;
+		max-height: none;
+		transform-origin: center center;
+		transition: transform 0.1s ease-out;
+	}
+
+	.zoom-close {
+		position: absolute;
+		top: 1.5rem;
+		right: 1.5rem;
+		padding: 0.75rem;
+		background: var(--glass-bg);
+		backdrop-filter: blur(var(--glass-blur));
+		border: 1px solid var(--glass-border);
+		border-radius: 50%;
+		color: #fafaf9;
+		cursor: pointer;
+		transition: all var(--transition-ui);
+	}
+
+	.zoom-close:hover {
+		background: rgba(239, 68, 68, 0.8);
+	}
+
+	.zoom-hint {
+		position: absolute;
+		bottom: 2rem;
+		left: 50%;
+		transform: translateX(-50%);
+		padding: 0.5rem 1rem;
+		background: var(--glass-bg);
+		backdrop-filter: blur(var(--glass-blur));
+		border-radius: 0.5rem;
+		font-size: 0.75rem;
+		color: #a8a29e;
+	}
+
+	/* Thumbnail Strip */
+	.thumbnail-strip {
+		display: flex;
+		gap: 0.5rem;
+		padding: 0.75rem 1rem;
+		background: var(--glass-bg);
+		backdrop-filter: blur(var(--glass-blur));
+		-webkit-backdrop-filter: blur(var(--glass-blur));
+		border-top: 1px solid var(--glass-border);
+		overflow-x: auto;
+		scroll-behavior: smooth;
+		scrollbar-width: thin;
+		scrollbar-color: rgba(120, 113, 108, 0.5) transparent;
+	}
+
+	.thumbnail-strip::-webkit-scrollbar {
+		height: 4px;
+	}
+
+	.thumbnail-strip::-webkit-scrollbar-thumb {
+		background: rgba(120, 113, 108, 0.5);
+		border-radius: 2px;
+	}
+
+	.thumbnail-btn {
+		position: relative;
+		flex-shrink: 0;
+		padding: 0;
+		background: none;
+		border: 2px solid transparent;
+		border-radius: 0.375rem;
+		cursor: pointer;
+		opacity: 0.5;
+		transition: all var(--transition-ui);
+		overflow: hidden;
+	}
+
+	.thumbnail-btn img {
+		display: block;
+		height: 3rem;
+		width: auto;
+		object-fit: cover;
+	}
+
+	.thumbnail-btn:hover {
+		opacity: 0.8;
+		transform: translateY(-2px);
+	}
+
+	.thumbnail-btn.active {
+		opacity: 1;
+		border-color: var(--accent);
+		box-shadow: 0 0 12px var(--accent-glow);
+	}
+
+	.thumbnail-number {
+		position: absolute;
+		bottom: 2px;
+		right: 2px;
+		padding: 0.125rem 0.375rem;
+		background: rgba(0, 0, 0, 0.7);
+		border-radius: 0.25rem;
+		font-size: 0.625rem;
+		font-weight: 600;
+		color: #fafaf9;
+	}
+
+	/* Keyboard Shortcuts Modal */
+	.shortcuts-modal {
+		position: fixed;
+		inset: 0;
+		z-index: 200;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.shortcuts-modal.hidden {
+		display: none;
+	}
+
+	.shortcuts-backdrop {
+		position: absolute;
+		inset: 0;
+		background: rgba(0, 0, 0, 0.8);
+		backdrop-filter: blur(4px);
+	}
+
+	.shortcuts-content {
+		position: relative;
+		width: 90%;
+		max-width: 400px;
+		padding: 1.5rem;
+		background: linear-gradient(180deg, rgba(41, 37, 36, 0.98) 0%, rgba(28, 25, 23, 0.98) 100%);
+		border: 1px solid var(--glass-border);
+		border-radius: 1rem;
+		box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+	}
+
+	.shortcuts-content h3 {
+		margin: 0 0 1.25rem;
+		font-size: 1.125rem;
+		font-weight: 600;
+		color: #fafaf9;
+		text-align: center;
+	}
+
+	.shortcuts-grid {
+		display: flex;
+		flex-direction: column;
+		gap: 0.75rem;
+	}
+
+	.shortcut-row {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		font-size: 0.875rem;
+		color: #a8a29e;
+	}
+
+	.shortcut-row kbd {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		min-width: 1.75rem;
+		padding: 0.25rem 0.5rem;
+		background: rgba(255, 255, 255, 0.1);
+		border: 1px solid rgba(255, 255, 255, 0.2);
+		border-radius: 0.375rem;
+		font-family: inherit;
+		font-size: 0.75rem;
+		font-weight: 500;
+		color: #fafaf9;
+	}
+
+	.shortcut-row span {
+		margin-left: auto;
+	}
+
+	.shortcuts-close {
+		display: block;
+		width: 100%;
+		margin-top: 1.5rem;
+		padding: 0.75rem;
+		background: var(--accent);
+		border: none;
+		border-radius: 0.5rem;
+		font-weight: 600;
+		color: #fafaf9;
+		cursor: pointer;
+		transition: all var(--transition-ui);
+	}
+
+	.shortcuts-close:hover {
+		background: #ea580c;
+		transform: translateY(-1px);
+	}
+
+	/* Viewer Hints */
+	.viewer-hints {
+		margin-top: 0.75rem;
+		text-align: center;
+		font-size: 0.75rem;
+		color: #78716c;
+	}
+
+	.viewer-hints kbd {
+		padding: 0.125rem 0.375rem;
+		background: rgba(120, 113, 108, 0.2);
+		border-radius: 0.25rem;
+		font-family: inherit;
+	}
+
+	.hint-mobile { display: none; }
+
+	/* Fullscreen Mode */
+	.presentation-viewer.fullscreen {
+		position: fixed;
+		inset: 0;
+		z-index: 50;
+		padding: 0;
+		background: #000;
+		border-radius: 0;
+	}
+
+	.presentation-viewer.fullscreen .progress-bar-container {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		z-index: 30;
+		margin: 0;
+		border-radius: 0;
+	}
+
+	.presentation-viewer.fullscreen .viewer-container {
+		height: 100%;
+		border-radius: 0;
+		border: none;
+	}
+
+	.presentation-viewer.fullscreen .slide-container {
+		flex: 1;
+		aspect-ratio: unset;
+	}
+
+	.presentation-viewer.fullscreen .viewer-hints {
+		display: none;
+	}
+
+	/* Mobile Responsive */
+	@media (max-width: 640px) {
+		.viewer-title {
+			font-size: 0.8125rem;
+			max-width: 50%;
+		}
+
+		.nav-btn {
+			padding: 0.75rem;
+			opacity: 0.7;
+		}
+
+		.prev-btn { left: 0.5rem; }
+		.next-btn { right: 0.5rem; }
+
+		.thumbnail-btn img {
+			height: 2.5rem;
+		}
+
+		.hint-desktop { display: none; }
+		.hint-mobile { display: inline; }
+
+		.shortcuts-btn {
+			display: none;
+		}
+	}
+
+	/* Touch optimizations */
+	@media (hover: none) and (pointer: coarse) {
+		.nav-btn {
+			opacity: 0.8;
+			padding: 1rem;
+		}
+
+		.zoom-btn {
+			opacity: 0.8;
+		}
+	}
+
+	/* Light Mode Support */
+	:root:not(.dark) .presentation-viewer,
+	:global(.light) .presentation-viewer {
+		--glass-bg: rgba(255, 255, 255, 0.8);
+		--glass-border: rgba(120, 113, 108, 0.2);
+	}
+
+	:root:not(.dark) .viewer-container,
+	:global(.light) .viewer-container {
+		background: linear-gradient(180deg, #ffffff 0%, #fafaf9 100%);
+		border-color: rgba(120, 113, 108, 0.2);
+		box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+	}
+
+	:root:not(.dark) .top-bar,
+	:global(.light) .top-bar {
+		background: rgba(255, 255, 255, 0.9);
+		border-color: rgba(120, 113, 108, 0.15);
+	}
+
+	:root:not(.dark) .viewer-title,
+	:global(.light) .viewer-title {
+		color: #1c1917;
+	}
+
+	:root:not(.dark) .slide-counter,
+	:global(.light) .slide-counter {
+		color: #78716c;
+	}
+
+	:root:not(.dark) .slide-current,
+	:global(.light) .slide-current {
+		color: #1c1917;
+	}
+
+	:root:not(.dark) .control-btn,
+	:global(.light) .control-btn {
+		color: #78716c;
+	}
+
+	:root:not(.dark) .control-btn:hover,
+	:global(.light) .control-btn:hover {
+		color: #1c1917;
+		background: rgba(0, 0, 0, 0.05);
+	}
+
+	:root:not(.dark) .slide-container,
+	:global(.light) .slide-container {
+		background: #e7e5e4;
+	}
+
+	:root:not(.dark) .thumbnail-strip,
+	:global(.light) .thumbnail-strip {
+		background: rgba(255, 255, 255, 0.9);
+		border-color: rgba(120, 113, 108, 0.15);
+	}
+
+	:root:not(.dark) .thumbnail-number,
+	:global(.light) .thumbnail-number {
+		background: rgba(0, 0, 0, 0.6);
+	}
+
+	:root:not(.dark) .nav-btn,
+	:global(.light) .nav-btn {
+		background: rgba(255, 255, 255, 0.9);
+		border-color: rgba(120, 113, 108, 0.2);
+		color: #1c1917;
+	}
+
+	:root:not(.dark) .nav-btn:hover,
+	:global(.light) .nav-btn:hover {
+		background: rgba(234, 88, 12, 0.9);
+		border-color: var(--accent);
+		color: #fafaf9;
+	}
+
+	:root:not(.dark) .zoom-btn,
+	:global(.light) .zoom-btn {
+		background: rgba(255, 255, 255, 0.9);
+		border-color: rgba(120, 113, 108, 0.2);
+		color: #57534e;
+	}
+
+	:root:not(.dark) .zoom-btn:hover,
+	:global(.light) .zoom-btn:hover {
+		color: #1c1917;
+		background: rgba(255, 255, 255, 0.95);
+	}
+
+	:root:not(.dark) .shortcuts-content,
+	:global(.light) .shortcuts-content {
+		background: linear-gradient(180deg, #ffffff 0%, #fafaf9 100%);
+		border-color: rgba(120, 113, 108, 0.2);
+	}
+
+	:root:not(.dark) .shortcuts-content h3,
+	:global(.light) .shortcuts-content h3 {
+		color: #1c1917;
+	}
+
+	:root:not(.dark) .shortcut-row,
+	:global(.light) .shortcut-row {
+		color: #57534e;
+	}
+
+	:root:not(.dark) .shortcut-row kbd,
+	:global(.light) .shortcut-row kbd {
+		background: rgba(0, 0, 0, 0.05);
+		border-color: rgba(0, 0, 0, 0.1);
+		color: #1c1917;
+	}
+
+	:root:not(.dark) .viewer-hints,
+	:global(.light) .viewer-hints {
+		color: #78716c;
+	}
+
+	:root:not(.dark) .viewer-hints kbd,
+	:global(.light) .viewer-hints kbd {
+		background: rgba(0, 0, 0, 0.05);
+	}
+
+	:root:not(.dark) .progress-bar-container,
+	:global(.light) .progress-bar-container {
+		background: rgba(120, 113, 108, 0.15);
+	}
+</style>
+
+<script>
+	document.addEventListener('DOMContentLoaded', () => {
+		const viewers = document.querySelectorAll('.presentation-viewer');
+		
+		viewers.forEach((viewerEl) => {
+			const viewer = viewerEl as HTMLElement;
+			let currentSlide = 1;
+			const slideCount = parseInt(viewer.dataset.slideCount || '1');
+			
+			// DOM Elements - dual images for crossfade
+			const slideImageA = viewer.querySelector('.slide-image-a') as HTMLImageElement;
+			const slideImageB = viewer.querySelector('.slide-image-b') as HTMLImageElement;
+			let activeImage: HTMLImageElement = slideImageA;
+			let inactiveImage: HTMLImageElement = slideImageB;
+			
+			const slideLoading = viewer.querySelector('.slide-loading') as HTMLElement;
+			const slidePlaceholder = viewer.querySelector('.slide-placeholder') as HTMLElement;
+			const slideCounter = viewer.querySelector('.slide-current') as HTMLElement;
+			const prevBtn = viewer.querySelector('.prev-btn') as HTMLButtonElement;
+			const nextBtn = viewer.querySelector('.next-btn') as HTMLButtonElement;
+			const fullscreenBtn = viewer.querySelector('.fullscreen-btn') as HTMLButtonElement;
+			const shortcutsBtn = viewer.querySelector('.shortcuts-btn') as HTMLButtonElement;
+			const shortcutsModal = viewer.querySelector('.shortcuts-modal') as HTMLElement;
+			const shortcutsClose = viewer.querySelector('.shortcuts-close') as HTMLButtonElement;
+			const shortcutsBackdrop = viewer.querySelector('.shortcuts-backdrop') as HTMLElement;
+			const thumbnailBtns = viewer.querySelectorAll('.thumbnail-btn');
+			const thumbnailStrip = viewer.querySelector('.thumbnail-strip') as HTMLElement;
+			const progressFill = viewer.querySelector('.progress-fill') as HTMLElement;
+			const progressBar = viewer.querySelector('.progress-bar-container') as HTMLElement;
+			const zoomBtn = viewer.querySelector('.zoom-btn') as HTMLButtonElement;
+			const zoomOverlay = viewer.querySelector('.zoom-overlay') as HTMLElement;
+			const zoomImage = viewer.querySelector('.zoom-image') as HTMLImageElement;
+			const zoomClose = viewer.querySelector('.zoom-close') as HTMLButtonElement;
+			const slideContainer = viewer.querySelector('.slide-container') as HTMLElement;
+			
+			const slides = JSON.parse(slideImageA?.dataset.slides || '[]');
+			
+			// Set CSS variable for progress bar
+			viewer.style.setProperty('--slide-count', String(slideCount));
+			
+			// Update progress bar
+			function updateProgress() {
+				const percentage = (currentSlide / slideCount) * 100;
+				progressFill.style.width = `${percentage}%`;
+			}
+			
+			// Update slide with TRUE crossfade using dual images
+			function updateSlide(num: number) {
+				if (num < 1 || num > slideCount) return;
+				if (num === currentSlide) return; // No change needed
+				
+				currentSlide = num;
+				const slide = slides[num - 1];
+				
+				// Set blur placeholder immediately
+				if (slidePlaceholder) {
+					slidePlaceholder.style.backgroundImage = `url(${slide.src})`;
+				}
+				
+				// Delayed spinner - only show if load takes > 300ms
+				let spinnerTimeout: ReturnType<typeof setTimeout> | null = setTimeout(() => {
+					slideLoading.classList.add('visible');
+				}, 300);
+				
+				// Preload next image into inactive element
+				inactiveImage.onload = () => {
+					// Clear spinner timeout
+					if (spinnerTimeout) {
+						clearTimeout(spinnerTimeout);
+						spinnerTimeout = null;
+					}
+					slideLoading.classList.remove('visible');
+					slideLoading.classList.add('hidden');
+					
+					// Crossfade: swap active states
+					activeImage.classList.remove('active');
+					inactiveImage.classList.add('active');
+					
+					// Swap references for next transition
+					const temp = activeImage;
+					activeImage = inactiveImage;
+					inactiveImage = temp;
+				};
+				
+				// Set the source on inactive image (triggers load)
+				inactiveImage.src = slide.src;
+				inactiveImage.alt = `Slide ${num} of ${slideCount}`;
+				
+				// Update counter
+				slideCounter.textContent = String(num);
+				
+				// Update progress
+				updateProgress();
+				
+				// Update thumbnails
+				thumbnailBtns.forEach((btn) => {
+					const btnNum = parseInt((btn as HTMLElement).dataset.slideNum || '0');
+					btn.classList.toggle('active', btnNum === num);
+					
+					// Scroll active thumbnail into view
+					if (btnNum === num && thumbnailStrip) {
+						(btn as HTMLElement).scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+					}
+				});
+			}
+			
+			// Initial state - first image already active
+			slideLoading.classList.add('hidden');
+			if (slidePlaceholder && slideImageA.src) {
+				slidePlaceholder.style.backgroundImage = `url(${slideImageA.src})`;
+			}
+			
+			// Navigation
+			prevBtn?.addEventListener('click', () => updateSlide(currentSlide - 1));
+			nextBtn?.addEventListener('click', () => updateSlide(currentSlide + 1));
+			
+			// Thumbnail clicks
+			thumbnailBtns.forEach((btn) => {
+				btn.addEventListener('click', () => {
+					const num = parseInt((btn as HTMLElement).dataset.slideNum || '1');
+					updateSlide(num);
+				});
+			});
+			
+			// Progress bar click-to-seek
+			progressBar?.addEventListener('click', (e) => {
+				const rect = progressBar.getBoundingClientRect();
+				const percent = (e.clientX - rect.left) / rect.width;
+				const targetSlide = Math.max(1, Math.min(slideCount, Math.ceil(percent * slideCount)));
+				updateSlide(targetSlide);
+			});
+			
+			// Touch/Swipe support
+			let touchStartX = 0;
+			let touchStartY = 0;
+			let isSwiping = false;
+			
+			slideContainer?.addEventListener('touchstart', (e) => {
+				const touch = e.touches[0];
+				if (!touch) return;
+				touchStartX = touch.clientX;
+				touchStartY = touch.clientY;
+				isSwiping = true;
+			}, { passive: true });
+			
+			slideContainer?.addEventListener('touchmove', (e) => {
+				if (!isSwiping) return;
+				const touch = e.touches[0];
+				if (!touch) return;
+				const deltaY = Math.abs(touch.clientY - touchStartY);
+				// If scrolling vertically, don't swipe
+				if (deltaY > 30) {
+					isSwiping = false;
+				}
+			}, { passive: true });
+			
+			slideContainer?.addEventListener('touchend', (e) => {
+				if (!isSwiping) return;
+				const touch = e.changedTouches[0];
+				if (!touch) return;
+				const touchEndX = touch.clientX;
+				const deltaX = touchEndX - touchStartX;
+				
+				if (Math.abs(deltaX) > 50) {
+					if (deltaX < 0) {
+						updateSlide(currentSlide + 1);
+					} else {
+						updateSlide(currentSlide - 1);
+					}
+				}
+				isSwiping = false;
+			});
+			
+			// Zoom functionality
+			let zoomScale = 1;
+			let zoomPosX = 0;
+			let zoomPosY = 0;
+			let isDragging = false;
+			let dragStartX = 0;
+			let dragStartY = 0;
+			
+			function openZoom() {
+				zoomScale = 1;
+				zoomPosX = 0;
+				zoomPosY = 0;
+				zoomImage.src = activeImage.src;
+				zoomImage.style.transform = `translate(${zoomPosX}px, ${zoomPosY}px) scale(${zoomScale})`;
+				zoomOverlay.classList.remove('hidden');
+				document.body.style.overflow = 'hidden';
+			}
+			
+			function closeZoom() {
+				zoomOverlay.classList.add('hidden');
+				document.body.style.overflow = '';
+			}
+			
+			zoomBtn?.addEventListener('click', openZoom);
+			slideImageA?.addEventListener('click', openZoom);
+			slideImageB?.addEventListener('click', openZoom);
+			zoomClose?.addEventListener('click', closeZoom);
+			
+			zoomOverlay?.addEventListener('click', (e) => {
+				if (e.target === zoomOverlay) closeZoom();
+			});
+			
+			zoomOverlay?.addEventListener('wheel', (e) => {
+				e.preventDefault();
+				const delta = e.deltaY > 0 ? -0.2 : 0.2;
+				zoomScale = Math.max(0.5, Math.min(5, zoomScale + delta));
+				zoomImage.style.transform = `translate(${zoomPosX}px, ${zoomPosY}px) scale(${zoomScale})`;
+			});
+			
+			zoomImage?.addEventListener('mousedown', (e) => {
+				isDragging = true;
+				dragStartX = e.clientX - zoomPosX;
+				dragStartY = e.clientY - zoomPosY;
+			});
+			
+			document.addEventListener('mousemove', (e) => {
+				if (!isDragging) return;
+				zoomPosX = e.clientX - dragStartX;
+				zoomPosY = e.clientY - dragStartY;
+				zoomImage.style.transform = `translate(${zoomPosX}px, ${zoomPosY}px) scale(${zoomScale})`;
+			});
+			
+			document.addEventListener('mouseup', () => {
+				isDragging = false;
+			});
+			
+			// Keyboard shortcuts
+			document.addEventListener('keydown', (e) => {
+				// Don't trigger if typing in an input
+				if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+				
+				switch (e.key) {
+					case 'ArrowLeft':
+						updateSlide(currentSlide - 1);
+						break;
+					case 'ArrowRight':
+						updateSlide(currentSlide + 1);
+						break;
+					case 'Home':
+						updateSlide(1);
+						break;
+					case 'End':
+						updateSlide(slideCount);
+						break;
+					case 'f':
+					case 'F':
+						fullscreenBtn?.click();
+						break;
+					case 'z':
+					case 'Z':
+						if (!zoomOverlay.classList.contains('hidden')) {
+							closeZoom();
+						} else {
+							openZoom();
+						}
+						break;
+					case '?':
+						shortcutsModal.classList.toggle('hidden');
+						break;
+					case 'Escape':
+						if (!zoomOverlay.classList.contains('hidden')) {
+							closeZoom();
+						} else if (viewer.classList.contains('fullscreen')) {
+							viewer.classList.remove('fullscreen');
+							fullscreenBtn?.querySelector('.fullscreen-expand')?.classList.remove('hidden');
+							fullscreenBtn?.querySelector('.fullscreen-compress')?.classList.add('hidden');
+						} else if (!shortcutsModal.classList.contains('hidden')) {
+							shortcutsModal.classList.add('hidden');
+						}
+						break;
+				}
+			});
+			
+			// Shortcuts modal
+			shortcutsBtn?.addEventListener('click', () => {
+				shortcutsModal.classList.remove('hidden');
+			});
+			
+			shortcutsClose?.addEventListener('click', () => {
+				shortcutsModal.classList.add('hidden');
+			});
+			
+			shortcutsBackdrop?.addEventListener('click', () => {
+				shortcutsModal.classList.add('hidden');
+			});
+			
+			// Fullscreen toggle
+			fullscreenBtn?.addEventListener('click', () => {
+				viewer.classList.toggle('fullscreen');
+				const isFullscreen = viewer.classList.contains('fullscreen');
+				fullscreenBtn.querySelector('.fullscreen-expand')?.classList.toggle('hidden', isFullscreen);
+				fullscreenBtn.querySelector('.fullscreen-compress')?.classList.toggle('hidden', !isFullscreen);
+			});
+			
+			// Initialize
+			thumbnailBtns[0]?.classList.add('active');
+			updateProgress();
+		});
+	});
+</script>

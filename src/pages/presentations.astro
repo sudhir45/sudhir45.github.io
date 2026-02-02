@@ -1,0 +1,46 @@
+---
+import { AppConfig } from '@/utils/AppConfig';
+import Base from '@/layouts/Base.astro';
+import Section from '@/components/Section.astro';
+import PresentationCard from '@/components/PresentationCard.astro';
+import presentations from '@/data/presentations.json';
+
+const title = `Presentations | ${AppConfig.site_name}`;
+const description = 'Browse my collection of security presentations and talks.';
+---
+
+<Base head={{ title, description }}>
+	<Section>
+		<div class="py-8">
+			<!-- Header -->
+			<div class="mb-8">
+				<h1 class="mb-3 text-3xl font-bold tracking-tight text-stone-900 dark:text-stone-100">
+					Presentations
+				</h1>
+				<p class="text-lg text-stone-600 dark:text-stone-400">
+					Browse my collection of security presentations and talks.
+				</p>
+			</div>
+
+			<!-- Presentations Grid -->
+			<div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+				{presentations.map((pres) => (
+					<PresentationCard 
+						slug={pres.slug}
+						title={pres.title}
+						description={pres.description}
+						thumbnail={pres.thumbnail}
+						slideCount={pres.slideCount}
+						category={pres.category}
+					/>
+				))}
+			</div>
+
+			{presentations.length === 0 && (
+				<div class="rounded-xl border border-stone-200 bg-stone-50 py-16 text-center dark:border-stone-800 dark:bg-stone-900">
+					<p class="text-stone-600 dark:text-stone-400">No presentations available yet.</p>
+				</div>
+			)}
+		</div>
+	</Section>
+</Base>
