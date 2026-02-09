@@ -78,7 +78,9 @@ So what? Your filters didn't stop the hack, because the model wasn't "breaking" 
 If you're building with LLMs today, you need a different playbook. Here's the pragmatic checklist:
 
 <picture>
+  <source srcset="/images/Prompt_Injection_Dark.webp" type="image/webp" media="(prefers-color-scheme: dark)" />
   <source srcset="/images/Prompt_Injection_Dark.png" media="(prefers-color-scheme: dark)" />
+  <source srcset="/images/Prompt_Injection_light.webp" type="image/webp" />
   <img src="/images/Prompt_Injection_light.png" alt="Prompt Injection" width="536" height="294" style="float: right; margin-left: 20px;" />
 </picture>
 

@@ -16,7 +16,9 @@ Three tries and some mild swearing later, you remember the cryptic mess the syst
 Success! But wait - where did you even write that down? Sticky note? Notes app? Facepalm.
 
 <picture>
+  <source srcset="/images/seasawsecuritydark.webp" type="image/webp" media="(prefers-color-scheme: dark)" />
   <source srcset="/images/seasawsecuritydark.png" media="(prefers-color-scheme: dark)" />
+  <source srcset="/images/seasawsecurity.webp" type="image/webp" />
   <img src="/images/seasawsecurity.png" alt="Security vs. Usability Seesaw" width="400" height="400" style="float: left; margin-right: 20px;" />
 </picture>
 
@@ -57,7 +59,9 @@ Let's see this classic security-usability tug-of-war in action.
 Let me explain this without the startup pitch.
 
 <picture>
+  <source srcset="/images/frustratedguydark.webp" type="image/webp" media="(prefers-color-scheme: dark)" />
   <source srcset="/images/frustratedguydark.png" media="(prefers-color-scheme: dark)" />
+  <source srcset="/images/frustratedguy.webp" type="image/webp" />
   <img src="/images/frustratedguy.png" alt="A frustrated user at their computer" width="400" height="400" style="float: right; margin-left: 20px;" />
 </picture>
 

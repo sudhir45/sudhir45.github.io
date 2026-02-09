@@ -24,7 +24,10 @@ Basically, AI is becoming another tool in our arsenal. It won't replace us (yet!
 
 ---
 
-<img src="/images/AIinCyberSec.png" alt="AI in IT Infrastructure and Cybersecurity" width="972" height="589" />
+<picture>
+  <source srcset="/images/AIinCyberSec.webp" type="image/webp" />
+  <img src="/images/AIinCyberSec.png" alt="AI in IT Infrastructure and Cybersecurity" width="972" height="589" />
+</picture>
 
 _AI in IT Infrastructure and Cybersecurity_
 

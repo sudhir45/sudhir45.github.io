@@ -63,9 +63,9 @@
 </div>
 
 <script>
-    import Fuse from 'fuse.js';
-
     let fuse: any;
+    let initPromise: Promise<void> | null = null;
+    let pendingQuery = '';
     const modal = document.getElementById('search-modal');
     const trigger = document.getElementById('search-trigger');
     const input = document.getElementById('search-input') as HTMLInputElement;
@@ -75,9 +75,13 @@
     // Fetch data once and initialize Fuse
     async function initSearch() {
         if (fuse) return;
-        
-        try {
-            const res = await fetch('/search.json');
+        if (initPromise) return initPromise;
+
+        initPromise = (async () => {
+            const [{ default: Fuse }, res] = await Promise.all([
+                import('fuse.js'),
+                fetch('/search.json')
+            ]);
             const data = await res.json();
             
             fuse = new Fuse(data, {
@@ -89,9 +93,15 @@
                 includeScore: true,
                 threshold: 0.3,
             });
-        } catch (e) {
-            console.error('Failed to load search index', e);
-        }
+        })()
+            .catch((e) => {
+                console.error('Failed to load search index', e);
+            })
+            .finally(() => {
+                initPromise = null;
+            });
+
+        return initPromise;
     }
 
     function openModal() {
@@ -110,6 +120,7 @@
         resultsList?.appendChild(emptyState!);
         emptyState?.classList.add('hidden');
         document.body.style.overflow = '';
+        pendingQuery = '';
     }
 
     // Render a single result item
@@ -130,9 +141,23 @@
         return li;
     }
 
+    function runSearch(query: string) {
+        const results = fuse.search(query);
+        
+        if (results.length === 0) {
+            emptyState?.classList.remove('hidden');
+        } else {
+            emptyState?.classList.add('hidden');
+            results.forEach(({ item }: { item: any }) => {
+                resultsList?.appendChild(createResultItem(item));
+            });
+        }
+    }
+
     // Handle Input
     input?.addEventListener('input', (e) => {
         const query = (e.target as HTMLInputElement).value;
+        pendingQuery = query;
         
         // Clear previous results (except empty state)
         Array.from(resultsList?.children || []).forEach(child => {
@@ -144,18 +169,16 @@
             return;
         }
 
-        if (fuse) {
-            const results = fuse.search(query);
-            
-            if (results.length === 0) {
-                emptyState?.classList.remove('hidden');
-            } else {
-                emptyState?.classList.add('hidden');
-                results.forEach(({ item }: { item: any }) => {
-                    resultsList?.appendChild(createResultItem(item));
-                });
-            }
+        if (!fuse) {
+            initSearch().then(() => {
+                if (fuse && pendingQuery === query) {
+                    runSearch(query);
+                }
+            });
+            return;
         }
+
+        runSearch(query);
     });
 
     // Event Listeners

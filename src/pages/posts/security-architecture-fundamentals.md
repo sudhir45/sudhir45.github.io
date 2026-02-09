@@ -28,7 +28,9 @@ Welcome to the world of **Security Architecture**, where paranoia isn't a flaw -
 ---
 
 <picture>
+  <source srcset="/images/Secure_Architecture_Dark.webp" type="image/webp" media="(prefers-color-scheme: dark)" />
   <source srcset="/images/Secure_Architecture_Dark.png" media="(prefers-color-scheme: dark)" />
+  <source srcset="/images/Secure_Architecture.webp" type="image/webp" />
   <img src="/images/Secure_Architecture.png" alt="Security Architecture" width="700" height="668" />
 </picture>
 

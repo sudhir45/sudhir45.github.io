@@ -70,7 +70,10 @@ This last one was a real head-scratcher - a full-on reverse engineering problem.
 
     * I went straight to the `main` function (the starting point of most programs) and saw it was calling another function named `process_binary_sequence`. That sounded like where all the important stuff was happening.
 
-<img src="/images/binary_seq_main.png" alt="Binary Sequence (main)" width="650" height="455" />
+<picture>
+  <source srcset="/images/binary_seq_main.webp" type="image/webp" />
+  <img src="/images/binary_seq_main.png" alt="Binary Sequence (main)" width="650" height="455" />
+</picture>
 
 * **Deconstructing the Algorithm:**
 
@@ -78,7 +81,10 @@ This last one was a real head-scratcher - a full-on reverse engineering problem.
 
     2.  I found the big array of numbers stored in a different part of the program's memory.
 
-<img src="/images/function_ghidra.png" alt="Ghidra function analysis" width="650" height="455" />
+<picture>
+  <source srcset="/images/function_ghidra.webp" type="image/webp" />
+  <img src="/images/function_ghidra.png" alt="Ghidra function analysis" width="650" height="455" />
+</picture>
 
 * **Re-implementing the Decryptor:**
     After trying a lot of things, instead of trying to debug the live program, I figured it'd be easier to just copy its logic. I grabbed the array of numbers, the shift value, and the pad value, and just rebuilt the whole decryption algorithm in Python.
