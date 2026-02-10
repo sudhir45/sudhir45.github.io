@@ -4,6 +4,7 @@ import Navbar from '@/components/Navbar.astro';
 import { AppConfig } from '@/utils/AppConfig';
 import '@/styles/global.css';
 import GoogleAnalytics from '@/components/GoogleAnalytics.astro';
+import { ViewTransitions } from 'astro:transitions';
 
 export interface Props {
 	head: {
@@ -86,6 +87,7 @@ const {
 		})} />
 
 		<GoogleAnalytics />
+		<ViewTransitions />
 	</head>
 	<body
 		class="flex min-h-screen flex-col bg-white font-mono text-stone-900 antialiased dark:bg-stone-950 dark:text-stone-100"

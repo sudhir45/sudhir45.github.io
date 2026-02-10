@@ -23,7 +23,7 @@
 @layer base {
     html {
         @apply antialiased;
-        font-feature-settings: "kern" 1, "liga" 1;
+        font-feature-settings: "kern" 1, "liga" 1, "cv11" 1;
         text-rendering: optimizeLegibility;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
@@ -34,10 +34,10 @@
         letter-spacing: -0.01em;
     }
 
-    /* Smooth transitions for theme changes */
-    * {
-        @apply transition-colors duration-200;
-    }
+    /* Fluid type scale for headings */
+    h1 { font-size: clamp(1.875rem, 1.5rem + 1.5vw, 3rem); }
+    h2 { font-size: clamp(1.5rem, 1.25rem + 1vw, 2.25rem); }
+    h3 { font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.75rem); }
 
     /* Focus styles for accessibility */
     a:focus-visible,

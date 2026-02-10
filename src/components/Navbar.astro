@@ -122,65 +122,76 @@ import Search from './Search.astro';
 </Section>
 
 <script>
-	// Theme switching functionality
-	const lightSwitches = document.querySelectorAll('.light-switch');
+	document.addEventListener('astro:page-load', () => {
+		// Theme switching functionality
+		const lightSwitches = document.querySelectorAll('.light-switch');
 
-	function applyTheme(isDark: boolean) {
-		if (isDark) {
-			document.documentElement.classList.add('dark');
-			localStorage.setItem('theme', 'dark');
-		} else {
-			document.documentElement.classList.remove('dark');
-			localStorage.setItem('theme', 'light');
-		}
-	}
-
-	if (lightSwitches.length > 0) {
-		// Initialize theme based on localStorage (default to dark if no preference)
-		const storedTheme = localStorage.getItem('theme');
-		const isDarkTheme = storedTheme === null ? true : storedTheme === 'dark';
-		applyTheme(isDarkTheme);
-
-		// Set initial state of switches
-		lightSwitches.forEach((lightSwitch) => {
-			(lightSwitch as HTMLInputElement).checked = isDarkTheme;
-		});
-
-		// Add click event listeners
-		lightSwitches.forEach((lightSwitch) => {
-			(lightSwitch as HTMLInputElement).addEventListener('click', () => {
-				const isChecked = (lightSwitch as HTMLInputElement).checked;
-				// Apply theme
-				applyTheme(isChecked);
-			});
-		});
-	}
-
-	// Mobile menu toggle functionality
-	const mobileMenuButton = document.getElementById('mobile-menu-button');
-	const mobileMenu = document.getElementById('mobile-menu');
-
-	if (mobileMenuButton && mobileMenu) {
-		mobileMenuButton.addEventListener('click', () => {
-			const expanded = mobileMenuButton.getAttribute('aria-expanded') === 'true' || false;
-			const newExpanded = !expanded;
-			mobileMenuButton.setAttribute('aria-expanded', newExpanded.toString());
-			mobileMenu.classList.toggle('hidden');
-
-			// Change burger icon to X when menu is open
-			if (!expanded) {
-				mobileMenuButton.innerHTML = `
-					<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-						<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-					</svg>
-				`;
+		function applyTheme(isDark: boolean) {
+			if (isDark) {
+				document.documentElement.classList.add('dark');
+				localStorage.setItem('theme', 'dark');
 			} else {
-				mobileMenuButton.innerHTML = `
-					<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-						<path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-					</svg>
-				`;
+				document.documentElement.classList.remove('dark');
+				localStorage.setItem('theme', 'light');
 			}
-		});
-	}
+		}
+
+		if (lightSwitches.length > 0) {
+			// Initialize theme based on localStorage (default to dark if no preference)
+			const storedTheme = localStorage.getItem('theme');
+			const isDarkTheme = storedTheme === null ? true : storedTheme === 'dark';
+			applyTheme(isDarkTheme);
+
+			// Set initial state of switches
+			lightSwitches.forEach((lightSwitch) => {
+				(lightSwitch as HTMLInputElement).checked = isDarkTheme;
+			});
+
+			// Add click event listeners
+			lightSwitches.forEach((lightSwitch) => {
+				(lightSwitch as HTMLInputElement).addEventListener('click', () => {
+					const isChecked = (lightSwitch as HTMLInputElement).checked;
+					// Apply theme
+					applyTheme(isChecked);
+				});
+			});
+		}
+
+		// Mobile menu toggle functionality
+		const mobileMenuButton = document.getElementById('mobile-menu-button');
+		const mobileMenu = document.getElementById('mobile-menu');
+
+		if (mobileMenuButton && mobileMenu) {
+			// Reset mobile menu state on navigation
+			mobileMenu.classList.add('hidden');
+			mobileMenuButton.setAttribute('aria-expanded', 'false');
+			mobileMenuButton.innerHTML = `
+				<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+					<path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+				</svg>
+			`;
+
+			mobileMenuButton.addEventListener('click', () => {
+				const expanded = mobileMenuButton.getAttribute('aria-expanded') === 'true' || false;
+				const newExpanded = !expanded;
+				mobileMenuButton.setAttribute('aria-expanded', newExpanded.toString());
+				mobileMenu.classList.toggle('hidden');
+
+				// Change burger icon to X when menu is open
+				if (!expanded) {
+					mobileMenuButton.innerHTML = `
+						<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+							<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+						</svg>
+					`;
+				} else {
+					mobileMenuButton.innerHTML = `
+						<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+							<path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+						</svg>
+					`;
+				}
+			});
+		}
+	});
 </script>
