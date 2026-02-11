@@ -864,11 +864,28 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 </style>
 
 <script>
-	document.addEventListener('DOMContentLoaded', () => {
+	// Use a setup function so we can properly clean up on View Transition navigations.
+	// DOMContentLoaded does NOT re-fire after Astro View Transitions, so we use
+	// astro:page-load which fires on both initial load and after client-side navigations.
+	
+	function setupPresentationViewers() {
 		const viewers = document.querySelectorAll('.presentation-viewer');
+		
+		// Track document-level listeners for cleanup
+		const documentListeners: Array<{ type: string; handler: EventListener }> = [];
+		
+		function addDocumentListener(type: string, handler: EventListener) {
+			document.addEventListener(type, handler);
+			documentListeners.push({ type, handler });
+		}
 		
 		viewers.forEach((viewerEl) => {
 			const viewer = viewerEl as HTMLElement;
+			
+			// Prevent double-initialization
+			if (viewer.dataset.initialized === 'true') return;
+			viewer.dataset.initialized = 'true';
+			
 			let currentSlide = 1;
 			const slideCount = parseInt(viewer.dataset.slideCount || '1');
 			
@@ -1081,19 +1098,20 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 				dragStartY = e.clientY - zoomPosY;
 			});
 			
-			document.addEventListener('mousemove', (e) => {
+			// Document-level listeners (need cleanup on navigation)
+			addDocumentListener('mousemove', ((e: MouseEvent) => {
 				if (!isDragging) return;
 				zoomPosX = e.clientX - dragStartX;
 				zoomPosY = e.clientY - dragStartY;
 				zoomImage.style.transform = `translate(${zoomPosX}px, ${zoomPosY}px) scale(${zoomScale})`;
-			});
+			}) as EventListener);
 			
-			document.addEventListener('mouseup', () => {
+			addDocumentListener('mouseup', (() => {
 				isDragging = false;
-			});
+			}) as EventListener);
 			
 			// Keyboard shortcuts
-			document.addEventListener('keydown', (e) => {
+			addDocumentListener('keydown', ((e: KeyboardEvent) => {
 				// Don't trigger if typing in an input
 				if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
 				
@@ -1137,7 +1155,7 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 						}
 						break;
 				}
-			});
+			}) as EventListener);
 			
 			// Shortcuts modal
 			shortcutsBtn?.addEventListener('click', () => {
@@ -1164,5 +1182,21 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 			thumbnailBtns[0]?.classList.add('active');
 			updateProgress();
 		});
-	});
+		
+		// Clean up document-level listeners when navigating away (View Transitions)
+		document.addEventListener('astro:before-swap', () => {
+			documentListeners.forEach(({ type, handler }) => {
+				document.removeEventListener(type, handler);
+			});
+			documentListeners.length = 0;
+			
+			// Reset initialized flag on viewers so they can re-initialize on the new page
+			viewers.forEach((viewerEl) => {
+				(viewerEl as HTMLElement).dataset.initialized = '';
+			});
+		}, { once: true });
+	}
+	
+	// astro:page-load fires on initial load AND after every View Transition navigation
+	document.addEventListener('astro:page-load', setupPresentationViewers);
 </script>
