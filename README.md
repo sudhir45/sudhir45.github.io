@@ -1,3 +1,3 @@
-Personal Blog & Portfolio
+# FortMatrix Logs
 
-Apart from personal content like posts, This project is open source and available under the MIT License.
+Personal blog and portfolio.

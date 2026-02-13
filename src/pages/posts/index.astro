@@ -4,16 +4,12 @@ import Base from '@/layouts/Base.astro';
 import Section from '@/components/Section.astro';
 import Card from '@/components/Card.astro';
 import Heading from '@/components/Heading.astro';
-import { sortPostsByDate } from '@/utils/data.util';
-import { MarkdownInstance } from 'astro';
+import { getAllPosts } from '@/utils/posts';
 
 const { title } = AppConfig;
 const { description } = AppConfig;
 
-const allPosts = Object.values(
-	import.meta.glob('./*.md', { eager: true })
-) as MarkdownInstance<any>[];
-allPosts.sort(sortPostsByDate);
+const allPosts = await getAllPosts();
 ---
 
 <Base head={{ title, description }}>

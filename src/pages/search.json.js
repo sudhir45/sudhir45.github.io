@@ -1,16 +1,14 @@
-import { getCollection } from 'astro:content';
+import { getAllPosts } from '@/utils/posts';
 
 export async function GET() {
-    const allPosts = Object.values(
-        import.meta.glob('./posts/*.md', { eager: true })
-    );
+    const allPosts = await getAllPosts();
 
     const posts = allPosts.map((post) => ({
         slug: post.url,
-        title: post.frontmatter.title,
-        description: post.frontmatter.description,
-        tags: post.frontmatter.tags,
-        pubDate: post.frontmatter.pubDate,
+        title: post.data.title,
+        description: post.data.description,
+        tags: post.data.tags,
+        pubDate: post.data.pubDate,
     }));
 
     return new Response(JSON.stringify(posts), {

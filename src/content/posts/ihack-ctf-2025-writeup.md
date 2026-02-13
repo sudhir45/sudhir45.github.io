@@ -1,5 +1,4 @@
 ---
-layout: ../../layouts/post.astro
 title: "iHackCTF 2025: How I Solved Some Challenges"
 pubDate: 2025-09-02
 description: "Writeup : my approach."

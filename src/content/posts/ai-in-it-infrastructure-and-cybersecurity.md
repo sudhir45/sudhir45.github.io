@@ -1,5 +1,4 @@
 ---
-layout: ../../layouts/post.astro
 title: "AI in IT Infrastructure and Cybersecurity: What's Real, What's Hype, and What Tools We Can Actually Use"
 pubDate: 2025-04-21
 description: "A practical look at AI's role in IT and cybersecurity, covering AIOps, threat detection, and a review of real-world tools like Microsoft Copilot, Darktrace, and more."

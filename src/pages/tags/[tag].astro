@@ -3,29 +3,19 @@ import Section from '@/components/Section.astro';
 import Card from '@/components/Card.astro';
 import Base from '@/layouts/Base.astro';
 import { AppConfig } from '@/utils/AppConfig';
-import { MarkdownInstance } from 'astro';
-import { sortPostsByDate } from '@/utils/data.util';
+import { getAllPosts, type SitePost } from '@/utils/posts';
 
 export async function getStaticPaths(): Promise<any> {
-	const allPosts = Object.values(
-		import.meta.glob('../posts/*.md', { eager: true })
-	) as MarkdownInstance<any>[];
-
-	const allTags: Set<string> = new Set(
-		allPosts.map((post: MarkdownInstance<Record<string, any>>) => post.frontmatter.tags).flat()
-	);
+	const allPosts = await getAllPosts();
+	const allTags = new Set(allPosts.flatMap((post) => post.data.tags));
 
 	return [...allTags].map((tag) => {
-		const filteredPosts = allPosts.filter((post: MarkdownInstance<Record<string, any>>) =>
-			post.frontmatter.tags.includes(tag)
-		);
-
-		// Sort posts by pinned status and date
-		filteredPosts.sort(sortPostsByDate);
+		const filteredPosts = allPosts.filter((post) => post.data.tags.includes(tag));
 
 		return {
 			params: { tag: tag },
 			props: {
+				tag,
 				posts: filteredPosts
 			}
 		};
@@ -33,14 +23,13 @@ export async function getStaticPaths(): Promise<any> {
 }
 
 interface Props {
-	posts: MarkdownInstance<Record<string, any>>[];
+	tag: string;
+	posts: SitePost[];
 }
 
-const { tag } = Astro.params;
+const { tag, posts } = Astro.props;
 const title = AppConfig.title;
 const description = AppConfig.description;
-
-const { posts } = Astro.props;
 ---
 
 <Base head={{ title, description }}>
@@ -70,11 +59,9 @@ const { posts } = Astro.props;
 	<Section>
 		<div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
 			{
-				posts
-					.filter((post: any) => post.frontmatter.tags?.includes(tag))
-					.map((post: any) => (
-						<Card post={post} />
-					))
+				posts.map((post) => (
+					<Card post={post} />
+				))
 			}
 		</div>
 	</Section>

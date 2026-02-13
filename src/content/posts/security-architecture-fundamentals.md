@@ -1,5 +1,4 @@
 ---
-layout: ../../layouts/post.astro
 title: "Security Architecture: Principles for Designing Secure Systems and Networks"
 pubDate: 2025-04-30
 description: "An overview of core security architecture principles, including defense in depth, zero trust, IAM, network segmentation, and compliance for designing secure systems."

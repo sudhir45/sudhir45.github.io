@@ -1,5 +1,4 @@
 ---
-layout: ../../layouts/post.astro
 title: "Why Theoretical Security Fails in Production"
 pubDate: 2025-06-21
 description: "Why theoretical security fails in production, and how 'good enough' controls actually survive enterprise environments."

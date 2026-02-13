@@ -1,5 +1,4 @@
 ---
-layout: ../../layouts/post.astro
 title: "Prompt Injection: The Silent Bug That Can Break LLM Models"
 pubDate: 2025-09-13
 description: "Chatbots and LLMs can follow instructions too well. Here's how malicious prompts bypass filters and what you can do"

@@ -7,13 +7,15 @@ interface Props {
 }
 
 const { post } = Astro.props;
-const isPinned = post.frontmatter.isPinned === true;
+const metadata = post.data ?? post.frontmatter;
+const postUrl = post.url ?? (post.slug ? `/posts/${post.slug}` : '#');
+const isPinned = metadata.isPinned === true;
 ---
 
 <a 
-	href={post.url} 
+	href={postUrl} 
 	class="group block h-full focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-stone-950"
-	aria-label={`Read post: ${post.frontmatter.title}`}
+	aria-label={`Read post: ${metadata.title}`}
 >
 	<div
 		class="flex h-full flex-col rounded-xl border border-stone-200 bg-white p-6 shadow-sm transition-all duration-200 hover:border-orange-300 hover:shadow-md dark:border-stone-800 dark:bg-stone-900 dark:hover:border-orange-900/50"
@@ -22,17 +24,17 @@ const isPinned = post.frontmatter.isPinned === true;
 			<div class="mb-4 flex items-center justify-between gap-2 text-xs text-stone-500 dark:text-stone-500">
 				<div class="flex items-center gap-2">
 					{isPinned && <PinnedBadge size="sm" />}
-					<time>{formatDate(post.frontmatter.pubDate)}</time>
+					<time>{formatDate(metadata.pubDate)}</time>
 				</div>
-				<span class="font-medium">{post.frontmatter.minutesRead}</span>
+				<span class="font-medium">{metadata.minutesRead ?? 'Quick read'}</span>
 			</div>
 
 			<h3 class="mb-3 text-xl font-semibold leading-tight text-stone-900 transition-colors group-hover:text-orange-600 dark:text-stone-100 dark:group-hover:text-orange-500">
-				{post.frontmatter.title}
+				{metadata.title}
 			</h3>
 
 			<p class="mb-4 line-clamp-3 text-sm leading-relaxed text-stone-600 dark:text-stone-400">
-				{post.frontmatter.excerpt}
+				{metadata.excerpt}
 			</p>
 		</div>
 		

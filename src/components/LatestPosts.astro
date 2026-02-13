@@ -1,10 +1,10 @@
 ---
 import Section from './Section.astro';
 import Card from './Card.astro';
-import { MarkdownInstance } from 'astro';
+import type { SitePost } from '@/utils/posts';
 
 interface Props {
-	posts: MarkdownInstance<any>[];
+	posts: SitePost[];
 }
 
 const { posts } = Astro.props;

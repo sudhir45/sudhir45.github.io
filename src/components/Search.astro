@@ -1,201 +1,272 @@
 <div id="search-container">
-    <button
-        id="search-trigger"
-        class="flex cursor-pointer rounded-lg p-2 text-stone-500 transition-colors hover:bg-stone-100 hover:text-orange-600 dark:text-stone-400 dark:hover:bg-stone-900 dark:hover:text-orange-500"
-        aria-label="Search posts"
-        aria-expanded="false"
-        aria-controls="search-modal"
-    >
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-        </svg>
-    </button>
+	<button
+		data-search-trigger
+		class="flex cursor-pointer rounded-lg p-2 text-stone-500 transition-colors hover:bg-stone-100 hover:text-orange-600 dark:text-stone-400 dark:hover:bg-stone-900 dark:hover:text-orange-500"
+		aria-label="Search posts"
+		aria-expanded="false"
+		aria-controls="search-modal"
+	>
+		<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+			<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+		</svg>
+	</button>
 </div>
 
 <!-- Search Modal Overlay -->
 <div
-    id="search-modal"
-    class="fixed inset-0 z-50 hidden bg-stone-950/60 backdrop-blur-md transition-opacity"
-    role="dialog"
-    aria-modal="true"
+	id="search-modal"
+	class="fixed inset-0 z-50 hidden bg-stone-950/60 backdrop-blur-md transition-opacity"
+	role="dialog"
+	aria-modal="true"
 >
-    <!-- Modal Content -->
-    <div class="mx-auto mt-20 max-w-2xl px-4">
-        <div class="overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-2xl dark:border-stone-800 dark:bg-stone-900">
-            <!-- Search Input -->
-            <div class="relative border-b border-stone-200 dark:border-stone-800">
-                <svg
-                    class="pointer-events-none absolute left-4 top-3.5 h-5 w-5 text-stone-400"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                >
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-                <input
-                    id="search-input"
-                    class="h-14 w-full border-0 bg-transparent pl-12 pr-4 text-stone-900 placeholder:text-stone-400 focus:ring-0 sm:text-sm dark:text-stone-100 dark:placeholder:text-stone-600"
-                    placeholder="Search posts..."
-                    type="text"
-                    autocomplete="off"
-                />
-            </div>
+	<!-- Modal Content -->
+	<div class="mx-auto mt-20 max-w-2xl px-4">
+		<div class="overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-2xl dark:border-stone-800 dark:bg-stone-900">
+			<!-- Search Input -->
+			<div class="relative border-b border-stone-200 dark:border-stone-800">
+				<svg
+					class="pointer-events-none absolute left-4 top-3.5 h-5 w-5 text-stone-400"
+					xmlns="http://www.w3.org/2000/svg"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke="currentColor"
+				>
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+				</svg>
+				<input
+					id="search-input"
+					class="h-14 w-full border-0 bg-transparent pl-12 pr-4 text-stone-900 placeholder:text-stone-400 focus:ring-0 sm:text-sm dark:text-stone-100 dark:placeholder:text-stone-600"
+					placeholder="Search posts..."
+					type="text"
+					autocomplete="off"
+				/>
+			</div>
 
-            <!-- Results List -->
-            <ul
-                id="search-results"
-                class="max-h-96 overflow-y-auto p-2 scroll-py-2 text-sm"
-                role="listbox"
-            >
-                <!-- Results will be injected here -->
-                <li id="empty-state" class="hidden select-none px-4 py-12 text-center text-stone-500 dark:text-stone-500">
-                    No results found.
-                </li>
-            </ul>
-            
-            <!-- Footer -->
-            <div class="border-t border-stone-200 bg-stone-50/50 px-4 py-3 text-xs text-stone-500 dark:border-stone-800 dark:bg-stone-950/50">
-                Press <kbd class="rounded border border-stone-300 bg-white px-1.5 py-0.5 font-mono text-stone-700 shadow-sm dark:border-stone-700 dark:bg-stone-800 dark:text-stone-300">ESC</kbd> to close
-            </div>
-        </div>
-    </div>
+			<!-- Results List -->
+			<ul
+				id="search-results"
+				class="max-h-96 overflow-y-auto p-2 scroll-py-2 text-sm"
+				role="listbox"
+			>
+				<li id="empty-state" class="hidden select-none px-4 py-12 text-center text-stone-500 dark:text-stone-500">
+					No results found.
+				</li>
+			</ul>
+			
+			<!-- Footer -->
+			<div class="border-t border-stone-200 bg-stone-50/50 px-4 py-3 text-xs text-stone-500 dark:border-stone-800 dark:bg-stone-950/50">
+				Press <kbd class="rounded border border-stone-300 bg-white px-1.5 py-0.5 font-mono text-stone-700 shadow-sm dark:border-stone-700 dark:bg-stone-800 dark:text-stone-300">ESC</kbd> to close
+			</div>
+		</div>
+	</div>
 </div>
 
 <script>
-    document.addEventListener('astro:page-load', () => {
-        let fuse: any;
-        let initPromise: Promise<void> | null = null;
-        let pendingQuery = '';
-        const modal = document.getElementById('search-modal');
-        const trigger = document.getElementById('search-trigger');
-        const input = document.getElementById('search-input') as HTMLInputElement;
-        const resultsList = document.getElementById('search-results');
-        const emptyState = document.getElementById('empty-state');
+	const SEARCH_STATE_KEY = '__fortmatrixSearchState';
+	const SEARCH_BOOTSTRAP_KEY = '__fortmatrixSearchBootstrap';
 
-        // Fetch data once and initialize Fuse
-        async function initSearch() {
-            if (fuse) return;
-            if (initPromise) return initPromise;
+	function clearSearchState() {
+		const state = (window as any)[SEARCH_STATE_KEY];
+		state?.cleanup?.();
+		(window as any)[SEARCH_STATE_KEY] = null;
+	}
 
-            initPromise = (async () => {
-                const [{ default: Fuse }, res] = await Promise.all([
-                    import('fuse.js'),
-                    fetch('/search.json')
-                ]);
-                const data = await res.json();
-                
-                fuse = new Fuse(data, {
-                    keys: [
-                        { name: 'title', weight: 1 },
-                        { name: 'description', weight: 0.7 },
-                        { name: 'tags', weight: 0.5 }
-                    ],
-                    includeScore: true,
-                    threshold: 0.3,
-                });
-            })()
-                .catch((e) => {
-                    console.error('Failed to load search index', e);
-                })
-                .finally(() => {
-                    initPromise = null;
-                });
+	function setupSearch() {
+		clearSearchState();
 
-            return initPromise;
-        }
+		const modal = document.getElementById('search-modal');
+		const triggerButtons = Array.from(document.querySelectorAll('[data-search-trigger]'));
+		const input = document.getElementById('search-input') as HTMLInputElement | null;
+		const resultsList = document.getElementById('search-results');
+		const emptyState = document.getElementById('empty-state');
 
-        function openModal() {
-            modal?.classList.remove('hidden');
-            trigger?.setAttribute('aria-expanded', 'true');
-            input?.focus();
-            initSearch();
-            document.body.style.overflow = 'hidden';
-        }
+		if (!modal || !input || !resultsList || !emptyState || triggerButtons.length === 0) {
+			return;
+		}
+		const modalEl = modal;
+		const inputEl = input;
+		const resultsListEl = resultsList;
+		const emptyStateEl = emptyState;
 
-        function closeModal() {
-            modal?.classList.add('hidden');
-            trigger?.setAttribute('aria-expanded', 'false');
-            if (input) input.value = '';
-            if (resultsList) resultsList.innerHTML = '';
-            resultsList?.appendChild(emptyState!);
-            emptyState?.classList.add('hidden');
-            document.body.style.overflow = '';
-            pendingQuery = '';
-        }
+		let fuse: any = null;
+		let initPromise: Promise<void> | null = null;
+		let pendingQuery = '';
 
-        // Render a single result item
-        function createResultItem(item: any) {
-            const li = document.createElement('li');
-            li.className = 'group flex cursor-pointer select-none items-center rounded-lg p-3 transition-colors hover:bg-orange-50/50 dark:hover:bg-stone-800/50';
-            li.role = 'option';
-            li.innerHTML = `
-                <a href="${item.slug}" class="flex-1">
-                    <div class="font-medium text-stone-900 transition-colors group-hover:text-orange-600 dark:text-stone-100 dark:group-hover:text-orange-500">
-                        ${item.title}
-                    </div>
-                    <div class="mt-1 line-clamp-1 text-sm text-stone-600 dark:text-stone-400">
-                        ${item.description}
-                    </div>
-                </a>
-            `;
-            return li;
-        }
+		function setExpanded(expanded: boolean) {
+			for (const trigger of triggerButtons) {
+				trigger.setAttribute('aria-expanded', String(expanded));
+			}
+		}
 
-        function runSearch(query: string) {
-            const results = fuse.search(query);
-            
-            if (results.length === 0) {
-                emptyState?.classList.remove('hidden');
-            } else {
-                emptyState?.classList.add('hidden');
-                results.forEach(({ item }: { item: any }) => {
-                    resultsList?.appendChild(createResultItem(item));
-                });
-            }
-        }
+		function clearResults() {
+			for (const child of Array.from(resultsListEl.children)) {
+				if ((child as HTMLElement).id !== 'empty-state') {
+					child.remove();
+				}
+			}
+			if (!resultsListEl.contains(emptyStateEl)) {
+				resultsListEl.appendChild(emptyStateEl);
+			}
+		}
 
-        // Handle Input
-        input?.addEventListener('input', (e) => {
-            const query = (e.target as HTMLInputElement).value;
-            pendingQuery = query;
-            
-            Array.from(resultsList?.children || []).forEach(child => {
-                if (child.id !== 'empty-state') child.remove();
-            });
+		async function initSearch() {
+			if (fuse) return;
+			if (initPromise) return initPromise;
 
-            if (!query) {
-                emptyState?.classList.add('hidden');
-                return;
-            }
+			initPromise = (async () => {
+				const [{ default: Fuse }, res] = await Promise.all([
+					import('fuse.js'),
+					fetch('/search.json')
+				]);
 
-            if (!fuse) {
-                initSearch().then(() => {
-                    if (fuse && pendingQuery === query) {
-                        runSearch(query);
-                    }
-                });
-                return;
-            }
+				const data = await res.json();
+				fuse = new Fuse(data, {
+					keys: [
+						{ name: 'title', weight: 1 },
+						{ name: 'description', weight: 0.7 },
+						{ name: 'tags', weight: 0.5 }
+					],
+					includeScore: true,
+					threshold: 0.3
+				});
+			})()
+				.catch((error) => {
+					console.error('Failed to load search index', error);
+				})
+				.finally(() => {
+					initPromise = null;
+				});
 
-            runSearch(query);
-        });
+			return initPromise;
+		}
 
-        // Event Listeners
-        trigger?.addEventListener('click', openModal);
+		function openModal() {
+			modalEl.classList.remove('hidden');
+			setExpanded(true);
+			inputEl.focus();
+			void initSearch();
+			document.body.style.overflow = 'hidden';
+		}
 
-        modal?.addEventListener('click', (e) => {
-            if (e.target === modal) closeModal();
-        });
+		function closeModal() {
+			modalEl.classList.add('hidden');
+			setExpanded(false);
+			inputEl.value = '';
+			clearResults();
+			emptyStateEl.classList.add('hidden');
+			document.body.style.overflow = '';
+			pendingQuery = '';
+		}
 
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && !modal?.classList.contains('hidden')) {
-                closeModal();
-            }
-            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
-                e.preventDefault();
-                openModal();
-            }
-        });
-    });
+		function createResultItem(item: any) {
+			const li = document.createElement('li');
+			li.className =
+				'group flex cursor-pointer select-none items-center rounded-lg p-3 transition-colors hover:bg-orange-50/50 dark:hover:bg-stone-800/50';
+			li.role = 'option';
+
+			const link = document.createElement('a');
+			link.href = item.slug;
+			link.className = 'flex-1';
+
+			const title = document.createElement('div');
+			title.className =
+				'font-medium text-stone-900 transition-colors group-hover:text-orange-600 dark:text-stone-100 dark:group-hover:text-orange-500';
+			title.textContent = item.title;
+
+			const description = document.createElement('div');
+			description.className = 'mt-1 line-clamp-1 text-sm text-stone-600 dark:text-stone-400';
+			description.textContent = item.description;
+
+			link.append(title, description);
+			li.append(link);
+			return li;
+		}
+
+		function runSearch(query: string) {
+			clearResults();
+
+			const results = fuse.search(query);
+			if (results.length === 0) {
+				emptyStateEl.classList.remove('hidden');
+				return;
+			}
+
+			emptyStateEl.classList.add('hidden');
+			for (const { item } of results) {
+				resultsListEl.appendChild(createResultItem(item));
+			}
+		}
+
+		const onTriggerClick = (event: Event) => {
+			event.preventDefault();
+			openModal();
+		};
+
+		const onInput = (event: Event) => {
+			const query = (event.target as HTMLInputElement).value;
+			pendingQuery = query;
+
+			if (!query) {
+				clearResults();
+				emptyStateEl.classList.add('hidden');
+				return;
+			}
+
+			if (!fuse) {
+				void initSearch().then(() => {
+					if (fuse && pendingQuery === query) {
+						runSearch(query);
+					}
+				});
+				return;
+			}
+
+			runSearch(query);
+		};
+
+		const onModalClick = (event: Event) => {
+			if (event.target === modalEl) {
+				closeModal();
+			}
+		};
+
+		const onDocumentKeyDown = (event: KeyboardEvent) => {
+			const modalIsOpen = !modalEl.classList.contains('hidden');
+
+			if (event.key === 'Escape' && modalIsOpen) {
+				closeModal();
+			}
+			if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') {
+				event.preventDefault();
+				openModal();
+			}
+		};
+
+		for (const trigger of triggerButtons) {
+			trigger.addEventListener('click', onTriggerClick);
+		}
+		inputEl.addEventListener('input', onInput);
+		modalEl.addEventListener('click', onModalClick);
+		document.addEventListener('keydown', onDocumentKeyDown);
+
+		(window as any)[SEARCH_STATE_KEY] = {
+			cleanup: () => {
+				for (const trigger of triggerButtons) {
+					trigger.removeEventListener('click', onTriggerClick);
+				}
+				inputEl.removeEventListener('input', onInput);
+				modalEl.removeEventListener('click', onModalClick);
+				document.removeEventListener('keydown', onDocumentKeyDown);
+				document.body.style.overflow = '';
+			}
+		};
+	}
+
+	if (!(window as any)[SEARCH_BOOTSTRAP_KEY]) {
+		document.addEventListener('astro:page-load', setupSearch);
+		document.addEventListener('astro:before-swap', clearSearchState);
+		(window as any)[SEARCH_BOOTSTRAP_KEY] = true;
+	}
+
+	setupSearch();
 </script>

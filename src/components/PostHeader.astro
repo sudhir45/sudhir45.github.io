@@ -45,9 +45,10 @@ const formattedDate = formatDate(pubDate);
 			<div class="mb-8 w-full max-w-4xl overflow-hidden rounded-xl border border-stone-200 dark:border-stone-800">
 				<img 
 					src={img.src} 
-					alt={img.alt} 
+					alt={img.alt || title} 
 					class="w-full object-cover" 
-					loading="lazy"
+					loading="eager"
+					fetchpriority="high"
 					decoding="async"
 				/>
 			</div>

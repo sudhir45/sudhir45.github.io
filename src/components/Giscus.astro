@@ -1,59 +1,74 @@
 ---
-// Giscus Comments Component
-// Uses GitHub Discussions for blog post comments
+const giscusConfig = {
+	repo: import.meta.env.PUBLIC_GISCUS_REPO ?? 'sudhir45/sudhir45.github.io',
+	repoId: import.meta.env.PUBLIC_GISCUS_REPO_ID ?? 'R_kgDOQ9T0sw',
+	category: import.meta.env.PUBLIC_GISCUS_CATEGORY ?? 'General',
+	categoryId: import.meta.env.PUBLIC_GISCUS_CATEGORY_ID ?? 'DIC_kwDOQ9T0s84C1Mis'
+};
+
+const isConfigured = Boolean(
+	giscusConfig.repo &&
+		giscusConfig.repoId &&
+		giscusConfig.category &&
+		giscusConfig.categoryId
+);
 ---
 
-<section class="giscus-container mt-16 border-t border-stone-200 pt-12 dark:border-stone-800">
-	<h2 class="mb-6 text-xl font-semibold tracking-tight text-stone-900 dark:text-stone-100">Comments</h2>
-	<button
-		class="giscus-load inline-flex items-center rounded-lg border border-stone-200 px-3 py-2 text-sm font-medium text-stone-700 transition-colors hover:bg-stone-100 dark:border-stone-800 dark:text-stone-300 dark:hover:bg-stone-900"
-		type="button"
-	>
-		Load comments
-	</button>
-	<div class="giscus mt-4"></div>
-	<script is:inline>
-		const container = document.querySelector('.giscus-container');
-		const giscusRoot = container?.querySelector('.giscus');
-		const loadButton = container?.querySelector('.giscus-load');
+{
+	isConfigured && (
+		<section class="giscus-container mt-16 border-t border-stone-200 pt-12 dark:border-stone-800">
+			<h2 class="mb-6 text-xl font-semibold tracking-tight text-stone-900 dark:text-stone-100">Comments</h2>
+			<button
+				class="giscus-load inline-flex items-center rounded-lg border border-stone-200 px-3 py-2 text-sm font-medium text-stone-700 transition-colors hover:bg-stone-100 dark:border-stone-800 dark:text-stone-300 dark:hover:bg-stone-900"
+				type="button"
+			>
+				Load comments
+			</button>
+			<div class="giscus mt-4"></div>
+			<script is:inline define:vars={{ giscusConfig }}>
+				const container = document.querySelector('.giscus-container');
+				const giscusRoot = container?.querySelector('.giscus');
+				const loadButton = container?.querySelector('.giscus-load');
 
-		function loadGiscus() {
-			if (!giscusRoot || giscusRoot.dataset.loaded === 'true') return;
+				function loadGiscus() {
+					if (!giscusRoot || giscusRoot.dataset.loaded === 'true') return;
 
-			const script = document.createElement('script');
-			script.src = 'https://giscus.app/client.js';
-			script.async = true;
-			script.setAttribute('data-repo', 'sudhir45/sudhir45.github.io');
-			script.setAttribute('data-repo-id', 'R_kgDOQ9T0sw');
-			script.setAttribute('data-category', 'General');
-			script.setAttribute('data-category-id', 'DIC_kwDOQ9T0s84C1Mis');
-			script.setAttribute('data-mapping', 'pathname');
-			script.setAttribute('data-strict', '0');
-			script.setAttribute('data-reactions-enabled', '1');
-			script.setAttribute('data-emit-metadata', '0');
-			script.setAttribute('data-input-position', 'bottom');
-			script.setAttribute('data-theme', 'preferred_color_scheme');
-			script.setAttribute('data-lang', 'en');
-			script.setAttribute('crossorigin', 'anonymous');
+					const script = document.createElement('script');
+					script.src = 'https://giscus.app/client.js';
+					script.async = true;
+					script.setAttribute('data-repo', giscusConfig.repo);
+					script.setAttribute('data-repo-id', giscusConfig.repoId);
+					script.setAttribute('data-category', giscusConfig.category);
+					script.setAttribute('data-category-id', giscusConfig.categoryId);
+					script.setAttribute('data-mapping', 'pathname');
+					script.setAttribute('data-strict', '0');
+					script.setAttribute('data-reactions-enabled', '1');
+					script.setAttribute('data-emit-metadata', '0');
+					script.setAttribute('data-input-position', 'bottom');
+					script.setAttribute('data-theme', 'preferred_color_scheme');
+					script.setAttribute('data-lang', 'en');
+					script.setAttribute('crossorigin', 'anonymous');
 
-			giscusRoot.appendChild(script);
-			giscusRoot.dataset.loaded = 'true';
-			loadButton?.classList.add('hidden');
-		}
+					giscusRoot.appendChild(script);
+					giscusRoot.dataset.loaded = 'true';
+					loadButton?.classList.add('hidden');
+				}
 
-		loadButton?.addEventListener('click', loadGiscus);
+				loadButton?.addEventListener('click', loadGiscus);
 
-		if (container && 'IntersectionObserver' in window) {
-			const observer = new IntersectionObserver(
-				(entries) => {
-					if (entries.some((entry) => entry.isIntersecting)) {
-						loadGiscus();
-						observer.disconnect();
-					}
-				},
-				{ rootMargin: '200px 0px' }
-			);
-			observer.observe(container);
-		}
-	</script>
-</section>
+				if (container && 'IntersectionObserver' in window) {
+					const observer = new IntersectionObserver(
+						(entries) => {
+							if (entries.some((entry) => entry.isIntersecting)) {
+								loadGiscus();
+								observer.disconnect();
+							}
+						},
+						{ rootMargin: '200px 0px' }
+					);
+					observer.observe(container);
+				}
+			</script>
+		</section>
+	)
+}
