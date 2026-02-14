@@ -1,0 +1,30 @@
+---
+import { SOCIALS } from '@/utils/AppConfig';
+
+interface Props {
+	author: string;
+}
+
+const { author } = Astro.props;
+const trustLinks = SOCIALS.filter((social) => ['GitHub', 'LinkedIn', 'Email'].includes(social.name));
+---
+
+<section class="mb-10 rounded-2xl border border-stone-200/80 bg-stone-50/70 p-6 dark:border-stone-800 dark:bg-stone-900/50">
+	<p class="mb-2 text-xs font-semibold uppercase tracking-[0.14em] text-stone-500 dark:text-stone-400">About the author</p>
+	<h2 class="text-xl font-semibold text-stone-900 dark:text-stone-100">{author}</h2>
+	<p class="mt-2 max-w-3xl text-sm leading-relaxed text-stone-700 dark:text-stone-300">
+		Senior Information Security Engineer focused on enterprise network security, compliance, and automation.
+	</p>
+	<div class="mt-4 flex flex-wrap items-center gap-2">
+		{trustLinks.map((social) => (
+			<a
+				href={social.url}
+				target={social.url.startsWith('http') ? '_blank' : undefined}
+				rel={social.url.startsWith('http') ? 'noopener noreferrer' : undefined}
+				class="rounded-lg border border-stone-200 bg-white px-3 py-1.5 text-sm font-medium text-stone-700 transition-colors hover:border-orange-300 hover:text-orange-600 dark:border-stone-700 dark:bg-stone-950 dark:text-stone-300 dark:hover:border-orange-900/50 dark:hover:text-orange-500"
+			>
+				{social.name}
+			</a>
+		))}
+	</div>
+</section>

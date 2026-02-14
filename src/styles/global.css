@@ -21,6 +21,11 @@
 
 /* Professional Typography & Spacing */
 @layer base {
+    :root {
+        --font-ui: 'Manrope', 'Segoe UI', 'Helvetica Neue', sans-serif;
+        --font-code: 'IBM Plex Mono', 'Consolas', 'Monaco', monospace;
+    }
+
     html {
         @apply antialiased;
         font-feature-settings: "kern" 1, "liga" 1, "cv11" 1;
@@ -30,8 +35,18 @@
     }
 
     body {
-        @apply font-mono;
-        letter-spacing: -0.01em;
+        font-family: var(--font-ui);
+        letter-spacing: -0.012em;
+    }
+
+    h1, h2, h3, h4 {
+        letter-spacing: -0.02em;
+    }
+
+    code,
+    pre,
+    kbd {
+        font-family: var(--font-code);
     }
 
     /* Fluid type scale for headings */

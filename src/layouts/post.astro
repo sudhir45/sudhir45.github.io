@@ -3,6 +3,8 @@ import { AppConfig } from '@/utils/AppConfig';
 import Base from '@/layouts/Base.astro';
 import PostHeader from '@/components/PostHeader.astro';
 import PostContent from '@/components/PostContent.astro';
+import ReadingProgress from '@/components/ReadingProgress.astro';
+import AuthorStrip from '@/components/AuthorStrip.astro';
 
 import TableOfContents from '@/components/TableOfContents.astro';
 import Giscus from '@/components/Giscus.astro';
@@ -45,6 +47,7 @@ const postUrl = `${siteUrl}${Astro.url.pathname}`;
 		},
 		"keywords": frontmatter.tags?.join(", ") || ""
 	})} />
+	<ReadingProgress />
 	<div class="mx-auto flex w-full max-w-7xl flex-col items-start justify-center px-4 md:flex-row md:gap-10">
 		<div class="w-full max-w-[850px] flex-1">
 			<PostHeader
@@ -57,6 +60,7 @@ const postUrl = `${siteUrl}${Astro.url.pathname}`;
 				img={{ src: frontmatter.image?.src, alt: frontmatter.image?.alt }}
 			/>
 			<PostContent><slot /></PostContent>
+			<AuthorStrip author={frontmatter.author || "Sudhir"} />
 			<Giscus />
 		</div>
 		

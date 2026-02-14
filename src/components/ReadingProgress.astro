@@ -1,0 +1,48 @@
+<div
+	data-reading-progress
+	class="pointer-events-none fixed inset-x-0 top-0 z-40 h-1 bg-stone-200/60 dark:bg-stone-800/70"
+>
+	<div
+		data-reading-progress-bar
+		class="h-full origin-left scale-x-0 bg-orange-600 transition-transform duration-150 ease-out dark:bg-orange-500"
+	></div>
+</div>
+
+<script is:inline>
+	document.addEventListener('astro:page-load', () => {
+		const progressBar = document.querySelector('[data-reading-progress-bar]');
+		const article = document.querySelector('article.content');
+
+		if (!(progressBar instanceof HTMLElement) || !(article instanceof HTMLElement)) {
+			return;
+		}
+
+		const existingHandler = window.__fortmatrixReadingProgressHandler;
+		if (existingHandler) {
+			window.removeEventListener('scroll', existingHandler);
+			window.removeEventListener('resize', existingHandler);
+		}
+
+		const updateProgress = () => {
+			const articleTop = article.offsetTop;
+			const articleBottom = articleTop + article.offsetHeight;
+			const viewportTop = window.scrollY;
+			const maxScrollable = articleBottom - window.innerHeight;
+
+			let progress = 0;
+			if (maxScrollable <= articleTop) {
+				progress = viewportTop > articleTop ? 1 : 0;
+			} else {
+				progress = (viewportTop - articleTop) / (maxScrollable - articleTop);
+			}
+
+			const clampedProgress = Math.max(0, Math.min(1, progress));
+			progressBar.style.transform = `scaleX(${clampedProgress})`;
+		};
+
+		window.__fortmatrixReadingProgressHandler = updateProgress;
+		updateProgress();
+		window.addEventListener('scroll', updateProgress, { passive: true });
+		window.addEventListener('resize', updateProgress);
+	});
+</script>

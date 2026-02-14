@@ -35,6 +35,12 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 					<span class="slide-separator">/</span>
 					<span class="slide-total">{slideCount}</span>
 				</div>
+				<!-- Grid Overview -->
+				<button class="control-btn grid-btn" aria-label="Slide grid overview" title="Slide grid (G)">
+					<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4h6v6H4V4zm10 0h6v6h-6V4zM4 14h6v6H4v-6zm10 0h6v6h-6v-6z" />
+					</svg>
+				</button>
 				<!-- Keyboard Shortcuts -->
 				<button class="control-btn shortcuts-btn" aria-label="Keyboard shortcuts" title="Keyboard shortcuts (?)">
 					<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -164,6 +170,31 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 			<button class="shortcuts-close">Got it</button>
 		</div>
 	</div>
+
+	<!-- Grid Overview Modal -->
+	<div class="grid-modal hidden" role="dialog" aria-modal="true" aria-labelledby="grid-title">
+		<div class="grid-backdrop"></div>
+		<div class="grid-content">
+			<div class="grid-header">
+				<h3 id="grid-title">Slide Overview</h3>
+				<button class="grid-close" aria-label="Close slide overview">
+					<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+					</svg>
+				</button>
+			</div>
+			<div class="grid-list">
+				{slides.map((slide) => (
+					<button class="grid-slide-btn" data-grid-slide-num={slide.number} aria-label={`Open slide ${slide.number}`}>
+						<img src={slide.src} alt={`Slide ${slide.number}`} loading="lazy" />
+						<span class="grid-slide-number">Slide {slide.number}</span>
+					</button>
+				))}
+			</div>
+		</div>
+	</div>
+
+	<p class="sr-only slide-announcer" aria-live="polite" aria-atomic="true">Slide 1 of {slideCount}</p>
 
 	<!-- Hints -->
 	<p class="viewer-hints">
@@ -398,6 +429,7 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 	.nav-btn:disabled {
 		opacity: 0.3;
 		cursor: not-allowed;
+		pointer-events: none;
 	}
 
 	/* Zoom Button */
@@ -644,6 +676,118 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 		transform: translateY(-1px);
 	}
 
+	/* Grid Overview Modal */
+	.grid-modal {
+		position: fixed;
+		inset: 0;
+		z-index: 190;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.grid-modal.hidden {
+		display: none;
+	}
+
+	.grid-backdrop {
+		position: absolute;
+		inset: 0;
+		background: rgba(0, 0, 0, 0.85);
+		backdrop-filter: blur(4px);
+	}
+
+	.grid-content {
+		position: relative;
+		width: min(1100px, 94vw);
+		max-height: 85vh;
+		overflow: hidden;
+		border-radius: 1rem;
+		border: 1px solid var(--glass-border);
+		background: linear-gradient(180deg, rgba(41, 37, 36, 0.98) 0%, rgba(28, 25, 23, 0.98) 100%);
+		box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+	}
+
+	.grid-header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 1rem 1.25rem;
+		border-bottom: 1px solid var(--glass-border);
+	}
+
+	.grid-header h3 {
+		margin: 0;
+		font-size: 1rem;
+		font-weight: 600;
+		color: #fafaf9;
+	}
+
+	.grid-close {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		padding: 0.5rem;
+		border: none;
+		border-radius: 0.5rem;
+		background: transparent;
+		color: #a8a29e;
+		cursor: pointer;
+		transition: all var(--transition-ui);
+	}
+
+	.grid-close:hover {
+		color: #fafaf9;
+		background: rgba(255, 255, 255, 0.1);
+	}
+
+	.grid-list {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+		gap: 0.75rem;
+		padding: 1rem;
+		max-height: calc(85vh - 66px);
+		overflow-y: auto;
+	}
+
+	.grid-slide-btn {
+		display: flex;
+		flex-direction: column;
+		gap: 0.375rem;
+		padding: 0;
+		border: 1px solid rgba(120, 113, 108, 0.45);
+		border-radius: 0.5rem;
+		background: rgba(12, 10, 9, 0.8);
+		overflow: hidden;
+		cursor: pointer;
+		transition: all var(--transition-ui);
+	}
+
+	.grid-slide-btn img {
+		width: 100%;
+		aspect-ratio: 16 / 9;
+		object-fit: cover;
+	}
+
+	.grid-slide-btn:hover {
+		border-color: rgba(234, 88, 12, 0.8);
+		box-shadow: 0 0 0 1px rgba(234, 88, 12, 0.4);
+		transform: translateY(-1px);
+	}
+
+	.grid-slide-btn.active {
+		border-color: rgba(234, 88, 12, 1);
+		box-shadow: 0 0 0 1px rgba(234, 88, 12, 0.6), 0 0 14px rgba(234, 88, 12, 0.2);
+	}
+
+	.grid-slide-number {
+		padding: 0.25rem 0.5rem 0.55rem;
+		font-size: 0.75rem;
+		font-weight: 500;
+		color: #d6d3d1;
+		text-align: left;
+	}
+
 	/* Viewer Hints */
 	.viewer-hints {
 		margin-top: 0.75rem;
@@ -720,6 +864,10 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 
 		.shortcuts-btn {
 			display: none;
+		}
+
+		.grid-list {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
 		}
 	}
 
@@ -835,6 +983,44 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 		color: #1c1917;
 	}
 
+	:root:not(.dark) .grid-content,
+	:global(.light) .grid-content {
+		background: linear-gradient(180deg, #ffffff 0%, #fafaf9 100%);
+		border-color: rgba(120, 113, 108, 0.2);
+	}
+
+	:root:not(.dark) .grid-header,
+	:global(.light) .grid-header {
+		border-color: rgba(120, 113, 108, 0.15);
+	}
+
+	:root:not(.dark) .grid-header h3,
+	:global(.light) .grid-header h3 {
+		color: #1c1917;
+	}
+
+	:root:not(.dark) .grid-close,
+	:global(.light) .grid-close {
+		color: #57534e;
+	}
+
+	:root:not(.dark) .grid-close:hover,
+	:global(.light) .grid-close:hover {
+		color: #1c1917;
+		background: rgba(0, 0, 0, 0.05);
+	}
+
+	:root:not(.dark) .grid-slide-btn,
+	:global(.light) .grid-slide-btn {
+		background: #ffffff;
+		border-color: rgba(120, 113, 108, 0.25);
+	}
+
+	:root:not(.dark) .grid-slide-number,
+	:global(.light) .grid-slide-number {
+		color: #57534e;
+	}
+
 	:root:not(.dark) .shortcut-row,
 	:global(.light) .shortcut-row {
 		color: #57534e;
@@ -867,83 +1053,182 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 	// Use a setup function so we can properly clean up on View Transition navigations.
 	// DOMContentLoaded does NOT re-fire after Astro View Transitions, so we use
 	// astro:page-load which fires on both initial load and after client-side navigations.
-	
+
 	function setupPresentationViewers() {
 		const viewers = document.querySelectorAll('.presentation-viewer');
-		
+
 		// Track document-level listeners for cleanup
 		const documentListeners: Array<{ type: string; handler: EventListener }> = [];
-		
+		const windowListeners: Array<{ type: string; handler: EventListener }> = [];
+
 		function addDocumentListener(type: string, handler: EventListener) {
 			document.addEventListener(type, handler);
 			documentListeners.push({ type, handler });
 		}
-		
+
+		function addWindowListener(type: string, handler: EventListener) {
+			window.addEventListener(type, handler);
+			windowListeners.push({ type, handler });
+		}
+
 		viewers.forEach((viewerEl) => {
 			const viewer = viewerEl as HTMLElement;
-			
+
 			// Prevent double-initialization
 			if (viewer.dataset.initialized === 'true') return;
 			viewer.dataset.initialized = 'true';
-			
-			let currentSlide = 1;
-			const slideCount = parseInt(viewer.dataset.slideCount || '1');
-			
+
+			const slideCount = parseInt(viewer.dataset.slideCount || '1', 10);
+			const clampSlide = (value: number) => Math.max(1, Math.min(slideCount, value));
+
+			const getSlideFromUrl = () => {
+				const url = new URL(window.location.href);
+				const raw = url.searchParams.get('slide');
+				if (!raw) return 1;
+				const parsed = parseInt(raw, 10);
+				return Number.isNaN(parsed) ? 1 : clampSlide(parsed);
+			};
+
+			const setSlideInUrl = (slideNum: number) => {
+				const url = new URL(window.location.href);
+				if (slideNum <= 1) {
+					url.searchParams.delete('slide');
+				} else {
+					url.searchParams.set('slide', String(slideNum));
+				}
+				window.history.replaceState(window.history.state, '', `${url.pathname}${url.search}${url.hash}`);
+			};
+
+			let currentSlide = getSlideFromUrl();
+
 			// DOM Elements - dual images for crossfade
 			const slideImageA = viewer.querySelector('.slide-image-a') as HTMLImageElement;
 			const slideImageB = viewer.querySelector('.slide-image-b') as HTMLImageElement;
 			let activeImage: HTMLImageElement = slideImageA;
 			let inactiveImage: HTMLImageElement = slideImageB;
-			
+
 			const slideLoading = viewer.querySelector('.slide-loading') as HTMLElement;
 			const slidePlaceholder = viewer.querySelector('.slide-placeholder') as HTMLElement;
 			const slideCounter = viewer.querySelector('.slide-current') as HTMLElement;
 			const prevBtn = viewer.querySelector('.prev-btn') as HTMLButtonElement;
 			const nextBtn = viewer.querySelector('.next-btn') as HTMLButtonElement;
 			const fullscreenBtn = viewer.querySelector('.fullscreen-btn') as HTMLButtonElement;
+			const gridBtn = viewer.querySelector('.grid-btn') as HTMLButtonElement;
 			const shortcutsBtn = viewer.querySelector('.shortcuts-btn') as HTMLButtonElement;
 			const shortcutsModal = viewer.querySelector('.shortcuts-modal') as HTMLElement;
 			const shortcutsClose = viewer.querySelector('.shortcuts-close') as HTMLButtonElement;
 			const shortcutsBackdrop = viewer.querySelector('.shortcuts-backdrop') as HTMLElement;
+			const gridModal = viewer.querySelector('.grid-modal') as HTMLElement;
+			const gridClose = viewer.querySelector('.grid-close') as HTMLButtonElement;
+			const gridBackdrop = viewer.querySelector('.grid-backdrop') as HTMLElement;
 			const thumbnailBtns = viewer.querySelectorAll('.thumbnail-btn');
+			const gridSlideBtns = viewer.querySelectorAll('.grid-slide-btn');
 			const thumbnailStrip = viewer.querySelector('.thumbnail-strip') as HTMLElement;
 			const progressFill = viewer.querySelector('.progress-fill') as HTMLElement;
+			const progressIndicator = viewer.querySelector('.progress-bar') as HTMLElement;
 			const progressBar = viewer.querySelector('.progress-bar-container') as HTMLElement;
+			const slideAnnouncer = viewer.querySelector('.slide-announcer') as HTMLElement;
 			const zoomBtn = viewer.querySelector('.zoom-btn') as HTMLButtonElement;
 			const zoomOverlay = viewer.querySelector('.zoom-overlay') as HTMLElement;
 			const zoomImage = viewer.querySelector('.zoom-image') as HTMLImageElement;
 			const zoomClose = viewer.querySelector('.zoom-close') as HTMLButtonElement;
 			const slideContainer = viewer.querySelector('.slide-container') as HTMLElement;
-			
+
 			const slides = JSON.parse(slideImageA?.dataset.slides || '[]');
-			
+
 			// Set CSS variable for progress bar
 			viewer.style.setProperty('--slide-count', String(slideCount));
-			
-			// Update progress bar
+
+			function announceCurrentSlide() {
+				if (slideAnnouncer) {
+					slideAnnouncer.textContent = `Slide ${currentSlide} of ${slideCount}`;
+				}
+			}
+
 			function updateProgress() {
 				const percentage = (currentSlide / slideCount) * 100;
 				progressFill.style.width = `${percentage}%`;
+				progressIndicator.setAttribute('aria-valuenow', String(currentSlide));
+				progressIndicator.setAttribute('aria-valuetext', `Slide ${currentSlide} of ${slideCount}`);
 			}
-			
-			// Update slide with TRUE crossfade using dual images
-			function updateSlide(num: number) {
-				if (num < 1 || num > slideCount) return;
-				if (num === currentSlide) return; // No change needed
-				
-				currentSlide = num;
-				const slide = slides[num - 1];
-				
+
+			function updateNavButtons() {
+				const isFirstSlide = currentSlide <= 1;
+				const isLastSlide = currentSlide >= slideCount;
+
+				prevBtn.disabled = isFirstSlide;
+				nextBtn.disabled = isLastSlide;
+				prevBtn.setAttribute('aria-disabled', String(isFirstSlide));
+				nextBtn.setAttribute('aria-disabled', String(isLastSlide));
+			}
+
+			function updateSlideSelectors(scrollIntoView = true) {
+				thumbnailBtns.forEach((btn) => {
+					const btnNum = parseInt((btn as HTMLElement).dataset.slideNum || '0', 10);
+					btn.classList.toggle('active', btnNum === currentSlide);
+
+					if (scrollIntoView && btnNum === currentSlide && thumbnailStrip) {
+						(btn as HTMLElement).scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+					}
+				});
+
+				gridSlideBtns.forEach((btn) => {
+					const btnNum = parseInt((btn as HTMLElement).dataset.gridSlideNum || '0', 10);
+					btn.classList.toggle('active', btnNum === currentSlide);
+				});
+			}
+
+			function syncUiState(options: { announce?: boolean; scrollIntoView?: boolean } = {}) {
+				const { announce = true, scrollIntoView = true } = options;
+				slideCounter.textContent = String(currentSlide);
+				updateProgress();
+				updateNavButtons();
+				updateSlideSelectors(scrollIntoView);
+				if (announce) {
+					announceCurrentSlide();
+				}
+			}
+
+			function openGrid() {
+				gridModal.classList.remove('hidden');
+			}
+
+			function closeGrid() {
+				gridModal.classList.add('hidden');
+			}
+
+			// Update slide with true crossfade using dual images
+			function updateSlide(
+				num: number,
+				options: { updateUrl?: boolean; announce?: boolean; scrollIntoView?: boolean } = {}
+			) {
+				const { updateUrl = true, announce = true, scrollIntoView = true } = options;
+				const targetSlide = clampSlide(num);
+
+				if (targetSlide === currentSlide) {
+					if (updateUrl) setSlideInUrl(targetSlide);
+					syncUiState({ announce: false, scrollIntoView });
+					return;
+				}
+
+				currentSlide = targetSlide;
+				const slide = slides[targetSlide - 1];
+				if (!slide) {
+					if (updateUrl) setSlideInUrl(currentSlide);
+					syncUiState({ announce, scrollIntoView });
+					return;
+				}
+
 				// Set blur placeholder immediately
 				if (slidePlaceholder) {
 					slidePlaceholder.style.backgroundImage = `url(${slide.src})`;
 				}
-				
+
 				// Delayed spinner - only show if load takes > 300ms
 				let spinnerTimeout: ReturnType<typeof setTimeout> | null = setTimeout(() => {
 					slideLoading.classList.add('visible');
 				}, 300);
-				
+
 				// Preload next image into inactive element
 				inactiveImage.onload = () => {
 					// Clear spinner timeout
@@ -953,57 +1238,71 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 					}
 					slideLoading.classList.remove('visible');
 					slideLoading.classList.add('hidden');
-					
+
 					// Crossfade: swap active states
 					activeImage.classList.remove('active');
 					inactiveImage.classList.add('active');
-					
+
 					// Swap references for next transition
 					const temp = activeImage;
 					activeImage = inactiveImage;
 					inactiveImage = temp;
 				};
-				
+
+				inactiveImage.onerror = () => {
+					if (spinnerTimeout) {
+						clearTimeout(spinnerTimeout);
+						spinnerTimeout = null;
+					}
+					slideLoading.classList.remove('visible');
+					slideLoading.classList.add('hidden');
+				};
+
 				// Set the source on inactive image (triggers load)
 				inactiveImage.src = slide.src;
-				inactiveImage.alt = `Slide ${num} of ${slideCount}`;
-				
-				// Update counter
-				slideCounter.textContent = String(num);
-				
-				// Update progress
-				updateProgress();
-				
-				// Update thumbnails
-				thumbnailBtns.forEach((btn) => {
-					const btnNum = parseInt((btn as HTMLElement).dataset.slideNum || '0');
-					btn.classList.toggle('active', btnNum === num);
-					
-					// Scroll active thumbnail into view
-					if (btnNum === num && thumbnailStrip) {
-						(btn as HTMLElement).scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-					}
-				});
+				inactiveImage.alt = `Slide ${targetSlide} of ${slideCount}`;
+
+				if (updateUrl) setSlideInUrl(currentSlide);
+				syncUiState({ announce, scrollIntoView });
 			}
-			
-			// Initial state - first image already active
+
+			// Initial state based on ?slide= query
+			const initialSlide = clampSlide(currentSlide);
+			const initialSlideData = slides[initialSlide - 1];
+			currentSlide = initialSlide;
 			slideLoading.classList.add('hidden');
+			if (initialSlideData) {
+				slideImageA.src = initialSlideData.src;
+				slideImageA.alt = `Slide ${initialSlide} of ${slideCount}`;
+			}
 			if (slidePlaceholder && slideImageA.src) {
 				slidePlaceholder.style.backgroundImage = `url(${slideImageA.src})`;
 			}
-			
+			progressIndicator.setAttribute('aria-label', 'Slide progress');
+			syncUiState({ announce: false, scrollIntoView: false });
+			setSlideInUrl(currentSlide);
+
 			// Navigation
 			prevBtn?.addEventListener('click', () => updateSlide(currentSlide - 1));
 			nextBtn?.addEventListener('click', () => updateSlide(currentSlide + 1));
-			
+
 			// Thumbnail clicks
 			thumbnailBtns.forEach((btn) => {
 				btn.addEventListener('click', () => {
-					const num = parseInt((btn as HTMLElement).dataset.slideNum || '1');
+					const num = parseInt((btn as HTMLElement).dataset.slideNum || '1', 10);
 					updateSlide(num);
 				});
 			});
-			
+
+			// Grid clicks
+			gridSlideBtns.forEach((btn) => {
+				btn.addEventListener('click', () => {
+					const num = parseInt((btn as HTMLElement).dataset.gridSlideNum || '1', 10);
+					closeGrid();
+					updateSlide(num);
+				});
+			});
+
 			// Progress bar click-to-seek
 			progressBar?.addEventListener('click', (e) => {
 				const rect = progressBar.getBoundingClientRect();
@@ -1011,12 +1310,12 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 				const targetSlide = Math.max(1, Math.min(slideCount, Math.ceil(percent * slideCount)));
 				updateSlide(targetSlide);
 			});
-			
+
 			// Touch/Swipe support
 			let touchStartX = 0;
 			let touchStartY = 0;
 			let isSwiping = false;
-			
+
 			slideContainer?.addEventListener('touchstart', (e) => {
 				const touch = e.touches[0];
 				if (!touch) return;
@@ -1024,7 +1323,7 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 				touchStartY = touch.clientY;
 				isSwiping = true;
 			}, { passive: true });
-			
+
 			slideContainer?.addEventListener('touchmove', (e) => {
 				if (!isSwiping) return;
 				const touch = e.touches[0];
@@ -1035,7 +1334,7 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 					isSwiping = false;
 				}
 			}, { passive: true });
-			
+
 			slideContainer?.addEventListener('touchend', (e) => {
 				if (!isSwiping) return;
 				const touch = e.changedTouches[0];
@@ -1052,7 +1351,7 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 				}
 				isSwiping = false;
 			});
-			
+
 			// Zoom functionality
 			let zoomScale = 1;
 			let zoomPosX = 0;
@@ -1060,7 +1359,7 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 			let isDragging = false;
 			let dragStartX = 0;
 			let dragStartY = 0;
-			
+
 			function openZoom() {
 				zoomScale = 1;
 				zoomPosX = 0;
@@ -1070,34 +1369,34 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 				zoomOverlay.classList.remove('hidden');
 				document.body.style.overflow = 'hidden';
 			}
-			
+
 			function closeZoom() {
 				zoomOverlay.classList.add('hidden');
 				document.body.style.overflow = '';
 			}
-			
+
 			zoomBtn?.addEventListener('click', openZoom);
 			slideImageA?.addEventListener('click', openZoom);
 			slideImageB?.addEventListener('click', openZoom);
 			zoomClose?.addEventListener('click', closeZoom);
-			
+
 			zoomOverlay?.addEventListener('click', (e) => {
 				if (e.target === zoomOverlay) closeZoom();
 			});
-			
+
 			zoomOverlay?.addEventListener('wheel', (e) => {
 				e.preventDefault();
 				const delta = e.deltaY > 0 ? -0.2 : 0.2;
 				zoomScale = Math.max(0.5, Math.min(5, zoomScale + delta));
 				zoomImage.style.transform = `translate(${zoomPosX}px, ${zoomPosY}px) scale(${zoomScale})`;
 			});
-			
+
 			zoomImage?.addEventListener('mousedown', (e) => {
 				isDragging = true;
 				dragStartX = e.clientX - zoomPosX;
 				dragStartY = e.clientY - zoomPosY;
 			});
-			
+
 			// Document-level listeners (need cleanup on navigation)
 			addDocumentListener('mousemove', ((e: MouseEvent) => {
 				if (!isDragging) return;
@@ -1105,47 +1404,76 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 				zoomPosY = e.clientY - dragStartY;
 				zoomImage.style.transform = `translate(${zoomPosX}px, ${zoomPosY}px) scale(${zoomScale})`;
 			}) as EventListener);
-			
+
 			addDocumentListener('mouseup', (() => {
 				isDragging = false;
 			}) as EventListener);
-			
+
+			addWindowListener('popstate', (() => {
+				const targetSlide = getSlideFromUrl();
+				updateSlide(targetSlide, { updateUrl: false, announce: false, scrollIntoView: false });
+			}) as EventListener);
+
 			// Keyboard shortcuts
 			addDocumentListener('keydown', ((e: KeyboardEvent) => {
 				// Don't trigger if typing in an input
-				if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
-				
+				if (
+					e.target instanceof HTMLInputElement ||
+					e.target instanceof HTMLTextAreaElement ||
+					(e.target as HTMLElement)?.isContentEditable
+				) {
+					return;
+				}
+
 				switch (e.key) {
 					case 'ArrowLeft':
+						e.preventDefault();
 						updateSlide(currentSlide - 1);
 						break;
 					case 'ArrowRight':
+						e.preventDefault();
 						updateSlide(currentSlide + 1);
 						break;
 					case 'Home':
+						e.preventDefault();
 						updateSlide(1);
 						break;
 					case 'End':
+						e.preventDefault();
 						updateSlide(slideCount);
 						break;
 					case 'f':
 					case 'F':
+						e.preventDefault();
 						fullscreenBtn?.click();
 						break;
 					case 'z':
 					case 'Z':
+						e.preventDefault();
 						if (!zoomOverlay.classList.contains('hidden')) {
 							closeZoom();
 						} else {
 							openZoom();
 						}
 						break;
+					case 'g':
+					case 'G':
+						e.preventDefault();
+						if (gridModal.classList.contains('hidden')) {
+							openGrid();
+						} else {
+							closeGrid();
+						}
+						break;
 					case '?':
+						e.preventDefault();
 						shortcutsModal.classList.toggle('hidden');
 						break;
 					case 'Escape':
 						if (!zoomOverlay.classList.contains('hidden')) {
 							closeZoom();
+						} else if (!gridModal.classList.contains('hidden')) {
+							closeGrid();
 						} else if (viewer.classList.contains('fullscreen')) {
 							viewer.classList.remove('fullscreen');
 							fullscreenBtn?.querySelector('.fullscreen-expand')?.classList.remove('hidden');
@@ -1156,20 +1484,25 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 						break;
 				}
 			}) as EventListener);
-			
+
 			// Shortcuts modal
 			shortcutsBtn?.addEventListener('click', () => {
 				shortcutsModal.classList.remove('hidden');
 			});
-			
+
 			shortcutsClose?.addEventListener('click', () => {
 				shortcutsModal.classList.add('hidden');
 			});
-			
+
 			shortcutsBackdrop?.addEventListener('click', () => {
 				shortcutsModal.classList.add('hidden');
 			});
-			
+
+			// Grid modal
+			gridBtn?.addEventListener('click', openGrid);
+			gridClose?.addEventListener('click', closeGrid);
+			gridBackdrop?.addEventListener('click', closeGrid);
+
 			// Fullscreen toggle
 			fullscreenBtn?.addEventListener('click', () => {
 				viewer.classList.toggle('fullscreen');
@@ -1177,26 +1510,26 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 				fullscreenBtn.querySelector('.fullscreen-expand')?.classList.toggle('hidden', isFullscreen);
 				fullscreenBtn.querySelector('.fullscreen-compress')?.classList.toggle('hidden', !isFullscreen);
 			});
-			
-			// Initialize
-			thumbnailBtns[0]?.classList.add('active');
-			updateProgress();
 		});
-		
+
 		// Clean up document-level listeners when navigating away (View Transitions)
 		document.addEventListener('astro:before-swap', () => {
 			documentListeners.forEach(({ type, handler }) => {
 				document.removeEventListener(type, handler);
 			});
+			windowListeners.forEach(({ type, handler }) => {
+				window.removeEventListener(type, handler);
+			});
 			documentListeners.length = 0;
-			
+			windowListeners.length = 0;
+
 			// Reset initialized flag on viewers so they can re-initialize on the new page
 			viewers.forEach((viewerEl) => {
 				(viewerEl as HTMLElement).dataset.initialized = '';
 			});
 		}, { once: true });
 	}
-	
+
 	// astro:page-load fires on initial load AND after every View Transition navigation
 	document.addEventListener('astro:page-load', setupPresentationViewers);
 </script>

@@ -20,6 +20,7 @@ interface Props {
 const { title, pubDate, tags, minutesRead, img, isPinned = false } = Astro.props;
 
 const formattedDate = formatDate(pubDate);
+const estimatedReadTime = minutesRead?.trim() || 'Quick read';
 ---
 
 <Section>
@@ -35,10 +36,24 @@ const formattedDate = formatDate(pubDate);
 		<div class="mb-6 flex flex-wrap items-center justify-center gap-3">
 			<Tags tags={tags} withHref={true} />
 		</div>
-		<div class="mb-8 flex items-center gap-3 text-sm text-stone-600 dark:text-stone-400">
-			<time>{formattedDate}</time>
+		<div class="mb-8 flex flex-wrap items-center justify-center gap-3 text-sm text-stone-600 dark:text-stone-400">
+			<time datetime={String(pubDate)}>{formattedDate}</time>
 			<span class="text-stone-300 dark:text-stone-700">·</span>
-			<span>{minutesRead}</span>
+			<span class="inline-flex items-center gap-1.5">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="1.8"
+					class="h-4 w-4"
+					aria-hidden="true"
+				>
+					<circle cx="12" cy="12" r="9" />
+					<path stroke-linecap="round" stroke-linejoin="round" d="M12 7v6l4 2" />
+				</svg>
+				Estimated read time: {estimatedReadTime}
+			</span>
 		</div>
 
 		{img.src && (
