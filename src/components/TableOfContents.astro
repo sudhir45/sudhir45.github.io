@@ -9,7 +9,7 @@
           <li class={padding}>
             <a 
               href={`#${heading.slug}`}
-              class="block rounded-md px-2 py-1.5 text-stone-600 transition-colors hover:bg-stone-100 hover:text-orange-600 dark:text-stone-400 dark:hover:bg-stone-900 dark:hover:text-orange-500"
+              class="block rounded-md px-2 py-1.5 text-zinc-600 transition-colors hover:bg-zinc-100 hover:text-blue-600 dark:text-zinc-400 dark:hover:bg-zinc-900 dark:hover:text-blue-400"
             >
               {heading.text}
             </a>
@@ -28,11 +28,11 @@
       const link = document.querySelector(`.toc a[href="#${id}"]`);
       if (link) {
         if (entry.intersectionRatio > 0.1) {
-          link.classList.add('bg-orange-50', 'text-orange-600', 'font-medium', 'dark:bg-orange-950/30', 'dark:text-orange-500');
-          link.classList.remove('text-stone-600', 'dark:text-stone-400');
+          link.classList.add('bg-blue-50', 'text-blue-600', 'font-medium', 'dark:bg-blue-950/30', 'dark:text-blue-400');
+          link.classList.remove('text-zinc-600', 'dark:text-zinc-400');
         } else {
-          link.classList.remove('bg-orange-50', 'text-orange-600', 'font-medium', 'dark:bg-orange-950/30', 'dark:text-orange-500');
-          link.classList.add('text-stone-600', 'dark:text-stone-400');
+          link.classList.remove('bg-blue-50', 'text-blue-600', 'font-medium', 'dark:bg-blue-950/30', 'dark:text-blue-400');
+          link.classList.add('text-zinc-600', 'dark:text-zinc-400');
         }
       }
     });

@@ -11,28 +11,28 @@ const { title, description } = AppConfig;
 	<Section>
 		<div class="mx-auto max-w-[850px] py-8">
 			<div class="mb-12">
-				<div class="space-y-6 text-base leading-relaxed text-stone-800 dark:text-stone-200">
-					<p class="text-lg font-medium text-stone-900 dark:text-stone-100">
+				<div class="space-y-6 text-base leading-relaxed text-zinc-800 dark:text-zinc-200">
+					<p class="animate-fade-up text-lg font-medium text-zinc-900 dark:text-zinc-100">
 						Hi, I'm Sudhir (he/him), based in Mumbai, India.<br/>
 						I build security systems that scale across enterprise networks, and I automate anything repetitive.
 					</p>
 					
-					<p>
+					<p class="animate-fade-up stagger-1">
 						I'm a <strong>Senior Information Security Engineer at Infosys</strong>.<br/>
 						At work, I secure large-scale network infrastructure using Skybox, AlgoSec, Qualys, CyberArk, and custom automation.
 					</p>
 					
-					<p>
+					<p class="animate-fade-up stagger-2">
 						I specialize in enterprise network hardening, continuous compliance, and risk-driven vulnerability management.<br/>
 						I've worked across heterogeneous environments with Palo Alto, Check Point, Cisco, Mellanox, and cloud-integrated security stacks.
 					</p>
-					<div>
-						<p class="mb-3 font-medium text-stone-900 dark:text-stone-100">ALL OPINIONS ARE MY OWN.</p>
+					<div class="animate-fade-up stagger-3">
+						<p class="mb-3 font-medium text-zinc-900 dark:text-zinc-100">ALL OPINIONS ARE MY OWN.</p>
 					</div>	
 				</div>
 
 				<!-- Social Links -->
-				<div class="mt-10 flex items-center gap-4">
+				<div class="animate-fade-up stagger-4 mt-10 flex items-center gap-4">
 					<Social href={SOCIALS.find(s => s.name === 'GitHub')?.url || '#'}>
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
@@ -64,7 +64,7 @@ const { title, description } = AppConfig;
 					</Social>
 
 					<!-- Resume Link - Hidden for now, uncomment when ready
-					<a href="/Resume.pdf" target="_blank" rel="noopener noreferrer" class="group inline-flex items-center gap-2 rounded-lg border border-stone-200 bg-white px-4 py-2.5 text-sm font-medium text-stone-700 transition-all hover:border-orange-300 hover:bg-orange-50 hover:text-orange-600 dark:border-stone-800 dark:bg-stone-900 dark:text-stone-300 dark:hover:border-orange-900/50 dark:hover:bg-orange-950/30 dark:hover:text-orange-500">
+					<a href="/Resume.pdf" target="_blank" rel="noopener noreferrer" class="group inline-flex items-center gap-2 rounded-lg border border-zinc-200 bg-white px-4 py-2.5 text-sm font-medium text-zinc-700 transition-all hover:border-blue-300 hover:bg-blue-50 hover:text-blue-600 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-blue-700/50 dark:hover:bg-blue-950/30 dark:hover:text-blue-400">
 						<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform group-hover:scale-110" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
 						</svg>

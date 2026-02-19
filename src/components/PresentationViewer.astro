@@ -209,8 +209,8 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 		--glass-bg: rgba(0, 0, 0, 0.6);
 		--glass-border: rgba(255, 255, 255, 0.1);
 		--glass-blur: 12px;
-		--accent: rgb(234, 88, 12);
-		--accent-glow: rgba(234, 88, 12, 0.4);
+		--accent: rgb(37, 99, 235);
+		--accent-glow: rgba(37, 99, 235, 0.4);
 		--transition-slide: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 		--transition-ui: 0.2s ease;
 	}
@@ -219,7 +219,7 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 	.progress-bar-container {
 		position: relative;
 		height: 3px;
-		background: rgba(120, 113, 108, 0.3);
+		background: rgba(161, 161, 170, 0.3);
 		border-radius: 3px;
 		margin-bottom: 1rem;
 		overflow: hidden;
@@ -233,7 +233,7 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 	.progress-fill {
 		height: 100%;
 		width: calc(100% / var(--slide-count, 1));
-		background: linear-gradient(90deg, var(--accent), #f97316);
+		background: linear-gradient(90deg, var(--accent), #3b82f6);
 		border-radius: 3px;
 		transition: width var(--transition-slide), transform var(--transition-slide);
 		box-shadow: 0 0 10px var(--accent-glow);
@@ -247,7 +247,7 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 		overflow: hidden;
 		border-radius: 1rem;
 		border: 1px solid var(--glass-border);
-		background: linear-gradient(180deg, rgba(28, 25, 23, 0.95) 0%, rgba(12, 10, 9, 0.98) 100%);
+		background: linear-gradient(180deg, rgba(24, 24, 27, 0.95) 0%, rgba(9, 9, 11, 0.98) 100%);
 		box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 	}
 
@@ -285,7 +285,7 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 		gap: 0.375rem;
 		font-size: 0.875rem;
 		font-weight: 500;
-		color: #a8a29e;
+		color: #a1a1aa;
 		font-variant-numeric: tabular-nums;
 	}
 
@@ -301,7 +301,7 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 		justify-content: center;
 		padding: 0.5rem;
 		border-radius: 0.5rem;
-		color: #a8a29e;
+		color: #a1a1aa;
 		background: transparent;
 		border: none;
 		cursor: pointer;
@@ -362,7 +362,7 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 	.spinner {
 		width: 3rem;
 		height: 3rem;
-		border: 3px solid rgba(120, 113, 108, 0.3);
+		border: 3px solid rgba(161, 161, 170, 0.3);
 		border-top-color: var(--accent);
 		border-radius: 50%;
 		animation: spin 0.8s linear infinite;
@@ -420,7 +420,7 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 	}
 
 	.nav-btn:hover {
-		background: rgba(234, 88, 12, 0.8);
+		background: rgba(37, 99, 235, 0.8);
 		border-color: var(--accent);
 		transform: translateY(-50%) scale(1.1);
 		box-shadow: 0 0 20px var(--accent-glow);
@@ -443,7 +443,7 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 		-webkit-backdrop-filter: blur(var(--glass-blur));
 		border: 1px solid var(--glass-border);
 		border-radius: 0.5rem;
-		color: #a8a29e;
+		color: #a1a1aa;
 		cursor: pointer;
 		opacity: 0;
 		transition: all var(--transition-ui);
@@ -514,7 +514,7 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 		backdrop-filter: blur(var(--glass-blur));
 		border-radius: 0.5rem;
 		font-size: 0.75rem;
-		color: #a8a29e;
+		color: #a1a1aa;
 	}
 
 	/* Thumbnail Strip */
@@ -529,7 +529,7 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 		overflow-x: auto;
 		scroll-behavior: smooth;
 		scrollbar-width: thin;
-		scrollbar-color: rgba(120, 113, 108, 0.5) transparent;
+		scrollbar-color: rgba(161, 161, 170, 0.5) transparent;
 	}
 
 	.thumbnail-strip::-webkit-scrollbar {
@@ -537,7 +537,7 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 	}
 
 	.thumbnail-strip::-webkit-scrollbar-thumb {
-		background: rgba(120, 113, 108, 0.5);
+		background: rgba(161, 161, 170, 0.5);
 		border-radius: 2px;
 	}
 
@@ -610,7 +610,7 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 		width: 90%;
 		max-width: 400px;
 		padding: 1.5rem;
-		background: linear-gradient(180deg, rgba(41, 37, 36, 0.98) 0%, rgba(28, 25, 23, 0.98) 100%);
+		background: linear-gradient(180deg, rgba(39, 39, 42, 0.98) 0%, rgba(24, 24, 27, 0.98) 100%);
 		border: 1px solid var(--glass-border);
 		border-radius: 1rem;
 		box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
@@ -635,7 +635,7 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 		align-items: center;
 		gap: 0.5rem;
 		font-size: 0.875rem;
-		color: #a8a29e;
+		color: #a1a1aa;
 	}
 
 	.shortcut-row kbd {
@@ -672,7 +672,7 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 	}
 
 	.shortcuts-close:hover {
-		background: #ea580c;
+		background: #2563eb;
 		transform: translateY(-1px);
 	}
 
@@ -704,7 +704,7 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 		overflow: hidden;
 		border-radius: 1rem;
 		border: 1px solid var(--glass-border);
-		background: linear-gradient(180deg, rgba(41, 37, 36, 0.98) 0%, rgba(28, 25, 23, 0.98) 100%);
+		background: linear-gradient(180deg, rgba(39, 39, 42, 0.98) 0%, rgba(24, 24, 27, 0.98) 100%);
 		box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 	}
 
@@ -731,7 +731,7 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 		border: none;
 		border-radius: 0.5rem;
 		background: transparent;
-		color: #a8a29e;
+		color: #a1a1aa;
 		cursor: pointer;
 		transition: all var(--transition-ui);
 	}
@@ -755,7 +755,7 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 		flex-direction: column;
 		gap: 0.375rem;
 		padding: 0;
-		border: 1px solid rgba(120, 113, 108, 0.45);
+		border: 1px solid rgba(161, 161, 170, 0.45);
 		border-radius: 0.5rem;
 		background: rgba(12, 10, 9, 0.8);
 		overflow: hidden;
@@ -770,14 +770,14 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 	}
 
 	.grid-slide-btn:hover {
-		border-color: rgba(234, 88, 12, 0.8);
-		box-shadow: 0 0 0 1px rgba(234, 88, 12, 0.4);
+		border-color: rgba(37, 99, 235, 0.8);
+		box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.4);
 		transform: translateY(-1px);
 	}
 
 	.grid-slide-btn.active {
-		border-color: rgba(234, 88, 12, 1);
-		box-shadow: 0 0 0 1px rgba(234, 88, 12, 0.6), 0 0 14px rgba(234, 88, 12, 0.2);
+		border-color: rgba(37, 99, 235, 1);
+		box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.6), 0 0 14px rgba(37, 99, 235, 0.2);
 	}
 
 	.grid-slide-number {
@@ -793,12 +793,12 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 		margin-top: 0.75rem;
 		text-align: center;
 		font-size: 0.75rem;
-		color: #78716c;
+		color: #71717a;
 	}
 
 	.viewer-hints kbd {
 		padding: 0.125rem 0.375rem;
-		background: rgba(120, 113, 108, 0.2);
+		background: rgba(161, 161, 170, 0.2);
 		border-radius: 0.25rem;
 		font-family: inherit;
 	}
@@ -954,7 +954,7 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 
 	:root:not(.dark) .nav-btn:hover,
 	:global(.light) .nav-btn:hover {
-		background: rgba(234, 88, 12, 0.9);
+		background: rgba(37, 99, 235, 0.9);
 		border-color: var(--accent);
 		color: #fafaf9;
 	}

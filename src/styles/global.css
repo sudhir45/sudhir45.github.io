@@ -1,136 +1,234 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
-@plugin "@tailwindcss/typography";
+@plugin '@tailwindcss/typography';
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* ─── Slate Precision Design System ─── */
+
 /* Performance: Reduce layout shifts */
 @layer base {
-    img {
-        @apply h-auto max-w-full;
-        content-visibility: auto;
-    }
-    
-    /* Smooth scrolling with respect for user preferences */
-    @media (prefers-reduced-motion: no-preference) {
-        html {
-            scroll-behavior: smooth;
-        }
-    }
+	img {
+		@apply h-auto max-w-full;
+		content-visibility: auto;
+	}
+
+	/* Smooth scrolling with respect for user preferences */
+	@media (prefers-reduced-motion: no-preference) {
+		html {
+			scroll-behavior: smooth;
+		}
+	}
 }
 
-/* Professional Typography & Spacing */
+/* Typography & Spacing */
 @layer base {
-    :root {
-        --font-ui: 'Manrope', 'Segoe UI', 'Helvetica Neue', sans-serif;
-        --font-code: 'IBM Plex Mono', 'Consolas', 'Monaco', monospace;
-    }
+	:root {
+		--font-ui: 'Manrope', 'Segoe UI', 'Helvetica Neue', sans-serif;
+		--font-code: 'JetBrains Mono', 'Consolas', 'Monaco', monospace;
+	}
 
-    html {
-        @apply antialiased;
-        font-feature-settings: "kern" 1, "liga" 1, "cv11" 1;
-        text-rendering: optimizeLegibility;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-    }
+	html {
+		@apply antialiased;
+		font-feature-settings:
+			'kern' 1,
+			'liga' 1,
+			'cv11' 1;
+		text-rendering: optimizeLegibility;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+	}
 
-    body {
-        font-family: var(--font-ui);
-        letter-spacing: -0.012em;
-    }
+	body {
+		font-family: var(--font-ui);
+		letter-spacing: -0.012em;
+	}
 
-    h1, h2, h3, h4 {
-        letter-spacing: -0.02em;
-    }
+	h1,
+	h2,
+	h3,
+	h4 {
+		letter-spacing: -0.02em;
+	}
 
-    code,
-    pre,
-    kbd {
-        font-family: var(--font-code);
-    }
+	code,
+	pre,
+	kbd {
+		font-family: var(--font-code);
+	}
 
-    /* Fluid type scale for headings */
-    h1 { font-size: clamp(1.875rem, 1.5rem + 1.5vw, 3rem); }
-    h2 { font-size: clamp(1.5rem, 1.25rem + 1vw, 2.25rem); }
-    h3 { font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.75rem); }
+	/* Fluid type scale for headings */
+	h1 {
+		font-size: clamp(1.875rem, 1.5rem + 1.5vw, 3rem);
+	}
+	h2 {
+		font-size: clamp(1.5rem, 1.25rem + 1vw, 2.25rem);
+	}
+	h3 {
+		font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.75rem);
+	}
 
-    /* Focus styles for accessibility */
-    a:focus-visible,
-    button:focus-visible {
-        @apply outline-none ring-2 ring-orange-500/50 ring-offset-2 ring-offset-stone-100 dark:ring-offset-stone-900;
-    }
+	/* Focus styles for accessibility */
+	a:focus-visible,
+	button:focus-visible {
+		@apply ring-2 ring-blue-500/50 ring-offset-2 ring-offset-white outline-none dark:ring-offset-zinc-950;
+	}
 }
 
-/* Refined Code Highlighting */
-@layer utilities {
-    .content pre {
-        @apply p-0;
-    }
+/* ─── Animations ─── */
+@layer base {
+	@keyframes fade-up {
+		from {
+			opacity: 0;
+			transform: translateY(16px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
 
-    .content code {
-        @apply overflow-x-auto;
-    }
-
-    .content [data-rehype-pretty-code-figure] code {
-        @apply p-0;
-    }
-
-    .content pre > code span[data-line] {
-        @apply border-l-4 border-transparent px-4;
-    }
-
-    .content pre > code span:first-of-type {
-        @apply rounded-t-lg pt-4;
-    }
-
-    .content pre > code span:last-of-type {
-        @apply rounded-b-lg pb-4;
-    }
-
-    .content pre > code .highlighted {
-        @apply border-l-4 border-orange-500/30 bg-orange-500/5 dark:bg-orange-500/10;
-    }
-
-    .content pre > code[data-line-numbers] {
-        counter-reset: line;
-    }
-
-    .content pre > code[data-line-numbers] > span[data-line]::before {
-        counter-increment: line;
-        content: counter(line);
-        @apply mr-6 inline-block w-6 text-left text-stone-400 dark:text-stone-600;
-        font-variant-numeric: tabular-nums;
-    }
-
-    .content pre > code > span[data-line]::before {
-        content: '';
-        @apply inline-block w-0;
-    }
-
-    .content pre > code[data-line-numbers-max-digits='2'] > span[data-line]::before {
-        @apply w-8;
-    }
-
-    .content code[data-line-numbers-max-digits='3'] > span[data-line]::before {
-        @apply w-10;
-    }
+	@keyframes fade-in {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
+	}
 }
 
-/* Professional Scrollbar */
 @layer utilities {
-    ::-webkit-scrollbar {
-        @apply w-2 h-2;
-    }
+	/* Fade-up entrance animation */
+	.animate-fade-up {
+		animation: fade-up 0.6s ease-out both;
+	}
 
-    ::-webkit-scrollbar-track {
-        @apply bg-transparent;
-    }
+	.animate-fade-in {
+		animation: fade-in 0.5s ease-out both;
+	}
 
-    ::-webkit-scrollbar-thumb {
-        @apply bg-stone-300 dark:bg-stone-700 rounded-full;
-    }
+	/* Stagger delays for child elements */
+	.stagger-1 {
+		animation-delay: 0.05s;
+	}
+	.stagger-2 {
+		animation-delay: 0.1s;
+	}
+	.stagger-3 {
+		animation-delay: 0.15s;
+	}
+	.stagger-4 {
+		animation-delay: 0.2s;
+	}
+	.stagger-5 {
+		animation-delay: 0.25s;
+	}
+	.stagger-6 {
+		animation-delay: 0.3s;
+	}
 
-    ::-webkit-scrollbar-thumb:hover {
-        @apply bg-stone-400 dark:bg-stone-600;
-    }
+	/* Underline hover animation for links */
+	.link-underline {
+		background-image: linear-gradient(currentColor, currentColor);
+		background-position: 0% 100%;
+		background-repeat: no-repeat;
+		background-size: 0% 1.5px;
+		transition: background-size 0.3s ease-out;
+		padding-bottom: 2px;
+	}
+
+	.link-underline:hover {
+		background-size: 100% 1.5px;
+	}
+
+	/* Frosted glass navbar */
+	.frosted-glass {
+		backdrop-filter: blur(20px) saturate(180%);
+		-webkit-backdrop-filter: blur(20px) saturate(180%);
+	}
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+	.animate-fade-up,
+	.animate-fade-in {
+		animation: none !important;
+		opacity: 1 !important;
+		transform: none !important;
+	}
+}
+
+/* ─── Refined Code Highlighting ─── */
+@layer utilities {
+	.content pre {
+		@apply p-0;
+	}
+
+	.content code {
+		@apply overflow-x-auto;
+	}
+
+	.content [data-rehype-pretty-code-figure] code {
+		@apply p-0;
+	}
+
+	.content pre > code span[data-line] {
+		@apply border-l-4 border-transparent px-4;
+	}
+
+	.content pre > code span:first-of-type {
+		@apply rounded-t-lg pt-4;
+	}
+
+	.content pre > code span:last-of-type {
+		@apply rounded-b-lg pb-4;
+	}
+
+	.content pre > code .highlighted {
+		@apply border-l-4 border-blue-500/30 bg-blue-500/5 dark:bg-blue-500/10;
+	}
+
+	.content pre > code[data-line-numbers] {
+		counter-reset: line;
+	}
+
+	.content pre > code[data-line-numbers] > span[data-line]::before {
+		counter-increment: line;
+		content: counter(line);
+		@apply mr-6 inline-block w-6 text-left text-zinc-400 dark:text-zinc-600;
+		font-variant-numeric: tabular-nums;
+	}
+
+	.content pre > code > span[data-line]::before {
+		content: '';
+		@apply inline-block w-0;
+	}
+
+	.content pre > code[data-line-numbers-max-digits='2'] > span[data-line]::before {
+		@apply w-8;
+	}
+
+	.content code[data-line-numbers-max-digits='3'] > span[data-line]::before {
+		@apply w-10;
+	}
+}
+
+/* ─── Scrollbar ─── */
+@layer utilities {
+	::-webkit-scrollbar {
+		@apply h-2 w-2;
+	}
+
+	::-webkit-scrollbar-track {
+		@apply bg-transparent;
+	}
+
+	::-webkit-scrollbar-thumb {
+		@apply rounded-full bg-zinc-300 dark:bg-zinc-700;
+	}
+
+	::-webkit-scrollbar-thumb:hover {
+		@apply bg-zinc-400 dark:bg-zinc-600;
+	}
 }
