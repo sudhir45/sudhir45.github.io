@@ -67,7 +67,9 @@ const postUrl = `${siteUrl}${Astro.url.pathname}`;
 		<!-- Sidebar TOC for Desktop -->
 		<aside class="sticky top-24 hidden w-64 shrink-0 lg:block">
 			<div class="mb-4 text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-500">On this page</div>
-			<TableOfContents headings={headings} />
+			<div class="toc-scroll max-h-[calc(100vh-10rem)] overflow-y-auto">
+				<TableOfContents headings={headings} />
+			</div>
 		</aside>
 	</div>
 </Base>

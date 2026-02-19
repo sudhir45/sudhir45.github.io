@@ -1,7 +1,7 @@
 ---
 ---
 <nav class="toc">
-  <ul class="flex flex-col gap-1.5 text-sm">
+  <ul class="flex flex-col gap-1 text-sm">
     {
       Astro.props.headings.map((heading: any) => {
         const padding = heading.depth === 2 ? 'pl-0' : heading.depth === 3 ? 'pl-4' : 'pl-8';
@@ -9,7 +9,8 @@
           <li class={padding}>
             <a 
               href={`#${heading.slug}`}
-              class="block rounded-md px-2 py-1.5 text-zinc-600 transition-colors hover:bg-zinc-100 hover:text-blue-600 dark:text-zinc-400 dark:hover:bg-zinc-900 dark:hover:text-blue-400"
+              data-toc-link
+              class="toc-link block rounded-md px-2 py-1.5 text-zinc-500 transition-colors duration-200 hover:bg-zinc-100 hover:text-blue-600 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-blue-400"
             >
               {heading.text}
             </a>
@@ -20,27 +21,142 @@
   </ul>
 </nav>
 
+<style>
+  /* Active TOC link — proper CSS handles light/dark automatically */
+  .toc-link.active {
+    background-color: rgb(239 246 255); /* blue-50 */
+    color: rgb(37 99 235); /* blue-600 */
+    font-weight: 500;
+  }
+
+  :global(.dark) .toc-link.active {
+    background-color: rgba(23, 37, 84, 0.3); /* blue-950/30 */
+    color: rgb(96 165 250); /* blue-400 */
+  }
+</style>
+
 <script>
-  // Intersection observer for active TOC highlighting
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      const id = entry.target.getAttribute('id');
-      const link = document.querySelector(`.toc a[href="#${id}"]`);
-      if (link) {
-        if (entry.intersectionRatio > 0.1) {
-          link.classList.add('bg-blue-50', 'text-blue-600', 'font-medium', 'dark:bg-blue-950/30', 'dark:text-blue-400');
-          link.classList.remove('text-zinc-600', 'dark:text-zinc-400');
-        } else {
-          link.classList.remove('bg-blue-50', 'text-blue-600', 'font-medium', 'dark:bg-blue-950/30', 'dark:text-blue-400');
-          link.classList.add('text-zinc-600', 'dark:text-zinc-400');
+  function initTOC() {
+    const headings = Array.from(
+      document.querySelectorAll('article h2[id], article h3[id], article h4[id]')
+    ) as HTMLElement[];
+
+    const tocLinks = Array.from(
+      document.querySelectorAll('[data-toc-link]')
+    ) as HTMLAnchorElement[];
+
+    if (!headings.length || !tocLinks.length) return;
+
+    let currentActiveId: string | null = null;
+
+    function setActive(id: string | null) {
+      if (id === currentActiveId) return;
+      currentActiveId = id;
+
+      // Remove active from all
+      tocLinks.forEach((link) => link.classList.remove('active'));
+
+      if (!id) return;
+
+      // Find and activate the matching link
+      const activeLink = tocLinks.find(
+        (link) => link.getAttribute('href') === `#${id}`
+      );
+
+      if (activeLink) {
+        activeLink.classList.add('active');
+
+        // Auto-scroll the TOC container to keep active link visible
+        const tocContainer = activeLink.closest('.max-h-\\[calc\\(100vh-10rem\\)\\]') 
+          || activeLink.closest('[class*="overflow-y"]');
+        if (tocContainer) {
+          const containerRect = tocContainer.getBoundingClientRect();
+          const linkRect = activeLink.getBoundingClientRect();
+          const linkTop = linkRect.top - containerRect.top;
+          const linkBottom = linkRect.bottom - containerRect.top;
+
+          // Scroll if the link is outside the visible area
+          if (linkTop < 0 || linkBottom > containerRect.height) {
+            activeLink.scrollIntoView({
+              block: 'center',
+              behavior: 'smooth',
+            });
+          }
         }
       }
-    });
-  }, {
-    rootMargin: '-20% 0% -70% 0%'
-  });
+    }
 
-  document.querySelectorAll('h2[id], h3[id], h4[id]').forEach((section) => {
-    observer.observe(section);
-  });
+    function updateActiveHeading() {
+      // Find the heading that's currently at the top of the viewport
+      // We check from bottom to top — the last heading that has scrolled past
+      // the trigger point is the "current" section
+      const scrollY = window.scrollY;
+      const triggerOffset = window.innerHeight * 0.2; // 20% from top
+
+      let activeId: string | null = null;
+
+      for (let i = headings.length - 1; i >= 0; i--) {
+        const heading = headings[i];
+        if (!heading) continue;
+        const headingTop = heading.getBoundingClientRect().top + scrollY;
+        
+        if (scrollY >= headingTop - triggerOffset) {
+          activeId = heading.id;
+          break;
+        }
+      }
+
+      // If we scrolled before the first heading, clear active
+      if (!activeId && headings.length > 0) {
+        const first = headings[0];
+        if (first) {
+          const firstTop = first.getBoundingClientRect().top + scrollY;
+          if (scrollY < firstTop - triggerOffset) {
+            setActive(null);
+            return;
+          }
+        }
+      }
+
+      setActive(activeId);
+    }
+
+    // Throttle scroll events for performance
+    let ticking = false;
+    function onScroll() {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          updateActiveHeading();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    // Handle click on TOC links — smooth scroll then set active
+    tocLinks.forEach((link) => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const href = link.getAttribute('href');
+        if (!href) return;
+        const target = document.querySelector(href);
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          // Set active immediately on click
+          setActive(href.slice(1));
+        }
+      });
+    });
+
+    // Initial check
+    updateActiveHeading();
+  }
+
+  // Run on initial load
+  initTOC();
+
+  // Re-run after Astro page transitions
+  document.addEventListener('astro:after-swap', initTOC);
 </script>
