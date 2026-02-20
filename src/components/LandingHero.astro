@@ -8,34 +8,16 @@ const linkedinUrl = SOCIALS.find((social) => social.name === 'LinkedIn')?.url ||
 ---
 
 <Section>
-	<div id="hero-graph-shell" class="hero-shell py-12 md:py-20 relative overflow-hidden">
-		<!-- Premium Animated SVG Background -->
-		<div class="absolute inset-0 pointer-events-none" aria-hidden="true">
-			<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" class="absolute inset-0 z-0">
-				<defs>
-					<pattern id="cyber-grid" width="40" height="40" patternUnits="userSpaceOnUse">
-						<path d="M 40 0 L 0 0 0 40" fill="none" class="stroke-zinc-200/50 dark:stroke-zinc-800/50" stroke-width="1"/>
-					</pattern>
-					<radialGradient id="glow-grad" cx="50%" cy="50%" r="50%">
-						<stop offset="0%" stop-color="currentColor" class="text-zinc-300 dark:text-zinc-700" stop-opacity="0.15" />
-						<stop offset="100%" stop-color="currentColor" stop-opacity="0" />
-					</radialGradient>
-				</defs>
-				<!-- Grid -->
-				<rect width="100%" height="100%" fill="url(#cyber-grid)" class="mask-radial-right" />
-				<!-- Animated glowing nodes -->
-				<circle cx="85%" cy="30%" r="250" fill="url(#glow-grad)" class="animate-pulse-slow mask-radial-right" />
-				<circle cx="70%" cy="70%" r="180" fill="url(#glow-grad)" class="animate-pulse-slow [animation-delay:2s] mask-radial-right" />
-			</svg>
-		</div>
-
-		<div class="relative z-10 pl-2">
+	<div id="hero-graph-shell" class="hero-shell pt-6 pb-12 md:pt-10 md:pb-16 relative overflow-hidden flex flex-col md:flex-row items-center justify-between min-h-[400px]">
+		
+		<!-- Left Side: Text Content -->
+		<div class="relative z-10 w-full md:w-[50%] lg:w-[45%] pl-2 shrink-0">
 			<p class="animate-fade-up text-sm font-bold uppercase tracking-[0.25em] text-orange-600 dark:text-orange-500">Security Engineer</p>
 			<h1 class="animate-fade-up stagger-1 mt-3 text-7xl font-bold tracking-tighter text-zinc-900 dark:text-zinc-50 md:text-8xl lg:text-9xl">
 				SUDHIR
 			</h1>
-			<p class="animate-fade-up stagger-2 mt-6 max-w-2xl text-lg font-medium text-zinc-600 dark:text-zinc-400 md:text-xl">
-				Enterprise Network Security, Compliance, and Automation.
+			<p class="animate-fade-up stagger-2 mt-6 max-w-xl text-lg font-medium text-zinc-600 dark:text-zinc-400 md:text-xl">
+				Enterprise Security, Compliance, and Automation.
 			</p>
 
 			<div class="animate-fade-up stagger-3 mt-10 flex items-center gap-4">
@@ -65,26 +47,128 @@ const linkedinUrl = SOCIALS.find((social) => social.name === 'LinkedIn')?.url ||
 				</Social>
 			</div>
 		</div>
+
+		<!-- Right Side: Fluid NetSec_Mon Visual -->
+		<div class="relative z-0 mt-8 md:mt-0 w-full md:w-[50%] lg:w-[55%] flex items-center justify-end md:items-start md:pt-0 aspect-square md:aspect-auto md:h-[450px] opacity-90 mix-blend-multiply dark:mix-blend-screen overflow-visible">
+			<!-- Radar Sweep Effect Background -->
+			<div class="absolute inset-0 z-0 flex items-center justify-center translate-x-[5%] md:translate-x-[15%] opacity-30">
+				<div class="h-[140%] w-[140%] md:h-[120%] md:w-[120%] animate-[spin_12s_linear_infinite] rounded-full border border-orange-500/10 bg-[conic-gradient(from_0deg,transparent_0_340deg,rgba(249,115,22,0.15)_360deg)] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_30%,transparent_100%)]"></div>
+			</div>
+
+			<!-- Technically Accurate Enterprise Security Topology -->
+			<svg class="relative z-10 w-[110%] md:w-[130%] h-auto md:-translate-y-6 md:translate-x-8 opacity-90" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid meet">
+				<defs>
+					<filter id="glow-mon" x="-20%" y="-20%" width="140%" height="140%">
+						<feGaussianBlur stdDeviation="2" result="blur" />
+						<feComposite in="SourceGraphic" in2="blur" operator="over" />
+					</filter>
+					<filter id="glow-strong" x="-50%" y="-50%" width="200%" height="200%">
+						<feGaussianBlur stdDeviation="4" result="blur" />
+						<feComposite in="SourceGraphic" in2="blur" operator="over" />
+					</filter>
+				</defs>
+
+				<!-- Static Lines (Physical Infrastructure) -->
+				<!-- Main Secure Data Path: INET -> WAF -> ZTA -> APP -->
+				<path class="stroke-zinc-500/40 dark:stroke-zinc-400/30" stroke-width="1.5" fill="none" d="M40 100 L120 180 L200 120 L320 160" />
+				<!-- Authentication Path: ZTA <-> IDP -->
+				<path class="stroke-purple-500/40" stroke-width="1.5" stroke-dasharray="4 4" fill="none" d="M200 120 L280 50" />
+				<!-- Telemetry/Logging Paths to SIEM -->
+				<path class="stroke-zinc-500/20 dark:stroke-zinc-400/10" stroke-width="1" stroke-dasharray="2 2" fill="none" d="M120 180 L230 240 M200 120 L230 240 M280 50 L230 240 M320 160 L230 240" />
+
+				<!-- Animated Packets / Data Flows -->
+				<!-- Valid User Traffic (Blue) -->
+				<circle r="2.5" fill="#3b82f6" filter="url(#glow-strong)">
+					<animateMotion dur="5s" repeatCount="indefinite" path="M40 100 L120 180 L200 120 L320 160" />
+				</circle>
+				<!-- Blocked Attack Traffic (Red) - Fades out at WAF -->
+				<circle r="3" fill="#ef4444" filter="url(#glow-strong)">
+					<animateMotion dur="3s" repeatCount="indefinite" path="M40 100 L120 180" />
+					<animate attributeName="opacity" values="1; 1; 0; 0" keyTimes="0; 0.8; 0.95; 1" dur="3s" repeatCount="indefinite" />
+				</circle>
+				<circle r="2" fill="#ef4444" filter="url(#glow-strong)">
+					<animateMotion dur="2s" begin="1s" repeatCount="indefinite" path="M40 100 L120 180" />
+					<animate attributeName="opacity" values="1; 1; 0; 0" keyTimes="0; 0.8; 0.95; 1" dur="2s" repeatCount="indefinite" />
+				</circle>
+				<!-- Auth Verification (Purple) -->
+				<circle r="2" fill="#a855f7" filter="url(#glow-mon)">
+					<animateMotion dur="2.5s" repeatCount="indefinite" path="M200 120 L280 50 L200 120" />
+				</circle>
+				<!-- Telemetry to SIEM (Yellow) -->
+				<circle r="1.5" fill="#eab308" filter="url(#glow-mon)">
+					<animateMotion dur="4s" repeatCount="indefinite" path="M120 180 L230 240" />
+				</circle>
+				<circle r="1.5" fill="#eab308" filter="url(#glow-mon)">
+					<animateMotion dur="3.5s" begin="1.5s" repeatCount="indefinite" path="M200 120 L230 240" />
+				</circle>
+				<circle r="1" fill="#eab308" filter="url(#glow-mon)">
+					<animateMotion dur="4.5s" begin="0.5s" repeatCount="indefinite" path="M320 160 L230 240" />
+				</circle>
+
+				<!-- Architectural Nodes -->
+				
+				<!-- INET: Public Internet (40, 100) -->
+				<g transform="translate(40, 100)">
+					<circle r="6" fill="#64748b" fill-opacity="0.2" stroke="#64748b" stroke-width="1" />
+					<text x="-35" y="18" class="fill-zinc-400 text-[7px] font-mono tracking-widest opacity-70">INET_01</text>
+				</g>
+
+				<!-- EDGE_WAF: Firewall / WAF (120, 180) -->
+				<g transform="translate(120, 180)">
+					<circle r="14" fill="#f97316" fill-opacity="0.1" stroke="#f97316" stroke-width="1" class="animate-[pulse_2s_ease-in-out_infinite]" />
+					<circle r="6" fill="#f97316" filter="url(#glow-strong)" />
+					<text x="-40" y="-12" class="fill-orange-600 dark:fill-orange-400 text-[8px] font-bold font-mono tracking-widest opacity-90">EDGE_WAF</text>
+				</g>
+
+				<!-- ZTA_PROXY: Zero Trust Gateway (200, 120) -->
+				<g transform="translate(200, 120)">
+					<circle r="18" fill="#3b82f6" fill-opacity="0.05" stroke="#3b82f6" stroke-width="0.5" class="animate-[pulse_3s_ease-in-out_infinite]" />
+					<circle r="10" fill="#3b82f6" fill-opacity="0.15" stroke="#3b82f6" stroke-width="1.5" />
+					<circle r="4" fill="#3b82f6" filter="url(#glow-strong)" />
+					<text x="-25" y="-22" class="fill-blue-600 dark:fill-blue-400 text-[9px] font-bold font-mono tracking-widest opacity-100">ZTA_PROXY</text>
+				</g>
+
+				<!-- IDP_AUTH: Identity Provider (280, 50) -->
+				<g transform="translate(280, 50)">
+					<circle r="12" fill="#a855f7" fill-opacity="0.1" stroke="#a855f7" stroke-width="0.5" class="animate-[pulse_4s_ease-in-out_infinite]" />
+					<circle r="5" fill="#a855f7" filter="url(#glow-mon)" />
+					<text x="15" y="4" class="fill-purple-600 dark:fill-purple-400 text-[8px] font-mono tracking-widest opacity-90">IDP_AUTH</text>
+				</g>
+
+				<!-- APP_CORE: Internal Applications (320, 160) -->
+				<g transform="translate(320, 160)">
+					<circle r="14" fill="#10b981" fill-opacity="0.1" stroke="#10b981" stroke-width="1" />
+					<circle r="6" fill="#10b981" filter="url(#glow-mon)" />
+					<text x="16" y="5" class="fill-emerald-600 dark:fill-emerald-400 text-[9px] font-mono tracking-widest opacity-90">APP_CORE</text>
+				</g>
+
+				<!-- SIEM_SOC: Security Operations / Logging (230, 240) -->
+				<g transform="translate(230, 240)">
+					<circle r="16" fill="#eab308" fill-opacity="0.1" stroke="#eab308" stroke-width="0.5" class="animate-pulse" />
+					<circle r="7" fill="#eab308" filter="url(#glow-strong)" />
+					<circle r="3" fill="#ffffff" opacity="0.8" />
+					<text x="20" y="5" class="fill-yellow-600 dark:fill-yellow-500 text-[9px] font-mono font-bold tracking-widest animate-[pulse_2s_ease-in-out_infinite]">SIEM_SOC</text>
+				</g>
+			</svg>
+		</div>
 	</div>
 </Section>
 
 <style>
-	.mask-radial-right {
-		mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.1) 30%, rgba(0,0,0,1) 70%, rgba(0,0,0,1) 100%);
-		-webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.1) 30%, rgba(0,0,0,1) 70%, rgba(0,0,0,1) 100%);
+	.animate-dash {
+		animation: dash 35s linear infinite;
 	}
-	
-	.animate-pulse-slow {
-		animation: pulse-slow 8s ease-in-out infinite alternate;
+	.animate-dash-reverse {
+		animation: dash 45s linear infinite reverse;
 	}
-
-	@keyframes pulse-slow {
-		0% { opacity: 0.6; transform: scale(0.95) translate(0, 0); }
-		100% { opacity: 1; transform: scale(1.05) translate(-10px, 10px); }
+	@keyframes dash {
+		to {
+			stroke-dashoffset: 1000;
+		}
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		.animate-pulse-slow {
+		.animate-dash, .animate-dash-reverse {
 			animation: none;
 		}
 	}
