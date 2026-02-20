@@ -26,6 +26,7 @@
 	:root {
 		--font-ui: 'Inter', 'Segoe UI', 'Helvetica Neue', sans-serif;
 		--font-code: 'JetBrains Mono', 'Consolas', 'Monaco', monospace;
+		--content-measure: 68ch;
 	}
 
 	html {
@@ -42,6 +43,7 @@
 	body {
 		font-family: var(--font-ui);
 		letter-spacing: -0.012em;
+		line-height: 1.58;
 	}
 
 	h1,
@@ -49,6 +51,11 @@
 	h3,
 	h4 {
 		letter-spacing: -0.02em;
+		line-height: 1.15;
+	}
+
+	p {
+		line-height: 1.72;
 	}
 
 	code,
@@ -60,12 +67,15 @@
 	/* Fluid type scale for headings */
 	h1 {
 		font-size: clamp(1.875rem, 1.5rem + 1.5vw, 3rem);
+		line-height: 1.08;
 	}
 	h2 {
 		font-size: clamp(1.5rem, 1.25rem + 1vw, 2.25rem);
+		line-height: 1.12;
 	}
 	h3 {
 		font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.75rem);
+		line-height: 1.2;
 	}
 
 	/* Focus styles for accessibility */

@@ -1,11 +1,29 @@
 ---
 import Section from './Section.astro';
 import Search from './Search.astro';
+
+const normalizePath = (value: string) => {
+	const trimmed = value.replace(/\/+$/, '');
+	return trimmed.length > 0 ? trimmed : '/';
+};
+
+const currentPath = normalizePath(Astro.url.pathname);
+const navItems = [
+	{ href: '/about', label: 'About' },
+	{ href: '/tags', label: 'Tags' },
+	{ href: '/posts', label: 'Blog' },
+	{ href: '/presentations', label: 'Presentations' }
+];
+
+const isActiveRoute = (href: string) => {
+	const normalizedHref = normalizePath(href);
+	return currentPath === normalizedHref || currentPath.startsWith(`${normalizedHref}/`);
+};
 ---
 
 <Section>
-	<div class="frosted-glass sticky top-0 z-50 -mx-4 px-4">
-		<div class="flex items-center justify-between border-b border-zinc-200/60 pb-4 pt-4 dark:border-zinc-800/60">
+	<div id="site-header-shell" class="site-header-shell sticky top-0 z-50 -mx-4 px-4">
+		<div class="site-header-inner flex items-center justify-between pb-4 pt-4">
 			<div class="text-2xl font-semibold tracking-tight">
 				<a href="/" class="group flex items-baseline gap-1 transition-colors hover:text-blue-600 dark:hover:text-blue-400">
 					<span class="text-blue-600 dark:text-blue-400">Fort</span>
@@ -17,10 +35,26 @@ import Search from './Search.astro';
 				<!-- Desktop Navigation -->
 				<nav>
 					<ul class="hidden flex-row items-center gap-6 text-sm font-medium sm:flex">
-						<li><a href="/about" class="link-underline text-zinc-600 transition-colors hover:text-blue-600 dark:text-zinc-400 dark:hover:text-blue-400">About</a></li>
-						<li><a href="/tags" class="link-underline text-zinc-600 transition-colors hover:text-blue-600 dark:text-zinc-400 dark:hover:text-blue-400">Tags</a></li>
-						<li><a href="/posts" class="link-underline text-zinc-600 transition-colors hover:text-blue-600 dark:text-zinc-400 dark:hover:text-blue-400">Blog</a></li>
-						<li><a href="/presentations" class="link-underline text-zinc-600 transition-colors hover:text-blue-600 dark:text-zinc-400 dark:hover:text-blue-400">Presentations</a></li>
+						{
+							navItems.map(({ href, label }) => {
+								const isActive = isActiveRoute(href);
+								return (
+									<li>
+										<a
+											href={href}
+											aria-current={isActive ? 'page' : undefined}
+											class={`rounded-md px-2.5 py-1.5 transition-colors ${
+												isActive
+													? 'bg-zinc-100 text-zinc-900 dark:bg-zinc-800/80 dark:text-zinc-100'
+													: 'text-zinc-600 hover:text-blue-600 dark:text-zinc-400 dark:hover:text-blue-400'
+											}`}
+										>
+											{label}
+										</a>
+									</li>
+								);
+							})
+						}
 					</ul>
 				</nav>
 				<!-- Desktop Theme Switcher -->
@@ -83,10 +117,25 @@ import Search from './Search.astro';
 		class="mt-4 hidden rounded-xl border border-zinc-200 bg-white pb-3 shadow-lg transition-all duration-200 sm:hidden dark:border-zinc-800 dark:bg-zinc-900"
 	>
 		<nav class="flex flex-col p-2">
-			<a href="/about" class="rounded-lg px-4 py-2.5 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-100 hover:text-blue-600 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-blue-400">About</a>
-			<a href="/tags" class="rounded-lg px-4 py-2.5 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-100 hover:text-blue-600 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-blue-400">Tags</a>
-			<a href="/posts" class="rounded-lg px-4 py-2.5 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-100 hover:text-blue-600 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-blue-400">Blog</a>
-			<a href="/presentations" class="rounded-lg px-4 py-2.5 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-100 hover:text-blue-600 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-blue-400">Presentations</a>
+			{
+				navItems.map(({ href, label }) => {
+					const isActive = isActiveRoute(href);
+					return (
+						<a
+							href={href}
+							data-mobile-nav-link
+							aria-current={isActive ? 'page' : undefined}
+							class={`rounded-lg px-4 py-2.5 text-sm font-medium transition-colors ${
+								isActive
+									? 'bg-zinc-100 text-zinc-900 dark:bg-zinc-800/90 dark:text-zinc-100'
+									: 'text-zinc-700 hover:bg-zinc-100 hover:text-blue-600 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-blue-400'
+							}`}
+						>
+							{label}
+						</a>
+					);
+				})
+			}
 			<!-- Mobile Theme Switcher -->
 			<div class="flex items-center border-t border-zinc-200 px-2 py-2 dark:border-zinc-800">
 				<input type="checkbox" id="light-switch-mobile" class="light-switch sr-only" />
@@ -117,77 +166,149 @@ import Search from './Search.astro';
 	</div>
 </Section>
 
-<script>
-	document.addEventListener('astro:page-load', () => {
-		// Theme switching functionality
-		const lightSwitches = document.querySelectorAll('.light-switch');
+<style>
+	.site-header-shell {
+		transition:
+			background-color 250ms ease,
+			backdrop-filter 250ms ease,
+			-webkit-backdrop-filter 250ms ease;
+	}
 
-		function applyTheme(isDark: boolean) {
-			if (isDark) {
-				document.documentElement.classList.add('dark');
-				localStorage.setItem('theme', 'dark');
-			} else {
-				document.documentElement.classList.remove('dark');
-				localStorage.setItem('theme', 'light');
+	.site-header-inner {
+		border-bottom: 1px solid transparent;
+		transition:
+			border-color 250ms ease,
+			box-shadow 250ms ease;
+	}
+
+	.site-header-shell.is-scrolled {
+		background: color-mix(in oklab, white 68%, transparent);
+		backdrop-filter: blur(18px) saturate(140%);
+		-webkit-backdrop-filter: blur(18px) saturate(140%);
+	}
+
+	:global(.dark) .site-header-shell.is-scrolled {
+		background: color-mix(in oklab, #09090b 72%, transparent);
+	}
+
+	.site-header-shell.is-scrolled .site-header-inner {
+		border-color: color-mix(in oklab, #d4d4d8 48%, transparent);
+		box-shadow: 0 10px 20px -18px rgba(12, 10, 9, 0.45);
+	}
+
+	:global(.dark) .site-header-shell.is-scrolled .site-header-inner {
+		border-color: color-mix(in oklab, #3f3f46 42%, transparent);
+		box-shadow: 0 10px 20px -18px rgba(0, 0, 0, 0.75);
+	}
+</style>
+
+<script>
+	const NAVBAR_STATE_KEY = '__fortmatrixNavbarState';
+	const NAVBAR_BOOTSTRAP_KEY = '__fortmatrixNavbarBootstrap';
+	const MOBILE_OPEN_ICON = `
+		<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+			<path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+		</svg>
+	`;
+	const MOBILE_CLOSE_ICON = `
+		<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+			<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+		</svg>
+	`;
+
+	function clearNavbarState() {
+		const state = (window as any)[NAVBAR_STATE_KEY];
+		state?.cleanup?.();
+		(window as any)[NAVBAR_STATE_KEY] = null;
+	}
+
+	function setupNavbar() {
+		clearNavbarState();
+
+		const root = document.getElementById('site-header-shell');
+		const lightSwitches = Array.from(document.querySelectorAll('.light-switch')) as HTMLInputElement[];
+		const mobileMenuButton = document.getElementById('mobile-menu-button');
+		const mobileMenu = document.getElementById('mobile-menu');
+		const mobileNavLinks = Array.from(document.querySelectorAll('[data-mobile-nav-link]'));
+
+		const applyTheme = (isDark: boolean) => {
+			document.documentElement.classList.toggle('dark', isDark);
+			localStorage.setItem('theme', isDark ? 'dark' : 'light');
+		};
+
+		const syncThemeSwitches = (isDark: boolean) => {
+			for (const lightSwitch of lightSwitches) {
+				lightSwitch.checked = isDark;
+			}
+		};
+
+		const onThemeChange = (event: Event) => {
+			const target = event.target as HTMLInputElement;
+			const next = Boolean(target.checked);
+			applyTheme(next);
+			syncThemeSwitches(next);
+		};
+
+		if (lightSwitches.length > 0) {
+			const storedTheme = localStorage.getItem('theme');
+			const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+			const isDarkTheme = storedTheme == null ? prefersDark : storedTheme === 'dark';
+			applyTheme(isDarkTheme);
+			syncThemeSwitches(isDarkTheme);
+
+			for (const lightSwitch of lightSwitches) {
+				lightSwitch.addEventListener('change', onThemeChange);
 			}
 		}
 
-		if (lightSwitches.length > 0) {
-			// Initialize theme based on localStorage (default to dark if no preference)
-			const storedTheme = localStorage.getItem('theme');
-			const isDarkTheme = storedTheme === null ? true : storedTheme === 'dark';
-			applyTheme(isDarkTheme);
+		const setMenuState = (isOpen: boolean) => {
+			if (!mobileMenuButton || !mobileMenu) return;
+			mobileMenu.classList.toggle('hidden', !isOpen);
+			mobileMenuButton.setAttribute('aria-expanded', String(isOpen));
+			mobileMenuButton.innerHTML = isOpen ? MOBILE_CLOSE_ICON : MOBILE_OPEN_ICON;
+		};
 
-			// Set initial state of switches
-			lightSwitches.forEach((lightSwitch) => {
-				(lightSwitch as HTMLInputElement).checked = isDarkTheme;
-			});
+		const onMobileMenuClick = () => {
+			if (!mobileMenuButton) return;
+			const isOpen = mobileMenuButton.getAttribute('aria-expanded') === 'true';
+			setMenuState(!isOpen);
+		};
 
-			// Add click event listeners
-			lightSwitches.forEach((lightSwitch) => {
-				(lightSwitch as HTMLInputElement).addEventListener('click', () => {
-					const isChecked = (lightSwitch as HTMLInputElement).checked;
-					// Apply theme
-					applyTheme(isChecked);
-				});
-			});
-		}
-
-		// Mobile menu toggle functionality
-		const mobileMenuButton = document.getElementById('mobile-menu-button');
-		const mobileMenu = document.getElementById('mobile-menu');
+		const onMobileNavClick = () => setMenuState(false);
 
 		if (mobileMenuButton && mobileMenu) {
-			// Reset mobile menu state on navigation
-			mobileMenu.classList.add('hidden');
-			mobileMenuButton.setAttribute('aria-expanded', 'false');
-			mobileMenuButton.innerHTML = `
-				<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-					<path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-				</svg>
-			`;
-
-			mobileMenuButton.addEventListener('click', () => {
-				const expanded = mobileMenuButton.getAttribute('aria-expanded') === 'true' || false;
-				const newExpanded = !expanded;
-				mobileMenuButton.setAttribute('aria-expanded', newExpanded.toString());
-				mobileMenu.classList.toggle('hidden');
-
-				// Change burger icon to X when menu is open
-				if (!expanded) {
-					mobileMenuButton.innerHTML = `
-						<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-							<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-						</svg>
-					`;
-				} else {
-					mobileMenuButton.innerHTML = `
-						<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-							<path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-						</svg>
-					`;
-				}
-			});
+			setMenuState(false);
+			mobileMenuButton.addEventListener('click', onMobileMenuClick);
+			for (const link of mobileNavLinks) {
+				link.addEventListener('click', onMobileNavClick);
+			}
 		}
-	});
+
+		const onScroll = () => {
+			root?.classList.toggle('is-scrolled', window.scrollY > 8);
+		};
+		onScroll();
+		window.addEventListener('scroll', onScroll, { passive: true });
+
+		(window as any)[NAVBAR_STATE_KEY] = {
+			cleanup: () => {
+				for (const lightSwitch of lightSwitches) {
+					lightSwitch.removeEventListener('change', onThemeChange);
+				}
+				mobileMenuButton?.removeEventListener('click', onMobileMenuClick);
+				for (const link of mobileNavLinks) {
+					link.removeEventListener('click', onMobileNavClick);
+				}
+				window.removeEventListener('scroll', onScroll);
+			}
+		};
+	}
+
+	if (!(window as any)[NAVBAR_BOOTSTRAP_KEY]) {
+		document.addEventListener('astro:page-load', setupNavbar);
+		document.addEventListener('astro:before-swap', clearNavbarState);
+		(window as any)[NAVBAR_BOOTSTRAP_KEY] = true;
+	}
+
+	setupNavbar();
 </script>
