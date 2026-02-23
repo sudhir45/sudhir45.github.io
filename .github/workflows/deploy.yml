@@ -13,9 +13,23 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      PUBLIC_GA_MEASUREMENT_ID: ${{ vars.PUBLIC_GA_MEASUREMENT_ID || secrets.PUBLIC_GA_MEASUREMENT_ID }}
     steps:
       - name: Checkout your repository using git
         uses: actions/checkout@v4
+
+      - name: Validate Google Analytics configuration
+        shell: bash
+        run: |
+          if [[ -z "${PUBLIC_GA_MEASUREMENT_ID}" ]]; then
+            echo "::error::PUBLIC_GA_MEASUREMENT_ID is not set. Configure it in repository Variables (preferred) or Secrets."
+            exit 1
+          fi
+          if [[ ! "${PUBLIC_GA_MEASUREMENT_ID}" =~ ^G-[A-Z0-9]+$ ]]; then
+            echo "::error::PUBLIC_GA_MEASUREMENT_ID must match GA4 format: G-XXXXXXXXXX."
+            exit 1
+          fi
       
       - name: Install, build, and upload your site
         uses: withastro/action@v3

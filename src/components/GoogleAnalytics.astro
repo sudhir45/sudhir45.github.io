@@ -1,18 +1,51 @@
 ---
-const GA_MEASUREMENT_ID = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
+const gaMeasurementId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID?.trim();
+const GA_MEASUREMENT_ID = /^G-[A-Z0-9]+$/.test(gaMeasurementId ?? '') ? gaMeasurementId : undefined;
 ---
 
 {
 	GA_MEASUREMENT_ID && (
 		<>
-			<script is:inline src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`} async></script>
+			<script
+				is:inline
+				src={`https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(GA_MEASUREMENT_ID)}`}
+				async
+			></script>
 			<script is:inline define:vars={{ GA_MEASUREMENT_ID }}>
 				window.dataLayer = window.dataLayer || [];
-				function gtag() {
-					dataLayer.push(arguments);
-				}
+				window.gtag =
+					window.gtag ||
+					function () {
+						window.dataLayer.push(arguments);
+					};
+				const gtag = window.gtag;
+
 				gtag('js', new Date());
-				gtag('config', GA_MEASUREMENT_ID, { anonymize_ip: true });
+				gtag('config', GA_MEASUREMENT_ID, {
+					anonymize_ip: true,
+					send_page_view: false,
+					cookie_flags: 'SameSite=None;Secure',
+					transport_type: 'beacon'
+				});
+
+				const trackPageView = () => {
+					const pagePath = `${window.location.pathname}${window.location.search}`;
+					if (window.__gaLastTrackedPath === pagePath) return;
+
+					window.__gaLastTrackedPath = pagePath;
+					gtag('event', 'page_view', {
+						page_title: document.title,
+						page_location: window.location.href,
+						page_path: pagePath
+					});
+				};
+
+				trackPageView();
+
+				if (!window.__gaPageLoadListenerAttached) {
+					document.addEventListener('astro:page-load', trackPageView);
+					window.__gaPageLoadListenerAttached = true;
+				}
 			</script>
 		</>
 	)
