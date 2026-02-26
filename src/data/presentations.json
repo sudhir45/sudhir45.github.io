@@ -1,11 +1,11 @@
 [
   {
     "slug": "firewall-chaos",
-    "title": "Firewall Chaos: Taming the Policy Beast",
+    "title": "Firewall Chaos : Automated Policy Management",
     "description": "A deep dive into managing firewall policies at scale",
     "category": "Security",
-    "sourcePath": "f:/PPTs/Firewall PPT/New/Firewall_Chaos_Taming_the_Policy_Beast_Updated.pptx",
-    "slideCount": 20,
+    "sourcePath": "f:\\Projects\\sudhir-blog-astro\\astro-tech-blog\\Firewall_Chaos.pptx",
+    "slideCount": 18,
     "thumbnail": "/presentations/firewall-chaos/slide-1.jpg"
   }
 ]
