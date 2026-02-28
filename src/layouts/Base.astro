@@ -17,6 +17,11 @@ export interface Props {
 const {
 	head: { title, description, image }
 } = Astro.props as Props;
+
+const siteUrl = Astro.site ? Astro.site.toString().replace(/\/$/, '') : 'https://sudhir45.github.io';
+const canonicalUrl = `${siteUrl}${Astro.url.pathname}`;
+const baseOgImage = image ?? '/images/Secure_Architecture.png';
+const ogImageUrl = baseOgImage.startsWith('http') ? baseOgImage : `${siteUrl}${baseOgImage}`;
 ---
 
 <html lang="en">
@@ -32,36 +37,30 @@ const {
 		<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
 		
 		<!-- Canonical URL -->
-		<link rel="canonical" href={Astro.url.href} />
+		<link rel="canonical" href={canonicalUrl} />
 
 		<!-- Open Graph / Facebook -->
 		<meta property="og:type" content="website" />
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
-		<meta property="og:url" content={Astro.url.href} />
+		<meta property="og:url" content={canonicalUrl} />
 		<meta property="og:site_name" content={AppConfig.title} />
 		<meta property="og:locale" content="en_IN" />
-		{image && <meta property="og:image" content={image} />}
-		{image && <meta property="og:image:width" content="1200" />}
-		{image && <meta property="og:image:height" content="630" />}
-		{image && <meta property="og:image:alt" content={title} />}
+		{ogImageUrl && <meta property="og:image" content={ogImageUrl} />}
+		{ogImageUrl && <meta property="og:image:width" content="1200" />}
+		{ogImageUrl && <meta property="og:image:height" content="630" />}
+		{ogImageUrl && <meta property="og:image:alt" content={title} />}
 
 		<!-- Twitter -->
 		<meta name="twitter:card" content="summary_large_image" />
 		<meta name="twitter:title" content={title} />
 		<meta name="twitter:description" content={description} />
-		{image && <meta name="twitter:image" content={image} />}
-		{image && <meta name="twitter:image:alt" content={title} />}
+		{ogImageUrl && <meta name="twitter:image" content={ogImageUrl} />}
+		{ogImageUrl && <meta name="twitter:image:alt" content={title} />}
 
 		<!-- Preconnect to external domains -->
-		<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link rel="dns-prefetch" href="https://www.googletagmanager.com" />
 		<link rel="dns-prefetch" href="https://giscus.app" />
-		<link
-			rel="stylesheet"
-			href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
-		/>
 
 		<!-- Favicons -->
 		<link rel="icon" type="image/svg+xml" href="/assets/img/favicons/favicon.svg" />

@@ -17,9 +17,9 @@ const { frontmatter, headings } = Astro.props;
 // Astro.url.pathname will be something like /posts/my-slug/ or /posts/my-slug
 // We want /og/my-slug.png
 const slug = (Astro.url.pathname.split('/').pop() || Astro.url.pathname.split('/').slice(-2)[0]) || '';
-const cleanSlug = slug.replace(/\/$/, ""); 
+const cleanSlug = slug.replace(/\/$/, '');
 // If site is set in astro.config, Astro.site provides it
-const siteUrl = Astro.site ? Astro.site.toString().replace(/\/$/, "") : 'https://sudhir45.github.io';
+const siteUrl = Astro.site ? Astro.site.toString().replace(/\/$/, '') : 'https://sudhir45.github.io';
 const ogImageUrl = `${siteUrl}/og/${cleanSlug}.png`;
 const postUrl = `${siteUrl}${Astro.url.pathname}`;
 ---
@@ -60,7 +60,7 @@ const postUrl = `${siteUrl}${Astro.url.pathname}`;
 				img={{ src: frontmatter.image?.src, alt: frontmatter.image?.alt }}
 			/>
 			<PostContent><slot /></PostContent>
-			<AuthorStrip author={frontmatter.author || "Sudhir"} />
+			<AuthorStrip author={frontmatter.author || 'Sudhir'} />
 			<Giscus />
 		</div>
 		

@@ -1,0 +1,24 @@
+---
+import PostLayout from '@/layouts/post.astro';
+import { getCollection, type CollectionEntry } from 'astro:content';
+
+type PostEntry = CollectionEntry<'posts'>;
+
+export async function getStaticPaths() {
+	const posts = await getCollection('posts', ({ data }) => !data.draft);
+
+	return posts.map((post) => ({
+		params: { slug: post.id.replace(/\.mdx?$/, '') },
+		props: { post }
+	}));
+}
+
+const { post } = Astro.props as { post: PostEntry };
+const { Content, headings } = await post.render();
+const frontmatter = post.data;
+---
+
+<PostLayout frontmatter={frontmatter} headings={headings}>
+	<Content />
+</PostLayout>
+

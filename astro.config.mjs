@@ -41,7 +41,12 @@ export default defineConfig({
 		remarkPlugins: [remarkReadingTime]
 	},
 
-	integrations: [react(), sitemap()],
+	integrations: [
+		react(),
+		sitemap({
+			filter: (page) => !page.endsWith('/search.json') && !page.includes('/og/')
+		})
+	],
 	output: 'static',
 
 	vite: {

@@ -3,12 +3,11 @@
 	"type": "module",
 	"version": "0.0.1",
 	"scripts": {
-		"sync:posts": "node ./scripts/sync-post-content.mjs",
-		"dev": "npm run sync:posts && astro dev",
+		"dev": "astro dev",
 		"start": "astro dev",
 		"check": "astro check",
 		"format:check": "prettier --check \"README.md\" \".github/workflows/ci.yml\"",
-		"build": "npm run sync:posts && astro check && astro build",
+		"build": "astro check && astro build",
 		"preview": "astro preview",
 		"astro": "astro"
 	},
