@@ -93,21 +93,30 @@ const ogImageUrl = baseOgImage.startsWith('http') ? baseOgImage : `${siteUrl}${b
 		<GoogleAnalytics />
 		<ViewTransitions />
 		<script is:inline>
-			const theme = (() => {
-				if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
-					return localStorage.getItem('theme');
+			const applyTheme = () => {
+				const theme = (() => {
+					if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+						return localStorage.getItem('theme');
+					}
+					if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+						return 'dark';
+					}
+					return 'light';
+				})();
+				
+				if (theme === 'light') {
+					document.documentElement.classList.remove('dark');
+				} else {
+					document.documentElement.classList.add('dark');
 				}
-				if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-					return 'dark';
-				}
-				return 'light';
-			})();
-			if (theme === 'light') {
-				document.documentElement.classList.remove('dark');
-			} else {
-				document.documentElement.classList.add('dark');
-			}
-			window.localStorage.setItem('theme', theme);
+				window.localStorage.setItem('theme', theme);
+			};
+			
+			// Initial paint
+			applyTheme();
+
+			// Re-apply theme after Astro view transitions DOM swap to prevent FOIT
+			document.addEventListener('astro:after-swap', applyTheme);
 		</script>
 	</head>
 	<body

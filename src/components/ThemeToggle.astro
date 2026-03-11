@@ -1,0 +1,96 @@
+---
+// src/components/ThemeToggle.astro
+
+interface Props {
+	idPrefix: string;
+	showLabel?: boolean;
+}
+
+const { idPrefix, showLabel = false } = Astro.props;
+---
+
+<div class={`flex items-center ${showLabel ? 'border-t border-zinc-200 px-2 py-2 dark:border-zinc-800' : 'justify-center flex-col hidden sm:flex'}`}>
+	<input type="checkbox" id={`light-switch-${idPrefix}`} class="light-switch sr-only" />
+	
+	<label 
+		class={`relative cursor-pointer transition-colors ${showLabel ? 'flex w-full items-center justify-between rounded-lg px-4 py-2.5 hover:bg-zinc-100 dark:hover:bg-zinc-800' : 'rounded-lg p-2 hover:bg-zinc-100 dark:hover:bg-zinc-900'}`} 
+		for={`light-switch-${idPrefix}`}
+	>
+		{showLabel && <span class="text-sm font-medium text-zinc-700 dark:text-zinc-300">Theme</span>}
+		
+		<svg class="dark:hidden" width="16" height="16" xmlns="http://www.w3.org/2000/svg">
+			<path class="fill-zinc-800" d="M7 0h2v2H7zM12.88 1.637l1.414 1.415-1.415 1.413-1.413-1.414zM14 7h2v2h-2zM12.95 14.433l-1.414-1.413 1.413-1.415 1.415 1.414zM7 14h2v2H7zM2.98 14.364l-1.413-1.415 1.414-1.414 1.414 1.415zM0 7h2v2H0zM3.05 1.706 4.463 3.12 3.05 4.535 1.636 3.12z"></path>
+			<path class="fill-zinc-900" d="M8 4C5.8 4 4 5.8 4 8s1.8 4 4 4 4-1.8 4-4-1.8-4-4-4Z"></path>
+		</svg>
+		
+		<svg class="hidden dark:block" width="16" height="16" xmlns="http://www.w3.org/2000/svg">
+			<path class="fill-zinc-400" d="M6.2 1C3.2 1.8 1 4.6 1 7.9 1 11.8 4.2 15 8.1 15c3.3 0 6-2.2 6.9-5.2C9.7 11.2 4.8 6.3 6.2 1Z"></path>
+			<path class="fill-zinc-500" d="M12.5 5a.625.625 0 0 1-.625-.625 1.252 1.252 0 0 0-1.25-1.25.625.625 0 1 1 0-1.25 1.252 1.252 0 0 0 1.25-1.25.625.625 0 1 1 1.25 0c.001.69.56 1.249 1.25 1.25a.625.625 0 1 1 0 1.25c-.69.001-1.249.56-1.25 1.25A.625.625 0 0 1 12.5 5Z"></path>
+		</svg>
+		<span class="sr-only">Switch to light / dark version</span>
+	</label>
+</div>
+
+<script>
+	const THEME_TOGGLE_STATE_KEY = '__fortmatrixThemeToggleState';
+	const THEME_TOGGLE_BOOTSTRAP_KEY = '__fortmatrixThemeToggleBootstrap';
+
+	function clearThemeToggleState() {
+		const state = (window as any)[THEME_TOGGLE_STATE_KEY];
+		state?.cleanup?.();
+		(window as any)[THEME_TOGGLE_STATE_KEY] = null;
+	}
+
+	function setupThemeToggle() {
+		clearThemeToggleState();
+
+		const lightSwitches = Array.from(document.querySelectorAll('.light-switch')) as HTMLInputElement[];
+
+		if (lightSwitches.length === 0) return;
+
+		const applyTheme = (isDark: boolean) => {
+			document.documentElement.classList.toggle('dark', isDark);
+			localStorage.setItem('theme', isDark ? 'dark' : 'light');
+		};
+
+		const syncThemeSwitches = (isDark: boolean) => {
+			for (const lightSwitch of lightSwitches) {
+				lightSwitch.checked = isDark;
+			}
+		};
+
+		const onThemeChange = (event: Event) => {
+			const target = event.target as HTMLInputElement;
+			const next = Boolean(target.checked);
+			applyTheme(next);
+			syncThemeSwitches(next);
+		};
+
+		// Check initial theme state on load and sync toggle buttons
+		const storedTheme = localStorage.getItem('theme');
+		const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+		const isDarkTheme = storedTheme == null ? prefersDark : storedTheme === 'dark';
+		syncThemeSwitches(isDarkTheme);
+
+		for (const lightSwitch of lightSwitches) {
+			lightSwitch.addEventListener('change', onThemeChange);
+		}
+
+		(window as any)[THEME_TOGGLE_STATE_KEY] = {
+			cleanup: () => {
+				for (const lightSwitch of lightSwitches) {
+					lightSwitch.removeEventListener('change', onThemeChange);
+				}
+			}
+		};
+	}
+
+	if (!(window as any)[THEME_TOGGLE_BOOTSTRAP_KEY]) {
+		document.addEventListener('astro:page-load', setupThemeToggle);
+		document.addEventListener('astro:before-swap', clearThemeToggleState);
+		(window as any)[THEME_TOGGLE_BOOTSTRAP_KEY] = true;
+	}
+
+	// Always setup initially (incase this component mounts mid lifecycle)
+	setupThemeToggle();
+</script>
