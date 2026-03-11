@@ -36,10 +36,10 @@ const ogImageUrl = baseOgImage.startsWith('http') ? baseOgImage : `${siteUrl}${b
 		<meta name="author" content={AppConfig.author} />
 		<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
 		
-		<!-- Canonical URL -->
+		
 		<link rel="canonical" href={canonicalUrl} />
 
-		<!-- Open Graph / Facebook -->
+		
 		<meta property="og:type" content="website" />
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
@@ -51,29 +51,29 @@ const ogImageUrl = baseOgImage.startsWith('http') ? baseOgImage : `${siteUrl}${b
 		{ogImageUrl && <meta property="og:image:height" content="630" />}
 		{ogImageUrl && <meta property="og:image:alt" content={title} />}
 
-		<!-- Twitter -->
+		
 		<meta name="twitter:card" content="summary_large_image" />
 		<meta name="twitter:title" content={title} />
 		<meta name="twitter:description" content={description} />
 		{ogImageUrl && <meta name="twitter:image" content={ogImageUrl} />}
 		{ogImageUrl && <meta name="twitter:image:alt" content={title} />}
 
-		<!-- Preconnect to external domains -->
+		
 		<link rel="dns-prefetch" href="https://www.googletagmanager.com" />
 		<link rel="dns-prefetch" href="https://giscus.app" />
 
-		<!-- Favicons -->
+		
 		<link rel="icon" type="image/svg+xml" href="/assets/img/favicons/favicon.svg" />
 		<link rel="icon" type="image/png" href="/assets/img/favicons/favicon-96x96.png" sizes="96x96" />
 		<link rel="shortcut icon" href="/assets/img/favicons/favicon.ico" />
 		<link rel="apple-touch-icon" href="/assets/img/favicons/apple-touch-icon.png" />
 		<link rel="manifest" href="/manifest.json" />
 
-		<!-- Sitemap & RSS -->
+		
 		<link rel="sitemap" href="/sitemap-index.xml" />
 		<link rel="alternate" type="application/rss+xml" href="/rss.xml" title={AppConfig.title} />
 
-		<!-- Structured Data -->
+		
 		<script type="application/ld+json" is:inline set:html={JSON.stringify({
 			"@context": "https://schema.org",
 			"@type": "Blog",
@@ -112,10 +112,10 @@ const ogImageUrl = baseOgImage.startsWith('http') ? baseOgImage : `${siteUrl}${b
 				window.localStorage.setItem('theme', theme);
 			};
 			
-			// Initial paint
+
 			applyTheme();
 
-			// Re-apply theme after Astro view transitions DOM swap to prevent FOIT
+
 			document.addEventListener('astro:after-swap', applyTheme);
 		</script>
 	</head>

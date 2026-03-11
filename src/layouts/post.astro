@@ -13,12 +13,8 @@ const { description } = AppConfig;
 
 const { frontmatter, headings } = Astro.props;
 
-// Construct explicit OG Image URL
-// Astro.url.pathname will be something like /posts/my-slug/ or /posts/my-slug
-// We want /og/my-slug.png
 const slug = (Astro.url.pathname.split('/').pop() || Astro.url.pathname.split('/').slice(-2)[0]) || '';
 const cleanSlug = slug.replace(/\/$/, '');
-// If site is set in astro.config, Astro.site provides it
 const siteUrl = Astro.site ? Astro.site.toString().replace(/\/$/, '') : 'https://sudhir45.github.io';
 const ogImageUrl = `${siteUrl}/og/${cleanSlug}.png`;
 const postUrl = `${siteUrl}${Astro.url.pathname}`;
@@ -64,7 +60,7 @@ const postUrl = `${siteUrl}${Astro.url.pathname}`;
 			<Giscus />
 		</div>
 		
-		<!-- Sidebar TOC for Desktop -->
+		
 		<aside class="sticky top-24 hidden w-64 shrink-0 lg:block">
 			<div class="mb-4 text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-500">On this page</div>
 			<div class="toc-scroll max-h-[calc(100vh-10rem)] overflow-y-auto">
@@ -75,7 +71,7 @@ const postUrl = `${siteUrl}${Astro.url.pathname}`;
 
 	<script>
 		document.addEventListener('astro:page-load', () => {
-			// 1. Medium Zoom for Images
+
 			const initZoom = () => {
 				const isDark = document.documentElement.classList.contains('dark');
 				if ((window as any).mediumZoom) {
@@ -98,7 +94,6 @@ const postUrl = `${siteUrl}${Astro.url.pathname}`;
 			};
 			initZoom();
 
-			// 2. Code Copy Buttons
 			const blocks = document.querySelectorAll('pre');
 			blocks.forEach((block) => {
 				if (block.querySelector('.copy-button')) return;
@@ -131,7 +126,6 @@ const postUrl = `${siteUrl}${Astro.url.pathname}`;
 				});
 			});
 
-			// 3. GitHub Callouts via Blockquotes
 			const quotes = document.querySelectorAll('blockquote');
 			const icons = {
 				note: '<svg class="w-5 h-5 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>',

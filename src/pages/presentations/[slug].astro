@@ -20,7 +20,7 @@ const description = presentation.description;
 <Base head={{ title, description }}>
 	<Section>
 		<div class="py-8">
-			<!-- Breadcrumb -->
+			
 			<nav class="mb-6 text-sm" aria-label="Breadcrumb">
 				<ol class="flex items-center gap-2 text-zinc-500 dark:text-zinc-500">
 					<li>
@@ -39,14 +39,14 @@ const description = presentation.description;
 				</ol>
 			</nav>
 
-			<!-- Viewer -->
+			
 			<PresentationViewer 
 				slug={presentation.slug}
 				title={presentation.title}
 				slideCount={presentation.slideCount}
 			/>
 
-			<!-- Back link -->
+			
 			<div class="mt-8">
 				<a 
 					href="/presentations" 

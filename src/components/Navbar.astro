@@ -33,7 +33,7 @@ const isActiveRoute = (href: string) => {
 				</a>
 			</div>
 			<div class="flex items-center gap-6">
-				<!-- Desktop Navigation -->
+				
 				<nav>
 					<ul class="hidden flex-row items-center gap-6 text-sm font-medium sm:flex">
 						{
@@ -58,15 +58,15 @@ const isActiveRoute = (href: string) => {
 						}
 					</ul>
 				</nav>
-				<!-- Desktop Theme Switcher -->
+				
 				<ThemeToggle idPrefix="desktop" />
 				
-				<!-- Search Button -->
+				
 				<div class="block">
 					<Search />
 				</div>
 
-				<!-- Mobile Menu Button -->
+				
 				<button 
 					id="mobile-menu-button" 
 					class="rounded-lg p-2 transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-900 sm:hidden" 
@@ -89,7 +89,7 @@ const isActiveRoute = (href: string) => {
 		</div>
 	</div>
 
-	<!-- Mobile Menu -->
+	
 	<div
 		id="mobile-menu"
 		class="mt-4 hidden rounded-xl border border-zinc-200 bg-white pb-3 shadow-lg transition-all duration-200 sm:hidden dark:border-zinc-800 dark:bg-zinc-900"
@@ -114,7 +114,7 @@ const isActiveRoute = (href: string) => {
 					);
 				})
 			}
-			<!-- Mobile Theme Switcher -->
+			
 			<ThemeToggle idPrefix="mobile" showLabel={true} />
 		</nav>
 	</div>

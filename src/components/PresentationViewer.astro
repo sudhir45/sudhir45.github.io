@@ -7,7 +7,6 @@ interface Props {
 
 const { slug, title, slideCount } = Astro.props;
 
-// Generate array of slide paths
 const slides = Array.from({ length: slideCount }, (_, i) => ({
 	number: i + 1,
 	src: `/presentations/${slug}/slide-${i + 1}.jpg`
@@ -15,39 +14,39 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 ---
 
 <div class="presentation-viewer" data-slide-count={slideCount} data-slug={slug}>
-	<!-- Progress Bar (top) -->
+	
 	<div class="progress-bar-container">
 		<div class="progress-bar" role="progressbar" aria-valuemin="1" aria-valuemax={slideCount} aria-valuenow="1">
 			<div class="progress-fill"></div>
 		</div>
 	</div>
 
-	<!-- Viewer Container with Glassmorphism -->
+	
 	<div class="viewer-container group">
 		
-		<!-- Top Bar with Glass Effect -->
+		
 		<div class="top-bar">
 			<h2 class="viewer-title">{title}</h2>
 			<div class="top-bar-controls">
-				<!-- Slide Counter -->
+				
 				<div class="slide-counter">
 					<span class="slide-current">1</span>
 					<span class="slide-separator">/</span>
 					<span class="slide-total">{slideCount}</span>
 				</div>
-				<!-- Grid Overview -->
+				
 				<button class="control-btn grid-btn" aria-label="Slide grid overview" title="Slide grid (G)">
 					<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4h6v6H4V4zm10 0h6v6h-6V4zM4 14h6v6H4v-6zm10 0h6v6h-6v-6z" />
 					</svg>
 				</button>
-				<!-- Keyboard Shortcuts -->
+				
 				<button class="control-btn shortcuts-btn" aria-label="Keyboard shortcuts" title="Keyboard shortcuts (?)">
 					<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
 					</svg>
 				</button>
-				<!-- Fullscreen Button -->
+				
 				<button class="control-btn fullscreen-btn" aria-label="Toggle fullscreen">
 					<svg class="fullscreen-expand w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
@@ -59,17 +58,17 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 			</div>
 		</div>
 
-		<!-- Slide Display Area -->
+		
 		<div class="slide-container">
-			<!-- Blur Placeholder -->
+			
 			<div class="slide-placeholder"></div>
 			
-			<!-- Loading Spinner -->
+			
 			<div class="slide-loading">
 				<div class="spinner"></div>
 			</div>
 			
-			<!-- Dual Slide Images for Crossfade -->
+			
 			<img 
 				class="slide-image slide-image-a active"
 				src={slides[0]?.src ?? ''}
@@ -82,7 +81,7 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 				alt=""
 			/>
 
-			<!-- Zoom Overlay -->
+			
 			<div class="zoom-overlay hidden">
 				<img class="zoom-image" src="" alt="Zoomed slide" />
 				<button class="zoom-close" aria-label="Close zoom">
@@ -93,7 +92,7 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 				<p class="zoom-hint">Scroll to zoom • Drag to pan • Click to close</p>
 			</div>
 
-			<!-- Navigation Arrows -->
+			
 			<button class="nav-btn prev-btn" aria-label="Previous slide">
 				<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
@@ -105,7 +104,7 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 				</svg>
 			</button>
 
-			<!-- Zoom Button -->
+			
 			<button class="zoom-btn" aria-label="Zoom slide">
 				<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
@@ -113,7 +112,7 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 			</button>
 		</div>
 
-		<!-- Thumbnail Strip -->
+		
 		<div class="thumbnail-strip">
 			{slides.map((slide) => (
 				<button 
@@ -132,7 +131,7 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 		</div>
 	</div>
 
-	<!-- Keyboard Shortcuts Modal -->
+	
 	<div class="shortcuts-modal hidden" role="dialog" aria-modal="true" aria-labelledby="shortcuts-title">
 		<div class="shortcuts-backdrop"></div>
 		<div class="shortcuts-content">
@@ -171,7 +170,7 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 		</div>
 	</div>
 
-	<!-- Grid Overview Modal -->
+	
 	<div class="grid-modal hidden" role="dialog" aria-modal="true" aria-labelledby="grid-title">
 		<div class="grid-backdrop"></div>
 		<div class="grid-content">
@@ -196,7 +195,7 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 
 	<p class="sr-only slide-announcer" aria-live="polite" aria-atomic="true">Slide 1 of {slideCount}</p>
 
-	<!-- Hints -->
+	
 	<p class="viewer-hints">
 		<span class="hint-desktop">Press <kbd>?</kbd> for shortcuts • Click slide to zoom</span>
 		<span class="hint-mobile">Swipe to navigate • Tap slide to zoom</span>
@@ -204,7 +203,6 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 </div>
 
 <style>
-	/* CSS Variables for theming */
 	.presentation-viewer {
 		--glass-bg: rgba(0, 0, 0, 0.6);
 		--glass-border: rgba(255, 255, 255, 0.1);
@@ -215,7 +213,6 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 		--transition-ui: 0.2s ease;
 	}
 
-	/* Progress Bar */
 	.progress-bar-container {
 		position: relative;
 		height: 3px;
@@ -239,7 +236,6 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 		box-shadow: 0 0 10px var(--accent-glow);
 	}
 
-	/* Viewer Container */
 	.viewer-container {
 		position: relative;
 		display: flex;
@@ -251,7 +247,6 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 		box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 	}
 
-	/* Top Bar - Glassmorphism */
 	.top-bar {
 		display: flex;
 		align-items: center;
@@ -313,7 +308,6 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 		background: rgba(255, 255, 255, 0.1);
 	}
 
-	/* Slide Container */
 	.slide-container {
 		position: relative;
 		aspect-ratio: 16 / 9;
@@ -324,7 +318,6 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 		overflow: hidden;
 	}
 
-	/* Blur Placeholder */
 	.slide-placeholder {
 		position: absolute;
 		inset: 0;
@@ -336,7 +329,6 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 		transition: opacity 0.3s ease;
 	}
 
-	/* Loading Spinner - only show for slow loads */
 	.slide-loading {
 		position: absolute;
 		inset: 0;
@@ -372,7 +364,6 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 		to { transform: rotate(360deg); }
 	}
 
-	/* Slide Image with Crossfade Transition */
 	.slide-image {
 		position: absolute;
 		inset: 0;
@@ -392,8 +383,6 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 		pointer-events: auto;
 	}
 
-
-	/* Navigation Buttons - Glassmorphism */
 	.nav-btn {
 		position: absolute;
 		top: 50%;
@@ -432,7 +421,6 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 		pointer-events: none;
 	}
 
-	/* Zoom Button */
 	.zoom-btn {
 		position: absolute;
 		bottom: 1rem;
@@ -459,7 +447,6 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 		background: rgba(255, 255, 255, 0.15);
 	}
 
-	/* Zoom Overlay */
 	.zoom-overlay {
 		position: fixed;
 		inset: 0;
@@ -517,7 +504,6 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 		color: #a1a1aa;
 	}
 
-	/* Thumbnail Strip */
 	.thumbnail-strip {
 		display: flex;
 		gap: 0.5rem;
@@ -584,7 +570,6 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 		color: #fafaf9;
 	}
 
-	/* Keyboard Shortcuts Modal */
 	.shortcuts-modal {
 		position: fixed;
 		inset: 0;
@@ -676,7 +661,6 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 		transform: translateY(-1px);
 	}
 
-	/* Grid Overview Modal */
 	.grid-modal {
 		position: fixed;
 		inset: 0;
@@ -788,7 +772,6 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 		text-align: left;
 	}
 
-	/* Viewer Hints */
 	.viewer-hints {
 		margin-top: 0.75rem;
 		text-align: center;
@@ -805,7 +788,6 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 
 	.hint-mobile { display: none; }
 
-	/* Fullscreen Mode */
 	.presentation-viewer.fullscreen {
 		position: fixed;
 		inset: 0;
@@ -840,7 +822,6 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 		display: none;
 	}
 
-	/* Mobile Responsive */
 	@media (max-width: 640px) {
 		.viewer-title {
 			font-size: 0.8125rem;
@@ -871,7 +852,6 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 		}
 	}
 
-	/* Touch optimizations */
 	@media (hover: none) and (pointer: coarse) {
 		.nav-btn {
 			opacity: 0.8;
@@ -883,7 +863,6 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 		}
 	}
 
-	/* Light Mode Support */
 	:root:not(.dark) .presentation-viewer,
 	:global(.light) .presentation-viewer {
 		--glass-bg: rgba(255, 255, 255, 0.8);
@@ -1050,14 +1029,10 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 </style>
 
 <script>
-	// Use a setup function so we can properly clean up on View Transition navigations.
-	// DOMContentLoaded does NOT re-fire after Astro View Transitions, so we use
-	// astro:page-load which fires on both initial load and after client-side navigations.
 
 	function setupPresentationViewers() {
 		const viewers = document.querySelectorAll('.presentation-viewer');
 
-		// Track document-level listeners for cleanup
 		const documentListeners: Array<{ type: string; handler: EventListener }> = [];
 		const windowListeners: Array<{ type: string; handler: EventListener }> = [];
 
@@ -1074,7 +1049,6 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 		viewers.forEach((viewerEl) => {
 			const viewer = viewerEl as HTMLElement;
 
-			// Prevent double-initialization
 			if (viewer.dataset.initialized === 'true') return;
 			viewer.dataset.initialized = 'true';
 
@@ -1101,7 +1075,6 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 
 			let currentSlide = getSlideFromUrl();
 
-			// DOM Elements - dual images for crossfade
 			const slideImageA = viewer.querySelector('.slide-image-a') as HTMLImageElement;
 			const slideImageB = viewer.querySelector('.slide-image-b') as HTMLImageElement;
 			let activeImage: HTMLImageElement = slideImageA;
@@ -1136,7 +1109,6 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 
 			const slides = JSON.parse(slideImageA?.dataset.slides || '[]');
 
-			// Set CSS variable for progress bar
 			viewer.style.setProperty('--slide-count', String(slideCount));
 
 			function announceCurrentSlide() {
@@ -1197,7 +1169,6 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 				gridModal.classList.add('hidden');
 			}
 
-			// Update slide with true crossfade using dual images
 			function updateSlide(
 				num: number,
 				options: { updateUrl?: boolean; announce?: boolean; scrollIntoView?: boolean } = {}
@@ -1219,19 +1190,16 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 					return;
 				}
 
-				// Set blur placeholder immediately
 				if (slidePlaceholder) {
 					slidePlaceholder.style.backgroundImage = `url(${slide.src})`;
 				}
 
-				// Delayed spinner - only show if load takes > 300ms
 				let spinnerTimeout: ReturnType<typeof setTimeout> | null = setTimeout(() => {
 					slideLoading.classList.add('visible');
 				}, 300);
 
-				// Preload next image into inactive element
 				inactiveImage.onload = () => {
-					// Clear spinner timeout
+
 					if (spinnerTimeout) {
 						clearTimeout(spinnerTimeout);
 						spinnerTimeout = null;
@@ -1239,11 +1207,9 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 					slideLoading.classList.remove('visible');
 					slideLoading.classList.add('hidden');
 
-					// Crossfade: swap active states
 					activeImage.classList.remove('active');
 					inactiveImage.classList.add('active');
 
-					// Swap references for next transition
 					const temp = activeImage;
 					activeImage = inactiveImage;
 					inactiveImage = temp;
@@ -1258,7 +1224,6 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 					slideLoading.classList.add('hidden');
 				};
 
-				// Set the source on inactive image (triggers load)
 				inactiveImage.src = slide.src;
 				inactiveImage.alt = `Slide ${targetSlide} of ${slideCount}`;
 
@@ -1266,7 +1231,6 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 				syncUiState({ announce, scrollIntoView });
 			}
 
-			// Initial state based on ?slide= query
 			const initialSlide = clampSlide(currentSlide);
 			const initialSlideData = slides[initialSlide - 1];
 			currentSlide = initialSlide;
@@ -1282,11 +1246,9 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 			syncUiState({ announce: false, scrollIntoView: false });
 			setSlideInUrl(currentSlide);
 
-			// Navigation
 			prevBtn?.addEventListener('click', () => updateSlide(currentSlide - 1));
 			nextBtn?.addEventListener('click', () => updateSlide(currentSlide + 1));
 
-			// Thumbnail clicks
 			thumbnailBtns.forEach((btn) => {
 				btn.addEventListener('click', () => {
 					const num = parseInt((btn as HTMLElement).dataset.slideNum || '1', 10);
@@ -1294,7 +1256,6 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 				});
 			});
 
-			// Grid clicks
 			gridSlideBtns.forEach((btn) => {
 				btn.addEventListener('click', () => {
 					const num = parseInt((btn as HTMLElement).dataset.gridSlideNum || '1', 10);
@@ -1303,7 +1264,6 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 				});
 			});
 
-			// Progress bar click-to-seek
 			progressBar?.addEventListener('click', (e) => {
 				const rect = progressBar.getBoundingClientRect();
 				const percent = (e.clientX - rect.left) / rect.width;
@@ -1311,7 +1271,6 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 				updateSlide(targetSlide);
 			});
 
-			// Touch/Swipe support
 			let touchStartX = 0;
 			let touchStartY = 0;
 			let isSwiping = false;
@@ -1329,7 +1288,7 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 				const touch = e.touches[0];
 				if (!touch) return;
 				const deltaY = Math.abs(touch.clientY - touchStartY);
-				// If scrolling vertically, don't swipe
+
 				if (deltaY > 30) {
 					isSwiping = false;
 				}
@@ -1352,7 +1311,6 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 				isSwiping = false;
 			});
 
-			// Zoom functionality
 			let zoomScale = 1;
 			let zoomPosX = 0;
 			let zoomPosY = 0;
@@ -1397,7 +1355,6 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 				dragStartY = e.clientY - zoomPosY;
 			});
 
-			// Document-level listeners (need cleanup on navigation)
 			addDocumentListener('mousemove', ((e: MouseEvent) => {
 				if (!isDragging) return;
 				zoomPosX = e.clientX - dragStartX;
@@ -1414,9 +1371,8 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 				updateSlide(targetSlide, { updateUrl: false, announce: false, scrollIntoView: false });
 			}) as EventListener);
 
-			// Keyboard shortcuts
 			addDocumentListener('keydown', ((e: KeyboardEvent) => {
-				// Don't trigger if typing in an input
+
 				if (
 					e.target instanceof HTMLInputElement ||
 					e.target instanceof HTMLTextAreaElement ||
@@ -1485,7 +1441,6 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 				}
 			}) as EventListener);
 
-			// Shortcuts modal
 			shortcutsBtn?.addEventListener('click', () => {
 				shortcutsModal.classList.remove('hidden');
 			});
@@ -1498,12 +1453,10 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 				shortcutsModal.classList.add('hidden');
 			});
 
-			// Grid modal
 			gridBtn?.addEventListener('click', openGrid);
 			gridClose?.addEventListener('click', closeGrid);
 			gridBackdrop?.addEventListener('click', closeGrid);
 
-			// Fullscreen toggle
 			fullscreenBtn?.addEventListener('click', () => {
 				viewer.classList.toggle('fullscreen');
 				const isFullscreen = viewer.classList.contains('fullscreen');
@@ -1512,7 +1465,6 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 			});
 		});
 
-		// Clean up document-level listeners when navigating away (View Transitions)
 		document.addEventListener('astro:before-swap', () => {
 			documentListeners.forEach(({ type, handler }) => {
 				document.removeEventListener(type, handler);
@@ -1523,13 +1475,11 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 			documentListeners.length = 0;
 			windowListeners.length = 0;
 
-			// Reset initialized flag on viewers so they can re-initialize on the new page
 			viewers.forEach((viewerEl) => {
 				(viewerEl as HTMLElement).dataset.initialized = '';
 			});
 		}, { once: true });
 	}
 
-	// astro:page-load fires on initial load AND after every View Transition navigation
 	document.addEventListener('astro:page-load', setupPresentationViewers);
 </script>

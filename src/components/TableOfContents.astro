@@ -22,7 +22,6 @@
 </nav>
 
 <style>
-  /* Active TOC link — proper CSS handles light/dark automatically */
   .toc-link.active {
     background-color: rgb(239 246 255); /* blue-50 */
     color: rgb(37 99 235); /* blue-600 */
@@ -53,12 +52,10 @@
       if (id === currentActiveId) return;
       currentActiveId = id;
 
-      // Remove active from all
       tocLinks.forEach((link) => link.classList.remove('active'));
 
       if (!id) return;
 
-      // Find and activate the matching link
       const activeLink = tocLinks.find(
         (link) => link.getAttribute('href') === `#${id}`
       );
@@ -66,7 +63,6 @@
       if (activeLink) {
         activeLink.classList.add('active');
 
-        // Auto-scroll the TOC container to keep active link visible
         const tocContainer = activeLink.closest('.max-h-\\[calc\\(100vh-10rem\\)\\]') 
           || activeLink.closest('[class*="overflow-y"]');
         if (tocContainer) {
@@ -75,7 +71,6 @@
           const linkTop = linkRect.top - containerRect.top;
           const linkBottom = linkRect.bottom - containerRect.top;
 
-          // Scroll if the link is outside the visible area
           if (linkTop < 0 || linkBottom > containerRect.height) {
             activeLink.scrollIntoView({
               block: 'center',
@@ -87,11 +82,9 @@
     }
 
     function updateActiveHeading() {
-      // Find the heading that's currently at the top of the viewport
-      // We check from bottom to top — the last heading that has scrolled past
-      // the trigger point is the "current" section
+
       const scrollY = window.scrollY;
-      const triggerOffset = window.innerHeight * 0.2; // 20% from top
+      const triggerOffset = window.innerHeight * 0.2;
 
       let activeId: string | null = null;
 
@@ -106,7 +99,6 @@
         }
       }
 
-      // If we scrolled before the first heading, clear active
       if (!activeId && headings.length > 0) {
         const first = headings[0];
         if (first) {
@@ -121,7 +113,6 @@
       setActive(activeId);
     }
 
-    // Throttle scroll events for performance
     let ticking = false;
     function onScroll() {
       if (!ticking) {
@@ -135,7 +126,6 @@
 
     window.addEventListener('scroll', onScroll, { passive: true });
 
-    // Handle click on TOC links — smooth scroll then set active
     tocLinks.forEach((link) => {
       link.addEventListener('click', (e) => {
         e.preventDefault();
@@ -144,19 +134,16 @@
         const target = document.querySelector(href);
         if (target) {
           target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          // Set active immediately on click
+
           setActive(href.slice(1));
         }
       });
     });
 
-    // Initial check
     updateActiveHeading();
   }
 
-  // Run on initial load
   initTOC();
 
-  // Re-run after Astro page transitions
   document.addEventListener('astro:after-swap', initTOC);
 </script>

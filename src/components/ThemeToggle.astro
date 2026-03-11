@@ -1,5 +1,4 @@
 ---
-// src/components/ThemeToggle.astro
 
 interface Props {
 	idPrefix: string;
@@ -66,7 +65,6 @@ const { idPrefix, showLabel = false } = Astro.props;
 			syncThemeSwitches(next);
 		};
 
-		// Check initial theme state on load and sync toggle buttons
 		const storedTheme = localStorage.getItem('theme');
 		const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 		const isDarkTheme = storedTheme == null ? prefersDark : storedTheme === 'dark';
@@ -91,6 +89,5 @@ const { idPrefix, showLabel = false } = Astro.props;
 		(window as any)[THEME_TOGGLE_BOOTSTRAP_KEY] = true;
 	}
 
-	// Always setup initially (incase this component mounts mid lifecycle)
 	setupThemeToggle();
 </script>
