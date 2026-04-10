@@ -6,7 +6,7 @@ description: A breakdown of my study timeline, resources, question practice, and
 author: Sudhir
 isPinned: true
 excerpt: I passed the CISSP on April 6, 2026, at 100 questions. Here is a breakdown of my study timeline, resources, question practice, and exam-day experience.
-tags: ['CISSP', 'Certification', 'Cybersecurity']
+tags: ['CISSP', 'Certification']
 draft: false
 ---
 
@@ -14,9 +14,9 @@ _A breakdown of my study timeline, resources, question practice, and exam-day ex
 
 ## Intro Summary
 
-I passed the CISSP on April 6, 2026, at 100 questions with around 60 minutes left. My prep was not perfect from the start. I bought the OSG in April 2025, studied on and off for a while, and only got serious from December 25, 2025.
+I passed the CISSP on April 6, 2026, at 100 questions with around 60 minutes left. I bought the OSG in April 2025, studied on and off for a while, and only got serious from late December 2025.
 
-From that point, I studied daily for at least two hours, and longer on weekends. My prep was built around one simple approach: study a domain, then solve questions on that same topic immediately. I used a mix of books, apps, YouTube, AI-generated quizzes, handwritten notes, Reddit, and Discord. In the end, what helped me most was consistency, lots of practice questions, and using resources that actually matched my style.
+From that point, I studied daily for at least two hours, and longer on weekends. My prep was built around one simple approach: study a domain, then solve questions on that same topic immediately. I used a mix of books, apps, YouTube, AI-generated quizzes, handwritten notes, Reddit, and Discord. In the end, what helped me most was consistency and lots of practice questions.
 
 ### Quick Snapshot
 
@@ -32,17 +32,17 @@ From that point, I studied daily for at least two hours, and longer on weekends.
 
 One of the main reasons I wanted to do CISSP was simple: I did not have any major certification. I had my Information Security / Computer Science degree, and I had already been working in security for a few years, but I wanted something more solid on paper as well. At that point, CISSP felt like the right next step.
 
-By the time I took the exam, I had around four and a half years of experience at Infosys across roles related to network security, security assessments, security operations, compliance, and control validation. That background helped with some parts of the syllabus, but work experience alone does not cut it for this exam. You still have to sit down and study.
+By the time I took the exam, I had around four and a half years of experience at Infosys across roles related to network security, security assessments, security operations, compliance, and control validation. That background helped with some parts of the syllabus, but work experience alone does not cut it for this exam.
 
 ## How the Journey Actually Started
 
 My CISSP journey did not begin in a very disciplined way.
 
-I bought the Official Study Guide in April 2025, but for a long time, my preparation was completely on and off. I would study a bit, stop, come back later, and repeat the cycle. The serious phase only started on December 25, 2025. That was the point when I decided I needed to stop treating it casually and prepare properly.
+I bought the Official Study Guide in April 2025, but for a long time, my preparation was completely on and off. I would study a bit, stop, come back later, and repeat the cycle. The serious phase only started late December 2025. That was the point when I decided I needed to stop treating it casually and prepare properly.
 
-From then on, I studied every day for at least two hours. On weekends, it usually went up to four or five hours. Nothing fancy, just consistent effort over time.
+From then on, I studied every day for at least two hours. On weekends, it usually went up to four or five hours.
 
-I paid the exam fee on March 7, 2026. My original plan was to book a slot in the last week of March, but there were no seats available, so I ended up booking April 6 instead. Looking back, that extra bit of time helped.
+I paid the exam fee on March 7, 2026. My original plan was to book a slot in the last week of March, but there were no seats available, so I ended up booking April 6 instead.
 
 ## What My Prep Looked Like
 
@@ -90,7 +90,7 @@ I did not follow one full video course in a strict way, but these were useful fo
 - **r/cissp on Reddit**  
   Useful for reading other people's preparation strategies and passing experiences.
 - **Cyber Security Station Discord**  
-  Especially CISSP channel and Stank Industries questions on it.
+  CISSP channel and Stank Industries questions on it.
 
 ### Personal Notes
 
@@ -116,8 +116,6 @@ I also did not rely heavily on full video courses, but I used YouTube quite a bi
 
 I also spent time reading other people's experiences on `r/cissp`, which was useful mainly because it gave me a realistic sense of what preparation looked like for different people. The Cyber Security Station Discord was another useful resource, especially the CISSP channel and the Stank Industries questions.
 
-None of these replaced actual studying, but they filled in gaps that books alone could not.
-
 ## My Own Notes Helped More Than I Expected
 
 One of the most useful things I did was make my own notes.
@@ -125,8 +123,6 @@ One of the most useful things I did was make my own notes.
 I prepared notes for all domains and ended up filling an entire 100-page diary. Near the exam, those notes became one of my main revision sources. Instead of reopening everything again, I could go through my own condensed version of the content.
 
 That saved time and helped me revise in a way that felt familiar.
-
-If I had to pick three things that helped me the most, it would be the Destination Certification book, lots of practice questions, and my own handwritten notes.
 
 ## What I Found Easy and What I Found Difficult
 
@@ -142,15 +138,13 @@ In the last phase of prep, I focused mostly on Domains 3, 6, 7, and 8. I kept do
 
 I did not have some ultra-optimized final-week strategy. It was mostly simple: revise notes, solve more questions, keep the concepts fresh.
 
-The day before the exam, I skimmed my notes and did some Udemy questions. Nothing dramatic. I just wanted to stay in rhythm without overloading myself.
+The day before the exam, I skimmed my notes and did some Udemy questions. I just wanted to stay in rhythm without overloading myself.
 
 ## Exam Day
 
-The exam center experience was actually very smooth. The staff were helpful, the process was clear, and the environment was calm. That made a difference because there was no unnecessary stress before the exam even started.
+The exam center experience was actually very smooth. The staff were helpful, the process was clear, and the environment was calm.
 
-I reached around 8:30 AM, was let in around 9:15 AM, and started the exam sometime between 9:30 and 9:45. Before submitting my belongings to the locker, I drank a little water and just tried to stay calm. I got around six hours of sleep the previous night, which was not ideal, but manageable.
-
-More than anything, I was trying not to overthink.
+I reached around 8:30 AM, was let in around 9:15 AM, and started the exam sometime between 9:30 and 9:45. I drank a little water and just tried to stay calm. I got around six hours of sleep the previous night, which was not ideal, but manageable.
 
 My mindset going in was simple: trust the three and a half months of focused preparation and just stay steady.
 
@@ -166,17 +160,8 @@ The real exam did not feel like something where you keep marking answers with to
 
 I did not take any breaks. The exam stopped at 100 questions, and I still had around an hour left. When I got the result, it honestly felt surreal. I walked outside first, and only then did it really hit me. After that, I called my friends and family.
 
-## What Worked for Me
-
-If I had to keep it simple, these are the things that helped me most:
-
-- Use a main resource that actually works for your style instead of forcing yourself through one you dislike.
-- Do a lot of questions from different sources.
-- Make your own notes.
-- Build comfort with the way CISSP questions make you think.
-
 ## Closing Thoughts
 
-There was no single magical resource. I just stayed consistent, did a lot of questions, kept my notes close, and found a way to study that I could actually stick to for three months straight.
+I just stayed consistent, did a lot of questions, kept my notes close, and found a way to study that I could actually stick to for three months straight.
 
-That was my journey. Glad it worked out.
+That was my journey. Glad it worked out. Cheers!
