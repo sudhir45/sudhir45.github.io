@@ -1,5 +1,4 @@
 ---
-layout: ../../layouts/post.astro
 title: Passing the CISSP at 100 Questions
 pubDate: 2026-04-10
 description: A breakdown of my study timeline, resources, question practice, and exam-day experience for passing the CISSP.
@@ -91,6 +90,28 @@ I did not follow one full video course in a strict way, but these were useful fo
   Useful for reading other people's preparation strategies and passing experiences.
 - **Cyber Security Station Discord**  
   CISSP channel and Stank Industries questions on it.
+
+### AI-Generated Practice
+
+I used Gemini, ChatGPT, and Claude to generate quizzes tailored to whatever I had just studied. Out of these, Claude felt better in terms of question complexity, though the free-tier rate limits were a bit restrictive. Below is the exact prompt I used - you can paste it into any AI chatbot along with your own study notes to generate practice questions in a similar style.
+
+<details>
+<summary>Click to expand the AI prompt I used</summary>
+
+> Assume the role of CISSP study partner that asks me questions, based on the updated study notes attached provided.
+> Ask me questions in the form of multiple choice, with the options all answer options very similar, almost all correct.
+> Make the questions in the form that a manager in the security department will select the one from the multiple answers,
+> that are more correct then the other choices.
+> Ask me one question and give the multiple choices answers, but do not move to the next question until I provide an answer.
+> If I answer incorrectly then, give me an explanation of the valid answer when I answer incorrectly.
+> Then only pose a new question after my answer provided from the same CISSP domain until I get 10 correct,
+> from one of the 8 domains based on the CISSP domain sections.
+> Use the follow list of words in building the questions,
+> to make it more difficult to determine the most correct answers from choices:
+>
+> Goal, Primary goal, endpoint, Most, Mostly, Most important, Most appropriate, Most critical, Most effective, Unlikely, Incorrect, Not typically, not commonly, not normally, Not one, not true, not an essential process, not an effective, not a consideration, not a common step, Least, LEAST likely, is least likely, avoid, advantage, shouldn't
+
+</details>
 
 ### Personal Notes
 
