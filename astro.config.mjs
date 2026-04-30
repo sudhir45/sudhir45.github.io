@@ -31,7 +31,7 @@ const options = {
 
 // https://astro.build/config
 export default defineConfig({
-	site: 'https://sudhir45.github.io',
+	site: 'https://sudhir.is-a.dev',
 	compressHTML: true,
 
 	markdown: {

@@ -15,7 +15,7 @@ const { frontmatter, headings } = Astro.props;
 
 const slug = (Astro.url.pathname.split('/').pop() || Astro.url.pathname.split('/').slice(-2)[0]) || '';
 const cleanSlug = slug.replace(/\/$/, '');
-const siteUrl = Astro.site ? Astro.site.toString().replace(/\/$/, '') : 'https://sudhir45.github.io';
+const siteUrl = Astro.site ? Astro.site.toString().replace(/\/$/, '') : 'https://sudhir.is-a.dev';
 const ogImageUrl = `${siteUrl}/og/${cleanSlug}.png`;
 const postUrl = `${siteUrl}${Astro.url.pathname}`;
 ---

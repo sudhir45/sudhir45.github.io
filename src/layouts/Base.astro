@@ -18,7 +18,7 @@ const {
 	head: { title, description, image }
 } = Astro.props as Props;
 
-const siteUrl = Astro.site ? Astro.site.toString().replace(/\/$/, '') : 'https://sudhir45.github.io';
+const siteUrl = Astro.site ? Astro.site.toString().replace(/\/$/, '') : 'https://sudhir.is-a.dev';
 const canonicalUrl = `${siteUrl}${Astro.url.pathname}`;
 const baseOgImage = image ?? '/images/Secure_Architecture.png';
 const ogImageUrl = baseOgImage.startsWith('http') ? baseOgImage : `${siteUrl}${baseOgImage}`;
@@ -79,7 +79,7 @@ const ogImageUrl = baseOgImage.startsWith('http') ? baseOgImage : `${siteUrl}${b
 			"@type": "Blog",
 			"name": AppConfig.site_name,
 			"description": AppConfig.description,
-			"url": Astro.site?.toString() || "https://sudhir45.github.io",
+			"url": Astro.site?.toString() || "https://sudhir.is-a.dev",
 			"author": {
 				"@type": "Person",
 				"name": AppConfig.author

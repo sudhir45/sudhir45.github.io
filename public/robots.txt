@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://sudhir45.github.io/sitemap-index.xml
+Sitemap: https://sudhir.is-a.dev/sitemap-index.xml
