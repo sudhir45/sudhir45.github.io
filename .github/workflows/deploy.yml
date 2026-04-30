@@ -30,6 +30,9 @@ jobs:
             echo "::error::PUBLIC_GA_MEASUREMENT_ID must match GA4 format: G-XXXXXXXXXX."
             exit 1
           fi
+
+      - name: Install PDF security tooling
+        run: python -m pip install pypdf
       
       - name: Install, build, and upload your site
         uses: withastro/action@v3
