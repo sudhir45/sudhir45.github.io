@@ -5,10 +5,10 @@
 	"scripts": {
 		"dev": "astro dev",
 		"start": "astro dev",
-		"secure:pdfs": "python scripts/secure-certification-pdfs.py",
+		"secure:pdfs": "python scripts/secure-public-pdfs.py",
 		"secure:certs": "npm run secure:pdfs",
 		"check": "astro check",
-		"format:check": "prettier --check \"README.md\" \".github/workflows/ci.yml\"",
+		"format:check": "prettier --check \"README.md\" \".github/workflows/ci.yml\" \".github/workflows/deploy.yml\"",
 		"build": "npm run secure:pdfs && astro check && astro build",
 		"preview": "astro preview",
 		"astro": "astro"
