@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Apply viewer-enforced copy/edit restrictions to public certificate PDFs."""
+"""Apply viewer-enforced copy/edit restrictions to public PDFs."""
 
 from __future__ import annotations
 
@@ -17,7 +17,7 @@ except ImportError as exc:
     ) from exc
 
 
-DEFAULT_CERT_DIR = Path("public/certification")
+DEFAULT_PUBLIC_DIR = Path("public")
 ALLOWED_PERMISSIONS = Perm.PRINT | Perm.PRINT_TO_REPRESENTATION
 BLOCKED_PERMISSIONS = (
     Perm.MODIFY
@@ -80,24 +80,24 @@ def secure_pdf(path: Path) -> bool:
 
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description="Secure certificate PDFs while keeping them openable without a password."
+        description="Secure public PDFs while keeping them openable without a password."
     )
     parser.add_argument(
-        "cert_dir",
+        "public_dir",
         nargs="?",
         type=Path,
-        default=DEFAULT_CERT_DIR,
-        help=f"Directory containing certificate PDFs. Defaults to {DEFAULT_CERT_DIR}.",
+        default=DEFAULT_PUBLIC_DIR,
+        help=f"Directory containing static site assets. Defaults to {DEFAULT_PUBLIC_DIR}.",
     )
     args = parser.parse_args()
 
-    if not args.cert_dir.exists():
-        print(f"No certificate directory found: {args.cert_dir}")
+    if not args.public_dir.exists():
+        print(f"No public asset directory found: {args.public_dir}")
         return 0
 
-    pdfs = sorted(args.cert_dir.glob("*.pdf"))
+    pdfs = sorted(args.public_dir.rglob("*.pdf"))
     if not pdfs:
-        print(f"No certificate PDFs found in {args.cert_dir}")
+        print(f"No public PDFs found in {args.public_dir}")
         return 0
 
     changed = 0
