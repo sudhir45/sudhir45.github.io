@@ -1,21 +1,30 @@
 ---
 title: Passing the CISSP at 100 Questions
 pubDate: 2026-04-10
-description: A breakdown of my study timeline, resources, question practice, and exam-day experience for passing the CISSP.
+description: A practical breakdown of my CISSP preparation, resources, question practice, exam-day experience, and lessons learned.
 author: Sudhir
 isPinned: true
-excerpt: I passed the CISSP on April 6, 2026, at 100 questions. Here is a breakdown of my study timeline, resources, question practice, and exam-day experience.
+excerpt: I passed the CISSP on April 6, 2026, at 100 questions. This is a practical breakdown of my preparation timeline, resources, question practice, exam-day experience, and lessons learned.
 tags: ['CISSP', 'Certification']
 draft: false
 ---
 
-_A breakdown of my study timeline, resources, question practice, and exam-day experience._
+_A practical breakdown of my preparation timeline, resources, question practice, exam-day experience, and lessons learned._
 
-## Intro Summary
+<div class="mx-auto my-6 flex justify-center sm:float-right sm:ml-8 sm:mt-0 sm:mb-4 sm:block">
+  <div data-iframe-width="150" data-iframe-height="270" data-share-badge-id="f1f1db23-496b-4efa-9dca-780330f50c5c" data-share-badge-host="https://www.credly.com"></div>
+</div>
+<script type="text/javascript" async src="https://cdn.credly.com/assets/utilities/embed.js"></script>
 
-I passed the CISSP on April 6, 2026, at 100 questions with around 60 minutes left. I bought the OSG in April 2025, studied on and off for a while, and only got serious from late December 2025.
+## Summary
 
-From that point, I studied daily for at least two hours, and longer on weekends. My prep was built around one simple approach: study a domain, then solve questions on that same topic immediately. I used a mix of books, apps, YouTube, AI-generated quizzes, handwritten notes, Reddit, and Discord. In the end, what helped me most was consistency and lots of practice questions.
+I passed the CISSP on April 6, 2026, at 100 questions with around 60 minutes left.
+
+I bought the Official Study Guide in April 2025 and studied inconsistently for several months. Focused preparation started around December 25, 2025. From then on, I studied for at least two hours on weekdays and around four to five hours on weekends.
+
+My main approach was to study a domain or topic area, then solve questions on the same topic immediately. This made weak areas visible early and kept revision tied to actual question practice.
+
+<div class="clear-both"></div>
 
 ### Quick Snapshot
 
@@ -27,162 +36,149 @@ From that point, I studied daily for at least two hours, and longer on weekends.
 - **Main book:** Destination Certification CISSP
 - **Main practice app:** LearnZapp
 
-## Why I Decided to Do CISSP
+## Why CISSP
 
-One of the main reasons I wanted to do CISSP was simple: I did not have any major certification. I had my Information Security / Computer Science degree, and I had already been working in security for a few years, but I wanted something more solid on paper as well. At that point, CISSP felt like the right next step.
+I chose CISSP because I wanted a recognized certification aligned with my security experience. I had an Information Security / Computer Science background and professional experience in security, but no major certification that represented that experience clearly.
 
-By the time I took the exam, I had around four and a half years of experience at Infosys across roles related to network security, security assessments, security operations, compliance, and control validation. That background helped with some parts of the syllabus, but work experience alone does not cut it for this exam.
+At the time of the exam, I had around four and a half years of experience at Infosys across network security, security assessments, security operations, compliance, and control validation. That experience helped with familiar domains, but it was not enough by itself. CISSP requires broad coverage, security judgment, and the ability to choose the best answer from several reasonable options.
 
-## How the Journey Actually Started
+## Preparation Timeline
 
-My CISSP journey did not begin in a very disciplined way.
+- **April 2025:** Bought the Official Study Guide and started preparation.
+- **April to December 2025:** Studied inconsistently.
+- **December 25, 2025:** Started focused preparation.
+- **March 7, 2026:** Paid the exam fee.
+- **April 6, 2026:** Took the exam and passed at 100 questions.
 
-I bought the Official Study Guide in April 2025, but for a long time, my preparation was completely on and off. I would study a bit, stop, come back later, and repeat the cycle. The serious phase only started late December 2025. That was the point when I decided I needed to stop treating it casually and prepare properly.
+I originally wanted a slot in the last week of March, but no seats were available. I booked April 6 instead. Most of the effective preparation happened during the final three and a half months.
 
-From then on, I studied every day for at least two hours. On weekends, it usually went up to four or five hours.
+## Study Method
 
-I paid the exam fee on March 7, 2026. My original plan was to book a slot in the last week of March, but there were no seats available, so I ended up booking April 6 instead.
+The routine was simple:
 
-## What My Prep Looked Like
+1. Study a focused topic.
+2. Solve related questions the same day.
+3. Review mistakes.
+4. Update notes.
+5. Repeat until the domain felt stable.
 
-My prep style was pretty straightforward. I would first study a domain or a specific set of topics, and then test myself on the same topic that very day. That worked much better for me than reading a lot and leaving practice for later.
+I avoided reading large blocks of material without practice. Questions exposed gaps faster than passive revision. If I missed the same concept repeatedly, I went back to the book or my notes and revised that area again.
 
-Along with normal question banks, I also used AI tools like Gemini, ChatGPT, and Claude to generate quizzes based on whatever I had just studied. That was useful. It helped me check whether I had actually understood the topic or had just read through it. Out of the AI tools I used, Claude felt better in terms of question complexity, though the free-tier rate limits were a bit restrictive.
-
-I did not follow some perfect study plan from day one. A lot of it became clearer as I went. But one thing that stayed constant was this: study a topic, then solve questions on it immediately.
+This worked better than separating study and practice into different phases.
 
 ## Resources I Used
-
-If you just want the shortlist, these were the main resources I used during my prep.
 
 ### Books
 
 - **Official Study Guide (OSG)**  
-  Good starting point, but I found it boring and let it go after Domain 1. Afterward, I used it only for in-depth study if I had doubts on a certain topic.
+  Good as a reference. I completed Domain 1 from it, but did not use it as my main book because it was difficult to stay engaged with for long sessions. Later, I used it mainly for deeper review when needed.
 - **Destination Certification CISSP**  
-  This became my main book and was the most useful overall.
+  My primary book. It was easier to read consistently and helped me build a clearer understanding across domains.
 - **Prashant Mohan Memory Palace**  
-  Very useful near the exam for quick revision.
+  Useful for quick revision near the exam.
 
 ### Apps and Question Banks
 
 - **Destination Certification Android app**  
-  Useful for extra practice. Completed around 800 questions.
+  Used for additional practice. I completed around 800 questions.
 - **CISSP LearnZapp**  
-  One of my main prep tools. I had 71% readiness, completed 1,476 questions, and did around 6-7 full-length mocks.
+  My main practice app. Before the exam, I had 71% readiness, completed 1,476 questions, and attempted around 6-7 full-length mock tests.
 - **Pocket Prep**  
-  Used some free questions for additional practice.
+  Used some free questions for extra practice.
 - **Thor Pedersen Udemy practice tests**  
-  Took a 1-month subscription and did around 8-10 mock tests and questions, mostly in the final 2-3 weeks.
+  Used during the final two to three weeks. I completed around 8-10 mock tests and question sets with a one-month subscription.
 
-### YouTube
+### Videos
 
-- **Prabh Nair**
-- **Andrew Ramdayal**
-- **Pete Zerger**
-- **IT Dojo**
+I used videos for targeted revision and question-style exposure, not as my primary study source.
 
-I did not follow one full video course in a strict way, but these were useful for revision, scenario-based thinking, and question style.
+- **Pete Zerger:** Skimmed the full CISSP video in a day.
+- **Prabh Nair:** Used the Coffee Shots playlist for focused revision.
+- **Andrew Ramdayal:** Watched the hard questions video.
+- **IT Dojo:** Used for question practice and explanations.
 
 ### Community Resources
 
-- **r/cissp on Reddit**  
-  Useful for reading other people's preparation strategies and passing experiences.
-- **Cyber Security Station Discord**  
-  CISSP channel and Stank Industries questions on it.
+- **r/cissp on Reddit:** Useful for comparing preparation strategies and exam experiences.
+- **Cyber Security Station Discord:** Useful for CISSP discussion and Stank Industries practice questions.
 
-### AI-Generated Practice
+## AI-Generated Practice
 
-I used Gemini, ChatGPT, and Claude to generate quizzes tailored to whatever I had just studied. Out of these, Claude felt better in terms of question complexity, though the free-tier rate limits were a bit restrictive. Below is the exact prompt I used - you can paste it into any AI chatbot along with your own study notes to generate practice questions in a similar style.
+I used Gemini, ChatGPT, and Claude to generate practice questions from the topics I had just studied. This was useful for narrow, topic-specific reinforcement.
+
+Claude produced better question complexity in my use, although the free-tier limits were restrictive. I treated AI-generated questions as practice only, not as an authoritative source. For weak areas, I cross-checked with books and notes.
+
+Prompt structure:
 
 <details>
 <summary>Click to expand the AI prompt I used</summary>
 
-> Assume the role of CISSP study partner that asks me questions, based on the updated study notes attached provided.
-> Ask me questions in the form of multiple choice, with the options all answer options very similar, almost all correct.
-> Make the questions in the form that a manager in the security department will select the one from the multiple answers,
-> that are more correct then the other choices.
-> Ask me one question and give the multiple choices answers, but do not move to the next question until I provide an answer.
-> If I answer incorrectly then, give me an explanation of the valid answer when I answer incorrectly.
-> Then only pose a new question after my answer provided from the same CISSP domain until I get 10 correct,
-> from one of the 8 domains based on the CISSP domain sections.
-> Use the follow list of words in building the questions,
-> to make it more difficult to determine the most correct answers from choices:
+> Act as a CISSP study partner. Use the study notes I provide and ask me multiple-choice questions from the relevant CISSP domain.
 >
-> Goal, Primary goal, endpoint, Most, Mostly, Most important, Most appropriate, Most critical, Most effective, Unlikely, Incorrect, Not typically, not commonly, not normally, Not one, not true, not an essential process, not an effective, not a consideration, not a common step, Least, LEAST likely, is least likely, avoid, advantage, shouldn't
+> Make the answer choices close to each other, with more than one option sounding reasonable. The goal is to practice choosing the most correct answer from a security manager's perspective.
+>
+> Ask one question at a time. Do not move to the next question until I answer.
+>
+> If my answer is wrong, explain why the correct answer is better and why the other options are weaker.
+>
+> Continue with questions from the same domain until I answer 10 correctly.
+>
+> Include wording patterns commonly seen in difficult questions, such as: most appropriate, most effective, most critical, least likely, not commonly, incorrect, avoid, primary goal, and best next step.
 
 </details>
 
-### Personal Notes
+## Notes and Revision
 
-- My own handwritten notes across all domains
-- Filled an entire 100-page diary
-- Probably one of the most useful things I had during final revision
+I prepared handwritten notes for all domains and filled a 100-page diary. These notes became my main revision source in the final phase.
 
-## Books, Videos, and Practice That Helped Most
+The notes were useful because they reflected my weak areas, corrections from practice questions, and condensed explanations in my own wording. Revising from them was faster than reopening every book, app, or video.
 
-I started with the OSG and completed Domain 1 from it. It is a solid resource, but I found it a bit boring and hard to stay engaged with for long. After that, I switched to the Destination Certification CISSP book, and that became my main resource for the rest of the prep.
+## Difficult and Easier Areas
 
-That book just clicked better for me. I could actually sit with it for longer without zoning out.
+Domain 3 was the hardest for me. The cryptography-heavy parts, key lengths, algorithms, and related details needed repeated revision.
 
-Closer to the exam, I also used Prashant Mohan's Memory Palace book. That was especially useful for quick revision in the last phase.
+Network Security and Risk Management were easier because of my work background. Practical exposure helped with understanding and retention.
 
-A huge part of my prep was doing questions. A lot of them.
+Even in familiar domains, CISSP still required careful reading. Many questions expect a governance, risk, or management-oriented answer rather than a purely technical one.
 
-I used the free Destination Certification Android app, CISSP LearnZapp, some Pocket Prep questions, AI-generated quizzes, and Thor Pedersen's practice tests on Udemy. On LearnZapp, I had 71% readiness before the exam, completed 1,476 questions, and did around 6 to 7 full-length mock tests. On Udemy, I took a one-month subscription and did around 8 to 10 mock tests, mostly during the last two to three weeks.
+## Final Weeks
 
-None of these apps matched the real exam exactly, but they got me used to the style of thinking CISSP expects. That part mattered more than getting the right answers.
+In the final phase, I focused mostly on Domains 3, 6, 7, and 8.
 
-I also did not rely heavily on full video courses, but I used YouTube quite a bit in a targeted way. I skimmed through Pete Zerger's full CISSP video in a day, watched Prabh Nair's Coffee Shots playlist, Andrew Ramdayal's hard questions video, some scenario-based CISSP question videos, and content from IT Dojo. All of them were helpful in different ways.
+The final-week routine was:
 
-I also spent time reading other people's experiences on `r/cissp`, which was useful mainly because it gave me a realistic sense of what preparation looked like for different people. The Cyber Security Station Discord was another useful resource, especially the CISSP channel and the Stank Industries questions.
+- Revise handwritten notes.
+- Practice questions from different sources.
+- Review mistakes carefully.
+- Revisit weak topics instead of adding new material.
 
-## My Own Notes Helped More Than I Expected
-
-One of the most useful things I did was make my own notes.
-
-I prepared notes for all domains and ended up filling an entire 100-page diary. Near the exam, those notes became one of my main revision sources. Instead of reopening everything again, I could go through my own condensed version of the content.
-
-That saved time and helped me revise in a way that felt familiar.
-
-## What I Found Easy and What I Found Difficult
-
-For me, Domain 3 was the hardest. Remembering key lengths, algorithms, and some of the crypto-heavy details was not easy. That domain needed more repetition than the others.
-
-Network Security and Risk Management felt relatively easier because of my work background. Since I already had practical exposure in those areas, it was easier to connect the concepts and retain them.
-
-Still, even in the domains that felt easier, the exam does not let you coast. You cannot just rely on what you already know from work.
-
-## The Final Stretch Before the Exam
-
-In the last phase of prep, I focused mostly on Domains 3, 6, 7, and 8. I kept doing as many questions as I could from different sources and revised mainly through my notes.
-
-I did not have some ultra-optimized final-week strategy. It was mostly simple: revise notes, solve more questions, keep the concepts fresh.
-
-The day before the exam, I skimmed my notes and did some Udemy questions. I just wanted to stay in rhythm without overloading myself.
+The day before the exam, I skimmed my notes and did a small number of Udemy questions to stay in rhythm without overloading.
 
 ## Exam Day
 
-The exam center experience was actually very smooth. The staff were helpful, the process was clear, and the environment was calm.
+The exam center process was smooth. The staff were helpful, instructions were clear, and the environment was calm.
 
-I reached around 8:30 AM, was let in around 9:15 AM, and started the exam sometime between 9:30 and 9:45. I drank a little water and just tried to stay calm. I got around six hours of sleep the previous night, which was not ideal, but manageable.
+I reached around 8:30 AM, was allowed in around 9:15 AM, and started the exam sometime between 9:30 and 9:45. I had around six hours of sleep the previous night.
 
-My mindset going in was simple: trust the three and a half months of focused preparation and just stay steady.
+My focus during the exam was to stay calm, read carefully, eliminate weak options, and avoid overthinking.
 
-## What the Exam Actually Felt Like
+## Exam Experience
 
 The exam felt medium to hard.
 
-There were maybe two or three questions where I genuinely had no clue. For most of the others, I at least knew the concept being tested, even if I was not fully confident about the final answer. In fact, I do not remember many questions where I felt 100% sure.
+Only two or three questions felt completely unfamiliar. For most questions, I understood the concept being tested, but the final answer still required careful judgment.
 
-That was probably the biggest surprise for me.
+The real exam did not feel like most practice tests. In many questions, I could eliminate two options quickly, but the remaining two were close. The challenge was choosing the most appropriate answer, not simply identifying a correct statement.
 
-The real exam did not feel like something where you keep marking answers with total confidence. Most of the time, I was able to eliminate two options fairly quickly, and then I had to think carefully between the remaining two.
+I did not take any breaks. The exam stopped at 100 questions with around 60 minutes left.
 
-I did not take any breaks. The exam stopped at 100 questions, and I still had around an hour left. When I got the result, it honestly felt surreal. I walked outside first, and only then did it really hit me. After that, I called my friends and family.
+## Recommendations
 
-## Closing Thoughts
+- Build a routine that is realistic to maintain.
+- Study one topic and practice questions on that topic immediately.
+- Track mistakes and revise the underlying concept.
+- Make your own notes instead of relying only on ready-made summaries.
+- Use practice questions to improve judgment, not just to measure scores.
+- Do not expect the real exam to match any single app or mock test.
 
-I just stayed consistent, did a lot of questions, kept my notes close, and found a way to study that I could actually stick to for three months straight.
-
-That was my journey. Glad it worked out. Cheers!
+The most useful parts of my preparation were consistency, repeated question practice, mistake review, and handwritten notes.
