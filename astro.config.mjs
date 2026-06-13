@@ -5,6 +5,7 @@ import rehypePrettyCode from 'rehype-pretty-code';
 import tailwindcss from '@tailwindcss/vite';
 import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
+import mdx from '@astrojs/mdx';
 const options = {
 	// Specify the theme to use or a custom theme json, in our case
 	// it will be a moonlight-II theme from
@@ -43,6 +44,7 @@ export default defineConfig({
 
 	integrations: [
 		react(),
+		mdx(),
 		sitemap({
 			filter: (page) => !page.endsWith('/search.json') && !page.includes('/og/')
 		})

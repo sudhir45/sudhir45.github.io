@@ -1,0 +1,64 @@
+---
+import { getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+	light: ImageMetadata;
+	dark?: ImageMetadata;
+	alt: string;
+	width: number;
+	height: number;
+	class?: string;
+	style?: string;
+	loading?: 'lazy' | 'eager';
+}
+
+const {
+	light,
+	dark,
+	alt,
+	width,
+	height,
+	class: className,
+	style,
+	loading = 'lazy'
+} = Astro.props;
+
+const formats = ['avif', 'webp', 'png'] as const;
+type Variants = Record<(typeof formats)[number], string>;
+
+const buildVariants = async (image: ImageMetadata): Promise<Variants> => {
+	const entries = await Promise.all(
+		formats.map(async (format) => {
+			const generated = await getImage({ src: image, width, height, format });
+			return [format, generated.src] as const;
+		})
+	);
+	return Object.fromEntries(entries) as Variants;
+};
+
+const lightSet = await buildVariants(light);
+const darkSet = dark ? await buildVariants(dark) : null;
+---
+
+<picture>
+	{darkSet && (
+		<>
+			<source srcset={darkSet.avif} type="image/avif" media="(prefers-color-scheme: dark)" />
+			<source srcset={darkSet.webp} type="image/webp" media="(prefers-color-scheme: dark)" />
+			<source srcset={darkSet.png} media="(prefers-color-scheme: dark)" />
+		</>
+	)}
+	<source srcset={lightSet.avif} type="image/avif" />
+	<source srcset={lightSet.webp} type="image/webp" />
+	<img
+		src={lightSet.png}
+		alt={alt}
+		width={width}
+		height={height}
+		class={className}
+		style={style}
+		loading={loading}
+		decoding="async"
+	/>
+</picture>

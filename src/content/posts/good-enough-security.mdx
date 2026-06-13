@@ -8,18 +8,26 @@ excerpt: "Why theoretical security fails in production, and how 'good enough' co
 tags: ["Security", "Risk Management", "Practical Security", "Security Strategy"]
 ---
 
+import PostImage from '@/components/PostImage.astro';
+import seesawLight from '@/assets/images/seasawsecurity.png';
+import seesawDark from '@/assets/images/seasawsecuritydark.png';
+import frustratedLight from '@/assets/images/frustratedguy.png';
+import frustratedDark from '@/assets/images/frustratedguydark.png';
+
 Picture this. It's late. You're wiped. All you want is to log in to your bank, Netflix, or email. You type your go-to password - maybe `Fluffy123`, or if you're feeling fancy, `Fluffy123@July?`. Denied.
 
 Three tries and some mild swearing later, you remember the cryptic mess the system forced on you: `F1uffY@m1t3sL4z3r$!`.
 
 Success! But wait - where did you even write that down? Sticky note? Notes app? Facepalm.
 
-<picture>
-  <source srcset="/images/seasawsecuritydark.webp" type="image/webp" media="(prefers-color-scheme: dark)" />
-  <source srcset="/images/seasawsecuritydark.png" media="(prefers-color-scheme: dark)" />
-  <source srcset="/images/seasawsecurity.webp" type="image/webp" />
-  <img src="/images/seasawsecurity.png" alt="Security vs. Usability Seesaw" width="400" height="400" style="float: left; margin-right: 20px;" loading="lazy" decoding="async" />
-</picture>
+<PostImage
+	light={seesawLight}
+	dark={seesawDark}
+	alt="Security vs. Usability Seesaw"
+	width={400}
+	height={400}
+	style="float: left; margin-right: 20px;"
+/>
 
 Here's the thing - **perfect security doesn't exist**. And even if it did, you probably wouldn't want it. We keep stacking tools, patches, and policies like we're building a digital Tihar Jail. But users aren't robots. They'll always find the quickest path to "it just works," even if that path includes `123456` as a password.
 
@@ -57,12 +65,14 @@ Let's see this classic security-usability tug-of-war in action.
 
 Let me explain this without the startup pitch.
 
-<picture>
-  <source srcset="/images/frustratedguydark.webp" type="image/webp" media="(prefers-color-scheme: dark)" />
-  <source srcset="/images/frustratedguydark.png" media="(prefers-color-scheme: dark)" />
-  <source srcset="/images/frustratedguy.webp" type="image/webp" />
-  <img src="/images/frustratedguy.png" alt="A frustrated user at their computer" width="400" height="400" style="float: right; margin-left: 20px;" loading="lazy" decoding="async" />
-</picture>
+<PostImage
+	light={frustratedLight}
+	dark={frustratedDark}
+	alt="A frustrated user at their computer"
+	width={400}
+	height={400}
+	style="float: right; margin-left: 20px;"
+/>
 
 ### Zoom vs. Zoombombers
 
