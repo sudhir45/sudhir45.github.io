@@ -7,30 +7,35 @@ import Social from '@/components/Social.astro';
 const { title, description } = AppConfig;
 ---
 
-<Base head={{ title: `About | ${title}`, description }}>
+<Base head={{ title: `${title}`, description }}>
 	<Section>
-		<div class="mx-auto max-w-[750px] py-8">
+		<div>
 
-			
-			<div class="animate-fade-up mb-8">
-				<h1 class="mb-2 text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">About Sudhir</h1>
-				
-				
-				
-				<p class="text-base text-zinc-600 dark:text-zinc-400">Information Security Analyst based in Mumbai, India.</p>
-			</div>
+			<header class="animate-fade-up border-line mb-10 border-b pb-6">
+				<p class="eyebrow eyebrow-tick mb-3">About</p>
+				<h1 class="font-display text-fg mb-2 text-3xl font-semibold tracking-tight md:text-4xl">About Sudhir</h1>
+				<p class="text-muted text-base">Information Security professional based in Mumbai, India.</p>
+			</header>
 
-			<div class="animate-fade-up stagger-1 mb-10 space-y-6 text-[1.05rem] leading-[1.7] text-zinc-700 dark:text-zinc-300">
+			<div class="animate-fade-up stagger-1 text-muted mb-10 text-[1.05rem] leading-[1.75] lg:columns-2 lg:gap-12 [&>p]:mb-5 [&>p]:break-inside-avoid [&>p:last-child]:mb-0">
 				<p>
-					I’m Sudhir, a CISSP-certified Information Security Analyst based in Mumbai, India.
+					I’m a CISSP-certified security professional currently at <strong class="text-fg font-medium">Infosys</strong>,
+					where I help keep large-scale enterprise environments secure end to end.
 				</p>
 				<p>
-					At <strong class="font-medium text-zinc-900 dark:text-zinc-100">Infosys</strong>, I work on enterprise network security, compliance, vulnerability management, and security operations across large-scale environments. My focus areas include firewall policy hygiene, network hardening, control validation, and security posture improvement using tools such as Skybox, AlgoSec, Qualys, and CyberArk.
+					Day to day, that means network and infrastructure hardening, firewall policy hygiene,
+					vulnerability management, control validation, and security operations - working hands-on
+					with tools like Skybox, AlgoSec, Qualys, and CyberArk.
 				</p>
 				<p>
-					This site is where I write about practical cybersecurity, security architecture, compliance, security tools, and lessons from real-world defensive work.
+					My background runs across both sides of security. Years of CTF work on the offensive side
+					keep my defensive instincts sharp, and I care more about controls that hold up in
+					production than ones that only look good on paper.
 				</p>
-				
+				<p>
+					This is where I write about practical cybersecurity - security architecture, compliance,
+					tooling, and lessons from real-world defensive work.
+				</p>
 			</div>
 
 
@@ -63,7 +68,7 @@ const { title, description } = AppConfig;
 				-->
 			</div>
 
-			<p class="animate-fade-up stagger-4 mt-10 text-xs text-zinc-400 dark:text-zinc-600">All opinions are my own.</p>
+			<p class="animate-fade-up stagger-4 text-faint mt-10 font-mono text-xs">All opinions are my own.</p>
 		</div>
 	</Section>
 </Base>

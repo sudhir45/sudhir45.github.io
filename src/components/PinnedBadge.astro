@@ -9,16 +9,16 @@ interface Props {
 const { size = 'md', class: className = '' } = Astro.props;
 
 const badgeSizeClasses = {
-	sm: 'px-2 py-0.5 text-xs',
-	md: 'px-2.5 py-1 text-sm',
-	lg: 'px-3 py-1.5 text-base'
+	sm: 'px-2 py-0.5 text-[0.65rem]',
+	md: 'px-2.5 py-1 text-xs',
+	lg: 'px-3 py-1.5 text-sm'
 };
 
 const badgeSize = badgeSizeClasses[size];
 ---
 
 <span
-	class={`inline-flex items-center gap-1 rounded-md border border-blue-200 bg-blue-50 ${badgeSize} font-medium text-blue-700 dark:border-blue-900/50 dark:bg-blue-950/30 dark:text-blue-400 ${className}`}
+	class={`border-accent/30 bg-accent/10 text-accent inline-flex items-center gap-1 rounded-md border font-mono font-medium uppercase tracking-wide ${badgeSize} ${className}`}
 >
 	<PinIcon size={size} />
 	<span>Pinned</span>

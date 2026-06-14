@@ -32,15 +32,15 @@ const estimatedReadTime = minutesRead?.trim() || 'Quick read';
 				<PinnedBadge size="md" />
 			</div>
 		)}
-		<h1 class="mb-6 max-w-4xl text-center text-4xl font-bold leading-tight tracking-tight text-zinc-900 dark:text-zinc-100 md:text-5xl">
+		<h1 class="font-display text-fg mb-6 max-w-4xl text-balance text-center text-4xl font-semibold leading-tight tracking-tight md:text-5xl">
 			{title}
 		</h1>
-		<div class="mb-6 flex flex-wrap items-center justify-center gap-3">
+		<div class="mb-6 flex flex-wrap items-center justify-center gap-2">
 			<Tags tags={tags} withHref={true} />
 		</div>
-		<div class="mb-8 flex flex-wrap items-center justify-center gap-3 text-sm text-zinc-600 dark:text-zinc-400">
+		<div class="text-faint mb-8 flex flex-wrap items-center justify-center gap-3 font-mono text-xs">
 			<time datetime={String(pubDate)}>{formattedDate}</time>
-			<span class="text-zinc-300 dark:text-zinc-700">·</span>
+			<span aria-hidden="true">·</span>
 			<span class="inline-flex items-center gap-1.5">
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
@@ -54,12 +54,12 @@ const estimatedReadTime = minutesRead?.trim() || 'Quick read';
 					<circle cx="12" cy="12" r="9" />
 					<path stroke-linecap="round" stroke-linejoin="round" d="M12 7v6l4 2" />
 				</svg>
-				Estimated read time: {estimatedReadTime}
+				{estimatedReadTime}
 			</span>
 		</div>
 
 		{img.src && (
-			<div class="mb-8 w-full max-w-4xl overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-800">
+			<div class="border-line mb-8 w-full max-w-4xl overflow-hidden rounded-xl border">
 				<Image
 					src={img.src}
 					alt={img.alt || title}

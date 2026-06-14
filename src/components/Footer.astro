@@ -6,37 +6,37 @@ const year = new Date();
 ---
 
 <Section>
-	<footer class="mt-20 border-t border-zinc-200/60 pb-12 pt-10 dark:border-zinc-800/60">
+	<footer class="mt-20 border-line border-t pb-12 pt-10">
 		<div class="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3">
 			<div class="flex flex-col gap-3">
-				<h3 class="text-sm font-semibold uppercase tracking-wider text-zinc-900 dark:text-zinc-100">Navigation</h3>
-				<a class="text-sm text-zinc-600 transition-colors hover:text-blue-600 dark:text-zinc-400 dark:hover:text-blue-400" href="/">Home</a>
-				<a class="text-sm text-zinc-600 transition-colors hover:text-blue-600 dark:text-zinc-400 dark:hover:text-blue-400" href="/about">About</a>
-				<a class="text-sm text-zinc-600 transition-colors hover:text-blue-600 dark:text-zinc-400 dark:hover:text-blue-400" href="/posts">Blog</a>
-				<a class="text-sm text-zinc-600 transition-colors hover:text-blue-600 dark:text-zinc-400 dark:hover:text-blue-400" href="/presentations">Presentations</a>
+				<h3 class="eyebrow text-fg">Navigation</h3>
+				<a class="text-muted hover:text-accent text-sm transition-colors" href="/">Home</a>
+				<a class="text-muted hover:text-accent text-sm transition-colors" href="/about">About</a>
+				<a class="text-muted hover:text-accent text-sm transition-colors" href="/posts">Blog</a>
+				<a class="text-muted hover:text-accent text-sm transition-colors" href="/presentations">Presentations</a>
 			</div>
 			
 			<div class="flex flex-col gap-3">
-				<h3 class="text-sm font-semibold uppercase tracking-wider text-zinc-900 dark:text-zinc-100">Find Me</h3>
+				<h3 class="eyebrow text-fg">Find Me</h3>
 				{SOCIALS.map((social: any) => (
-					<a class="text-sm text-zinc-600 transition-colors hover:text-blue-600 dark:text-zinc-400 dark:hover:text-blue-400" href={social.url} target="_blank" rel="noopener noreferrer">{social.name}</a>
+					<a class="text-muted hover:text-accent text-sm transition-colors" href={social.url} target="_blank" rel="noopener noreferrer">{social.name}</a>
 				))}
 			</div>
 
 			<div class="flex flex-col gap-3">
-				<h3 class="text-sm font-semibold uppercase tracking-wider text-zinc-900 dark:text-zinc-100">Meta</h3>
-				<a class="text-sm text-zinc-600 transition-colors hover:text-blue-600 dark:text-zinc-400 dark:hover:text-blue-400" href="/rss.xml">RSS Feed</a>
-				<a class="text-sm text-zinc-600 transition-colors hover:text-blue-600 dark:text-zinc-400 dark:hover:text-blue-400" href="/sitemap-index.xml">Sitemap</a>
-				<a class="text-sm text-zinc-600 transition-colors hover:text-blue-600 dark:text-zinc-400 dark:hover:text-blue-400" href="/tags">Tags</a>
+				<h3 class="eyebrow text-fg">Meta</h3>
+				<a class="text-muted hover:text-accent text-sm transition-colors" href="/rss.xml">RSS Feed</a>
+				<a class="text-muted hover:text-accent text-sm transition-colors" href="/sitemap-index.xml">Sitemap</a>
+				<a class="text-muted hover:text-accent text-sm transition-colors" href="/tags">Tags</a>
 			</div>
 		</div>
 
-		<div class="mt-12 flex flex-col items-center justify-between border-t border-zinc-200/60 pt-6 dark:border-zinc-800/60 sm:flex-row">
-			<p class="text-sm text-zinc-600 dark:text-zinc-500">
-				© {year.getFullYear()} <a class="font-medium outline-none transition-colors hover:text-blue-600 focus:text-blue-600 focus:underline dark:hover:text-blue-400 dark:focus:text-blue-400" href="https://sudhir.is-a.dev" target="_blank" rel="noopener noreferrer">Sudhir</a>. All rights reserved.
+		<div class="border-line mt-12 flex flex-col items-center justify-between border-t pt-6 sm:flex-row">
+			<p class="text-muted text-sm">
+				© {year.getFullYear()} <a class="text-fg hover:text-accent focus:text-accent font-medium outline-none transition-colors focus:underline" href="https://sudhir.is-a.dev" target="_blank" rel="noopener noreferrer">Sudhir</a>. All rights reserved.
 			</p>
-			<p class="mt-2 text-xs text-zinc-400 dark:text-zinc-600 sm:mt-0">
-				Analyst - Information Security · Mumbai, India
+			<p class="eyebrow text-faint mt-3 sm:mt-0">
+				Information Security · Mumbai, India
 			</p>
 		</div>
 	</footer>

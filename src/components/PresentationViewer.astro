@@ -207,8 +207,8 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 		--glass-bg: rgba(0, 0, 0, 0.6);
 		--glass-border: rgba(255, 255, 255, 0.1);
 		--glass-blur: 12px;
-		--accent: rgb(37, 99, 235);
-		--accent-glow: rgba(37, 99, 235, 0.4);
+		--accent: rgb(245, 158, 11);
+		--accent-glow: rgba(245, 158, 11, 0.4);
 		--transition-slide: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 		--transition-ui: 0.2s ease;
 	}
@@ -230,7 +230,7 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 	.progress-fill {
 		height: 100%;
 		width: calc(100% / var(--slide-count, 1));
-		background: linear-gradient(90deg, var(--accent), #3b82f6);
+		background: linear-gradient(90deg, var(--accent), #fbbf24);
 		border-radius: 3px;
 		transition: width var(--transition-slide), transform var(--transition-slide);
 		box-shadow: 0 0 10px var(--accent-glow);
@@ -409,7 +409,7 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 	}
 
 	.nav-btn:hover {
-		background: rgba(37, 99, 235, 0.8);
+		background: rgba(245, 158, 11, 0.8);
 		border-color: var(--accent);
 		transform: translateY(-50%) scale(1.1);
 		box-shadow: 0 0 20px var(--accent-glow);
@@ -651,13 +651,13 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 		border: none;
 		border-radius: 0.5rem;
 		font-weight: 600;
-		color: #fafaf9;
+		color: #1c1917;
 		cursor: pointer;
 		transition: all var(--transition-ui);
 	}
 
 	.shortcuts-close:hover {
-		background: #2563eb;
+		background: #d97706;
 		transform: translateY(-1px);
 	}
 
@@ -754,14 +754,14 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 	}
 
 	.grid-slide-btn:hover {
-		border-color: rgba(37, 99, 235, 0.8);
-		box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.4);
+		border-color: rgba(245, 158, 11, 0.8);
+		box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.4);
 		transform: translateY(-1px);
 	}
 
 	.grid-slide-btn.active {
-		border-color: rgba(37, 99, 235, 1);
-		box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.6), 0 0 14px rgba(37, 99, 235, 0.2);
+		border-color: rgba(245, 158, 11, 1);
+		box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.6), 0 0 14px rgba(245, 158, 11, 0.2);
 	}
 
 	.grid-slide-number {
@@ -933,7 +933,7 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 
 	:root:not(.dark) .nav-btn:hover,
 	:global(.light) .nav-btn:hover {
-		background: rgba(37, 99, 235, 0.9);
+		background: rgba(245, 158, 11, 0.9);
 		border-color: var(--accent);
 		color: #fafaf9;
 	}

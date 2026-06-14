@@ -1,5 +1,6 @@
 ---
 import Section from './Section.astro';
+import { formatDate } from '@/utils/data.util';
 import { getAllPosts } from '@/utils/posts';
 
 const allPosts = await getAllPosts();
@@ -11,32 +12,36 @@ const meta = featuredPost?.data;
 
 {featuredPost && (
 	<Section>
-		<div class="animate-fade-up stagger-2 mb-2 mt-4">
-			<div class="flex items-center gap-2.5 mb-5">
-				<span class="text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-zinc-400 dark:text-zinc-500">Featured</span>
-				<div class="h-px flex-1 bg-zinc-200/70 dark:bg-zinc-800/70"></div>
+		<div class="animate-fade-up stagger-2 mb-2 mt-6">
+			<div class="mb-5 flex items-center gap-3">
+				<span class="eyebrow eyebrow-tick">Featured</span>
+				<div class="bg-line h-px flex-1"></div>
 			</div>
 
 			<a
 				href={featuredPost.url}
-				class="group block rounded-xl border-l-[3px] border-blue-500 bg-zinc-50/80 py-6 pl-6 pr-6 transition-all duration-200 hover:bg-zinc-100/80 dark:bg-zinc-900/60 dark:hover:bg-zinc-800/60"
+				class="group bg-surface border-line hover:border-accent/40 relative block overflow-hidden rounded-xl border p-6 transition-colors duration-200 sm:p-7"
 			>
-				<h3 class="text-xl font-semibold leading-snug text-zinc-900 transition-colors group-hover:text-blue-600 dark:text-zinc-100 dark:group-hover:text-blue-400 md:text-2xl">
+				<span class="bg-accent-strong absolute inset-y-0 left-0 w-[3px]"></span>
+
+				<div class="eyebrow text-faint mb-3 flex items-center gap-2">
+					<time>{formatDate(meta.pubDate)}</time>
+					<span aria-hidden="true">·</span>
+					<span>{meta.minutesRead ?? 'Quick read'}</span>
+				</div>
+
+				<h3 class="font-display text-fg group-hover:text-accent text-xl font-semibold leading-snug tracking-tight transition-colors md:text-2xl">
 					{meta.title}
 				</h3>
-				<p class="mt-2.5 max-w-2xl text-[0.925rem] leading-relaxed text-zinc-600 dark:text-zinc-400">
+				<p class="text-muted mt-2.5 max-w-2xl text-[0.95rem] leading-relaxed">
 					{meta.excerpt}
 				</p>
-				<div class="mt-4 flex items-center gap-3 text-sm text-zinc-500 dark:text-zinc-500">
-					<span class="font-medium">{meta.minutesRead ?? '6 min read'}</span>
-					<span class="text-zinc-300 dark:text-zinc-700">·</span>
-					<span class="inline-flex items-center gap-1 font-medium text-blue-600 transition-all group-hover:gap-2 dark:text-blue-400">
-						Read post
-						<svg class="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-						</svg>
-					</span>
-				</div>
+				<span class="text-accent mt-4 inline-flex items-center gap-1 text-sm font-medium transition-all group-hover:gap-2">
+					Read post
+					<svg class="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path>
+					</svg>
+				</span>
 			</a>
 		</div>
 	</Section>

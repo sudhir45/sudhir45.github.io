@@ -14,26 +14,28 @@ const isPinned = metadata.isPinned === true;
 
 <a
 	href={postUrl}
-	class="group block h-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-zinc-950"
+	class="group block h-full focus:outline-none"
 	aria-label={`Read post: ${metadata.title}`}
 >
 	<div
-		class="flex h-full flex-col rounded-xl border border-zinc-200/60 bg-white p-5 transition-all duration-200 hover:border-zinc-300 hover:shadow-md hover:shadow-zinc-900/[0.06] dark:border-zinc-800/60 dark:bg-zinc-900/80 dark:hover:border-zinc-700 dark:hover:shadow-black/20"
+		class="border-line bg-surface hover:border-accent/40 relative flex h-full flex-col overflow-hidden rounded-xl border p-5 transition-all duration-200 hover:-translate-y-0.5"
 	>
+		<span class="bg-accent-strong absolute inset-x-0 top-0 h-px scale-x-0 transition-transform duration-300 group-hover:scale-x-100"></span>
+
 		<div class="flex flex-auto flex-col">
-			<div class="mb-3 flex items-center justify-between gap-2 text-xs text-zinc-400 dark:text-zinc-500">
+			<div class="text-faint mb-3 flex items-center justify-between gap-2 font-mono text-[0.7rem]">
 				<div class="flex items-center gap-2">
 					{isPinned && <PinnedBadge size="sm" />}
 					<time>{formatDate(metadata.pubDate)}</time>
 				</div>
-				<span class="font-medium">{metadata.minutesRead ?? 'Quick read'}</span>
+				<span>{metadata.minutesRead ?? 'Quick read'}</span>
 			</div>
 
-			<h3 class="mb-2 text-[1.05rem] font-semibold leading-snug text-zinc-900 transition-colors group-hover:text-blue-600 dark:text-zinc-100 dark:group-hover:text-blue-400">
+			<h3 class="font-display text-fg group-hover:text-accent mb-2 text-[1.1rem] font-semibold leading-snug tracking-tight transition-colors">
 				{metadata.title}
 			</h3>
 
-			<p class="mb-0 line-clamp-2 text-[0.85rem] leading-relaxed text-zinc-500 dark:text-zinc-500">
+			<p class="text-muted mb-0 line-clamp-2 text-[0.85rem] leading-relaxed">
 				{metadata.excerpt}
 			</p>
 		</div>

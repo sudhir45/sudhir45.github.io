@@ -10,7 +10,7 @@
             <a 
               href={`#${heading.slug}`}
               data-toc-link
-              class="toc-link block rounded-md px-2 py-1.5 text-zinc-500 transition-colors duration-200 hover:bg-zinc-100 hover:text-blue-600 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-blue-400"
+              class="toc-link text-faint hover:bg-surface-2 hover:text-accent block rounded-md px-2 py-1.5 transition-colors duration-200"
             >
               {heading.text}
             </a>
@@ -23,14 +23,9 @@
 
 <style>
   .toc-link.active {
-    background-color: rgb(239 246 255); /* blue-50 */
-    color: rgb(37 99 235); /* blue-600 */
+    background-color: color-mix(in oklab, var(--accent) 12%, transparent);
+    color: var(--accent);
     font-weight: 500;
-  }
-
-  :global(.dark) .toc-link.active {
-    background-color: rgba(23, 37, 84, 0.3); /* blue-950/30 */
-    color: rgb(96 165 250); /* blue-400 */
   }
 </style>
 

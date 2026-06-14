@@ -25,11 +25,14 @@ const isActiveRoute = (href: string) => {
 <Section>
 	<div id="site-header-shell" class="site-header-shell sticky top-0 z-50 -mx-4 px-4">
 		<div class="site-header-inner flex items-center justify-between pb-4 pt-4">
-			<div class="text-2xl font-semibold tracking-tight">
-				<a href="/" class="group flex items-baseline gap-1 transition-colors hover:text-blue-600 dark:hover:text-blue-400">
-					<span class="text-blue-600 dark:text-blue-400">Fort</span>
-					<span class="text-zinc-700 dark:text-zinc-300">Matrix</span>
-					<span class="text-zinc-400 dark:text-zinc-600 text-lg font-normal">Logs</span>
+			<div class="font-display text-2xl font-semibold tracking-tight">
+				<a href="/" class="group flex items-center gap-2" aria-label="FortMatrix Logs — home">
+					<span class="bg-accent-strong inline-block h-4 w-1.5 rounded-[1px] transition-transform group-hover:scale-y-110"></span>
+					<span class="flex items-baseline gap-1">
+						<span class="text-fg">Fort</span>
+						<span class="text-muted">Matrix</span>
+						<span class="text-faint text-lg font-normal">Logs</span>
+					</span>
 				</a>
 			</div>
 			<div class="flex items-center gap-6">
@@ -46,8 +49,8 @@ const isActiveRoute = (href: string) => {
 											aria-current={isActive ? 'page' : undefined}
 											class={`rounded-md px-2.5 py-1.5 transition-colors ${
 												isActive
-													? 'bg-zinc-100 text-zinc-900 dark:bg-zinc-800/80 dark:text-zinc-100'
-													: 'text-zinc-600 hover:text-blue-600 dark:text-zinc-400 dark:hover:text-blue-400'
+													? 'bg-surface-2 text-fg'
+													: 'text-muted hover:text-accent'
 											}`}
 										>
 											{label}
@@ -67,9 +70,9 @@ const isActiveRoute = (href: string) => {
 				</div>
 
 				
-				<button 
-					id="mobile-menu-button" 
-					class="rounded-lg p-2 transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-900 sm:hidden" 
+				<button
+					id="mobile-menu-button"
+					class="hover:bg-surface-2 rounded-lg p-2 transition-colors sm:hidden"
 					aria-label="Toggle mobile menu"
 					aria-expanded="false"
 					aria-controls="mobile-menu"
@@ -92,7 +95,7 @@ const isActiveRoute = (href: string) => {
 	
 	<div
 		id="mobile-menu"
-		class="mt-4 hidden rounded-xl border border-zinc-200 bg-white pb-3 shadow-lg transition-all duration-200 sm:hidden dark:border-zinc-800 dark:bg-zinc-900"
+		class="border-line bg-surface mt-4 hidden rounded-xl border pb-3 shadow-lg transition-all duration-200 sm:hidden"
 	>
 		<nav class="flex flex-col p-2">
 			{
@@ -105,8 +108,8 @@ const isActiveRoute = (href: string) => {
 							aria-current={isActive ? 'page' : undefined}
 							class={`rounded-lg px-4 py-2.5 text-sm font-medium transition-colors ${
 								isActive
-									? 'bg-zinc-100 text-zinc-900 dark:bg-zinc-800/90 dark:text-zinc-100'
-									: 'text-zinc-700 hover:bg-zinc-100 hover:text-blue-600 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-blue-400'
+									? 'bg-surface-2 text-fg'
+									: 'text-muted hover:bg-surface-2 hover:text-accent'
 							}`}
 						>
 							{label}
@@ -136,22 +139,17 @@ const isActiveRoute = (href: string) => {
 	}
 
 	.site-header-shell.is-scrolled {
-		background: color-mix(in oklab, white 68%, transparent);
+		background: color-mix(in oklab, var(--bg) 72%, transparent);
 		backdrop-filter: blur(18px) saturate(140%);
 		-webkit-backdrop-filter: blur(18px) saturate(140%);
 	}
 
-	:global(.dark) .site-header-shell.is-scrolled {
-		background: color-mix(in oklab, #09090b 72%, transparent);
-	}
-
 	.site-header-shell.is-scrolled .site-header-inner {
-		border-color: color-mix(in oklab, #d4d4d8 48%, transparent);
+		border-color: color-mix(in oklab, var(--line) 80%, transparent);
 		box-shadow: 0 10px 20px -18px rgba(12, 10, 9, 0.45);
 	}
 
 	:global(.dark) .site-header-shell.is-scrolled .site-header-inner {
-		border-color: color-mix(in oklab, #3f3f46 42%, transparent);
 		box-shadow: 0 10px 20px -18px rgba(0, 0, 0, 0.75);
 	}
 </style>

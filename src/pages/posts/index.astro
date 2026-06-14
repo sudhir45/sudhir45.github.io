@@ -2,7 +2,7 @@
 import { AppConfig } from '@/utils/AppConfig';
 import Base from '@/layouts/Base.astro';
 import Section from '@/components/Section.astro';
-import Card from '@/components/Card.astro';
+import PostRow from '@/components/PostRow.astro';
 import Heading from '@/components/Heading.astro';
 import { getAllPosts } from '@/utils/posts';
 
@@ -14,15 +14,9 @@ const allPosts = await getAllPosts();
 
 <Base head={{ title, description }}>
 	<Section>
-		<Heading title="All Posts" />
-	</Section>
-	<Section>
-		<div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-			{
-				allPosts.map((post: any) => (
-					<Card post={post} />
-				))
-			}
+		<Heading title="All Posts" eyebrow="Archive" />
+		<div class="border-line -mx-4 border-t md:-mx-6">
+			{allPosts.map((post: any) => <PostRow post={post} />)}
 		</div>
 	</Section>
 </Base>

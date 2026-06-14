@@ -7,91 +7,209 @@ const githubUrl = SOCIALS.find((social) => social.name === 'GitHub')?.url || '#'
 const linkedinUrl = SOCIALS.find((social) => social.name === 'LinkedIn')?.url || '#';
 ---
 
-<Section>
-	<div class="hero-section pt-12 pb-8 md:pt-20 md:pb-14">
-		<div class="flex items-start justify-between gap-6">
-			<div class="max-w-[62ch]">
-				<h1 class="animate-fade-up text-[1.7rem] font-semibold tracking-tight text-zinc-900 dark:text-zinc-50 md:text-[2.1rem] leading-[1.25]">
-					Hey, I'm Sudhir.
-				</h1>
-			</div>
-			<div class="animate-fade-up stagger-1 hidden items-center gap-2.5 pt-1 sm:flex">
-				<Social href={githubUrl}>
-					<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
-						<path
-							d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
-						></path>
-					</svg>
-				</Social>
-				<Social href={linkedinUrl}>
-					<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
-						<path
-							d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.968v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0v8.399h4.988v-10.131c0-7.88-8.922-7.593-11.018-3.714v-2.155z"
-						></path>
-					</svg>
-				</Social>
-				<Social href="/rss.xml">
-					<svg viewBox="0 0 24 24" width="1.2em" height="1.2em">
-						<path
-							fill="currentColor"
-							d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19 7.38 20 6.18 20C5 20 4 19 4 17.82a2.18 2.18 0 0 1 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27V4.44m0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93V10.1Z"
-						></path>
-					</svg>
-				</Social>
-			</div>
-		</div>
+<section class="relative overflow-hidden">
+	<!-- Faint generative dot-grid texture (guarded: static under reduced-motion, paused offscreen) -->
+	<canvas
+		id="hero-grid"
+		aria-hidden="true"
+		class="pointer-events-none absolute inset-0 h-full w-full [mask-image:linear-gradient(to_bottom,rgba(0,0,0,0.85),transparent_88%)]"
+	></canvas>
 
-		<div class="animate-fade-up stagger-1 mt-6 max-w-[58ch]">
-			<p class="text-[1.05rem] leading-[1.72] text-zinc-600 dark:text-zinc-400 md:text-[1.1rem]">
-				I'm an Information Security Guy currently at Infosys, working on enterprise network hardening, continuous compliance, and automation.
+	<Section>
+		<div class="relative pb-12 pt-6 md:pb-16 md:pt-10">
+			<p class="eyebrow eyebrow-tick animate-fade-up">Information Security · CISSP · Mumbai</p>
+
+			<h1
+				class="animate-fade-up stagger-1 font-display text-fg mt-6 text-6xl font-semibold leading-[1.0] tracking-tight sm:text-7xl lg:text-[5.5rem]"
+			>
+				Sudhir
+			</h1>
+
+			<p class="animate-fade-up stagger-2 text-fg mt-6 max-w-3xl text-xl font-medium leading-snug md:text-2xl">
+				Security professional working across the full spectrum of cybersecurity - Offensive,
+				Defensive, and Regulatory.
 			</p>
-		</div>
 
-		<div class="animate-fade-up stagger-2 mt-10 flex flex-wrap items-center gap-4">
-			<a
-				href="/posts"
-				class="inline-flex items-center gap-2 rounded-lg bg-zinc-900 px-4 py-2.5 text-sm font-medium text-white transition-all duration-200 hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
-			>
-				Read the blog
-				<svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-				</svg>
-			</a>
-			<a
-				href="/about"
-				class="inline-flex items-center gap-1.5 text-sm font-medium text-zinc-600 transition-colors hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
-			>
-				<span class="link-underline">About me</span>
-				<svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-				</svg>
-			</a>
-		</div>
+			<p class="animate-fade-up stagger-3 text-muted mt-5 max-w-2xl text-base leading-relaxed md:text-lg">
+				Security Architecture, Network and Infrastructure Hardening, Vulnerability Management,
+				Compliance, and Automation.
+			</p>
 
-		<!-- mobile social row -->
-		<div class="animate-fade-up stagger-3 mt-8 flex items-center gap-2.5 sm:hidden">
-			<Social href={githubUrl}>
-				<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
-					<path
-						d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
-					></path>
-				</svg>
-			</Social>
-			<Social href={linkedinUrl}>
-				<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
-					<path
-						d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.968v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0v8.399h4.988v-10.131c0-7.88-8.922-7.593-11.018-3.714v-2.155z"
-					></path>
-				</svg>
-			</Social>
-			<Social href="/rss.xml">
-				<svg viewBox="0 0 24 24" width="1.2em" height="1.2em">
-					<path
-						fill="currentColor"
-						d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19 7.38 20 6.18 20C5 20 4 19 4 17.82a2.18 2.18 0 0 1 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27V4.44m0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93V10.1Z"
-					></path>
-				</svg>
-			</Social>
+			<div class="animate-fade-up stagger-4 mt-9 flex flex-wrap items-center gap-x-5 gap-y-4">
+				<a
+					href="/posts"
+					class="bg-accent-strong text-accent-contrast group inline-flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold transition-transform duration-200 hover:-translate-y-0.5"
+				>
+					Read the blog
+					<svg class="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path>
+					</svg>
+				</a>
+				<a
+					href="/about"
+					class="text-muted hover:text-fg inline-flex items-center gap-1.5 text-sm font-medium transition-colors"
+				>
+					<span class="link-underline">About me</span>
+				</a>
+
+				<div class="ml-auto flex items-center gap-2.5">
+					<Social href={githubUrl}>
+						<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
+							<path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"></path>
+						</svg>
+					</Social>
+					<Social href={linkedinUrl}>
+						<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
+							<path d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.968v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0v8.399h4.988v-10.131c0-7.88-8.922-7.593-11.018-3.714v-2.155z"></path>
+						</svg>
+					</Social>
+					<Social href="/rss.xml">
+						<svg viewBox="0 0 24 24" width="1.2em" height="1.2em">
+							<path fill="currentColor" d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19 7.38 20 6.18 20C5 20 4 19 4 17.82a2.18 2.18 0 0 1 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27V4.44m0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93V10.1Z"></path>
+						</svg>
+					</Social>
+				</div>
+			</div>
+
+			<div class="animate-fade-up stagger-5 border-line text-faint mt-10 flex flex-wrap items-center gap-x-3 gap-y-1 border-t pt-5 font-mono text-xs">
+				<span class="text-accent">FOCUS</span>
+				<span>Security Architecture</span>
+				<span aria-hidden="true">·</span>
+				<span>Offensive &amp; Defensive</span>
+				<span aria-hidden="true">·</span>
+				<span>Compliance</span>
+				<span aria-hidden="true">·</span>
+				<span>Automation</span>
+			</div>
 		</div>
-	</div>
-</Section>
+	</Section>
+</section>
+
+<script>
+	const HERO_GRID_STATE = '__fortmatrixHeroGridState';
+	const HERO_GRID_BOOTSTRAP = '__fortmatrixHeroGridBootstrap';
+
+	function clearHeroGrid() {
+		const state = (window as any)[HERO_GRID_STATE];
+		state?.cleanup?.();
+		(window as any)[HERO_GRID_STATE] = null;
+	}
+
+	function setupHeroGrid() {
+		clearHeroGrid();
+
+		const canvas = document.getElementById('hero-grid') as HTMLCanvasElement | null;
+		const ctx = canvas?.getContext('2d');
+		if (!canvas || !ctx) return;
+
+		const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+		const gap = 30;
+		const radius = 1.1;
+		let w = 0;
+		let h = 0;
+		let raf = 0;
+		let running = false;
+		let t = 0;
+		let last = 0;
+		let frame = 0;
+		let rgb = '120, 113, 108';
+
+		const readColor = () => {
+			const hex = getComputedStyle(document.documentElement).getPropertyValue('--fg').trim();
+			const m = /^#?([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i.exec(hex);
+			if (m && m[1] && m[2] && m[3]) {
+				rgb = `${parseInt(m[1], 16)}, ${parseInt(m[2], 16)}, ${parseInt(m[3], 16)}`;
+			}
+		};
+
+		const resize = () => {
+			const rect = canvas.getBoundingClientRect();
+			w = rect.width;
+			h = rect.height;
+			const dpr = Math.min(window.devicePixelRatio || 1, 2);
+			canvas.width = Math.max(1, Math.floor(w * dpr));
+			canvas.height = Math.max(1, Math.floor(h * dpr));
+			ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+		};
+
+		const draw = () => {
+			ctx.clearRect(0, 0, w, h);
+			for (let y = gap; y < h; y += gap) {
+				for (let x = gap; x < w; x += gap) {
+					const wave = Math.sin(x * 0.012 + y * 0.012 + t);
+					const a = 0.045 + (wave + 1) * 0.5 * 0.06;
+					ctx.beginPath();
+					ctx.fillStyle = `rgba(${rgb}, ${a})`;
+					ctx.arc(x, y, radius, 0, Math.PI * 2);
+					ctx.fill();
+				}
+			}
+		};
+
+		const loop = (now: number) => {
+			if (!running) return;
+			raf = requestAnimationFrame(loop);
+			if (now - last < 33) return; // throttle ~30fps
+			last = now;
+			t += 0.012;
+			if (frame++ % 45 === 0) readColor();
+			draw();
+		};
+
+		const start = () => {
+			if (running || reduce) return;
+			running = true;
+			last = 0;
+			raf = requestAnimationFrame(loop);
+		};
+		const stop = () => {
+			running = false;
+			if (raf) cancelAnimationFrame(raf);
+			raf = 0;
+		};
+
+		readColor();
+		resize();
+		draw();
+
+		const onResize = () => {
+			resize();
+			if (!running) draw();
+		};
+		const onVisibility = () => (document.hidden ? stop() : start());
+		window.addEventListener('resize', onResize);
+		document.addEventListener('visibilitychange', onVisibility);
+
+		let io: IntersectionObserver | null = null;
+		if ('IntersectionObserver' in window) {
+			io = new IntersectionObserver(
+				(entries) => {
+					const visible = entries.some((e) => e.isIntersecting);
+					if (visible && !document.hidden) start();
+					else stop();
+				},
+				{ threshold: 0 }
+			);
+			io.observe(canvas);
+		} else {
+			start();
+		}
+
+		(window as any)[HERO_GRID_STATE] = {
+			cleanup: () => {
+				stop();
+				window.removeEventListener('resize', onResize);
+				document.removeEventListener('visibilitychange', onVisibility);
+				io?.disconnect();
+			}
+		};
+	}
+
+	if (!(window as any)[HERO_GRID_BOOTSTRAP]) {
+		document.addEventListener('astro:page-load', setupHeroGrid);
+		document.addEventListener('astro:before-swap', clearHeroGrid);
+		(window as any)[HERO_GRID_BOOTSTRAP] = true;
+	}
+
+	setupHeroGrid();
+</script>

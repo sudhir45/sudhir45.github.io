@@ -13,14 +13,15 @@ const description = 'Browse my collection of security presentations and talks.';
 	<Section>
 		<div class="py-8">
 			
-			<div class="mb-8">
-				<h1 class="mb-3 text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+			<header class="border-line mb-10 border-b pb-6">
+				<p class="eyebrow eyebrow-tick mb-3">Talks</p>
+				<h1 class="font-display text-fg mb-3 text-3xl font-semibold tracking-tight md:text-4xl">
 					Presentations
 				</h1>
-				<p class="text-lg text-zinc-600 dark:text-zinc-400">
+				<p class="text-muted max-w-2xl">
 					Browse my collection of security presentations and talks.
 				</p>
-			</div>
+			</header>
 
 			
 			<div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -37,8 +38,8 @@ const description = 'Browse my collection of security presentations and talks.';
 			</div>
 
 			{presentations.length === 0 && (
-				<div class="rounded-xl border border-zinc-200 bg-zinc-50 py-16 text-center dark:border-zinc-800 dark:bg-zinc-900">
-					<p class="text-zinc-600 dark:text-zinc-400">No presentations available yet.</p>
+				<div class="border-line bg-surface rounded-xl border py-16 text-center">
+					<p class="text-muted">No presentations available yet.</p>
 				</div>
 			)}
 		</div>

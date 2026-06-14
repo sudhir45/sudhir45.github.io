@@ -74,8 +74,8 @@ export async function GET({ params }: { params: { slug: string } }) {
 		.map((tag: string, index: number) => {
 			const x = 60 + index * 220;
 			return `
-				<rect x="${x}" y="520" rx="22" ry="22" width="200" height="44" fill="#292524" stroke="#44403c" />
-				<text x="${x + 20}" y="548" fill="#ea580c" font-size="24">${tag}</text>
+				<rect x="${x}" y="520" rx="22" ry="22" width="200" height="44" fill="#27272a" stroke="#3f3f46" />
+				<text x="${x + 20}" y="548" fill="#f59e0b" font-size="24">${tag}</text>
 			`;
 		})
 		.join('');
@@ -84,23 +84,23 @@ export async function GET({ params }: { params: { slug: string } }) {
 		<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
 			<defs>
 				<linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
-					<stop offset="0%" stop-color="#1c1917" />
-					<stop offset="100%" stop-color="#0c0a09" />
+					<stop offset="0%" stop-color="#18181b" />
+					<stop offset="100%" stop-color="#09090b" />
 				</linearGradient>
 				<linearGradient id="title" x1="0" y1="0" x2="1" y2="0">
 					<stop offset="0%" stop-color="#ffffff" />
-					<stop offset="100%" stop-color="#d6d3d1" />
+					<stop offset="100%" stop-color="#d4d4d8" />
 				</linearGradient>
 			</defs>
 			<rect width="1200" height="630" fill="url(#bg)" />
-			<text x="60" y="82" fill="#ea580c" font-size="36" font-weight="700">Fort</text>
-			<text x="140" y="82" fill="#a8a29e" font-size="36" font-weight="700">Matrix Logs</text>
+			<text x="60" y="82" fill="#f59e0b" font-size="36" font-weight="700">Fort</text>
+			<text x="140" y="82" fill="#a1a1aa" font-size="36" font-weight="700">Matrix Logs</text>
 			<text x="60" y="190" fill="url(#title)" font-size="70" font-weight="700">
 				${titleMarkup}
 			</text>
-			<text x="60" y="380" fill="#a8a29e" font-size="38">${safeDescription}</text>
+			<text x="60" y="380" fill="#a1a1aa" font-size="38">${safeDescription}</text>
 			${tagMarkup}
-			<text x="900" y="548" fill="#78716c" font-size="28">${safeDate}</text>
+			<text x="900" y="548" fill="#71717a" font-size="28">${safeDate}</text>
 		</svg>
 	`;
 

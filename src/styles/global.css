@@ -1,9 +1,35 @@
 @import 'tailwindcss';
+@config '../../tailwind.config.mjs';
 @import '@fontsource-variable/inter/index.css';
+@import '@fontsource-variable/space-grotesk/index.css';
+@import '@fontsource-variable/jetbrains-mono/index.css';
 
 @plugin '@tailwindcss/typography';
 
 @custom-variant dark (&:where(.dark, .dark *));
+
+/*
+ * Semantic design tokens. Values live on :root / .dark below; `@theme inline`
+ * exposes them as Tailwind utilities (bg-bg, bg-surface, text-fg, text-muted,
+ * border-line, text-accent, bg-accent-strong, ring-accent, font-display, …)
+ * that resolve through the CSS variables, so they react to the .dark class.
+ */
+@theme inline {
+	--color-bg: var(--bg);
+	--color-surface: var(--surface);
+	--color-surface-2: var(--surface-2);
+	--color-line: var(--line);
+	--color-fg: var(--fg);
+	--color-muted: var(--muted);
+	--color-faint: var(--faint);
+	--color-accent: var(--accent);
+	--color-accent-strong: var(--accent-strong);
+	--color-accent-contrast: var(--accent-contrast);
+
+	--font-display: var(--font-display-stack);
+	--font-sans: var(--font-ui);
+	--font-mono: var(--font-code);
+}
 
 @layer base {
 	img {
@@ -20,9 +46,36 @@
 
 @layer base {
 	:root {
-		--font-ui: 'Inter', 'Segoe UI', 'Helvetica Neue', sans-serif;
-		--font-code: 'JetBrains Mono', 'Consolas', 'Monaco', monospace;
+		/* Cool-neutral base (zinc) + amber accent — light theme */
+		--bg: #fafafa;
+		--surface: #ffffff;
+		--surface-2: #f4f4f5;
+		--line: #e4e4e7;
+		--fg: #18181b;
+		--muted: #52525b;
+		--faint: #a1a1aa;
+		--accent: #b45309;
+		--accent-strong: #f59e0b;
+		--accent-contrast: #18181b;
+
+		--font-display-stack: 'Space Grotesk Variable', 'Space Grotesk', var(--font-ui);
+		--font-ui: 'Inter Variable', 'Inter', 'Segoe UI', 'Helvetica Neue', sans-serif;
+		--font-code: 'JetBrains Mono Variable', 'JetBrains Mono', 'Consolas', 'Monaco', monospace;
 		--content-measure: 68ch;
+	}
+
+	.dark {
+		/* Cool-neutral base (zinc) + amber accent — dark theme */
+		--bg: #09090b;
+		--surface: #18181b;
+		--surface-2: #27272a;
+		--line: #27272a;
+		--fg: #fafafa;
+		--muted: #a1a1aa;
+		--faint: #71717a;
+		--accent: #fbbf24;
+		--accent-strong: #f59e0b;
+		--accent-contrast: #18181b;
 	}
 
 	html {
@@ -46,6 +99,7 @@
 	h2,
 	h3,
 	h4 {
+		font-family: var(--font-display-stack);
 		letter-spacing: -0.02em;
 		line-height: 1.15;
 	}
@@ -75,7 +129,12 @@
 
 	a:focus-visible,
 	button:focus-visible {
-		@apply ring-2 ring-blue-500/50 ring-offset-2 ring-offset-white outline-none dark:ring-offset-zinc-950;
+		@apply ring-accent/60 ring-offset-bg ring-2 ring-offset-2 outline-none;
+	}
+
+	::selection {
+		background-color: var(--accent-strong);
+		color: var(--accent-contrast);
 	}
 }
 
@@ -154,6 +213,22 @@
 		backdrop-filter: blur(20px) saturate(180%);
 		-webkit-backdrop-filter: blur(20px) saturate(180%);
 	}
+
+	/* Monospace eyebrow label — the recurring "cyber micro-detail" */
+	.eyebrow {
+		font-family: var(--font-code);
+		@apply text-faint text-[0.7rem] font-medium tracking-[0.22em] uppercase;
+	}
+	.eyebrow-tick::before {
+		content: '// ';
+		color: var(--accent);
+	}
+
+	/* Faint dotted grid — subtle structural texture for sections/hero */
+	.bg-dotgrid {
+		background-image: radial-gradient(var(--line) 1px, transparent 1px);
+		background-size: 22px 22px;
+	}
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -191,7 +266,7 @@
 	}
 
 	.content pre > code .highlighted {
-		@apply border-l-4 border-blue-500/30 bg-blue-500/5 dark:bg-blue-500/10;
+		@apply border-accent/40 bg-accent/5 dark:bg-accent/10 border-l-4;
 	}
 
 	.content pre > code[data-line-numbers] {
@@ -201,7 +276,7 @@
 	.content pre > code[data-line-numbers] > span[data-line]::before {
 		counter-increment: line;
 		content: counter(line);
-		@apply mr-6 inline-block w-6 text-left text-zinc-400 dark:text-zinc-600;
+		@apply text-faint mr-6 inline-block w-6 text-left;
 		font-variant-numeric: tabular-nums;
 	}
 
@@ -229,10 +304,10 @@
 	}
 
 	::-webkit-scrollbar-thumb {
-		@apply rounded-full bg-zinc-300 dark:bg-zinc-700;
+		@apply bg-line rounded-full;
 	}
 
 	::-webkit-scrollbar-thumb:hover {
-		@apply bg-zinc-400 dark:bg-zinc-600;
+		@apply bg-faint;
 	}
 }

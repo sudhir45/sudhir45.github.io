@@ -8,9 +8,9 @@ const { tag, withHref } = Astro.props;
 ---
 
 <span
-	class={`inline-flex items-center rounded-full border border-zinc-200/90 bg-zinc-50/85 px-2.5 py-1 text-[11px] font-medium tracking-wide text-zinc-700 transition-colors dark:border-zinc-800/90 dark:bg-zinc-900/90 dark:text-zinc-300 ${
-		withHref ? 'hover:border-zinc-300 hover:bg-white hover:text-zinc-900 dark:hover:border-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-100' : ''
+	class={`border-line bg-surface text-muted inline-flex items-center rounded-md border px-2 py-0.5 font-mono text-[11px] tracking-wide transition-colors ${
+		withHref ? 'hover:border-accent/40 hover:text-accent' : ''
 	}`}
 >
-	{tag}
+	<span class="text-faint">#</span>{tag}
 </span>

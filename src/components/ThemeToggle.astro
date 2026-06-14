@@ -8,14 +8,14 @@ interface Props {
 const { idPrefix, showLabel = false } = Astro.props;
 ---
 
-<div class={`flex items-center ${showLabel ? 'border-t border-zinc-200 px-2 py-2 dark:border-zinc-800' : 'justify-center flex-col hidden sm:flex'}`}>
+<div class={`flex items-center ${showLabel ? 'border-line border-t px-2 py-2' : 'hidden flex-col justify-center sm:flex'}`}>
 	<input type="checkbox" id={`light-switch-${idPrefix}`} class="light-switch sr-only" />
 	
 	<label 
-		class={`relative cursor-pointer transition-colors ${showLabel ? 'flex w-full items-center justify-between rounded-lg px-4 py-2.5 hover:bg-zinc-100 dark:hover:bg-zinc-800' : 'rounded-lg p-2 hover:bg-zinc-100 dark:hover:bg-zinc-900'}`} 
+		class={`hover:bg-surface-2 relative cursor-pointer transition-colors ${showLabel ? 'flex w-full items-center justify-between rounded-lg px-4 py-2.5' : 'rounded-lg p-2'}`}
 		for={`light-switch-${idPrefix}`}
 	>
-		{showLabel && <span class="text-sm font-medium text-zinc-700 dark:text-zinc-300">Theme</span>}
+		{showLabel && <span class="text-muted text-sm font-medium">Theme</span>}
 		
 		<svg class="dark:hidden" width="16" height="16" xmlns="http://www.w3.org/2000/svg">
 			<path class="fill-zinc-800" d="M7 0h2v2H7zM12.88 1.637l1.414 1.415-1.415 1.413-1.413-1.414zM14 7h2v2h-2zM12.95 14.433l-1.414-1.413 1.413-1.415 1.415 1.414zM7 14h2v2H7zM2.98 14.364l-1.413-1.415 1.414-1.414 1.414 1.415zM0 7h2v2H0zM3.05 1.706 4.463 3.12 3.05 4.535 1.636 3.12z"></path>
