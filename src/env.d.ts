@@ -12,3 +12,14 @@ interface ImportMetaEnv {
 interface ImportMeta {
 	readonly env: ImportMetaEnv;
 }
+
+declare module 'canvas-confetti' {
+	interface ConfettiOptions {
+		particleCount?: number;
+		spread?: number;
+		origin?: { x?: number; y?: number };
+		disableForReducedMotion?: boolean;
+	}
+	const confetti: (options?: ConfettiOptions) => Promise<void> | null;
+	export default confetti;
+}

@@ -261,7 +261,7 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 	.viewer-title {
 		font-size: 0.9375rem;
 		font-weight: 600;
-		color: #fafaf9;
+		color: #fafafa;
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
@@ -285,7 +285,7 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 	}
 
 	.slide-current {
-		color: #fafaf9;
+		color: #fafafa;
 		min-width: 1.5ch;
 		text-align: right;
 	}
@@ -304,8 +304,27 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 	}
 
 	.control-btn:hover {
-		color: #fafaf9;
+		color: #fafafa;
 		background: rgba(255, 255, 255, 0.1);
+	}
+
+	/* Visible keyboard focus for all interactive viewer controls */
+	.control-btn:focus-visible,
+	.nav-btn:focus-visible,
+	.zoom-btn:focus-visible,
+	.zoom-close:focus-visible,
+	.grid-close:focus-visible,
+	.shortcuts-close:focus-visible,
+	.thumbnail-btn:focus-visible,
+	.grid-slide-btn:focus-visible {
+		outline: 2px solid var(--accent);
+		outline-offset: 2px;
+	}
+
+	/* Reveal the hover-hidden nav/zoom buttons when reached via keyboard */
+	.nav-btn:focus-visible,
+	.zoom-btn:focus-visible {
+		opacity: 1;
 	}
 
 	.slide-container {
@@ -393,7 +412,7 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 		-webkit-backdrop-filter: blur(var(--glass-blur));
 		border: 1px solid var(--glass-border);
 		border-radius: 50%;
-		color: #fafaf9;
+		color: #fafafa;
 		cursor: pointer;
 		opacity: 0;
 		transition: all var(--transition-ui);
@@ -443,7 +462,7 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 	}
 
 	.zoom-btn:hover {
-		color: #fafaf9;
+		color: #fafafa;
 		background: rgba(255, 255, 255, 0.15);
 	}
 
@@ -482,7 +501,7 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 		backdrop-filter: blur(var(--glass-blur));
 		border: 1px solid var(--glass-border);
 		border-radius: 50%;
-		color: #fafaf9;
+		color: #fafafa;
 		cursor: pointer;
 		transition: all var(--transition-ui);
 	}
@@ -567,7 +586,7 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 		border-radius: 0.25rem;
 		font-size: 0.625rem;
 		font-weight: 600;
-		color: #fafaf9;
+		color: #fafafa;
 	}
 
 	.shortcuts-modal {
@@ -605,7 +624,7 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 		margin: 0 0 1.25rem;
 		font-size: 1.125rem;
 		font-weight: 600;
-		color: #fafaf9;
+		color: #fafafa;
 		text-align: center;
 	}
 
@@ -635,7 +654,7 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 		font-family: inherit;
 		font-size: 0.75rem;
 		font-weight: 500;
-		color: #fafaf9;
+		color: #fafafa;
 	}
 
 	.shortcut-row span {
@@ -651,7 +670,7 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 		border: none;
 		border-radius: 0.5rem;
 		font-weight: 600;
-		color: #1c1917;
+		color: #18181b;
 		cursor: pointer;
 		transition: all var(--transition-ui);
 	}
@@ -704,7 +723,7 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 		margin: 0;
 		font-size: 1rem;
 		font-weight: 600;
-		color: #fafaf9;
+		color: #fafafa;
 	}
 
 	.grid-close {
@@ -721,7 +740,7 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 	}
 
 	.grid-close:hover {
-		color: #fafaf9;
+		color: #fafafa;
 		background: rgba(255, 255, 255, 0.1);
 	}
 
@@ -741,7 +760,7 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 		padding: 0;
 		border: 1px solid rgba(161, 161, 170, 0.45);
 		border-radius: 0.5rem;
-		background: rgba(12, 10, 9, 0.8);
+		background: rgba(9, 9, 11, 0.8);
 		overflow: hidden;
 		cursor: pointer;
 		transition: all var(--transition-ui);
@@ -768,7 +787,7 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 		padding: 0.25rem 0.5rem 0.55rem;
 		font-size: 0.75rem;
 		font-weight: 500;
-		color: #d6d3d1;
+		color: #d4d4d8;
 		text-align: left;
 	}
 
@@ -866,57 +885,57 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 	:root:not(.dark) .presentation-viewer,
 	:global(.light) .presentation-viewer {
 		--glass-bg: rgba(255, 255, 255, 0.8);
-		--glass-border: rgba(120, 113, 108, 0.2);
+		--glass-border: rgba(113, 113, 122, 0.2);
 	}
 
 	:root:not(.dark) .viewer-container,
 	:global(.light) .viewer-container {
-		background: linear-gradient(180deg, #ffffff 0%, #fafaf9 100%);
-		border-color: rgba(120, 113, 108, 0.2);
+		background: linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
+		border-color: rgba(113, 113, 122, 0.2);
 		box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
 	}
 
 	:root:not(.dark) .top-bar,
 	:global(.light) .top-bar {
 		background: rgba(255, 255, 255, 0.9);
-		border-color: rgba(120, 113, 108, 0.15);
+		border-color: rgba(113, 113, 122, 0.15);
 	}
 
 	:root:not(.dark) .viewer-title,
 	:global(.light) .viewer-title {
-		color: #1c1917;
+		color: #18181b;
 	}
 
 	:root:not(.dark) .slide-counter,
 	:global(.light) .slide-counter {
-		color: #78716c;
+		color: #71717a;
 	}
 
 	:root:not(.dark) .slide-current,
 	:global(.light) .slide-current {
-		color: #1c1917;
+		color: #18181b;
 	}
 
 	:root:not(.dark) .control-btn,
 	:global(.light) .control-btn {
-		color: #78716c;
+		color: #71717a;
 	}
 
 	:root:not(.dark) .control-btn:hover,
 	:global(.light) .control-btn:hover {
-		color: #1c1917;
+		color: #18181b;
 		background: rgba(0, 0, 0, 0.05);
 	}
 
 	:root:not(.dark) .slide-container,
 	:global(.light) .slide-container {
-		background: #e7e5e4;
+		background: #e4e4e7;
 	}
 
 	:root:not(.dark) .thumbnail-strip,
 	:global(.light) .thumbnail-strip {
 		background: rgba(255, 255, 255, 0.9);
-		border-color: rgba(120, 113, 108, 0.15);
+		border-color: rgba(113, 113, 122, 0.15);
 	}
 
 	:root:not(.dark) .thumbnail-number,
@@ -927,94 +946,94 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 	:root:not(.dark) .nav-btn,
 	:global(.light) .nav-btn {
 		background: rgba(255, 255, 255, 0.9);
-		border-color: rgba(120, 113, 108, 0.2);
-		color: #1c1917;
+		border-color: rgba(113, 113, 122, 0.2);
+		color: #18181b;
 	}
 
 	:root:not(.dark) .nav-btn:hover,
 	:global(.light) .nav-btn:hover {
 		background: rgba(245, 158, 11, 0.9);
 		border-color: var(--accent);
-		color: #fafaf9;
+		color: #fafafa;
 	}
 
 	:root:not(.dark) .zoom-btn,
 	:global(.light) .zoom-btn {
 		background: rgba(255, 255, 255, 0.9);
-		border-color: rgba(120, 113, 108, 0.2);
-		color: #57534e;
+		border-color: rgba(113, 113, 122, 0.2);
+		color: #52525b;
 	}
 
 	:root:not(.dark) .zoom-btn:hover,
 	:global(.light) .zoom-btn:hover {
-		color: #1c1917;
+		color: #18181b;
 		background: rgba(255, 255, 255, 0.95);
 	}
 
 	:root:not(.dark) .shortcuts-content,
 	:global(.light) .shortcuts-content {
-		background: linear-gradient(180deg, #ffffff 0%, #fafaf9 100%);
-		border-color: rgba(120, 113, 108, 0.2);
+		background: linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
+		border-color: rgba(113, 113, 122, 0.2);
 	}
 
 	:root:not(.dark) .shortcuts-content h3,
 	:global(.light) .shortcuts-content h3 {
-		color: #1c1917;
+		color: #18181b;
 	}
 
 	:root:not(.dark) .grid-content,
 	:global(.light) .grid-content {
-		background: linear-gradient(180deg, #ffffff 0%, #fafaf9 100%);
-		border-color: rgba(120, 113, 108, 0.2);
+		background: linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
+		border-color: rgba(113, 113, 122, 0.2);
 	}
 
 	:root:not(.dark) .grid-header,
 	:global(.light) .grid-header {
-		border-color: rgba(120, 113, 108, 0.15);
+		border-color: rgba(113, 113, 122, 0.15);
 	}
 
 	:root:not(.dark) .grid-header h3,
 	:global(.light) .grid-header h3 {
-		color: #1c1917;
+		color: #18181b;
 	}
 
 	:root:not(.dark) .grid-close,
 	:global(.light) .grid-close {
-		color: #57534e;
+		color: #52525b;
 	}
 
 	:root:not(.dark) .grid-close:hover,
 	:global(.light) .grid-close:hover {
-		color: #1c1917;
+		color: #18181b;
 		background: rgba(0, 0, 0, 0.05);
 	}
 
 	:root:not(.dark) .grid-slide-btn,
 	:global(.light) .grid-slide-btn {
 		background: #ffffff;
-		border-color: rgba(120, 113, 108, 0.25);
+		border-color: rgba(113, 113, 122, 0.25);
 	}
 
 	:root:not(.dark) .grid-slide-number,
 	:global(.light) .grid-slide-number {
-		color: #57534e;
+		color: #52525b;
 	}
 
 	:root:not(.dark) .shortcut-row,
 	:global(.light) .shortcut-row {
-		color: #57534e;
+		color: #52525b;
 	}
 
 	:root:not(.dark) .shortcut-row kbd,
 	:global(.light) .shortcut-row kbd {
 		background: rgba(0, 0, 0, 0.05);
 		border-color: rgba(0, 0, 0, 0.1);
-		color: #1c1917;
+		color: #18181b;
 	}
 
 	:root:not(.dark) .viewer-hints,
 	:global(.light) .viewer-hints {
-		color: #78716c;
+		color: #71717a;
 	}
 
 	:root:not(.dark) .viewer-hints kbd,
@@ -1024,7 +1043,7 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 
 	:root:not(.dark) .progress-bar-container,
 	:global(.light) .progress-bar-container {
-		background: rgba(120, 113, 108, 0.15);
+		background: rgba(113, 113, 122, 0.15);
 	}
 </style>
 

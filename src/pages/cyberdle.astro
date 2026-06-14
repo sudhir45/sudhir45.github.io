@@ -1,0 +1,33 @@
+---
+import { AppConfig } from '@/utils/AppConfig';
+import Base from '@/layouts/Base.astro';
+import Section from '@/components/Section.astro';
+import CyberdleGame from '@/components/cyberdle/Cyberdle';
+
+const title = `Cyberdle | ${AppConfig.site_name}`;
+const description =
+	'A daily security-themed word puzzle. Guess the five-letter cyber term in six tries - a fresh word every day.';
+---
+
+<Base head={{ title, description }}>
+	<Section>
+		<div class="py-8">
+			<header class="border-line mb-8 border-b pb-6 text-center">
+				<p class="eyebrow eyebrow-tick mb-3">Daily Puzzle</p>
+				<h1 class="font-display text-fg mb-3 text-3xl font-semibold tracking-tight md:text-4xl">
+					Cyberdle
+				</h1>
+				<p class="text-muted mx-auto max-w-xl">
+					Guess the five-letter security term in six tries. Green means right spot, amber means wrong
+					spot. A new word drops every day at midnight IST.
+				</p>
+			</header>
+
+			<CyberdleGame client:only="react">
+				<div slot="fallback" class="text-faint py-16 text-center font-mono text-sm">
+					Loading puzzle…
+				</div>
+			</CyberdleGame>
+		</div>
+	</Section>
+</Base>
