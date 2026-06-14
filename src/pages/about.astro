@@ -1,8 +1,10 @@
 ---
 import { AppConfig, SOCIALS } from '@/utils/AppConfig';
+import { Image } from 'astro:assets';
 import Base from '@/layouts/Base.astro';
 import Section from '@/components/Section.astro';
 import Social from '@/components/Social.astro';
+import avatar from '@/assets/images/avatar.png';
 
 const { title, description } = AppConfig;
 ---
@@ -11,10 +13,29 @@ const { title, description } = AppConfig;
 	<Section>
 		<div>
 
-			<header class="animate-fade-up border-line mb-10 border-b pb-6">
-				<p class="eyebrow eyebrow-tick mb-3">About</p>
-				<h1 class="font-display text-fg mb-2 text-3xl font-semibold tracking-tight md:text-4xl">About Sudhir</h1>
-				<p class="text-muted text-base">Information Security professional based in Mumbai, India.</p>
+			<header class="animate-fade-up border-line mb-10 flex items-start justify-between gap-5 border-b pb-6 sm:gap-8">
+				<div>
+					<p class="eyebrow eyebrow-tick mb-3">About</p>
+					<h1 class="font-display text-fg mb-2 text-3xl font-semibold tracking-tight md:text-4xl">About Sudhir</h1>
+					<p class="text-muted text-base">Information Security professional based in Mumbai, India.</p>
+				</div>
+
+				<!-- Profile portrait (top-right) with an offset amber frame + hover lift -->
+				<div class="group relative shrink-0 sm:mr-[3cm]">
+					<span
+						aria-hidden="true"
+						class="border-accent/40 absolute inset-0 translate-x-2 translate-y-2 rounded-full border transition-transform duration-300 group-hover:translate-x-1 group-hover:translate-y-1"
+					></span>
+					<Image
+						src={avatar}
+						alt="Illustrated portrait of Sudhir"
+						width={256}
+						format="webp"
+						quality={82}
+						loading="eager"
+						class="border-line bg-surface-2 relative h-20 w-20 rounded-full border object-cover object-top shadow-sm transition-transform duration-300 group-hover:-translate-y-0.5 sm:h-28 sm:w-28"
+					/>
+				</div>
 			</header>
 
 			<div class="animate-fade-up stagger-1 text-muted mb-10 text-[1.05rem] leading-[1.75] lg:columns-2 lg:gap-12 [&>p]:mb-5 [&>p]:break-inside-avoid [&>p:last-child]:mb-0">

@@ -29,6 +29,24 @@ interface Stats {
 
 const STATE_PREFIX = 'cyberdle:v1:state:';
 const STATS_KEY = 'cyberdle:v1:stats';
+const SEED_KEY = 'cyberdle:v1:seed';
+
+// A random, persistent per-user offset into the word list, so every visitor
+// gets a different daily word instead of everyone sharing the same one.
+function getUserSeed(): number {
+	try {
+		const raw = localStorage.getItem(SEED_KEY);
+		if (raw !== null) {
+			const parsed = parseInt(raw, 10);
+			if (!Number.isNaN(parsed)) return parsed;
+		}
+		const seed = Math.floor(Math.random() * WORDS.length);
+		localStorage.setItem(SEED_KEY, String(seed));
+		return seed;
+	} catch {
+		return 0;
+	}
+}
 
 const DEFAULT_STATS: Stats = {
 	played: 0,
@@ -168,7 +186,7 @@ function formatDuration(ms: number): string {
 
 export default function Cyberdle() {
 	const { puzzleNumber, answer } = useMemo<{ puzzleNumber: number; answer: CyberWord }>(
-		() => getDailyPuzzle(),
+		() => getDailyPuzzle(new Date(), getUserSeed()),
 		[]
 	);
 

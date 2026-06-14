@@ -174,9 +174,15 @@ export function getDayNumber(now: Date = new Date()): number {
 	return Math.floor((istMs - EPOCH_IST) / DAY_MS);
 }
 
-export function getDailyPuzzle(now: Date = new Date()): { puzzleNumber: number; answer: CyberWord } {
+// `offset` is a per-user value (see getUserSeed in Cyberdle.tsx) so different
+// visitors get different words on the same day, while each user still sees one
+// stable word per day.
+export function getDailyPuzzle(
+	now: Date = new Date(),
+	offset = 0
+): { puzzleNumber: number; answer: CyberWord } {
 	const dayNumber = getDayNumber(now);
-	const index = ((dayNumber % WORDS.length) + WORDS.length) % WORDS.length;
+	const index = (((dayNumber + offset) % WORDS.length) + WORDS.length) % WORDS.length;
 	return { puzzleNumber: dayNumber + 1, answer: WORDS[index]! };
 }
 
