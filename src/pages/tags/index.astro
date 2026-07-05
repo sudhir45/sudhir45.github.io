@@ -12,6 +12,7 @@ const topics = await getTopicsWithCounts();
 const threadCount = topics.length;
 const numberWords = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
 const threadWord = numberWords[threadCount] ?? String(threadCount);
+const threadWordCap = threadWord.charAt(0).toUpperCase() + threadWord.slice(1);
 ---
 
 <Base head={{ title, description }}>
@@ -21,8 +22,7 @@ const threadWord = numberWords[threadCount] ?? String(threadCount);
 				Topics
 			</h1>
 			<p class="text-muted mt-4 max-w-[520px] text-[17px] leading-[1.65]">
-				{threadWord[0].toUpperCase() + threadWord.slice(1)} threads run through everything here. Pick
-				one to follow.
+				{threadWordCap} threads run through everything here. Pick one to follow.
 			</p>
 		</div>
 
