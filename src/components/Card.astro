@@ -9,6 +9,7 @@ interface Props {
 const { post } = Astro.props;
 const metadata = post.data ?? post.frontmatter;
 const postUrl = post.url ?? (post.slug ? `/posts/${post.slug}` : '#');
+const slug = post.slug ?? postUrl.replace(/\/$/, '').split('/').pop();
 const isPinned = metadata.isPinned === true;
 ---
 
@@ -31,7 +32,10 @@ const isPinned = metadata.isPinned === true;
 				<span>{metadata.minutesRead ?? 'Quick read'}</span>
 			</div>
 
-			<h3 class="font-display text-fg group-hover:text-accent mb-2 text-[1.1rem] font-semibold leading-snug tracking-tight transition-colors">
+			<h3
+				transition:name={slug ? `post-title-${slug}` : undefined}
+				class="font-display text-fg group-hover:text-accent mb-2 text-[1.1rem] font-semibold leading-snug tracking-tight transition-colors"
+			>
 				{metadata.title}
 			</h3>
 

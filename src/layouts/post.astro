@@ -5,9 +5,12 @@ import PostHeader from '@/components/PostHeader.astro';
 import PostContent from '@/components/PostContent.astro';
 import ReadingProgress from '@/components/ReadingProgress.astro';
 import AuthorStrip from '@/components/AuthorStrip.astro';
+import RelatedPosts from '@/components/RelatedPosts.astro';
+import PostNav from '@/components/PostNav.astro';
 
 import TableOfContents from '@/components/TableOfContents.astro';
 import Giscus from '@/components/Giscus.astro';
+import { getRelatedPosts, getPostNeighbors } from '@/utils/posts';
 
 const { description } = AppConfig;
 
@@ -18,9 +21,27 @@ const cleanSlug = slug.replace(/\/$/, '');
 const siteUrl = Astro.site ? Astro.site.toString().replace(/\/$/, '') : 'https://sudhir.is-a.dev';
 const ogImageUrl = `${siteUrl}/og/${cleanSlug}.png`;
 const postUrl = `${siteUrl}${Astro.url.pathname}`;
+const publishedTime = new Date(frontmatter.pubDate).toISOString();
+const modifiedTime = frontmatter.updatedDate
+	? new Date(frontmatter.updatedDate).toISOString()
+	: undefined;
+
+const relatedPosts = await getRelatedPosts(cleanSlug, frontmatter.tags ?? []);
+const { newer, older } = await getPostNeighbors(cleanSlug);
 ---
 
-<Base head={{ title: frontmatter.title, description: frontmatter.description || description, image: ogImageUrl }}>
+<Base
+	head={{
+		title: `${frontmatter.title} | ${AppConfig.site_name}`,
+		description: frontmatter.description || description,
+		image: ogImageUrl,
+		article: {
+			publishedTime,
+			modifiedTime,
+			tags: frontmatter.tags
+		}
+	}}
+>
 	<script type="application/ld+json" is:inline set:html={JSON.stringify({
 		"@context": "https://schema.org",
 		"@type": "BlogPosting",
@@ -28,10 +49,12 @@ const postUrl = `${siteUrl}${Astro.url.pathname}`;
 		"description": frontmatter.description || description,
 		"image": ogImageUrl,
 		"datePublished": frontmatter.pubDate,
-		"dateModified": frontmatter.pubDate,
+		"dateModified": frontmatter.updatedDate ?? frontmatter.pubDate,
 		"author": {
 			"@type": "Person",
-			"name": frontmatter.author || "Sudhir"
+			"name": frontmatter.author || "Sudhir",
+			"url": `${siteUrl}/about`,
+			"sameAs": ["https://github.com/sudhir45", "https://linkedin.com/in/dsudhir"]
 		},
 		"publisher": {
 			"@type": "Person",
@@ -52,11 +75,15 @@ const postUrl = `${siteUrl}${Astro.url.pathname}`;
 				tags={frontmatter.tags}
 				minutesRead={frontmatter.minutesRead}
 				pubDate={frontmatter.pubDate}
+				updatedDate={frontmatter.updatedDate}
 				isPinned={frontmatter.isPinned}
+				slug={cleanSlug}
 				img={{ src: frontmatter.image?.src, alt: frontmatter.image?.alt }}
 			/>
 			<PostContent><slot /></PostContent>
 			<AuthorStrip author={frontmatter.author || 'Sudhir'} />
+			<RelatedPosts posts={relatedPosts} />
+			<PostNav newer={newer} older={older} />
 			<Giscus />
 		</div>
 		
@@ -126,39 +153,6 @@ const postUrl = `${siteUrl}${Astro.url.pathname}`;
 				});
 			});
 
-			const quotes = document.querySelectorAll('blockquote');
-			const icons = {
-				note: '<svg class="w-5 h-5 text-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>',
-				tip: '<svg class="w-5 h-5 text-green-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>',
-				warning: '<svg class="w-5 h-5 text-yellow-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>',
-				caution: '<svg class="w-5 h-5 text-red-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>'
-			};
-			
-			quotes.forEach((bq) => {
-				const p = bq.querySelector('p');
-				if (!p) return;
-				const html = p.innerHTML;
-				const match = html.match(/^\[!(NOTE|TIP|WARNING|CAUTION)\](?:<br>|\n|\s*)?(.*)/i);
-				if (match && match[1]) {
-					const type = match[1].toLowerCase() as keyof typeof icons;
-					const content = html.substring((match[0] ?? '').length);
-					
-					const colors = {
-						note: 'border-faint bg-surface-2 text-fg',
-						tip: 'border-green-500 bg-green-50/50 dark:bg-green-900/10 text-green-800 dark:text-green-200',
-						warning: 'border-yellow-500 bg-yellow-50/50 dark:bg-yellow-900/10 text-yellow-800 dark:text-yellow-200',
-						caution: 'border-red-500 bg-red-50/50 dark:bg-red-900/10 text-red-800 dark:text-red-200'
-					};
-
-					bq.className = `my-6 px-4 py-3 border-l-4 rounded-r-lg ${colors[type]}`;
-					bq.innerHTML = `
-						<div class="flex items-center gap-2 mb-2 font-semibold capitalize tracking-wide text-sm">
-							${icons[type]} ${type}
-						</div>
-						<div class="text-[15px] opacity-90">${match[2] ?? ''} ${content}</div>
-					`;
-				}
-			});
 		});
 	</script>
 </Base>

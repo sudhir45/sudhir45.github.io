@@ -3,8 +3,8 @@ import Section from '@/components/Section.astro';
 import Base from '@/layouts/Base.astro';
 import { AppConfig } from '@/utils/AppConfig';
 
-const { title } = AppConfig;
-const { description } = AppConfig;
+const title = `Imprint | ${AppConfig.site_name}`;
+const description = 'Imprint and legal information for sudhir.is-a.dev.';
 ---
 
 <Base head={{ title, description }}>
@@ -17,7 +17,7 @@ const { description } = AppConfig;
 		<div class="text-muted space-y-2 text-sm leading-relaxed">
 			<p class="text-fg pb-2 text-lg font-semibold">Site &amp; responsibility</p>
 			<p>
-				Sudhir — <a class="text-accent hover:underline" href="https://sudhir.is-a.dev" target="_blank" rel="noopener noreferrer">sudhir.is-a.dev</a>
+				Sudhir · <a class="text-accent hover:underline" href="https://sudhir.is-a.dev" target="_blank" rel="noopener noreferrer">sudhir.is-a.dev</a>
 			</p>
 			<p>Responsible for content and editorial: Sudhir.</p>
 

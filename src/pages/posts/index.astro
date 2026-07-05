@@ -6,8 +6,9 @@ import PostRow from '@/components/PostRow.astro';
 import Heading from '@/components/Heading.astro';
 import { getAllPosts } from '@/utils/posts';
 
-const { title } = AppConfig;
-const { description } = AppConfig;
+const title = `All Posts | ${AppConfig.site_name}`;
+const description =
+	'Practical writing on security architecture, firewall policy, compliance, and network security.';
 
 const allPosts = await getAllPosts();
 ---

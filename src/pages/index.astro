@@ -3,18 +3,29 @@ import { AppConfig } from '@/utils/AppConfig';
 import Base from '@/layouts/Base.astro';
 import LandingHero from '@/components/LandingHero.astro';
 import FeaturedPost from '@/components/FeaturedPost.astro';
+import StartHere, { START_HERE_SLUGS } from '@/components/StartHere.astro';
 import LatestPosts from '@/components/LatestPosts.astro';
+import BeyondTheBlog from '@/components/BeyondTheBlog.astro';
 import { getAllPosts } from '@/utils/posts';
 
 const { title } = AppConfig;
 const { description } = AppConfig;
 
 const allPosts = await getAllPosts();
-const latestPosts = allPosts.slice(0, 3);
+const featuredPost = allPosts.find((p) => p.data.isPinned) ?? allPosts[0];
+
+// "Latest" shows recent posts not already surfaced by Featured or Start here.
+const surfacedSlugs = new Set([featuredPost?.slug, ...START_HERE_SLUGS]);
+const latestPosts = allPosts
+	.filter((post) => !surfacedSlugs.has(post.slug))
+	.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime())
+	.slice(0, 3);
 ---
 
 <Base head={{ title, description }}>
 	<LandingHero />
 	<FeaturedPost />
+	<StartHere />
 	<LatestPosts posts={latestPosts} />
+	<BeyondTheBlog />
 </Base>

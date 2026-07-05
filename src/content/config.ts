@@ -5,6 +5,7 @@ const posts = defineCollection({
 		z.object({
 			title: z.string(),
 			pubDate: z.coerce.date(),
+			updatedDate: z.coerce.date().optional(),
 			description: z.string(),
 			author: z.string().default('Sudhir'),
 			isPinned: z.boolean().default(false),

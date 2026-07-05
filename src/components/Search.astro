@@ -91,6 +91,7 @@
 		let fuse: any = null;
 		let initPromise: Promise<void> | null = null;
 		let pendingQuery = '';
+		let lastFocused: HTMLElement | null = null;
 
 		function setExpanded(expanded: boolean) {
 			for (const trigger of triggerButtons) {
@@ -141,6 +142,7 @@
 		}
 
 		function openModal() {
+			lastFocused = document.activeElement instanceof HTMLElement ? document.activeElement : null;
 			modalEl.classList.remove('hidden');
 			setExpanded(true);
 			inputEl.focus();
@@ -156,6 +158,8 @@
 			emptyStateEl.classList.add('hidden');
 			document.body.style.overflow = '';
 			pendingQuery = '';
+			lastFocused?.focus();
+			lastFocused = null;
 		}
 
 		function createResultItem(item: any) {
@@ -239,6 +243,22 @@
 			if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') {
 				event.preventDefault();
 				openModal();
+			}
+			if (event.key === 'Tab' && modalIsOpen) {
+				const focusables = Array.from(
+					modalEl.querySelectorAll<HTMLElement>('input, a[href], button:not([disabled])')
+				);
+				const first = focusables[0];
+				const last = focusables[focusables.length - 1];
+				if (!first || !last) return;
+
+				if (event.shiftKey && document.activeElement === first) {
+					event.preventDefault();
+					last.focus();
+				} else if (!event.shiftKey && document.activeElement === last) {
+					event.preventDefault();
+					first.focus();
+				}
 			}
 		};
 

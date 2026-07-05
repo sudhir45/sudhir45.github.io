@@ -1,11 +1,11 @@
 {
-	"name": "FortMatrix Logs",
-	"short_name": "FortMatrix",
-	"description": "Blog and Portfolio of Sudhir - Security Engineer",
+	"name": "Sudhir | Cybersec",
+	"short_name": "Sudhir",
+	"description": "CISSP-certified security engineer writing practical deep-dives on security architecture, firewall policy, network security, and compliance.",
 	"start_url": "/",
 	"display": "standalone",
-	"background_color": "#ffffff",
-	"theme_color": "#ea580c",
+	"background_color": "#fafafa",
+	"theme_color": "#f59e0b",
 	"orientation": "portrait-primary",
 	"icons": [
 		{

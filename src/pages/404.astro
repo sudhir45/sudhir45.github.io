@@ -1,0 +1,99 @@
+---
+import Base from '@/layouts/Base.astro';
+import Section from '@/components/Section.astro';
+import PostRow from '@/components/PostRow.astro';
+import { getAllPosts } from '@/utils/posts';
+
+const recentPosts = (await getAllPosts())
+	.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime())
+	.slice(0, 3);
+---
+
+<Base
+	head={{
+		title: 'Page not found | Sudhir',
+		description: 'HTTP 404 - this page does not exist or has moved.'
+	}}
+>
+	<Section>
+		<div class="relative pb-6 pt-10 md:pt-16">
+			<div
+				aria-hidden="true"
+				class="bg-dotgrid pointer-events-none absolute inset-0 [mask-image:linear-gradient(to_bottom,rgba(0,0,0,0.7),transparent_80%)]"
+			>
+			</div>
+
+			<div class="relative">
+				<p class="eyebrow eyebrow-tick animate-fade-up">HTTP 404</p>
+
+				<h1
+					class="animate-fade-up stagger-1 font-display text-fg mt-6 text-7xl font-semibold leading-none tracking-tight sm:text-8xl"
+				>
+					404
+				</h1>
+
+				<p class="animate-fade-up stagger-2 text-fg mt-6 max-w-2xl text-xl font-medium leading-snug md:text-2xl">
+					Page not found.
+				</p>
+				<p class="animate-fade-up stagger-3 text-muted mt-3 max-w-xl text-base leading-relaxed">
+					Either it never existed, or it moved without leaving a redirect. No exploit here - just a
+					bad link.
+				</p>
+
+				<div
+					class="animate-fade-up stagger-3 border-line bg-surface mt-8 max-w-xl overflow-x-auto rounded-xl border p-4 font-mono text-xs leading-relaxed"
+				>
+					<p class="text-muted">
+						<span class="text-accent">$</span> curl -I https://sudhir.is-a.dev<span
+							class="text-fg"
+							data-lost-path></span>
+					</p>
+					<p class="text-faint mt-1">HTTP/2 <span class="text-accent">404</span> · content not found</p>
+				</div>
+
+				<div class="animate-fade-up stagger-4 mt-9 flex flex-wrap items-center gap-x-5 gap-y-4">
+					<a
+						href="/"
+						class="bg-accent-strong text-accent-contrast group inline-flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold transition-transform duration-200 hover:-translate-y-0.5"
+					>
+						<svg class="h-3.5 w-3.5 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path>
+						</svg>
+						Back home
+					</a>
+					<a
+						href="/posts"
+						class="text-muted hover:text-fg inline-flex items-center gap-1.5 text-sm font-medium transition-colors"
+					>
+						<span class="link-underline">Browse all posts</span>
+					</a>
+					<span class="text-faint hidden items-center gap-1.5 font-mono text-xs sm:inline-flex">
+						or press
+						<kbd class="border-line bg-surface text-muted rounded border px-1.5 py-0.5 shadow-sm">Ctrl</kbd>
+						<kbd class="border-line bg-surface text-muted rounded border px-1.5 py-0.5 shadow-sm">K</kbd>
+						to search
+					</span>
+				</div>
+			</div>
+		</div>
+
+		<div class="animate-fade-up stagger-5 mt-14">
+			<div class="mb-2 flex items-center gap-3">
+				<span class="eyebrow eyebrow-tick">Recent posts</span>
+				<div class="bg-line h-px flex-1"></div>
+			</div>
+			<div class="border-line -mx-4 md:-mx-6">
+				{recentPosts.map((post) => <PostRow post={post} />)}
+			</div>
+		</div>
+	</Section>
+
+	<script>
+		const fillLostPath = () => {
+			const el = document.querySelector('[data-lost-path]');
+			if (el) el.textContent = window.location.pathname;
+		};
+		fillLostPath();
+		document.addEventListener('astro:page-load', fillLostPath);
+	</script>
+</Base>

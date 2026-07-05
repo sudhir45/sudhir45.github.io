@@ -8,7 +8,7 @@ excerpt: "A guide to Zero Trust architecture, explaining its core principles, wh
 tags: ["Network Security", "Firewall", "Network Architecture"]
 ---
 
-# TL;DR:
+## TL;DR:
 
 - **The old "trust the internal network" model is dead** - users, apps, and threats are everywhere now.
 - **Zero Trust assumes breach by default** and demands continuous verification of users, devices, and applications.
@@ -18,7 +18,7 @@ tags: ["Network Security", "Firewall", "Network Architecture"]
 
 ---
 
-# Table of Contents
+## Table of Contents
 
 - [Introduction: Why the Old Model is Broken](#introduction-why-the-old-model-is-broken)
 - [What Zero Trust Really Means (No, You Can't Just Buy It)](#what-zero-trust-really-means-no-you-cant-just-buy-it)

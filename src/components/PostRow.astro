@@ -34,7 +34,10 @@ const tags = (data.tags ?? []).slice(0, 3);
 						Pinned
 					</span>
 				)}
-				<h2 class="font-display text-fg group-hover:text-accent text-lg font-semibold leading-snug tracking-tight transition-colors">
+				<h2
+					transition:name={`post-title-${post.slug}`}
+					class="font-display text-fg group-hover:text-accent text-lg font-semibold leading-snug tracking-tight transition-colors"
+				>
 					{data.title}
 				</h2>
 			</div>

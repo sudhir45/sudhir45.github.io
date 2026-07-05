@@ -6,18 +6,20 @@ import Section from '@/components/Section.astro';
 import Social from '@/components/Social.astro';
 import avatar from '@/assets/images/avatar.png';
 
-const { title, description } = AppConfig;
+const title = `About | ${AppConfig.site_name}`;
+const description =
+	'CISSP-certified security professional at Infosys - security architecture, network hardening, vulnerability management, and compliance.';
 ---
 
-<Base head={{ title: `${title}`, description }}>
+<Base head={{ title, description }}>
 	<Section>
 		<div>
 
 			<header class="animate-fade-up border-line mb-10 flex items-start justify-between gap-5 border-b pb-6 sm:gap-8">
 				<div>
 					<p class="eyebrow eyebrow-tick mb-3">About</p>
-					<h1 class="font-display text-fg mb-2 text-3xl font-semibold tracking-tight md:text-4xl">About Sudhir</h1>
-					<p class="text-muted text-base">Information Security professional based in Mumbai, India.</p>
+					<h1 class="font-display text-fg mb-2 text-3xl font-semibold tracking-tight md:text-4xl">Cybersecurity professional, based in Mumbai</h1>
+					<p class="text-muted text-base">CISSP-certified. Working in enterprise network security at Infosys.</p>
 				</div>
 
 				<!-- Profile portrait (top-right) with an offset amber frame + hover lift -->
@@ -40,22 +42,21 @@ const { title, description } = AppConfig;
 
 			<div class="animate-fade-up stagger-1 text-muted mb-10 text-[1.05rem] leading-[1.75] lg:columns-2 lg:gap-12 [&>p]:mb-5 [&>p]:break-inside-avoid [&>p:last-child]:mb-0">
 				<p>
-					I’m a CISSP-certified security professional currently at <strong class="text-fg font-medium">Infosys</strong>,
-					where I help keep large-scale enterprise environments secure end to end.
+					Currently working at <strong class="text-fg font-medium">Infosys</strong> as a security
+					professional, securing large-scale enterprise environments.
 				</p>
 				<p>
-					Day to day, that means network and infrastructure hardening, firewall policy hygiene,
-					vulnerability management, control validation, and security operations - working hands-on
-					with tools like Skybox, AlgoSec, Qualys, and CyberArk.
+					My day-to-day work covers network and infrastructure hardening, firewall policy
+					management, vulnerability management, control validation, and security operations -
+					hands-on with tools like Skybox, AlgoSec, Qualys, and CyberArk.
 				</p>
 				<p>
-					My background runs across both sides of security. Years of CTF work on the offensive side
-					keep my defensive instincts sharp, and I care more about controls that hold up in
-					production than ones that only look good on paper.
+					My background covers both offensive and defensive security. Years of CTF experience
+					inform how I evaluate and design defensive controls.
 				</p>
 				<p>
-					This is where I write about practical cybersecurity - security architecture, compliance,
-					tooling, and lessons from real-world defensive work.
+					On this blog I write about security architecture, compliance, tooling, and lessons from
+					real-world defensive work.
 				</p>
 			</div>
 

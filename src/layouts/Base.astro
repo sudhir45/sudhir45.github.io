@@ -1,7 +1,7 @@
 ---
 import Footer from '@/components/Footer.astro';
 import Navbar from '@/components/Navbar.astro';
-import { AppConfig } from '@/utils/AppConfig';
+import { AppConfig, SOCIALS } from '@/utils/AppConfig';
 import '@/styles/global.css';
 import GoogleAnalytics from '@/components/GoogleAnalytics.astro';
 import { ClientRouter } from 'astro:transitions';
@@ -11,12 +11,19 @@ export interface Props {
 		title: string;
 		description: string;
 		image?: string;
+		article?: {
+			publishedTime: string;
+			modifiedTime?: string;
+			tags?: string[];
+		};
 	};
 }
 
 const {
-	head: { title, description, image }
+	head: { title, description, image, article }
 } = Astro.props as Props;
+
+const authorSameAs = SOCIALS.filter((s) => s.url.startsWith('http')).map((s) => s.url);
 
 const siteUrl = Astro.site ? Astro.site.toString().replace(/\/$/, '') : 'https://sudhir.is-a.dev';
 const canonicalUrl = `${siteUrl}${Astro.url.pathname}`;
@@ -40,12 +47,16 @@ const ogImageUrl = baseOgImage.startsWith('http') ? baseOgImage : `${siteUrl}${b
 		<link rel="canonical" href={canonicalUrl} />
 
 		
-		<meta property="og:type" content="website" />
+		<meta property="og:type" content={article ? 'article' : 'website'} />
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
 		<meta property="og:url" content={canonicalUrl} />
-		<meta property="og:site_name" content={AppConfig.title} />
+		<meta property="og:site_name" content={AppConfig.site_name} />
 		<meta property="og:locale" content="en_IN" />
+		{article && <meta property="article:published_time" content={article.publishedTime} />}
+		{article?.modifiedTime && <meta property="article:modified_time" content={article.modifiedTime} />}
+		{article && <meta property="article:author" content={AppConfig.author} />}
+		{article?.tags?.map((tag) => <meta property="article:tag" content={tag} />)}
 		{ogImageUrl && <meta property="og:image" content={ogImageUrl} />}
 		{ogImageUrl && <meta property="og:image:width" content="1200" />}
 		{ogImageUrl && <meta property="og:image:height" content="630" />}
@@ -82,7 +93,9 @@ const ogImageUrl = baseOgImage.startsWith('http') ? baseOgImage : `${siteUrl}${b
 			"url": Astro.site?.toString() || "https://sudhir.is-a.dev",
 			"author": {
 				"@type": "Person",
-				"name": AppConfig.author
+				"name": AppConfig.author,
+				"url": `${siteUrl}/about`,
+				"sameAs": authorSameAs
 			},
 			"publisher": {
 				"@type": "Person",
@@ -122,8 +135,14 @@ const ogImageUrl = baseOgImage.startsWith('http') ? baseOgImage : `${siteUrl}${b
 	<body
 		class="bg-bg text-fg flex min-h-screen flex-col antialiased"
 	>
+		<a
+			href="#main-content"
+			class="sr-only focus:not-sr-only focus:bg-accent-strong focus:text-accent-contrast focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:px-4 focus:py-2 focus:text-sm focus:font-semibold"
+		>
+			Skip to content
+		</a>
 		<Navbar />
-		<div class="flex-1">
+		<div id="main-content" class="flex-1">
 			<slot />
 		</div>
 		<Footer />

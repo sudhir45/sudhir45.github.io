@@ -5,8 +5,8 @@ import Base from '@/layouts/Base.astro';
 import { AppConfig } from '@/utils/AppConfig';
 import { getTagCounts } from '@/utils/posts';
 
-const { title } = AppConfig;
-const { description } = AppConfig;
+const title = `Tags | ${AppConfig.site_name}`;
+const description = 'Browse all posts by topic - security architecture, compliance, AI security, and more.';
 
 const tagMap: Record<string, number> = await getTagCounts();
 ---
