@@ -2,22 +2,127 @@
 import { AppConfig } from '@/utils/AppConfig';
 import Base from '@/layouts/Base.astro';
 import Section from '@/components/Section.astro';
-import PostRow from '@/components/PostRow.astro';
-import Heading from '@/components/Heading.astro';
 import { getAllPosts } from '@/utils/posts';
+import { getTopicsWithCounts } from '@/utils/topics';
 
-const title = `All Posts | ${AppConfig.site_name}`;
+const title = `Writing | ${AppConfig.site_name}`;
 const description =
 	'Practical writing on security architecture, firewall policy, compliance, and network security.';
 
 const allPosts = await getAllPosts();
+const total = allPosts.length;
+const topics = await getTopicsWithCounts();
+
+// Strict reverse-chronological grouping by year.
+const chronological = [...allPosts].sort(
+	(a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime()
+);
+
+const groups = new Map<number, typeof chronological>();
+for (const post of chronological) {
+	const year = post.data.pubDate.getFullYear();
+	if (!groups.has(year)) groups.set(year, []);
+	groups.get(year)!.push(post);
+}
+const years = [...groups.keys()].sort((a, b) => b - a);
+
+const shortMeta = (post: (typeof chronological)[number]) => {
+	const month = post.data.pubDate.toLocaleDateString('en-US', { month: 'short' });
+	const read = (post.data.minutesRead ?? '').replace(/\s*read$/i, '').trim();
+	return read ? `${month} · ${read}` : month;
+};
 ---
 
 <Base head={{ title, description }}>
 	<Section>
-		<Heading title="All Posts" eyebrow="Archive" />
-		<div class="border-line -mx-4 border-t md:-mx-6">
-			{allPosts.map((post: any) => <PostRow post={post} />)}
+		<div class="pt-10 md:pt-14">
+			<h1 class="font-display text-fg text-[2.25rem] font-medium leading-[1.08] tracking-[-0.025em] md:text-[2.75rem]">
+				Writing
+			</h1>
+			<p class="text-muted mt-4 max-w-[560px] text-[17px] leading-[1.65]">
+				{total} posts on security architecture, network security, and compliance.
+			</p>
+
+			<!-- Topic filter pills -->
+			<div class="mt-7 flex flex-wrap gap-2.5" data-filter-bar>
+				<button type="button" class="pill pill-active" data-filter="all" aria-pressed="true">All</button>
+				{
+					topics.map((topic) => (
+						<button
+							type="button"
+							class="pill pill-inactive"
+							data-filter={topic.name}
+							aria-pressed="false"
+						>
+							{topic.label}
+						</button>
+					))
+				}
+			</div>
+		</div>
+
+		<div class="pb-16 pt-8">
+			{
+				years.map((year) => (
+					<div class="mt-7 grid grid-cols-1 gap-x-6 gap-y-2 border-t border-[color:var(--line-strong)] pt-5 md:grid-cols-[120px_1fr]" data-year-group>
+						<div class="font-display text-subtle text-[15px] font-medium">{year}</div>
+						<div>
+							{groups.get(year)!.map((post) => (
+								<a
+									href={post.url}
+									class="row-link border-line grid grid-cols-[1fr_auto] items-baseline gap-5 border-b py-4 last:border-b-0"
+									data-post
+									data-topics={post.data.tags.join('|')}
+								>
+									<span class="row-title font-display text-fg text-[18px] font-medium leading-[1.3] tracking-[-0.01em] transition-colors md:text-[20px]">
+										{post.data.title}
+									</span>
+									<span class="meta-mono whitespace-nowrap">{shortMeta(post)}</span>
+								</a>
+							))}
+						</div>
+					</div>
+				))
+			}
 		</div>
 	</Section>
+
+	<script>
+		document.addEventListener('astro:page-load', () => {
+			const bar = document.querySelector('[data-filter-bar]');
+			if (!bar) return;
+			const buttons = Array.from(bar.querySelectorAll<HTMLButtonElement>('[data-filter]'));
+			const posts = Array.from(document.querySelectorAll<HTMLElement>('[data-post]'));
+			const groupsEls = Array.from(document.querySelectorAll<HTMLElement>('[data-year-group]'));
+
+			const setActive = (btn: HTMLButtonElement) => {
+				for (const b of buttons) {
+					const on = b === btn;
+					b.classList.toggle('pill-active', on);
+					b.classList.toggle('pill-inactive', !on);
+					b.setAttribute('aria-pressed', String(on));
+				}
+			};
+
+			const apply = (filter: string) => {
+				for (const post of posts) {
+					const topics = (post.dataset.topics || '').split('|');
+					const show = filter === 'all' || topics.includes(filter);
+					post.classList.toggle('hidden', !show);
+				}
+				// Hide year groups whose posts are all filtered out.
+				for (const group of groupsEls) {
+					const anyVisible = group.querySelectorAll('[data-post]:not(.hidden)').length > 0;
+					group.classList.toggle('hidden', !anyVisible);
+				}
+			};
+
+			for (const btn of buttons) {
+				btn.addEventListener('click', () => {
+					setActive(btn);
+					apply(btn.dataset.filter || 'all');
+				});
+			}
+		});
+	</script>
 </Base>

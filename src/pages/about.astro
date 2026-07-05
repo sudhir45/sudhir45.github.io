@@ -3,94 +3,61 @@ import { AppConfig, SOCIALS } from '@/utils/AppConfig';
 import { Image } from 'astro:assets';
 import Base from '@/layouts/Base.astro';
 import Section from '@/components/Section.astro';
-import Social from '@/components/Social.astro';
 import avatar from '@/assets/images/avatar.png';
 
 const title = `About | ${AppConfig.site_name}`;
 const description =
-	'CISSP-certified security professional at Infosys - security architecture, network hardening, vulnerability management, and compliance.';
+	'Sudhir - a security architect in Mumbai working on network security and compliance for large enterprise environments.';
+
+const github = SOCIALS.find((s) => s.name === 'GitHub')?.url || '#';
+const linkedin = SOCIALS.find((s) => s.name === 'LinkedIn')?.url || '#';
+const email = SOCIALS.find((s) => s.name === 'Email')?.url || '#';
 ---
 
 <Base head={{ title, description }}>
 	<Section>
-		<div>
-
-			<header class="animate-fade-up border-line mb-10 flex items-start justify-between gap-5 border-b pb-6 sm:gap-8">
-				<div>
-					<p class="eyebrow eyebrow-tick mb-3">About</p>
-					<h1 class="font-display text-fg mb-2 text-3xl font-semibold tracking-tight md:text-4xl">Cybersecurity professional, based in Mumbai</h1>
-					<p class="text-muted text-base">CISSP-certified. Working in enterprise network security at Infosys.</p>
+		<h1 class="sr-only">About Sudhir</h1>
+		<div class="grid gap-10 pt-10 md:grid-cols-[1fr_auto] md:gap-16 md:pt-14">
+			<div class="order-2 md:order-1">
+				<div class="animate-fade-up stagger-1 text-muted max-w-[720px] text-[17px] leading-[1.75] [&>p]:mb-[18px] [&>p:last-child]:mb-0">
+				<p>
+					I'm Sudhir, a cyber security professional based in Mumbai. I work on network security and
+					compliance for large enterprise environments, the kind with a decade of firewall rules
+					nobody remembers writing and audits that never quite end.
+				</p>
+				<p>
+					Before this, a lot of my time went into CTFs and offensive security. That still shapes how
+					I approach defense: assume someone patient is looking, and design controls that hold up
+					when they do, not just on the compliance checklist.
+				</p>
+				<p>
+					This blog is where I write it down. Occasionally it's useful to someone else doing the same
+					work.
+				</p>
 				</div>
 
-				<!-- Profile portrait (top-right) with an offset amber frame + hover lift -->
-				<div class="group relative shrink-0 sm:mr-[3cm]">
-					<span
-						aria-hidden="true"
-						class="border-accent/40 absolute inset-0 translate-x-2 translate-y-2 rounded-full border transition-transform duration-300 group-hover:translate-x-1 group-hover:translate-y-1"
-					></span>
-					<Image
-						src={avatar}
-						alt="Illustrated portrait of Sudhir"
-						width={256}
-						format="webp"
-						quality={82}
-						loading="eager"
-						class="border-line bg-surface-2 relative h-20 w-20 rounded-full border object-cover object-top shadow-sm transition-transform duration-300 group-hover:-translate-y-0.5 sm:h-28 sm:w-28"
-					/>
+				<!-- Single quiet row of links -->
+				<div
+					class="border-frame animate-fade-up stagger-2 mt-10 flex flex-wrap items-center gap-6 border-t pt-8 text-sm font-medium"
+				>
+					<a href="/posts" class="text-accent transition-opacity hover:opacity-70">Read the writing →</a>
+					<a href={github} target="_blank" rel="noopener noreferrer" class="text-faint hover:text-fg transition-colors">GitHub</a>
+					<a href={linkedin} target="_blank" rel="noopener noreferrer" class="text-faint hover:text-fg transition-colors">LinkedIn</a>
+					<a href={email} class="text-faint hover:text-fg transition-colors">Email</a>
 				</div>
-			</header>
-
-			<div class="animate-fade-up stagger-1 text-muted mb-10 text-[1.05rem] leading-[1.75] lg:columns-2 lg:gap-12 [&>p]:mb-5 [&>p]:break-inside-avoid [&>p:last-child]:mb-0">
-				<p>
-					Currently working at <strong class="text-fg font-medium">Infosys</strong> as a security
-					professional, securing large-scale enterprise environments.
-				</p>
-				<p>
-					My day-to-day work covers network and infrastructure hardening, firewall policy
-					management, vulnerability management, control validation, and security operations -
-					hands-on with tools like Skybox, AlgoSec, Qualys, and CyberArk.
-				</p>
-				<p>
-					My background covers both offensive and defensive security. Years of CTF experience
-					inform how I evaluate and design defensive controls.
-				</p>
-				<p>
-					On this blog I write about security architecture, compliance, tooling, and lessons from
-					real-world defensive work.
-				</p>
 			</div>
 
-
-			
-			<div class="animate-fade-up stagger-3 flex items-center gap-4">
-				<Social href={SOCIALS.find(s => s.name === 'GitHub')?.url || '#'}>
-					<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
-						<path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"></path>
-					</svg>
-				</Social>
-				<Social href={SOCIALS.find(s => s.name === 'LinkedIn')?.url || '#'}>
-					<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
-						<path d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.968v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0v8.399h4.988v-10.131c0-7.88-8.922-7.593-11.018-3.714v-2.155z"></path>
-					</svg>
-				</Social>
-				<Social href={SOCIALS.find(s => s.name === 'Email')?.url || '#'}>
-					<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-					</svg>
-				</Social>
-
-				
-				<!-- 
-				<a href="/Resume.pdf" target="_blank" rel="noopener noreferrer" class="group inline-flex items-center gap-2 rounded-lg border border-zinc-200 bg-white px-4 py-2.5 text-sm font-medium text-zinc-700 transition-all hover:border-blue-300 hover:bg-blue-50 hover:text-blue-600 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-blue-700/50 dark:hover:bg-blue-950/30 dark:hover:text-blue-400">
-					<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform group-hover:scale-110" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-					</svg>
-					Resume
-				</a>
-				-->
+			<div class="order-1 md:order-2">
+				<Image
+					src={avatar}
+					alt="Portrait of Sudhir"
+					width={288}
+					format="webp"
+					quality={82}
+					loading="eager"
+					class="border-frame bg-surface-2 animate-fade-up h-24 w-24 rounded-full border object-cover object-top md:h-36 md:w-36"
+				/>
 			</div>
-
-			<p class="animate-fade-up stagger-4 text-faint mt-10 font-mono text-xs">All opinions are my own.</p>
 		</div>
 	</Section>
 </Base>

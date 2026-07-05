@@ -49,3 +49,9 @@ AGENTS.md
 
 # Presentations
 *.pptx
+
+# Local archive of files removed from public/ (kept out of the repo for review)
+_removed-from-public/
+
+# Design handoff (local only)
+design_handoff_site_redesign/

@@ -5,7 +5,7 @@ description: "A comprehensive guide to firewall compliance, covering key standar
 author: "Sudhir"
 isPinned: false
 excerpt: "A comprehensive guide to firewall compliance, covering key standards like PCI DSS, ISO 27001, and HIPAA, and best practices for policy, change management, and auditing."
-tags: ["Network", "Security", "Firewall", "Compliance", "Audit", "Best Practices"]
+tags: ["Compliance", "Network security"]
 ---
 
 You've got a firewall, great. That's like having a gate in front of your house. But if it's wide open, unlocked, and you never bother checking who's walking in? Then it's just decoration.

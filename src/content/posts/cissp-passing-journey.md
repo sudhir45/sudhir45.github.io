@@ -5,7 +5,7 @@ description: A practical breakdown of my CISSP preparation, resources, question 
 author: Sudhir
 isPinned: true
 excerpt: I passed the CISSP on April 6, 2026, at 100 questions. This is a practical breakdown of my preparation timeline, resources, question practice, exam-day experience, and lessons learned.
-tags: ['CISSP', 'Certification']
+tags: ["Compliance"]
 draft: false
 ---
 

@@ -6,6 +6,10 @@
     "category": "Security",
     "sourcePath": "f:\\Projects\\sudhir-blog-astro\\astro-tech-blog\\Firewall_Chaos.pptx",
     "slideCount": 18,
-    "thumbnail": "/presentations/firewall-chaos/slide-1.jpg"
+    "thumbnail": "/presentations/firewall-chaos/slide-1.jpg",
+    "date": "2026-02-26",
+    "venue": "Internal engineering talk",
+    "link": "/presentations/firewall-chaos",
+    "linkLabel": "Slides"
   }
 ]

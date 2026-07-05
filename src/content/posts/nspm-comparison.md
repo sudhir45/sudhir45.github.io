@@ -5,7 +5,7 @@ description: "A practical comparison of the top Network Security Policy Manageme
 author: "Sudhir"
 isPinned: false
 excerpt: "A practical comparison of the top Network Security Policy Management (NSPM) tools: Algosec, Tufin, and FireMon, focusing on their core strengths, use cases, and key differences."
-tags: ["Network", "Security", "Firewall", "Tools"]
+tags: ["Network security", "Security architecture"]
 ---
 
 Alright, network security policy management (NSPM). We're talking about tools trying to tame the absolute chaos of firewall rules across our complex networks.

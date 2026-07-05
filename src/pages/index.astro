@@ -1,31 +1,51 @@
 ---
 import { AppConfig } from '@/utils/AppConfig';
 import Base from '@/layouts/Base.astro';
-import LandingHero from '@/components/LandingHero.astro';
-import FeaturedPost from '@/components/FeaturedPost.astro';
-import StartHere, { START_HERE_SLUGS } from '@/components/StartHere.astro';
-import LatestPosts from '@/components/LatestPosts.astro';
-import BeyondTheBlog from '@/components/BeyondTheBlog.astro';
+import Section from '@/components/Section.astro';
+import SelectedPostRow from '@/components/SelectedPostRow.astro';
 import { getAllPosts } from '@/utils/posts';
 
-const { title } = AppConfig;
-const { description } = AppConfig;
+const { title, description } = AppConfig;
 
 const allPosts = await getAllPosts();
-const featuredPost = allPosts.find((p) => p.data.isPinned) ?? allPosts[0];
-
-// "Latest" shows recent posts not already surfaced by Featured or Start here.
-const surfacedSlugs = new Set([featuredPost?.slug, ...START_HERE_SLUGS]);
-const latestPosts = allPosts
-	.filter((post) => !surfacedSlugs.has(post.slug))
-	.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime())
-	.slice(0, 3);
+const selected = allPosts.slice(0, 4);
+const total = allPosts.length;
 ---
 
 <Base head={{ title, description }}>
-	<LandingHero />
-	<FeaturedPost />
-	<StartHere />
-	<LatestPosts posts={latestPosts} />
-	<BeyondTheBlog />
+	<Section>
+		<!-- Statement hero — a claim, not a tagline -->
+		<div class="animate-fade-up max-w-[880px] pb-14 pt-10 md:pb-16 md:pt-16">
+			<h1
+				class="font-display text-fg text-[2.5rem] font-medium leading-[1.1] tracking-[-0.025em] text-balance sm:text-[3rem] md:text-[3.25rem]"
+			>
+				Most security failures aren't exotic. They're the basics, done unevenly across too many
+				systems.
+			</h1>
+			<p class="text-muted mt-7 max-w-[600px] text-[18px] leading-[1.65]">
+				I'm Sudhir, a cyber security professional in Mumbai working on network security and
+				compliance for large enterprise environments. I write here about closing that gap.
+			</p>
+		</div>
+
+		<!-- Selected writing -->
+		<div class="animate-fade-up stagger-1 pb-16">
+			<div class="border-line-strong flex items-baseline justify-between border-b pb-4">
+				<h2 class="font-display text-fg text-sm font-semibold">Selected writing</h2>
+				<a href="/posts" class="text-subtle hover:text-fg text-[13px] font-medium transition-colors">
+					All {total} posts
+				</a>
+			</div>
+
+			{
+				selected.map((post, i) => (
+					<SelectedPostRow
+						post={post}
+						accent={i === 0}
+						last={i === selected.length - 1}
+					/>
+				))
+			}
+		</div>
+	</Section>
 </Base>

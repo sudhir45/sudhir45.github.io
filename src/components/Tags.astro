@@ -1,5 +1,6 @@
 ---
 import Tag from './Tag.astro';
+import { topicSlug } from '@/utils/topics';
 
 interface Props {
 	tags: string[];
@@ -13,7 +14,7 @@ const { tags, withHref } = Astro.props;
 	{
 		tags.map((tag: string) => {
 			const element = <Tag tag={tag} withHref={withHref} />;
-			return withHref ? <a href={`/tags/${tag}`}>{element}</a> : element;
+			return withHref ? <a href={`/tags/${topicSlug(tag)}`}>{element}</a> : element;
 		})
 	}
 </div>

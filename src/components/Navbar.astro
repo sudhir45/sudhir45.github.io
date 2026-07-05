@@ -10,9 +10,8 @@ const normalizePath = (value: string) => {
 
 const currentPath = normalizePath(Astro.url.pathname);
 const navItems = [
+	{ href: '/posts', label: 'Writing' },
 	{ href: '/about', label: 'About' },
-	{ href: '/tags', label: 'Tags' },
-	{ href: '/posts', label: 'Blog' },
 	{ href: '/presentations', label: 'Talks' },
 	{ href: '/cyberdle', label: 'Cyberdle' }
 ];
@@ -26,17 +25,13 @@ const isActiveRoute = (href: string) => {
 <Section>
 	<div id="site-header-shell" class="site-header-shell sticky top-0 z-50 -mx-4 px-4">
 		<div class="site-header-inner flex items-center justify-between pb-4 pt-4">
-			<div class="font-display text-2xl font-semibold tracking-tight">
-				<a href="/" class="group flex items-baseline gap-2" aria-label="Sudhir - home">
-					<span class="bg-accent-strong inline-block h-4 w-1.5 self-center rounded-[1px] transition-transform group-hover:scale-y-110"></span>
-					<span class="text-fg">Sudhir</span>
-					<span class="text-faint hidden font-mono text-xs font-normal tracking-wide sm:inline">~/security</span>
-				</a>
+			<div class="font-display text-lg font-semibold tracking-tight">
+				<a href="/" class="text-fg" aria-label="Sudhir - home">Sudhir</a>
 			</div>
-			<div class="flex items-center gap-6">
-				
+			<div class="flex items-center gap-5 sm:gap-7">
+
 				<nav>
-					<ul class="hidden flex-row items-center gap-6 text-sm font-medium sm:flex">
+					<ul class="hidden flex-row items-center gap-7 text-sm font-medium sm:flex">
 						{
 							navItems.map(({ href, label }) => {
 								const isActive = isActiveRoute(href);
@@ -45,10 +40,8 @@ const isActiveRoute = (href: string) => {
 										<a
 											href={href}
 											aria-current={isActive ? 'page' : undefined}
-											class={`rounded-md px-2.5 py-1.5 transition-colors ${
-												isActive
-													? 'bg-surface-2 text-fg'
-													: 'text-muted hover:text-accent'
+											class={`transition-colors ${
+												isActive ? 'text-fg' : 'text-muted hover:text-fg'
 											}`}
 										>
 											{label}
@@ -59,11 +52,11 @@ const isActiveRoute = (href: string) => {
 						}
 					</ul>
 				</nav>
-				
+
 				<ThemeToggle idPrefix="desktop" />
-				
-				
-				<div class="block">
+
+
+				<div class="hidden sm:block">
 					<Search />
 				</div>
 

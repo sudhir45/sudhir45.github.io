@@ -1,20 +1,17 @@
 ---
 import { AppConfig } from '@/utils/AppConfig';
 import Base from '@/layouts/Base.astro';
-import PostHeader from '@/components/PostHeader.astro';
+import Section from '@/components/Section.astro';
 import PostContent from '@/components/PostContent.astro';
 import ReadingProgress from '@/components/ReadingProgress.astro';
-import AuthorStrip from '@/components/AuthorStrip.astro';
-import RelatedPosts from '@/components/RelatedPosts.astro';
-import PostNav from '@/components/PostNav.astro';
-
-import TableOfContents from '@/components/TableOfContents.astro';
 import Giscus from '@/components/Giscus.astro';
-import { getRelatedPosts, getPostNeighbors } from '@/utils/posts';
+import { getPostNeighbors } from '@/utils/posts';
+import { formatDate } from '@/utils/data.util';
+import { topicSlug } from '@/utils/topics';
 
 const { description } = AppConfig;
 
-const { frontmatter, headings } = Astro.props;
+const { frontmatter } = Astro.props;
 
 const slug = (Astro.url.pathname.split('/').pop() || Astro.url.pathname.split('/').slice(-2)[0]) || '';
 const cleanSlug = slug.replace(/\/$/, '');
@@ -26,8 +23,12 @@ const modifiedTime = frontmatter.updatedDate
 	? new Date(frontmatter.updatedDate).toISOString()
 	: undefined;
 
-const relatedPosts = await getRelatedPosts(cleanSlug, frontmatter.tags ?? []);
 const { newer, older } = await getPostNeighbors(cleanSlug);
+const nextPost = older ?? newer;
+
+const category = frontmatter.tags?.[0] as string | undefined;
+const formattedDate = formatDate(frontmatter.pubDate);
+const readTime = frontmatter.minutesRead?.trim() || 'Quick read';
 ---
 
 <Base
@@ -67,34 +68,51 @@ const { newer, older } = await getPostNeighbors(cleanSlug);
 		"keywords": frontmatter.tags?.join(", ") || ""
 	})} />
 	<ReadingProgress />
-	<div class="mx-auto flex w-full max-w-7xl flex-col items-start justify-center px-4 md:flex-row md:gap-10">
-		<div class="w-full max-w-[850px] flex-1">
-			<PostHeader
-				title={frontmatter.title}
-				author={frontmatter.author}
-				tags={frontmatter.tags}
-				minutesRead={frontmatter.minutesRead}
-				pubDate={frontmatter.pubDate}
-				updatedDate={frontmatter.updatedDate}
-				isPinned={frontmatter.isPinned}
-				slug={cleanSlug}
-				img={{ src: frontmatter.image?.src, alt: frontmatter.image?.alt }}
-			/>
-			<PostContent><slot /></PostContent>
-			<AuthorStrip author={frontmatter.author || 'Sudhir'} />
-			<RelatedPosts posts={relatedPosts} />
-			<PostNav newer={newer} older={older} />
+	<Section>
+		<!-- Header -->
+		<header class="mx-auto max-w-[800px] pb-4 pt-10 md:pt-14">
+			{category && (
+				<a
+					href={`/tags/${topicSlug(category)}`}
+					class="eyebrow-amber mb-5 inline-block transition-opacity hover:opacity-70"
+				>
+					{category}
+				</a>
+			)}
+			<h1
+				transition:name={cleanSlug ? `post-title-${cleanSlug}` : undefined}
+				class="font-display text-fg text-[2rem] font-medium leading-[1.1] tracking-[-0.025em] text-balance md:text-[2.75rem]"
+			>
+				{frontmatter.title}
+			</h1>
+			<div class="meta-mono mt-6 flex flex-wrap items-center gap-3">
+				<time datetime={String(frontmatter.pubDate)}>{formattedDate}</time>
+				<span aria-hidden="true">·</span>
+				<span>{readTime}</span>
+			</div>
+		</header>
+
+		<PostContent><slot /></PostContent>
+
+		{nextPost && (
+			<div class="border-frame mx-auto mt-4 max-w-[800px] border-t pt-7">
+				<div class="meta-mono mb-3.5">Next</div>
+				<a
+					href={nextPost.url}
+					class="row-link flex items-baseline justify-between gap-5"
+				>
+					<span class="row-title font-display text-fg text-[19px] font-medium leading-[1.3] tracking-[-0.015em] transition-colors md:text-[22px]">
+						{nextPost.data.title}
+					</span>
+					<span class="text-accent whitespace-nowrap text-[13px] font-medium">Read →</span>
+				</a>
+			</div>
+		)}
+
+		<div class="mx-auto mt-16 max-w-[800px]">
 			<Giscus />
 		</div>
-		
-		
-		<aside class="sticky top-24 hidden w-64 shrink-0 lg:block">
-			<div class="eyebrow eyebrow-tick mb-4">On this page</div>
-			<div class="toc-scroll max-h-[calc(100vh-10rem)] overflow-y-auto">
-				<TableOfContents headings={headings} />
-			</div>
-		</aside>
-	</div>
+	</Section>
 
 	<script>
 		document.addEventListener('astro:page-load', () => {
@@ -104,7 +122,7 @@ const { newer, older } = await getPostNeighbors(cleanSlug);
 				if ((window as any).mediumZoom) {
 					const zoom = (window as any).mediumZoom('img:not(.no-zoom)', {
 						margin: 24,
-						background: isDark ? '#0c0a09' : '#fafaf9',
+						background: isDark ? '#1a1714' : '#faf9f7',
 					});
 					return zoom;
 				} else {
@@ -113,7 +131,7 @@ const { newer, older } = await getPostNeighbors(cleanSlug);
 					script.onload = () => {
 						(window as any).mediumZoom('article img:not(.no-zoom), .prose img:not(.no-zoom)', {
 							margin: 24,
-							background: isDark ? '#0c0a09' : '#fafaf9',
+							background: isDark ? '#1a1714' : '#faf9f7',
 						});
 					};
 					document.head.appendChild(script);

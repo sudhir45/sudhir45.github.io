@@ -2,45 +2,82 @@
 import { AppConfig } from '@/utils/AppConfig';
 import Base from '@/layouts/Base.astro';
 import Section from '@/components/Section.astro';
-import PresentationCard from '@/components/PresentationCard.astro';
 import presentations from '@/data/presentations.json';
 
-const title = `Presentations | ${AppConfig.site_name}`;
-const description = 'Browse my collection of security presentations and talks.';
+const title = `Talks | ${AppConfig.site_name}`;
+const description =
+	"Where I've spoken about security architecture and defensive work outside the blog.";
+
+interface Talk {
+	slug: string;
+	title: string;
+	venue?: string;
+	date?: string;
+	link?: string;
+	linkLabel?: string;
+}
+
+const talks = ([...presentations] as Talk[]).sort((a, b) => {
+	const da = a.date ? new Date(a.date).getTime() : 0;
+	const db = b.date ? new Date(b.date).getTime() : 0;
+	return db - da;
+});
+
+const monthYear = (date?: string) =>
+	date ? new Date(date).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) : '';
+
+const linkFor = (talk: Talk) => talk.link ?? `/presentations/${talk.slug}`;
+const labelFor = (talk: Talk) => `${talk.linkLabel ?? 'Slides'} →`;
 ---
 
 <Base head={{ title, description }}>
 	<Section>
-		<div class="py-8">
-			
-			<header class="border-line mb-10 border-b pb-6">
-				<p class="eyebrow eyebrow-tick mb-3">Slide Decks</p>
-				<h1 class="font-display text-fg mb-3 text-3xl font-semibold tracking-tight md:text-4xl">
-					Talks
-				</h1>
-				<p class="text-muted max-w-2xl">
-					Browse my collection of security presentations and talks.
+		<div class="pb-9 pt-10 md:pt-14">
+			<h1 class="font-display text-fg text-[2.25rem] font-medium leading-[1.08] tracking-[-0.025em] md:text-[2.75rem]">
+				Talks &amp; appearances
+			</h1>
+			<p class="text-muted mt-4 max-w-[560px] text-[17px] leading-[1.65]">
+				Where I've spoken about security architecture and defensive work outside the blog.
+			</p>
+		</div>
+
+		<div class="pb-16">
+			{
+				talks.map((talk, i) => (
+					<a
+						href={linkFor(talk)}
+						class:list={[
+							'row-link grid grid-cols-[1fr_auto] items-baseline gap-x-6 gap-y-1 py-6 sm:grid-cols-[150px_1fr_auto] sm:gap-7',
+							i === 0 ? 'border-t border-[color:var(--line-strong)]' : 'border-line border-t'
+						]}
+					>
+						<span class="meta-mono order-2 col-start-2 justify-self-end sm:order-none sm:col-start-auto sm:justify-self-start">
+							{monthYear(talk.date)}
+						</span>
+						<div class="order-1 col-span-2 sm:order-none sm:col-span-1">
+							<div class="row-title font-display text-fg text-[20px] font-medium leading-[1.3] tracking-[-0.01em] transition-colors sm:text-[22px]">
+								{talk.title}
+							</div>
+							{talk.venue && (
+								<div class="text-faint mt-1.5 text-[15px]">{talk.venue}</div>
+							)}
+						</div>
+						<span
+							class="order-3 justify-self-end whitespace-nowrap text-[13px] font-medium sm:order-none"
+							style={i === 0 ? 'color:var(--accent)' : 'color:var(--faint)'}
+						>
+							{labelFor(talk)}
+						</span>
+					</a>
+				))
+			}
+
+			{talks.length === 0 && <p class="text-muted py-10">No talks yet. Check back soon.</p>}
+
+			{talks.length > 0 && (
+				<p class="border-line text-faint border-t pt-6 text-[14px]">
+					New talks are added here as they happen.
 				</p>
-			</header>
-
-			
-			<div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-				{presentations.map((pres) => (
-					<PresentationCard 
-						slug={pres.slug}
-						title={pres.title}
-						description={pres.description}
-						thumbnail={pres.thumbnail}
-						slideCount={pres.slideCount}
-						category={pres.category}
-					/>
-				))}
-			</div>
-
-			{presentations.length === 0 && (
-				<div class="border-line bg-surface rounded-xl border py-16 text-center">
-					<p class="text-muted">No presentations available yet.</p>
-				</div>
 			)}
 		</div>
 	</Section>

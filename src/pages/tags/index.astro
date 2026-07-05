@@ -1,29 +1,52 @@
 ---
-import Heading from '@/components/Heading.astro';
-import Section from '@/components/Section.astro';
 import Base from '@/layouts/Base.astro';
+import Section from '@/components/Section.astro';
 import { AppConfig } from '@/utils/AppConfig';
-import { getTagCounts } from '@/utils/posts';
+import { getTopicsWithCounts } from '@/utils/topics';
 
-const title = `Tags | ${AppConfig.site_name}`;
-const description = 'Browse all posts by topic - security architecture, compliance, AI security, and more.';
+const title = `Topics | ${AppConfig.site_name}`;
+const description =
+	'The threads that run through the writing: security architecture, network security, compliance, and more.';
 
-const tagMap: Record<string, number> = await getTagCounts();
+const topics = await getTopicsWithCounts();
+const threadCount = topics.length;
+const numberWords = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
+const threadWord = numberWords[threadCount] ?? String(threadCount);
 ---
 
 <Base head={{ title, description }}>
 	<Section>
-		<Heading title="All Tags" eyebrow="Index" subtitle="Browse posts by topic." />
-		<div class="flex flex-wrap gap-3">
+		<div class="pb-9 pt-10 md:pt-14">
+			<h1 class="font-display text-fg text-[2.25rem] font-medium leading-[1.08] tracking-[-0.025em] md:text-[2.75rem]">
+				Topics
+			</h1>
+			<p class="text-muted mt-4 max-w-[520px] text-[17px] leading-[1.65]">
+				{threadWord[0].toUpperCase() + threadWord.slice(1)} threads run through everything here. Pick
+				one to follow.
+			</p>
+		</div>
+
+		<div class="pb-16">
 			{
-				Object.entries(tagMap).map(([tag, count]) => (
+				topics.map((topic, i) => (
 					<a
-						href={`/tags/${tag}`}
-						class="group border-line bg-surface text-muted hover:border-accent/40 hover:text-fg relative flex items-center gap-2 rounded-lg border px-4 py-2.5 font-mono text-sm transition-all hover:-translate-y-0.5"
+						href={`/tags/${topic.slug}`}
+						class:list={[
+							'row-link grid grid-cols-[1fr_auto] items-baseline gap-x-6 gap-y-1 py-6 sm:grid-cols-[minmax(200px,auto)_1fr_auto]',
+							i === 0 ? 'border-t border-[color:var(--line-strong)]' : 'border-line border-t'
+						]}
 					>
-						<span><span class="text-faint">#</span>{tag}</span>
-						<span class="bg-surface-2 text-faint group-hover:text-accent rounded px-1.5 py-0.5 text-xs font-semibold transition-colors">
-							{count}
+						<span class="row-title font-display text-fg text-[22px] font-medium tracking-[-0.01em] transition-colors sm:min-w-[230px] sm:text-[24px]">
+							{topic.name}
+						</span>
+						<span class="text-faint order-3 col-span-2 text-[15px] leading-[1.5] sm:order-none sm:col-span-1">
+							{topic.description}
+						</span>
+						<span
+							class="meta-mono justify-self-end whitespace-nowrap"
+							style={i === 0 ? 'color:var(--accent)' : undefined}
+						>
+							{topic.count} {topic.count === 1 ? 'post' : 'posts'}
 						</span>
 					</a>
 				))

@@ -5,7 +5,7 @@ description: "Critical IOS XE vulnerabilities are being actively exploited, patc
 author: "Sudhir"
 isPinned: false
 excerpt: "Critical IOS XE vulnerabilities are being actively exploited, patch immediately. Click to read more"
-tags: ["Cisco", "Vulnerability", "Switch", "Firewall", "Security"]
+tags: ["Vulnerability management", "Network security"]
 ---
 
 If you manage Cisco gear like switches, routers, firewalls; this one's serious.

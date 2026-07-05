@@ -5,7 +5,7 @@ description: "An analysis of Zscaler's cloud security platform (ZIA, ZPA, ZDX) f
 author: "Sudhir"
 isPinned: false
 excerpt: "An analysis of Zscaler's cloud security platform (ZIA, ZPA, ZDX) for large IT companies, covering its Zero Trust model, deployment, cost, and real-world use cases."
-tags: ["Network", "Security", "Solutions"]
+tags: ["Network security"]
 ---
 
 Hey Tech Leaders and Security Pros!
