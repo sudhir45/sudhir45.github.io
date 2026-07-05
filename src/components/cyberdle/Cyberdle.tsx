@@ -62,11 +62,11 @@ const KEYBOARD_ROWS = ['QWERTYUIOP', 'ASDFGHJKL', 'ZXCVBNM'] as const;
 const RANK: Record<Evaluation, number> = { absent: 0, present: 1, correct: 2 };
 
 // Fixed tile colors so the board reads the same in light and dark — terminal
-// green for a hit, brand amber for a near miss, neutral zinc for a miss.
+// green for a hit, brand amber for a near miss, warm stone for a miss.
 const TILE_COLORS: Record<Evaluation, { background: string; color: string }> = {
 	correct: { background: '#15803d', color: '#ffffff' },
 	present: { background: '#b45309', color: '#ffffff' },
-	absent: { background: '#52525b', color: '#ffffff' }
+	absent: { background: '#78716c', color: '#ffffff' }
 };
 
 function evaluateGuess(guess: string, answer: string): Evaluation[] {
@@ -337,9 +337,15 @@ export default function Cyberdle() {
 	}, [answer.word, guesses, puzzleNumber, showToast, status]);
 
 	return (
-		<div className="mx-auto flex w-full max-w-[22rem] flex-col items-center gap-5 sm:max-w-sm">
+		<div className="w-full pb-16">
 			<style>{CSS}</style>
 
+			{/* Puzzle meta, mono, quiet — sits under the editorial header */}
+			<div className="meta-mono mt-4">
+				#{puzzleNumber} · next word in {countdown}
+			</div>
+
+			<div className="mx-auto mt-10 flex w-full max-w-[22rem] flex-col items-center gap-5 sm:max-w-sm">
 			{/* Board */}
 			<div className="grid gap-1.5" aria-label="Cyberdle board">
 				{rows.map((row, r) => (
@@ -394,39 +400,31 @@ export default function Cyberdle() {
 				))}
 			</div>
 
-			{/* Result panel */}
+			{/* Result — a quiet block under the board, no card chrome */}
 			{showResult && (
-				<div className="border-line bg-surface animate-fade-up w-full rounded-xl border p-5 text-center">
-					<p className="eyebrow eyebrow-tick mb-2">{status === 'won' ? 'Flag captured' : 'Breached'}</p>
-					<h2 className="font-display text-fg mb-1 text-2xl font-semibold">
+				<div className="border-line animate-fade-up w-full border-t pt-6">
+					<h2 className="font-display text-fg text-xl font-medium tracking-[-0.01em]">
 						{status === 'won' ? 'Nice work.' : 'Out of attempts.'}
 					</h2>
-					<p className="text-muted mb-4 text-sm">
+					<p className="text-muted mt-2 text-sm leading-[1.6]">
 						The word was{' '}
 						<span className="text-accent font-mono font-semibold tracking-wider">{answer.word}</span>.{' '}
 						{answer.clue}
 					</p>
 
-					<div className="border-line text-fg mb-4 grid grid-cols-4 gap-2 border-y py-3">
-						<Stat label="Played" value={stats.played} />
-						<Stat label="Win %" value={winPct} />
-						<Stat label="Streak" value={stats.currentStreak} />
-						<Stat label="Max" value={stats.maxStreak} />
-					</div>
-
-					<div className="mb-4 space-y-1 text-left">
-						<p className="eyebrow mb-2">Guess distribution</p>
+					<div className="mt-5 space-y-1.5">
+						<p className="meta-mono mb-2.5 uppercase tracking-[0.06em]">Guess distribution</p>
 						{stats.distribution.map((count, i) => {
 							const isRowWin = status === 'won' && guesses.length === i + 1;
 							return (
 								<div key={i} className="flex items-center gap-2 text-xs">
-									<span className="text-muted w-3 font-mono">{i + 1}</span>
-									<div className="bg-surface-2 h-5 flex-1 overflow-hidden rounded">
+									<span className="text-subtle w-3 font-mono">{i + 1}</span>
+									<div className="bg-surface-2 h-5 flex-1 overflow-hidden rounded-sm">
 										<div
-											className="flex h-full items-center justify-end rounded px-2 font-mono font-semibold text-white"
+											className="flex h-full items-center justify-end rounded-sm px-2 font-mono font-semibold text-white"
 											style={{
 												width: `${Math.max(8, (count / maxDist) * 100)}%`,
-												background: isRowWin ? '#15803d' : '#52525b'
+												background: isRowWin ? '#15803d' : '#78716c'
 											}}
 										>
 											{count}
@@ -436,33 +434,40 @@ export default function Cyberdle() {
 							);
 						})}
 					</div>
-
-					<button
-						onClick={handleShare}
-						className="bg-accent-strong text-accent-contrast hover:opacity-90 inline-flex items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-semibold transition-opacity"
-					>
-						Share result
-					</button>
-					<p className="text-faint mt-4 font-mono text-xs">
-						Next puzzle in <span className="text-muted">{countdown}</span>
-					</p>
 				</div>
 			)}
+			</div>
 
-			{!showResult && (
-				<p className="text-faint text-center font-mono text-xs">
-					Puzzle #{puzzleNumber} · {WORDS.length} terms in rotation · resets at 00:00 IST
-				</p>
-			)}
+			{/* Stats — a hairline row, not a card */}
+			<div className="border-line mt-12 flex flex-wrap items-baseline justify-between gap-x-8 gap-y-5 border-t pt-6">
+				<div className="flex flex-wrap gap-x-10 gap-y-5 sm:gap-x-14">
+					<StatBig value={String(stats.played)} label="Played" />
+					<StatBig value={`${winPct}%`} label="Win rate" />
+					<StatBig value={String(stats.currentStreak)} label="Streak" />
+					<StatBig value={String(stats.maxStreak)} label="Max streak" />
+				</div>
+				{status !== 'playing' && (
+					<button
+						onClick={handleShare}
+						className="text-muted hover:text-fg text-sm font-medium transition-colors"
+					>
+						Share result →
+					</button>
+				)}
+			</div>
 		</div>
 	);
 }
 
-function Stat({ label, value }: { label: string; value: number }) {
+function StatBig({ label, value }: { label: string; value: string }) {
 	return (
 		<div>
-			<div className="font-display text-2xl font-semibold tabular-nums">{value}</div>
-			<div className="text-faint text-[0.65rem] uppercase tracking-wide">{label}</div>
+			<div className="font-display text-fg text-[28px] font-medium tracking-[-0.015em] tabular-nums">
+				{value}
+			</div>
+			<div className="text-subtle mt-1 font-mono text-[11px] font-medium uppercase tracking-[0.06em]">
+				{label}
+			</div>
 		</div>
 	);
 }
@@ -487,9 +492,9 @@ function KeyButton({
 			aria-label={ariaLabel ?? label}
 			onClick={onPress}
 			style={style}
-			className={`flex h-12 items-center justify-center rounded-md font-mono text-sm font-semibold uppercase transition-colors ${
+			className={`flex h-12 items-center justify-center rounded-md text-sm font-medium uppercase transition-colors ${
 				wide ? 'flex-[1.5] text-xs' : 'flex-1'
-			} ${state ? '' : 'bg-surface-2 text-fg hover:bg-line'}`}
+			} ${state ? '' : 'bg-line/60 text-fg hover:bg-line'}`}
 		>
 			{label}
 		</button>

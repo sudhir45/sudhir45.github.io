@@ -5,7 +5,7 @@ interface Props {
 	slideCount: number;
 }
 
-const { slug, title, slideCount } = Astro.props;
+const { slug, slideCount } = Astro.props;
 
 const slides = Array.from({ length: slideCount }, (_, i) => ({
 	number: i + 1,
@@ -14,128 +14,80 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 ---
 
 <div class="presentation-viewer" data-slide-count={slideCount} data-slug={slug}>
-	
+	<!-- 2px amber slide progress, pinned to the top of the viewport like the reading view -->
 	<div class="progress-bar-container">
 		<div class="progress-bar" role="progressbar" aria-valuemin="1" aria-valuemax={slideCount} aria-valuenow="1">
 			<div class="progress-fill"></div>
 		</div>
 	</div>
 
-	
 	<div class="viewer-container group">
-		
-		
-		<div class="top-bar">
-			<h2 class="viewer-title">{title}</h2>
-			<div class="top-bar-controls">
-				
-				<div class="slide-counter">
-					<span class="slide-current">1</span>
-					<span class="slide-separator">/</span>
-					<span class="slide-total">{slideCount}</span>
-				</div>
-				
-				<button class="control-btn grid-btn" aria-label="Slide grid overview" title="Slide grid (G)">
-					<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4h6v6H4V4zm10 0h6v6h-6V4zM4 14h6v6H4v-6zm10 0h6v6h-6v-6z" />
-					</svg>
-				</button>
-				
-				<button class="control-btn shortcuts-btn" aria-label="Keyboard shortcuts" title="Keyboard shortcuts (?)">
-					<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-					</svg>
-				</button>
-				
-				<button class="control-btn fullscreen-btn" aria-label="Toggle fullscreen">
-					<svg class="fullscreen-expand w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
-					</svg>
-					<svg class="fullscreen-compress w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 9V4.5M9 9H4.5M9 9L3.75 3.75M9 15v4.5M9 15H4.5M9 15l-5.25 5.25M15 9h4.5M15 9V4.5M15 9l5.25-5.25M15 15h4.5M15 15v4.5m0-4.5l5.25 5.25" />
-					</svg>
-				</button>
-			</div>
-		</div>
-
-		
+		<!-- The slide sits plainly on the paper with a hairline frame -->
 		<div class="slide-container">
-			
 			<div class="slide-placeholder"></div>
-			
-			
+
 			<div class="slide-loading">
 				<div class="spinner"></div>
 			</div>
-			
-			
-			<img 
+
+			<img
 				class="slide-image slide-image-a active"
 				src={slides[0]?.src ?? ''}
 				alt={`Slide 1 of ${slideCount}`}
 				data-slides={JSON.stringify(slides)}
 			/>
-			<img 
-				class="slide-image slide-image-b"
-				src=""
-				alt=""
-			/>
+			<img class="slide-image slide-image-b" src="" alt="" />
 
-			
 			<div class="zoom-overlay hidden">
 				<img class="zoom-image" src="" alt="Zoomed slide" />
 				<button class="zoom-close" aria-label="Close zoom">
-					<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
 					</svg>
 				</button>
-				<p class="zoom-hint">Scroll to zoom • Drag to pan • Click to close</p>
+				<p class="zoom-hint">Scroll to zoom · drag to pan · click to close</p>
 			</div>
-
-			
-			<button class="nav-btn prev-btn" aria-label="Previous slide">
-				<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-				</svg>
-			</button>
-			<button class="nav-btn next-btn" aria-label="Next slide">
-				<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-				</svg>
-			</button>
-
-			
-			<button class="zoom-btn" aria-label="Zoom slide">
-				<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
-				</svg>
-			</button>
 		</div>
 
-		
+		<!-- Quiet text controls -->
+		<div class="flex flex-wrap items-center justify-between gap-x-5 gap-y-2 px-0.5 py-4">
+			<span class="meta-mono slide-counter whitespace-nowrap">
+				<span class="slide-current">1</span><span class="slide-separator"> / </span><span class="slide-total">{slideCount}</span>
+			</span>
+			<div class="flex items-center gap-6 text-sm font-medium">
+				<button class="prev-btn text-faint hover:text-fg transition-colors disabled:cursor-not-allowed disabled:opacity-40" aria-label="Previous slide">
+					← Previous
+				</button>
+				<button class="next-btn text-accent transition-opacity hover:opacity-70 disabled:cursor-not-allowed disabled:opacity-40" aria-label="Next slide">
+					Next →
+				</button>
+			</div>
+			<div class="flex items-center gap-5 text-[13px] font-medium">
+				<button class="grid-btn text-faint hover:text-fg transition-colors" aria-label="Slide grid overview" title="Slide grid (G)">
+					Grid
+				</button>
+				<button class="fullscreen-btn text-faint hover:text-fg transition-colors" aria-label="Toggle fullscreen" title="Fullscreen (F)">
+					<span class="fullscreen-expand">Fullscreen</span>
+					<span class="fullscreen-compress hidden">Exit</span>
+				</button>
+			</div>
+		</div>
+
+		<!-- Thumbnails -->
 		<div class="thumbnail-strip">
 			{slides.map((slide) => (
-				<button 
-					class="thumbnail-btn"
-					data-slide-num={slide.number}
-					aria-label={`Go to slide ${slide.number}`}
-				>
-					<img 
-						src={slide.src} 
-						alt={`Thumbnail ${slide.number}`}
-						loading="lazy"
-					/>
-					<span class="thumbnail-number">{slide.number}</span>
+				<button class="thumbnail-btn" data-slide-num={slide.number} aria-label={`Go to slide ${slide.number}`}>
+					<img src={slide.src} alt={`Thumbnail ${slide.number}`} loading="lazy" />
 				</button>
 			))}
 		</div>
 	</div>
 
-	
+	<!-- Shortcuts modal (opened with ?) -->
 	<div class="shortcuts-modal hidden" role="dialog" aria-modal="true" aria-labelledby="shortcuts-title">
 		<div class="shortcuts-backdrop"></div>
 		<div class="shortcuts-content">
-			<h3 id="shortcuts-title">Keyboard Shortcuts</h3>
+			<h3 id="shortcuts-title">Keyboard shortcuts</h3>
 			<div class="shortcuts-grid">
 				<div class="shortcut-row">
 					<kbd>←</kbd> <kbd>→</kbd>
@@ -143,7 +95,7 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 				</div>
 				<div class="shortcut-row">
 					<kbd>Home</kbd> <kbd>End</kbd>
-					<span>First / Last slide</span>
+					<span>First / last slide</span>
 				</div>
 				<div class="shortcut-row">
 					<kbd>F</kbd>
@@ -170,12 +122,12 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 		</div>
 	</div>
 
-	
+	<!-- Grid overview modal -->
 	<div class="grid-modal hidden" role="dialog" aria-modal="true" aria-labelledby="grid-title">
 		<div class="grid-backdrop"></div>
 		<div class="grid-content">
 			<div class="grid-header">
-				<h3 id="grid-title">Slide Overview</h3>
+				<h3 id="grid-title">All slides</h3>
 				<button class="grid-close" aria-label="Close slide overview">
 					<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -195,142 +147,45 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 
 	<p class="sr-only slide-announcer" aria-live="polite" aria-atomic="true">Slide 1 of {slideCount}</p>
 
-	
-	<p class="viewer-hints">
-		<span class="hint-desktop">Press <kbd>?</kbd> for shortcuts • Click slide to zoom</span>
-		<span class="hint-mobile">Swipe to navigate • Tap slide to zoom</span>
+	<p class="viewer-hints meta-mono pt-3 text-center">
+		<span class="hint-desktop">← → navigate &nbsp;·&nbsp; F fullscreen &nbsp;·&nbsp; G grid &nbsp;·&nbsp; Z zoom</span>
+		<span class="hint-mobile">Swipe to navigate &nbsp;·&nbsp; tap slide to zoom</span>
 	</p>
 </div>
 
 <style>
 	.presentation-viewer {
-		--glass-bg: rgba(0, 0, 0, 0.6);
-		--glass-border: rgba(255, 255, 255, 0.1);
-		--glass-blur: 12px;
-		--accent: rgb(245, 158, 11);
-		--accent-glow: rgba(245, 158, 11, 0.4);
-		--transition-slide: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 		--transition-ui: 0.2s ease;
 	}
 
+	/* Slide progress: 2px amber line at the very top of the viewport,
+	   the same treatment as the reading view's scroll progress. */
 	.progress-bar-container {
-		position: relative;
-		height: 3px;
-		background: rgba(161, 161, 170, 0.3);
-		border-radius: 3px;
-		margin-bottom: 1rem;
-		overflow: hidden;
-		cursor: pointer;
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		z-index: 60;
+		height: 2px;
+		pointer-events: none;
 	}
 
-	.progress-bar-container:hover {
-		height: 6px;
+	.progress-bar {
+		height: 100%;
 	}
 
 	.progress-fill {
 		height: 100%;
-		width: calc(100% / var(--slide-count, 1));
-		background: linear-gradient(90deg, var(--accent), #fbbf24);
-		border-radius: 3px;
-		transition: width var(--transition-slide), transform var(--transition-slide);
-		box-shadow: 0 0 10px var(--accent-glow);
-	}
-
-	.viewer-container {
-		position: relative;
-		display: flex;
-		flex-direction: column;
-		overflow: hidden;
-		border-radius: 1rem;
-		border: 1px solid var(--glass-border);
-		background: linear-gradient(180deg, rgba(24, 24, 27, 0.95) 0%, rgba(9, 9, 11, 0.98) 100%);
-		box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-	}
-
-	.top-bar {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		padding: 0.875rem 1.25rem;
-		background: var(--glass-bg);
-		backdrop-filter: blur(var(--glass-blur));
-		-webkit-backdrop-filter: blur(var(--glass-blur));
-		border-bottom: 1px solid var(--glass-border);
-	}
-
-	.viewer-title {
-		font-size: 0.9375rem;
-		font-weight: 600;
-		color: #fafafa;
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		max-width: 60%;
-	}
-
-	.top-bar-controls {
-		display: flex;
-		align-items: center;
-		gap: 0.75rem;
-	}
-
-	.slide-counter {
-		display: flex;
-		align-items: center;
-		gap: 0.375rem;
-		font-size: 0.875rem;
-		font-weight: 500;
-		color: #a1a1aa;
-		font-variant-numeric: tabular-nums;
-	}
-
-	.slide-current {
-		color: #fafafa;
-		min-width: 1.5ch;
-		text-align: right;
-	}
-
-	.control-btn {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		padding: 0.5rem;
-		border-radius: 0.5rem;
-		color: #a1a1aa;
-		background: transparent;
-		border: none;
-		cursor: pointer;
-		transition: all var(--transition-ui);
-	}
-
-	.control-btn:hover {
-		color: #fafafa;
-		background: rgba(255, 255, 255, 0.1);
-	}
-
-	/* Visible keyboard focus for all interactive viewer controls */
-	.control-btn:focus-visible,
-	.nav-btn:focus-visible,
-	.zoom-btn:focus-visible,
-	.zoom-close:focus-visible,
-	.grid-close:focus-visible,
-	.shortcuts-close:focus-visible,
-	.thumbnail-btn:focus-visible,
-	.grid-slide-btn:focus-visible {
-		outline: 2px solid var(--accent);
-		outline-offset: 2px;
-	}
-
-	/* Reveal the hover-hidden nav/zoom buttons when reached via keyboard */
-	.nav-btn:focus-visible,
-	.zoom-btn:focus-visible {
-		opacity: 1;
+		width: 0;
+		background: var(--accent);
+		transition: width 0.3s ease;
 	}
 
 	.slide-container {
 		position: relative;
 		aspect-ratio: 16 / 9;
-		background: #0a0a0a;
+		border: 1px solid var(--frame);
+		background: var(--surface-2);
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -344,7 +199,7 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 		background-position: center;
 		filter: blur(20px);
 		transform: scale(1.1);
-		opacity: 0.5;
+		opacity: 0.35;
 		transition: opacity 0.3s ease;
 	}
 
@@ -354,7 +209,6 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		background: transparent;
 		z-index: 10;
 		opacity: 0;
 		transition: opacity 0.2s ease;
@@ -371,16 +225,18 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 	}
 
 	.spinner {
-		width: 3rem;
-		height: 3rem;
-		border: 3px solid rgba(161, 161, 170, 0.3);
+		width: 2.5rem;
+		height: 2.5rem;
+		border: 3px solid var(--line);
 		border-top-color: var(--accent);
 		border-radius: 50%;
 		animation: spin 0.8s linear infinite;
 	}
 
 	@keyframes spin {
-		to { transform: rotate(360deg); }
+		to {
+			transform: rotate(360deg);
+		}
 	}
 
 	.slide-image {
@@ -402,74 +258,57 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 		pointer-events: auto;
 	}
 
-	.nav-btn {
-		position: absolute;
-		top: 50%;
-		transform: translateY(-50%);
-		padding: 0.875rem;
-		background: var(--glass-bg);
-		backdrop-filter: blur(var(--glass-blur));
-		-webkit-backdrop-filter: blur(var(--glass-blur));
-		border: 1px solid var(--glass-border);
-		border-radius: 50%;
-		color: #fafafa;
+	/* Thumbnails: hairline frames on paper, current slide inked */
+	.thumbnail-strip {
+		display: flex;
+		gap: 8px;
+		padding: 2px 0;
+		overflow-x: auto;
+		scroll-behavior: smooth;
+		scrollbar-width: thin;
+		scrollbar-color: var(--line) transparent;
+	}
+
+	.thumbnail-btn {
+		position: relative;
+		flex: none;
+		width: 88px;
+		aspect-ratio: 16 / 9;
+		padding: 0;
+		border: 1px solid var(--line);
+		background: var(--surface-2);
+		opacity: 0.55;
 		cursor: pointer;
-		opacity: 0;
-		transition: all var(--transition-ui);
-		z-index: 20;
+		overflow: hidden;
+		box-sizing: border-box;
+		transition:
+			opacity var(--transition-ui),
+			border-color var(--transition-ui);
 	}
 
-	.prev-btn { left: 1rem; }
-	.next-btn { right: 1rem; }
+	.thumbnail-btn img {
+		display: block;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
 
-	.slide-container:hover .nav-btn,
-	.nav-btn:focus {
+	.thumbnail-btn:hover {
+		opacity: 0.85;
+	}
+
+	.thumbnail-btn.active {
 		opacity: 1;
+		border: 2px solid var(--line-strong);
 	}
 
-	.nav-btn:hover {
-		background: rgba(245, 158, 11, 0.8);
-		border-color: var(--accent);
-		transform: translateY(-50%) scale(1.1);
-		box-shadow: 0 0 20px var(--accent-glow);
-	}
-
-	.nav-btn:disabled {
-		opacity: 0.3;
-		cursor: not-allowed;
-		pointer-events: none;
-	}
-
-	.zoom-btn {
-		position: absolute;
-		bottom: 1rem;
-		right: 1rem;
-		padding: 0.625rem;
-		background: var(--glass-bg);
-		backdrop-filter: blur(var(--glass-blur));
-		-webkit-backdrop-filter: blur(var(--glass-blur));
-		border: 1px solid var(--glass-border);
-		border-radius: 0.5rem;
-		color: #a1a1aa;
-		cursor: pointer;
-		opacity: 0;
-		transition: all var(--transition-ui);
-		z-index: 20;
-	}
-
-	.slide-container:hover .zoom-btn {
-		opacity: 1;
-	}
-
-	.zoom-btn:hover {
-		color: #fafafa;
-		background: rgba(255, 255, 255, 0.15);
-	}
-
+	/* Zoom overlay: paper lightbox, matching medium-zoom on posts */
 	.zoom-overlay {
 		position: fixed;
 		inset: 0;
-		background: rgba(0, 0, 0, 0.95);
+		background: color-mix(in oklab, var(--bg) 96%, transparent);
+		backdrop-filter: blur(6px);
+		-webkit-backdrop-filter: blur(6px);
 		z-index: 100;
 		display: flex;
 		align-items: center;
@@ -494,101 +333,36 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 
 	.zoom-close {
 		position: absolute;
-		top: 1.5rem;
-		right: 1.5rem;
-		padding: 0.75rem;
-		background: var(--glass-bg);
-		backdrop-filter: blur(var(--glass-blur));
-		border: 1px solid var(--glass-border);
+		top: 1.25rem;
+		right: 1.25rem;
+		padding: 0.6rem;
+		background: var(--bg);
+		border: 1px solid var(--line);
 		border-radius: 50%;
-		color: #fafafa;
+		color: var(--muted);
 		cursor: pointer;
-		transition: all var(--transition-ui);
+		transition: color var(--transition-ui);
 	}
 
 	.zoom-close:hover {
-		background: rgba(239, 68, 68, 0.8);
+		color: var(--fg);
 	}
 
 	.zoom-hint {
 		position: absolute;
-		bottom: 2rem;
+		bottom: 1.5rem;
 		left: 50%;
 		transform: translateX(-50%);
-		padding: 0.5rem 1rem;
-		background: var(--glass-bg);
-		backdrop-filter: blur(var(--glass-blur));
-		border-radius: 0.5rem;
-		font-size: 0.75rem;
-		color: #a1a1aa;
+		padding: 6px 12px;
+		background: var(--bg);
+		border: 1px solid var(--line);
+		font-family: var(--font-code);
+		font-size: 12px;
+		font-weight: 500;
+		color: var(--subtle);
 	}
 
-	.thumbnail-strip {
-		display: flex;
-		gap: 0.5rem;
-		padding: 0.75rem 1rem;
-		background: var(--glass-bg);
-		backdrop-filter: blur(var(--glass-blur));
-		-webkit-backdrop-filter: blur(var(--glass-blur));
-		border-top: 1px solid var(--glass-border);
-		overflow-x: auto;
-		scroll-behavior: smooth;
-		scrollbar-width: thin;
-		scrollbar-color: rgba(161, 161, 170, 0.5) transparent;
-	}
-
-	.thumbnail-strip::-webkit-scrollbar {
-		height: 4px;
-	}
-
-	.thumbnail-strip::-webkit-scrollbar-thumb {
-		background: rgba(161, 161, 170, 0.5);
-		border-radius: 2px;
-	}
-
-	.thumbnail-btn {
-		position: relative;
-		flex-shrink: 0;
-		padding: 0;
-		background: none;
-		border: 2px solid transparent;
-		border-radius: 0.375rem;
-		cursor: pointer;
-		opacity: 0.5;
-		transition: all var(--transition-ui);
-		overflow: hidden;
-	}
-
-	.thumbnail-btn img {
-		display: block;
-		height: 3rem;
-		width: auto;
-		object-fit: cover;
-	}
-
-	.thumbnail-btn:hover {
-		opacity: 0.8;
-		transform: translateY(-2px);
-	}
-
-	.thumbnail-btn.active {
-		opacity: 1;
-		border-color: var(--accent);
-		box-shadow: 0 0 12px var(--accent-glow);
-	}
-
-	.thumbnail-number {
-		position: absolute;
-		bottom: 2px;
-		right: 2px;
-		padding: 0.125rem 0.375rem;
-		background: rgba(0, 0, 0, 0.7);
-		border-radius: 0.25rem;
-		font-size: 0.625rem;
-		font-weight: 600;
-		color: #fafafa;
-	}
-
+	/* Modals: plain paper panels, hairline borders, no glass */
 	.shortcuts-modal {
 		position: fixed;
 		inset: 0;
@@ -605,8 +379,7 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 	.shortcuts-backdrop {
 		position: absolute;
 		inset: 0;
-		background: rgba(0, 0, 0, 0.8);
-		backdrop-filter: blur(4px);
+		background: color-mix(in oklab, var(--fg) 32%, transparent);
 	}
 
 	.shortcuts-content {
@@ -614,18 +387,17 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 		width: 90%;
 		max-width: 400px;
 		padding: 1.5rem;
-		background: linear-gradient(180deg, rgba(39, 39, 42, 0.98) 0%, rgba(24, 24, 27, 0.98) 100%);
-		border: 1px solid var(--glass-border);
-		border-radius: 1rem;
-		box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+		background: var(--bg);
+		border: 1px solid var(--line);
 	}
 
 	.shortcuts-content h3 {
 		margin: 0 0 1.25rem;
-		font-size: 1.125rem;
-		font-weight: 600;
-		color: #fafafa;
-		text-align: center;
+		font-family: var(--font-display);
+		font-size: 17px;
+		font-weight: 500;
+		letter-spacing: -0.01em;
+		color: var(--fg);
 	}
 
 	.shortcuts-grid {
@@ -639,7 +411,7 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 		align-items: center;
 		gap: 0.5rem;
 		font-size: 0.875rem;
-		color: #a1a1aa;
+		color: var(--muted);
 	}
 
 	.shortcut-row kbd {
@@ -648,13 +420,12 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 		justify-content: center;
 		min-width: 1.75rem;
 		padding: 0.25rem 0.5rem;
-		background: rgba(255, 255, 255, 0.1);
-		border: 1px solid rgba(255, 255, 255, 0.2);
-		border-radius: 0.375rem;
-		font-family: inherit;
+		background: var(--surface-2);
+		border: 1px solid var(--line);
+		border-radius: 0.25rem;
 		font-size: 0.75rem;
 		font-weight: 500;
-		color: #fafafa;
+		color: var(--fg);
 	}
 
 	.shortcut-row span {
@@ -665,19 +436,18 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 		display: block;
 		width: 100%;
 		margin-top: 1.5rem;
-		padding: 0.75rem;
-		background: var(--accent);
+		padding: 0.7rem;
+		background: var(--fg);
+		color: var(--bg);
 		border: none;
-		border-radius: 0.5rem;
-		font-weight: 600;
-		color: #18181b;
+		font-size: 0.875rem;
+		font-weight: 500;
 		cursor: pointer;
-		transition: all var(--transition-ui);
+		transition: opacity var(--transition-ui);
 	}
 
 	.shortcuts-close:hover {
-		background: #d97706;
-		transform: translateY(-1px);
+		opacity: 0.85;
 	}
 
 	.grid-modal {
@@ -696,8 +466,7 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 	.grid-backdrop {
 		position: absolute;
 		inset: 0;
-		background: rgba(0, 0, 0, 0.85);
-		backdrop-filter: blur(4px);
+		background: color-mix(in oklab, var(--fg) 32%, transparent);
 	}
 
 	.grid-content {
@@ -705,10 +474,8 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 		width: min(1100px, 94vw);
 		max-height: 85vh;
 		overflow: hidden;
-		border-radius: 1rem;
-		border: 1px solid var(--glass-border);
-		background: linear-gradient(180deg, rgba(39, 39, 42, 0.98) 0%, rgba(24, 24, 27, 0.98) 100%);
-		box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+		background: var(--bg);
+		border: 1px solid var(--line);
 	}
 
 	.grid-header {
@@ -716,14 +483,16 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 		align-items: center;
 		justify-content: space-between;
 		padding: 1rem 1.25rem;
-		border-bottom: 1px solid var(--glass-border);
+		border-bottom: 1px solid var(--line);
 	}
 
 	.grid-header h3 {
 		margin: 0;
-		font-size: 1rem;
-		font-weight: 600;
-		color: #fafafa;
+		font-family: var(--font-display);
+		font-size: 16px;
+		font-weight: 500;
+		letter-spacing: -0.01em;
+		color: var(--fg);
 	}
 
 	.grid-close {
@@ -732,16 +501,14 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 		justify-content: center;
 		padding: 0.5rem;
 		border: none;
-		border-radius: 0.5rem;
 		background: transparent;
-		color: #a1a1aa;
+		color: var(--muted);
 		cursor: pointer;
-		transition: all var(--transition-ui);
+		transition: color var(--transition-ui);
 	}
 
 	.grid-close:hover {
-		color: #fafafa;
-		background: rgba(255, 255, 255, 0.1);
+		color: var(--fg);
 	}
 
 	.grid-list {
@@ -749,21 +516,20 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 		grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
 		gap: 0.75rem;
 		padding: 1rem;
-		max-height: calc(85vh - 66px);
+		max-height: calc(85vh - 60px);
 		overflow-y: auto;
 	}
 
 	.grid-slide-btn {
 		display: flex;
 		flex-direction: column;
-		gap: 0.375rem;
+		gap: 0.3rem;
 		padding: 0;
-		border: 1px solid rgba(161, 161, 170, 0.45);
-		border-radius: 0.5rem;
-		background: rgba(9, 9, 11, 0.8);
+		border: 1px solid var(--line);
+		background: var(--surface-2);
 		overflow: hidden;
 		cursor: pointer;
-		transition: all var(--transition-ui);
+		transition: border-color var(--transition-ui);
 	}
 
 	.grid-slide-btn img {
@@ -773,68 +539,57 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 	}
 
 	.grid-slide-btn:hover {
-		border-color: rgba(245, 158, 11, 0.8);
-		box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.4);
-		transform: translateY(-1px);
+		border-color: var(--faint);
 	}
 
 	.grid-slide-btn.active {
-		border-color: rgba(245, 158, 11, 1);
-		box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.6), 0 0 14px rgba(245, 158, 11, 0.2);
+		border-color: var(--line-strong);
 	}
 
 	.grid-slide-number {
-		padding: 0.25rem 0.5rem 0.55rem;
-		font-size: 0.75rem;
+		padding: 0.3rem 0.5rem 0.5rem;
+		font-family: var(--font-code);
+		font-size: 11px;
 		font-weight: 500;
-		color: #d4d4d8;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		color: var(--subtle);
 		text-align: left;
 	}
 
-	.viewer-hints {
-		margin-top: 0.75rem;
-		text-align: center;
-		font-size: 0.75rem;
-		color: #71717a;
+	/* Keyboard focus */
+	.presentation-viewer button:focus-visible {
+		outline: 2px solid var(--accent);
+		outline-offset: 2px;
 	}
 
-	.viewer-hints kbd {
-		padding: 0.125rem 0.375rem;
-		background: rgba(161, 161, 170, 0.2);
-		border-radius: 0.25rem;
-		font-family: inherit;
+	.hint-mobile {
+		display: none;
 	}
 
-	.hint-mobile { display: none; }
-
+	/* Fullscreen: paper, slide fills the space, controls stay quiet */
 	.presentation-viewer.fullscreen {
 		position: fixed;
 		inset: 0;
 		z-index: 50;
-		padding: 0;
-		background: #000;
-		border-radius: 0;
-	}
-
-	.presentation-viewer.fullscreen .progress-bar-container {
-		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
-		z-index: 30;
-		margin: 0;
-		border-radius: 0;
+		background: var(--bg);
+		padding: 20px 24px;
+		display: flex;
+		flex-direction: column;
+		overflow: hidden;
 	}
 
 	.presentation-viewer.fullscreen .viewer-container {
-		height: 100%;
-		border-radius: 0;
-		border: none;
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		min-height: 0;
 	}
 
 	.presentation-viewer.fullscreen .slide-container {
 		flex: 1;
 		aspect-ratio: unset;
+		min-height: 0;
 	}
 
 	.presentation-viewer.fullscreen .viewer-hints {
@@ -842,208 +597,17 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 	}
 
 	@media (max-width: 640px) {
-		.viewer-title {
-			font-size: 0.8125rem;
-			max-width: 50%;
-		}
-
-		.nav-btn {
-			padding: 0.75rem;
-			opacity: 0.7;
-		}
-
-		.prev-btn { left: 0.5rem; }
-		.next-btn { right: 0.5rem; }
-
-		.thumbnail-btn img {
-			height: 2.5rem;
-		}
-
-		.hint-desktop { display: none; }
-		.hint-mobile { display: inline; }
-
-		.shortcuts-btn {
+		.hint-desktop {
 			display: none;
 		}
 
-		.grid-list {
-			grid-template-columns: repeat(2, minmax(0, 1fr));
-		}
-	}
-
-	@media (hover: none) and (pointer: coarse) {
-		.nav-btn {
-			opacity: 0.8;
-			padding: 1rem;
+		.hint-mobile {
+			display: inline;
 		}
 
-		.zoom-btn {
-			opacity: 0.8;
+		.thumbnail-btn {
+			width: 72px;
 		}
-	}
-
-	:root:not(.dark) .presentation-viewer,
-	:global(.light) .presentation-viewer {
-		--glass-bg: rgba(255, 255, 255, 0.8);
-		--glass-border: rgba(113, 113, 122, 0.2);
-	}
-
-	:root:not(.dark) .viewer-container,
-	:global(.light) .viewer-container {
-		background: linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
-		border-color: rgba(113, 113, 122, 0.2);
-		box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
-	}
-
-	:root:not(.dark) .top-bar,
-	:global(.light) .top-bar {
-		background: rgba(255, 255, 255, 0.9);
-		border-color: rgba(113, 113, 122, 0.15);
-	}
-
-	:root:not(.dark) .viewer-title,
-	:global(.light) .viewer-title {
-		color: #18181b;
-	}
-
-	:root:not(.dark) .slide-counter,
-	:global(.light) .slide-counter {
-		color: #71717a;
-	}
-
-	:root:not(.dark) .slide-current,
-	:global(.light) .slide-current {
-		color: #18181b;
-	}
-
-	:root:not(.dark) .control-btn,
-	:global(.light) .control-btn {
-		color: #71717a;
-	}
-
-	:root:not(.dark) .control-btn:hover,
-	:global(.light) .control-btn:hover {
-		color: #18181b;
-		background: rgba(0, 0, 0, 0.05);
-	}
-
-	:root:not(.dark) .slide-container,
-	:global(.light) .slide-container {
-		background: #e4e4e7;
-	}
-
-	:root:not(.dark) .thumbnail-strip,
-	:global(.light) .thumbnail-strip {
-		background: rgba(255, 255, 255, 0.9);
-		border-color: rgba(113, 113, 122, 0.15);
-	}
-
-	:root:not(.dark) .thumbnail-number,
-	:global(.light) .thumbnail-number {
-		background: rgba(0, 0, 0, 0.6);
-	}
-
-	:root:not(.dark) .nav-btn,
-	:global(.light) .nav-btn {
-		background: rgba(255, 255, 255, 0.9);
-		border-color: rgba(113, 113, 122, 0.2);
-		color: #18181b;
-	}
-
-	:root:not(.dark) .nav-btn:hover,
-	:global(.light) .nav-btn:hover {
-		background: rgba(245, 158, 11, 0.9);
-		border-color: var(--accent);
-		color: #fafafa;
-	}
-
-	:root:not(.dark) .zoom-btn,
-	:global(.light) .zoom-btn {
-		background: rgba(255, 255, 255, 0.9);
-		border-color: rgba(113, 113, 122, 0.2);
-		color: #52525b;
-	}
-
-	:root:not(.dark) .zoom-btn:hover,
-	:global(.light) .zoom-btn:hover {
-		color: #18181b;
-		background: rgba(255, 255, 255, 0.95);
-	}
-
-	:root:not(.dark) .shortcuts-content,
-	:global(.light) .shortcuts-content {
-		background: linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
-		border-color: rgba(113, 113, 122, 0.2);
-	}
-
-	:root:not(.dark) .shortcuts-content h3,
-	:global(.light) .shortcuts-content h3 {
-		color: #18181b;
-	}
-
-	:root:not(.dark) .grid-content,
-	:global(.light) .grid-content {
-		background: linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
-		border-color: rgba(113, 113, 122, 0.2);
-	}
-
-	:root:not(.dark) .grid-header,
-	:global(.light) .grid-header {
-		border-color: rgba(113, 113, 122, 0.15);
-	}
-
-	:root:not(.dark) .grid-header h3,
-	:global(.light) .grid-header h3 {
-		color: #18181b;
-	}
-
-	:root:not(.dark) .grid-close,
-	:global(.light) .grid-close {
-		color: #52525b;
-	}
-
-	:root:not(.dark) .grid-close:hover,
-	:global(.light) .grid-close:hover {
-		color: #18181b;
-		background: rgba(0, 0, 0, 0.05);
-	}
-
-	:root:not(.dark) .grid-slide-btn,
-	:global(.light) .grid-slide-btn {
-		background: #ffffff;
-		border-color: rgba(113, 113, 122, 0.25);
-	}
-
-	:root:not(.dark) .grid-slide-number,
-	:global(.light) .grid-slide-number {
-		color: #52525b;
-	}
-
-	:root:not(.dark) .shortcut-row,
-	:global(.light) .shortcut-row {
-		color: #52525b;
-	}
-
-	:root:not(.dark) .shortcut-row kbd,
-	:global(.light) .shortcut-row kbd {
-		background: rgba(0, 0, 0, 0.05);
-		border-color: rgba(0, 0, 0, 0.1);
-		color: #18181b;
-	}
-
-	:root:not(.dark) .viewer-hints,
-	:global(.light) .viewer-hints {
-		color: #71717a;
-	}
-
-	:root:not(.dark) .viewer-hints kbd,
-	:global(.light) .viewer-hints kbd {
-		background: rgba(0, 0, 0, 0.05);
-	}
-
-	:root:not(.dark) .progress-bar-container,
-	:global(.light) .progress-bar-container {
-		background: rgba(113, 113, 122, 0.15);
 	}
 </style>
 
@@ -1319,7 +883,7 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 				if (!touch) return;
 				const touchEndX = touch.clientX;
 				const deltaX = touchEndX - touchStartX;
-				
+
 				if (Math.abs(deltaX) > 50) {
 					if (deltaX < 0) {
 						updateSlide(currentSlide + 1);

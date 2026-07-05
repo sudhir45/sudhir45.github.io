@@ -12,52 +12,73 @@ export function getStaticPaths() {
 	}));
 }
 
-const { presentation } = Astro.props;
+interface Talk {
+	slug: string;
+	title: string;
+	description?: string;
+	venue?: string;
+	date?: string;
+	slideCount: number;
+}
+
+const { presentation } = Astro.props as { presentation: Talk };
 const title = `${presentation.title} | ${AppConfig.site_name}`;
-const description = presentation.description;
+const description = presentation.description ?? presentation.title;
+
+const monthYear = presentation.date
+	? new Date(presentation.date).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
+	: '';
+const metaParts = [monthYear, presentation.venue, `${presentation.slideCount} slides`].filter(
+	Boolean
+);
+
+// Next talk: the one after this in reverse-chronological order, if any.
+const sorted = ([...presentations] as Talk[]).sort((a, b) => {
+	const da = a.date ? new Date(a.date).getTime() : 0;
+	const db = b.date ? new Date(b.date).getTime() : 0;
+	return db - da;
+});
+const idx = sorted.findIndex((t) => t.slug === presentation.slug);
+const nextTalk = sorted[idx + 1] ?? (idx > 0 ? sorted[0] : undefined);
 ---
 
 <Base head={{ title, description }}>
 	<Section>
-		<div class="py-8">
-			
-			<nav class="mb-6 text-sm" aria-label="Breadcrumb">
-				<ol class="text-faint flex items-center gap-2">
-					<li>
-						<a href="/presentations" class="hover:text-accent transition-colors">
-							Presentations
-						</a>
-					</li>
-					<li>
-						<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-						</svg>
-					</li>
-					<li class="text-fg truncate">
-						{presentation.title}
-					</li>
-				</ol>
-			</nav>
+		<div class="pt-10 md:pt-12">
+			<a href="/presentations" class="meta-mono hover:text-fg transition-colors">← All talks</a>
+			<h1
+				class="font-display text-fg mt-5 text-[1.625rem] font-medium leading-[1.15] tracking-[-0.02em] text-balance md:text-[2rem]"
+			>
+				{presentation.title}
+			</h1>
+			<div class="meta-mono mt-3">{metaParts.join(' · ')}</div>
+		</div>
 
-			
-			<PresentationViewer 
+		<div class="mt-7">
+			<PresentationViewer
 				slug={presentation.slug}
 				title={presentation.title}
 				slideCount={presentation.slideCount}
 			/>
-
-			
-			<div class="mt-8">
-				<a 
-					href="/presentations" 
-					class="text-accent inline-flex items-center gap-2 text-sm font-medium transition-colors hover:underline"
-				>
-					<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-					</svg>
-					Back to all presentations
-				</a>
-			</div>
 		</div>
+
+		{
+			nextTalk ? (
+				<a
+					href={`/presentations/${nextTalk.slug}`}
+					class="row-link border-line mb-16 mt-9 flex items-baseline justify-between gap-6 border-t pt-6"
+				>
+					<span>
+						<span class="meta-mono block uppercase tracking-[0.06em]">Next talk</span>
+						<span class="row-title font-display text-fg mt-2 block text-[20px] font-medium tracking-[-0.01em] transition-colors">
+							{nextTalk.title}
+						</span>
+					</span>
+					<span class="text-faint whitespace-nowrap text-sm font-medium">View →</span>
+				</a>
+			) : (
+				<div class="pb-16" />
+			)
+		}
 	</Section>
 </Base>
