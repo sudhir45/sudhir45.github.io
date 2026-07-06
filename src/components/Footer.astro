@@ -2,43 +2,47 @@
 import Section from './Section.astro';
 import { SOCIALS } from '@/utils/AppConfig';
 
-const year = new Date();
+const year = new Date().getFullYear();
+
+const navLinks = [
+	{ href: '/posts', label: 'Writing' },
+	{ href: '/about', label: 'About' },
+	{ href: '/presentations', label: 'Talks' },
+	{ href: '/tags', label: 'Topics' },
+	{ href: '/cyberdle', label: 'Cyberdle' },
+	{ href: '/rss.xml', label: 'RSS' },
+	{ href: '/imprint', label: 'Imprint' }
+];
 ---
 
 <Section>
-	<footer class="mt-20 border-line border-t pb-12 pt-10">
-		<div class="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3">
-			<div class="flex flex-col gap-3">
-				<h3 class="text-faint mb-1 text-xs font-medium uppercase tracking-[0.14em]">Navigation</h3>
-				<a class="text-muted hover:text-fg text-sm transition-colors" href="/">Home</a>
-				<a class="text-muted hover:text-fg text-sm transition-colors" href="/posts">Writing</a>
-				<a class="text-muted hover:text-fg text-sm transition-colors" href="/about">About</a>
-				<a class="text-muted hover:text-fg text-sm transition-colors" href="/presentations">Talks</a>
-			</div>
-
-			<div class="flex flex-col gap-3">
-				<h3 class="text-faint mb-1 text-xs font-medium uppercase tracking-[0.14em]">Find Me</h3>
-				{SOCIALS.map((social: any) => (
-					<a class="text-muted hover:text-fg text-sm transition-colors" href={social.url} target="_blank" rel="noopener noreferrer">{social.name}</a>
-				))}
-			</div>
-
-			<div class="flex flex-col gap-3">
-				<h3 class="text-faint mb-1 text-xs font-medium uppercase tracking-[0.14em]">Meta</h3>
-				<a class="text-muted hover:text-fg text-sm transition-colors" href="/tags">Topics</a>
-				<a class="text-muted hover:text-fg text-sm transition-colors" href="/cyberdle">Cyberdle</a>
-				<a class="text-muted hover:text-fg text-sm transition-colors" href="/rss.xml">RSS Feed</a>
-				<a class="text-muted hover:text-fg text-sm transition-colors" href="/imprint">Imprint</a>
+	<footer class="border-line mt-20 border-t pb-10 pt-8">
+		<div class="flex flex-wrap items-baseline justify-between gap-x-10 gap-y-4">
+			<nav class="flex flex-wrap gap-x-6 gap-y-2 text-sm" aria-label="Footer">
+				{
+					navLinks.map(({ href, label }) => (
+						<a class="text-muted hover:text-fg transition-colors" href={href}>
+							{label}
+						</a>
+					))
+				}
+			</nav>
+			<div class="flex flex-wrap gap-x-6 gap-y-2 text-sm">
+				{
+					SOCIALS.map((social: { name: string; url: string }) => (
+						<a
+							class="text-muted hover:text-fg transition-colors"
+							href={social.url}
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							{social.name}
+						</a>
+					))
+				}
 			</div>
 		</div>
 
-		<div class="border-line mt-12 flex flex-col items-center justify-between border-t pt-6 sm:flex-row">
-			<p class="text-muted text-sm">
-				© {year.getFullYear()} <a class="text-fg hover:text-accent focus:text-accent font-medium outline-none transition-colors focus:underline" href="https://sudhir.is-a.dev" target="_blank" rel="noopener noreferrer">Sudhir</a>. All rights reserved.
-			</p>
-			<p class="meta-mono mt-3 sm:mt-0">
-				Information Security · Mumbai, India
-			</p>
-		</div>
+		<p class="meta-mono mt-7">© {year} Sudhir · Information Security · Mumbai, India</p>
 	</footer>
 </Section>

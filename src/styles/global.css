@@ -222,27 +222,6 @@
 		background-size: 100% 1.5px;
 	}
 
-	.frosted-glass {
-		backdrop-filter: blur(20px) saturate(180%);
-		-webkit-backdrop-filter: blur(20px) saturate(180%);
-	}
-
-	/* Monospace eyebrow label — the recurring "cyber micro-detail" */
-	.eyebrow {
-		font-family: var(--font-code);
-		@apply text-faint text-[0.7rem] font-medium tracking-[0.22em] uppercase;
-	}
-	.eyebrow-tick::before {
-		content: '// ';
-		color: var(--accent);
-	}
-
-	/* Faint dotted grid — subtle structural texture for sections/hero */
-	.bg-dotgrid {
-		background-image: radial-gradient(var(--line) 1px, transparent 1px);
-		background-size: 22px 22px;
-	}
-
 	/* --- Editorial "paper" redesign helpers --- */
 
 	/* Amber uppercase eyebrow (post category, "On the work") — no mono, no // tick */

@@ -86,9 +86,9 @@ const isActiveRoute = (href: string) => {
 	
 	<div
 		id="mobile-menu"
-		class="border-line bg-surface mt-4 hidden rounded-xl border pb-3 shadow-lg transition-all duration-200 sm:hidden"
+		class="border-line bg-bg -mx-5 mt-4 hidden border-b border-t pb-3 transition-all duration-200 sm:hidden"
 	>
-		<nav class="flex flex-col p-2">
+		<nav class="flex flex-col py-2">
 			{
 				navItems.map(({ href, label }) => {
 					const isActive = isActiveRoute(href);
@@ -97,10 +97,8 @@ const isActiveRoute = (href: string) => {
 							href={href}
 							data-mobile-nav-link
 							aria-current={isActive ? 'page' : undefined}
-							class={`rounded-lg px-4 py-2.5 text-sm font-medium transition-colors ${
-								isActive
-									? 'bg-surface-2 text-fg'
-									: 'text-muted hover:bg-surface-2 hover:text-accent'
+							class={`px-5 py-2.5 text-sm font-medium transition-colors ${
+								isActive ? 'text-accent' : 'text-muted hover:text-fg'
 							}`}
 						>
 							{label}
@@ -108,7 +106,7 @@ const isActiveRoute = (href: string) => {
 					);
 				})
 			}
-			
+
 			<ThemeToggle idPrefix="mobile" showLabel={true} />
 		</nav>
 	</div>
@@ -116,32 +114,20 @@ const isActiveRoute = (href: string) => {
 
 <style>
 	.site-header-shell {
-		transition:
-			background-color 250ms ease,
-			backdrop-filter 250ms ease,
-			-webkit-backdrop-filter 250ms ease;
+		transition: background-color 250ms ease;
 	}
 
 	.site-header-inner {
 		border-bottom: 1px solid transparent;
-		transition:
-			border-color 250ms ease,
-			box-shadow 250ms ease;
+		transition: border-color 250ms ease;
 	}
 
 	.site-header-shell.is-scrolled {
-		background: color-mix(in oklab, var(--bg) 72%, transparent);
-		backdrop-filter: blur(18px) saturate(140%);
-		-webkit-backdrop-filter: blur(18px) saturate(140%);
+		background: color-mix(in oklab, var(--bg) 96%, transparent);
 	}
 
 	.site-header-shell.is-scrolled .site-header-inner {
-		border-color: color-mix(in oklab, var(--line) 80%, transparent);
-		box-shadow: 0 10px 20px -18px rgba(12, 10, 9, 0.45);
-	}
-
-	:global(.dark) .site-header-shell.is-scrolled .site-header-inner {
-		box-shadow: 0 10px 20px -18px rgba(0, 0, 0, 0.75);
+		border-color: var(--line);
 	}
 </style>
 
