@@ -287,6 +287,10 @@ export default function Cyberdle() {
 		const onKeyDown = (event: KeyboardEvent) => {
 			if (event.metaKey || event.ctrlKey || event.altKey) return;
 			const key = event.key;
+			if (key === 'Escape') {
+				setShowResult(false);
+				return;
+			}
 			if (key === 'Enter' || key === 'Backspace' || /^[a-zA-Z]$/.test(key)) {
 				event.preventDefault();
 				handleKey(key);
@@ -337,110 +341,25 @@ export default function Cyberdle() {
 	}, [answer.word, guesses, puzzleNumber, showToast, status]);
 
 	return (
-		<div className="w-full pb-16">
+		<div className="flex min-h-0 w-full flex-1 flex-col md:flex-row md:gap-16">
 			<style>{CSS}</style>
 
-			{/* Puzzle meta, mono, quiet — sits under the editorial header */}
-			<div className="meta-mono mt-4">
-				#{puzzleNumber} · next word in {countdown}
-			</div>
-
-			<div className="mx-auto mt-10 flex w-full max-w-[22rem] flex-col items-center gap-5 sm:max-w-sm">
-			{/* Board */}
-			<div className="grid gap-1.5" aria-label="Cyberdle board">
-				{rows.map((row, r) => (
-					<div key={r} className={`flex gap-1.5 ${shake && row.isCurrent ? 'cd-shake' : ''}`}>
-						{row.letters.map((letter, c) => {
-							const ev = row.evals?.[c];
-							const animate = animateRow === r && ev !== undefined;
-							const style = ev ? TILE_COLORS[ev] : undefined;
-							return (
-								<div
-									key={`${r}-${c}-${letter}-${ev ?? 'na'}`}
-									className={`flex h-[3.25rem] w-[3.25rem] items-center justify-center rounded-md border-2 font-mono text-2xl font-bold uppercase ${
-										ev
-											? 'border-transparent'
-											: letter
-												? 'border-faint text-fg cd-pop'
-												: 'border-line text-fg'
-									} ${animate ? 'cd-flip' : ''}`}
-									style={animate ? { ...style, animationDelay: `${c * 150}ms` } : style}
-								>
-									{letter}
-								</div>
-							);
-						})}
-					</div>
-				))}
-			</div>
-
-			{/* Toast */}
-			<div className="relative h-0 w-full" aria-live="polite">
-				{toast && (
-					<div className="bg-fg text-bg absolute left-1/2 top-2 z-10 -translate-x-1/2 rounded-md px-4 py-2 text-sm font-medium shadow-lg">
-						{toast}
-					</div>
-				)}
-			</div>
-
-			{/* Keyboard */}
-			<div className="flex w-full flex-col items-center gap-1.5 select-none">
-				{KEYBOARD_ROWS.map((rowKeys, i) => (
-					<div key={i} className="flex w-full justify-center gap-1.5">
-						{i === KEYBOARD_ROWS.length - 1 && (
-							<KeyButton label="Enter" wide onPress={() => handleKey('ENTER')} />
-						)}
-						{rowKeys.split('').map((k) => (
-							<KeyButton key={k} label={k} state={keyStates[k]} onPress={() => handleKey(k)} />
-						))}
-						{i === KEYBOARD_ROWS.length - 1 && (
-							<KeyButton label="⌫" wide ariaLabel="Backspace" onPress={() => handleKey('BACKSPACE')} />
-						)}
-					</div>
-				))}
-			</div>
-
-			{/* Result — a quiet block under the board, no card chrome */}
-			{showResult && (
-				<div className="border-line animate-fade-up w-full border-t pt-6">
-					<h2 className="font-display text-fg text-xl font-medium tracking-[-0.01em]">
-						{status === 'won' ? 'Nice work.' : 'Out of attempts.'}
-					</h2>
-					<p className="text-muted mt-2 text-sm leading-[1.6]">
-						The word was{' '}
-						<span className="text-accent font-mono font-semibold tracking-wider">{answer.word}</span>.{' '}
-						{answer.clue}
-					</p>
-
-					<div className="mt-5 space-y-1.5">
-						<p className="meta-mono mb-2.5 uppercase tracking-[0.06em]">Guess distribution</p>
-						{stats.distribution.map((count, i) => {
-							const isRowWin = status === 'won' && guesses.length === i + 1;
-							return (
-								<div key={i} className="flex items-center gap-2 text-xs">
-									<span className="text-subtle w-3 font-mono">{i + 1}</span>
-									<div className="bg-surface-2 h-5 flex-1 overflow-hidden rounded-sm">
-										<div
-											className="flex h-full items-center justify-end rounded-sm px-2 font-mono font-semibold text-white"
-											style={{
-												width: `${Math.max(8, (count / maxDist) * 100)}%`,
-												background: isRowWin ? '#15803d' : '#78716c'
-											}}
-										>
-											{count}
-										</div>
-									</div>
-								</div>
-							);
-						})}
-					</div>
+			{/* Left rail: eyebrow → title → intro → countdown, stats pinned below a hairline.
+			    Collapses to a compact header above the board on narrow screens. */}
+			<div className="flex-none pt-2 md:flex md:w-[320px] md:flex-col md:justify-center md:pt-0">
+				<p className="eyebrow-amber">Daily puzzle</p>
+				<h1 className="font-display text-fg mt-2.5 text-[26px] font-medium leading-[1.05] tracking-[-0.025em] md:mt-3 md:text-[40px]">
+					Cyberdle
+				</h1>
+				<p className="text-muted mt-3.5 hidden text-[15px] leading-[1.6] md:block">
+					Guess the five-letter security term in six tries. Green is the right spot, amber the
+					wrong one.
+				</p>
+				<div className="meta-mono mt-2 md:mt-3.5">
+					#{puzzleNumber} · next word in {countdown}
 				</div>
-			)}
-			</div>
 
-			{/* Stats — a hairline row, not a card */}
-			<div className="border-line mt-12 flex flex-wrap items-baseline justify-between gap-x-8 gap-y-5 border-t pt-6">
-				<div className="flex flex-wrap gap-x-10 gap-y-5 sm:gap-x-14">
+				<div className="border-line mt-9 hidden grid-cols-2 gap-x-6 gap-y-5 border-t pt-5 md:grid">
 					<StatBig value={String(stats.played)} label="Played" />
 					<StatBig value={`${winPct}%`} label="Win rate" />
 					<StatBig value={String(stats.currentStreak)} label="Streak" />
@@ -449,12 +368,140 @@ export default function Cyberdle() {
 				{status !== 'playing' && (
 					<button
 						onClick={handleShare}
-						className="text-muted hover:text-fg text-sm font-medium transition-colors"
+						className="text-muted hover:text-fg mt-5 hidden w-fit text-sm font-medium transition-colors md:block"
 					>
 						Share result →
 					</button>
 				)}
 			</div>
+
+			{/* Game: board + keyboard, vertically centered */}
+			<div className="flex min-h-0 flex-1 flex-col items-center justify-center gap-4 py-3 md:gap-6 md:py-0">
+				{/* Board */}
+				<div className="grid gap-1.5" aria-label="Cyberdle board">
+					{rows.map((row, r) => (
+						<div key={r} className={`flex gap-1.5 ${shake && row.isCurrent ? 'cd-shake' : ''}`}>
+							{row.letters.map((letter, c) => {
+								const ev = row.evals?.[c];
+								const animate = animateRow === r && ev !== undefined;
+								const style = ev ? TILE_COLORS[ev] : undefined;
+								return (
+									<div
+										key={`${r}-${c}-${letter}-${ev ?? 'na'}`}
+										className={`flex h-[46px] w-[46px] items-center justify-center rounded-md border-2 font-mono text-[21px] font-bold uppercase ${
+											ev
+												? 'border-transparent'
+												: letter
+													? 'border-faint text-fg cd-pop'
+													: 'border-line text-fg'
+										} ${animate ? 'cd-flip' : ''}`}
+										style={animate ? { ...style, animationDelay: `${c * 150}ms` } : style}
+									>
+										{letter}
+									</div>
+								);
+							})}
+						</div>
+					))}
+				</div>
+
+				{/* Toast */}
+				<div className="relative h-0 w-full" aria-live="polite">
+					{toast && (
+						<div className="bg-fg text-bg absolute left-1/2 top-2 z-10 -translate-x-1/2 rounded-md px-4 py-2 text-sm font-medium shadow-lg">
+							{toast}
+						</div>
+					)}
+				</div>
+
+				{/* Keyboard */}
+				<div className="flex w-full max-w-[480px] flex-col items-center gap-1.5 select-none">
+					{KEYBOARD_ROWS.map((rowKeys, i) => (
+						<div key={i} className="flex w-full justify-center gap-1.5">
+							{i === KEYBOARD_ROWS.length - 1 && (
+								<KeyButton label="Enter" wide onPress={() => handleKey('ENTER')} />
+							)}
+							{rowKeys.split('').map((k) => (
+								<KeyButton key={k} label={k} state={keyStates[k]} onPress={() => handleKey(k)} />
+							))}
+							{i === KEYBOARD_ROWS.length - 1 && (
+								<KeyButton label="⌫" wide ariaLabel="Backspace" onPress={() => handleKey('BACKSPACE')} />
+							)}
+						</div>
+					))}
+				</div>
+			</div>
+
+			{/* Result sheet: paper panel over the game; on mobile it also carries the stats */}
+			{showResult && (
+				<div
+					className="fixed inset-0 z-[70] flex items-center justify-center p-5"
+					role="dialog"
+					aria-modal="true"
+					aria-label="Puzzle result"
+				>
+					<div
+						className="absolute inset-0"
+						style={{ background: 'color-mix(in oklab, var(--fg) 32%, transparent)' }}
+						onClick={() => setShowResult(false)}
+					/>
+					<div className="border-line bg-bg animate-fade-up relative w-full max-w-[400px] border p-6">
+						<button
+							onClick={() => setShowResult(false)}
+							aria-label="Close result"
+							className="text-faint hover:text-fg absolute right-4 top-4 text-sm transition-colors"
+						>
+							✕
+						</button>
+						<h2 className="font-display text-fg text-xl font-medium tracking-[-0.01em]">
+							{status === 'won' ? 'Nice work.' : 'Out of attempts.'}
+						</h2>
+						<p className="text-muted mt-2 text-sm leading-[1.6]">
+							The word was{' '}
+							<span className="text-accent font-mono font-semibold tracking-wider">{answer.word}</span>
+							. {answer.clue}
+						</p>
+
+						{/* Stats live in the rail on desktop; here on narrow screens */}
+						<div className="border-line mt-5 grid grid-cols-2 gap-x-6 gap-y-4 border-t pt-4 md:hidden">
+							<StatBig value={String(stats.played)} label="Played" />
+							<StatBig value={`${winPct}%`} label="Win rate" />
+							<StatBig value={String(stats.currentStreak)} label="Streak" />
+							<StatBig value={String(stats.maxStreak)} label="Max streak" />
+						</div>
+
+						<div className="mt-5 space-y-1.5">
+							<p className="meta-mono mb-2.5 uppercase tracking-[0.06em]">Guess distribution</p>
+							{stats.distribution.map((count, i) => {
+								const isRowWin = status === 'won' && guesses.length === i + 1;
+								return (
+									<div key={i} className="flex items-center gap-2 text-xs">
+										<span className="text-subtle w-3 font-mono">{i + 1}</span>
+										<div className="bg-surface-2 h-5 flex-1 overflow-hidden rounded-sm">
+											<div
+												className="flex h-full items-center justify-end rounded-sm px-2 font-mono font-semibold text-white"
+												style={{
+													width: `${Math.max(8, (count / maxDist) * 100)}%`,
+													background: isRowWin ? '#15803d' : '#78716c'
+												}}
+											>
+												{count}
+											</div>
+										</div>
+									</div>
+								);
+							})}
+						</div>
+
+						<button
+							onClick={handleShare}
+							className="bg-fg text-bg mt-6 w-full py-2.5 text-sm font-medium transition-opacity hover:opacity-85"
+						>
+							Share result
+						</button>
+					</div>
+				</div>
+			)}
 		</div>
 	);
 }
@@ -462,10 +509,10 @@ export default function Cyberdle() {
 function StatBig({ label, value }: { label: string; value: string }) {
 	return (
 		<div>
-			<div className="font-display text-fg text-[28px] font-medium tracking-[-0.015em] tabular-nums">
+			<div className="font-display text-fg text-2xl font-medium tracking-[-0.015em] tabular-nums">
 				{value}
 			</div>
-			<div className="text-subtle mt-1 font-mono text-[11px] font-medium uppercase tracking-[0.06em]">
+			<div className="text-subtle mt-1 font-mono text-[10px] font-medium uppercase tracking-[0.06em]">
 				{label}
 			</div>
 		</div>
@@ -492,8 +539,8 @@ function KeyButton({
 			aria-label={ariaLabel ?? label}
 			onClick={onPress}
 			style={style}
-			className={`flex h-12 items-center justify-center rounded-md text-sm font-medium uppercase transition-colors ${
-				wide ? 'flex-[1.5] text-xs' : 'flex-1'
+			className={`flex h-[42px] items-center justify-center rounded-md text-xs font-medium uppercase transition-colors ${
+				wide ? 'flex-[1.5] text-[11px]' : 'flex-1'
 			} ${state ? '' : 'bg-line/60 text-fg hover:bg-line'}`}
 		>
 			{label}
