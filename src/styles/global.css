@@ -261,6 +261,18 @@
 	.row-link:hover .row-title {
 		color: var(--accent);
 	}
+
+	/* The row's "→" nudges right and turns amber on hover */
+	.row-link .row-arrow {
+		display: inline-block;
+		transition:
+			transform 160ms ease,
+			color 160ms ease;
+	}
+	.row-link:hover .row-arrow {
+		transform: translateX(4px);
+		color: var(--accent);
+	}
 }
 
 @layer utilities {

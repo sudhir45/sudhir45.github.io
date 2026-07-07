@@ -14,23 +14,73 @@ const total = allPosts.length;
 
 <Base head={{ title, description }}>
 	<Section>
-		<!-- Statement hero — a claim, not a tagline -->
-		<div class="animate-fade-up max-w-[880px] pb-14 pt-10 md:pb-16 md:pt-16">
-			<h1
-				class="font-display text-fg text-[2.5rem] font-medium leading-[1.1] tracking-[-0.025em] text-balance sm:text-[3rem] md:text-[3.25rem]"
+		<!-- Statement hero with the double-slit mark on the right (option 9i) -->
+		<div
+			class="animate-fade-up flex items-center justify-between gap-12 pb-14 pt-10 md:pb-16 md:pt-16"
+		>
+			<div class="max-w-[880px]">
+				<h1
+					class="font-display text-fg text-[2.5rem] font-medium leading-[1.1] tracking-[-0.025em] text-balance sm:text-[3rem] md:text-[3.25rem]"
+				>
+					Security work, <span class="ink-underline">written down.</span>
+				</h1>
+				<p class="text-muted mt-7 max-w-[600px] text-[18px] leading-[1.65]">
+					Hey, I'm Sudhir, a CISSP-certified security professional in Mumbai. My work covers how
+					large enterprises design, run, and audit their defenses.
+				</p>
+			</div>
+
+			<a
+				href="https://en.wikipedia.org/wiki/Double-slit_experiment"
+				target="_blank"
+				rel="noopener"
+				title="Double-slit experiment - Wikipedia"
+				aria-label="Double-slit experiment on Wikipedia"
+				class="ds-mark relative hidden flex-none cursor-pointer lg:block"
 			>
-				Most security failures aren't exotic. They're the basics, done unevenly across too many
-				systems.
-			</h1>
-			<p class="text-muted mt-7 max-w-[600px] text-[18px] leading-[1.65]">
-				I'm Sudhir, a cyber security professional in Mumbai working on network security and
-				compliance for large enterprise environments. I write here about closing that gap.
-			</p>
+				<svg viewBox="0 0 210 200" width="210" height="200" fill="none" aria-hidden="true">
+					<!-- source -->
+					<circle cx="18" cy="100" r="3.5" class="ds-source"></circle>
+					<path
+						d="M30 82 a24 24 0 0 1 0 36 M42 70 a44 44 0 0 1 0 60"
+						class="ds-arc"
+						stroke-width="1.2"
+						stroke-linecap="round"></path>
+					<!-- barrier with two slits -->
+					<path
+						d="M62 12 L62 66 M62 86 L62 114 M62 134 L62 188"
+						class="ds-barrier"
+						stroke-width="2"
+						stroke-linecap="round"></path>
+					<!-- expanding wavefronts from each slit -->
+					<g>
+						<circle cx="62" cy="76" r="60" class="ds-wave ds-w1"></circle>
+						<circle cx="62" cy="76" r="60" class="ds-wave ds-w2"></circle>
+						<circle cx="62" cy="76" r="60" class="ds-wave ds-w3"></circle>
+						<circle cx="62" cy="124" r="60" class="ds-wave ds-w4"></circle>
+						<circle cx="62" cy="124" r="60" class="ds-wave ds-w5"></circle>
+						<circle cx="62" cy="124" r="60" class="ds-wave ds-w6"></circle>
+					</g>
+					<!-- screen -->
+					<path d="M178 12 L178 188" class="ds-screen" stroke-width="1.5"></path>
+					<!-- interference fringes: widths taper out from the amber central maximum -->
+					<g stroke-linecap="round">
+						<path d="M186 30 L198 30" class="ds-fringe ds-f3" stroke-width="3"></path>
+						<path d="M186 54 L202 54" class="ds-fringe ds-f2" stroke-width="4"></path>
+						<path d="M186 76 L205 76" class="ds-fringe ds-f1" stroke-width="5"></path>
+						<path d="M186 100 L208 100" class="ds-fringe ds-f0" stroke-width="6"></path>
+						<path d="M186 124 L205 124" class="ds-fringe ds-f1" stroke-width="5"></path>
+						<path d="M186 146 L202 146" class="ds-fringe ds-f2" stroke-width="4"></path>
+						<path d="M186 170 L198 170" class="ds-fringe ds-f3" stroke-width="3"></path>
+					</g>
+				</svg>
+				<span class="ds-caption meta-mono">double-slit ↗</span>
+			</a>
 		</div>
 
 		<!-- Selected writing -->
 		<div class="animate-fade-up stagger-1 pb-16">
-			<div class="border-line-strong flex items-baseline justify-between border-b pb-4">
+			<div class="rule-draw relative flex items-baseline justify-between pb-4">
 				<h2 class="font-display text-fg text-sm font-semibold">Selected writing</h2>
 				<a href="/posts" class="text-subtle hover:text-fg text-[13px] font-medium transition-colors">
 					All {total} posts
@@ -49,3 +99,175 @@ const total = allPosts.length;
 		</div>
 	</Section>
 </Base>
+
+<style>
+	/* --- Landing motion (option 7a): each runs once on load, CSS only --- */
+
+	@keyframes rule-x {
+		from {
+			transform: scaleX(0);
+		}
+		to {
+			transform: scaleX(1);
+		}
+	}
+
+	/* Strong rule under "Selected writing" draws left to right */
+	.rule-draw::after {
+		content: '';
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		height: 1px;
+		background: var(--line-strong);
+		transform-origin: left;
+		animation: rule-x 600ms cubic-bezier(0.22, 1, 0.36, 1) 450ms both;
+	}
+
+	/* Amber ink underline under "written down." — the only amber motion on the page */
+	.ink-underline {
+		position: relative;
+	}
+	.ink-underline::after {
+		content: '';
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: -5px;
+		height: 2px;
+		background: var(--accent);
+		transform-origin: left;
+		animation: rule-x 500ms cubic-bezier(0.22, 1, 0.36, 1) 800ms both;
+	}
+
+	/* --- Double-slit mark (option 9i) --- */
+
+	.ds-source {
+		fill: var(--faint);
+	}
+	.ds-arc,
+	.ds-screen {
+		stroke: var(--frame);
+	}
+	.ds-barrier {
+		stroke: var(--faint);
+	}
+
+	.ds-wave {
+		stroke: color-mix(in oklab, var(--subtle) 65%, var(--line));
+		stroke-width: 1.2;
+		opacity: 0;
+		transform-box: view-box;
+		animation: ds-wave 5s linear infinite;
+	}
+	.ds-w1,
+	.ds-w2,
+	.ds-w3 {
+		transform-origin: 62px 76px;
+	}
+	.ds-w4,
+	.ds-w5,
+	.ds-w6 {
+		transform-origin: 62px 124px;
+	}
+	.ds-w1 {
+		animation-delay: 0s;
+	}
+	.ds-w2 {
+		animation-delay: 1.66s;
+	}
+	.ds-w3 {
+		animation-delay: 3.33s;
+	}
+	.ds-w4 {
+		animation-delay: 0.8s;
+	}
+	.ds-w5 {
+		animation-delay: 2.46s;
+	}
+	.ds-w6 {
+		animation-delay: 4.13s;
+	}
+
+	@keyframes ds-wave {
+		0% {
+			transform: scale(0.08);
+			opacity: 0;
+		}
+		12% {
+			opacity: 0.9;
+		}
+		100% {
+			transform: scale(1);
+			opacity: 0;
+		}
+	}
+
+	.ds-fringe {
+		animation: ds-fringe 5s ease-in-out infinite;
+	}
+	.ds-f0 {
+		stroke: var(--accent);
+		animation-delay: 0s;
+	}
+	.ds-f1 {
+		stroke: var(--subtle);
+		animation-delay: 0.3s;
+	}
+	.ds-f2 {
+		stroke: color-mix(in oklab, var(--subtle) 65%, var(--line));
+		animation-delay: 0.6s;
+	}
+	.ds-f3 {
+		stroke: color-mix(in oklab, var(--subtle) 40%, var(--line));
+		animation-delay: 0.9s;
+	}
+
+	@keyframes ds-fringe {
+		0%,
+		100% {
+			opacity: 0.25;
+		}
+		50% {
+			opacity: 1;
+		}
+	}
+
+	/* Quiet hover affordance: mono caption + brighter central fringe */
+	.ds-caption {
+		position: absolute;
+		bottom: -14px;
+		left: 50%;
+		transform: translateX(-50%);
+		white-space: nowrap;
+		text-decoration: underline;
+		text-underline-offset: 2px;
+		opacity: 0;
+		transition: opacity 160ms ease;
+	}
+	.ds-mark:hover .ds-caption {
+		opacity: 1;
+	}
+	.ds-mark:hover .ds-f0 {
+		animation: none;
+		opacity: 1;
+	}
+
+	/* Static final frame: no expanding waves, fringes fully visible */
+	@media (prefers-reduced-motion: reduce) {
+		.rule-draw::after,
+		.ink-underline::after {
+			animation: none;
+			transform: none;
+		}
+		.ds-wave {
+			animation: none;
+			opacity: 0;
+		}
+		.ds-fringe {
+			animation: none;
+			opacity: 1;
+		}
+	}
+</style>

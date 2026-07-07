@@ -46,27 +46,6 @@ export const getPostBySlug = async (slug: string) => {
 	return posts.find((post) => post.slug === slug);
 };
 
-export const getPostsByTag = async (tag: string) => {
-	const posts = await getAllPosts();
-	return posts.filter((post) => post.data.tags.includes(tag));
-};
-
-/** Posts sharing the most tags with the given post; falls back to most recent. */
-export const getRelatedPosts = async (slug: string, tags: string[], limit = 3) => {
-	const posts = await getAllPosts();
-	return posts
-		.filter((post) => post.slug !== slug)
-		.map((post) => ({
-			post,
-			score: post.data.tags.filter((tag: string) => tags.includes(tag)).length
-		}))
-		.sort(
-			(a, b) => b.score - a.score || b.post.data.pubDate.getTime() - a.post.data.pubDate.getTime()
-		)
-		.slice(0, limit)
-		.map(({ post }) => post);
-};
-
 /** Chronological neighbors of a post (by publish date, newest first). */
 export const getPostNeighbors = async (slug: string) => {
 	const posts = (await getAllPosts())
@@ -77,19 +56,4 @@ export const getPostNeighbors = async (slug: string) => {
 		return { newer: undefined, older: undefined };
 	}
 	return { newer: posts[index - 1], older: posts[index + 1] };
-};
-
-export const getTagCounts = async () => {
-	const posts = await getAllPosts();
-	const counts = new Map<string, number>();
-
-	for (const post of posts) {
-		for (const tag of post.data.tags) {
-			counts.set(tag, (counts.get(tag) ?? 0) + 1);
-		}
-	}
-
-	return Object.fromEntries(
-		[...counts.entries()].sort(([, countA], [, countB]) => countB - countA)
-	);
 };
