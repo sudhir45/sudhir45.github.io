@@ -3,7 +3,7 @@ import { AppConfig } from '@/utils/AppConfig';
 import Base from '@/layouts/Base.astro';
 import Section from '@/components/Section.astro';
 import { getAllPosts } from '@/utils/posts';
-import { getTopicsWithCounts } from '@/utils/topics';
+import { getTopicsWithCounts, topicHue } from '@/utils/topics';
 
 const title = `Writing | ${AppConfig.site_name}`;
 const description =
@@ -50,7 +50,8 @@ const shortMeta = (post: (typeof chronological)[number]) => {
 					topics.map((topic) => (
 						<button
 							type="button"
-							class="pill pill-inactive"
+							class="pill pill-inactive topic-colored"
+							style={`--topic-hue: ${topic.hue}`}
 							data-filter={topic.name}
 							aria-pressed="false"
 						>
@@ -74,10 +75,22 @@ const shortMeta = (post: (typeof chronological)[number]) => {
 									data-post
 									data-topics={post.data.tags.join('|')}
 								>
-									<span class="row-title font-display text-fg text-[18px] font-medium leading-[1.3] tracking-[-0.01em] transition-colors md:text-[20px]">
-										{post.data.title}
+									<span class="flex items-baseline gap-3">
+										<span
+											class="topic-dot topic-colored self-center"
+											style={`--topic-hue: ${topicHue(post.data.tags[0] ?? '')}`}
+											aria-hidden="true"
+										/>
+										<span class="row-title font-display text-fg text-[18px] font-medium leading-[1.3] tracking-[-0.01em] transition-colors md:text-[20px]">
+											{post.data.title}
+										</span>
 									</span>
-									<span class="meta-mono whitespace-nowrap">{shortMeta(post)}</span>
+									<span class="flex items-baseline gap-4 whitespace-nowrap">
+										{post.data.isPinned && (
+											<span class="text-accent font-mono text-[11px] font-medium">★ Featured</span>
+										)}
+										<span class="meta-mono">{shortMeta(post)}</span>
+									</span>
 								</a>
 							))}
 						</div>

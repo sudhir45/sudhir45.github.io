@@ -273,6 +273,56 @@
 		transform: translateX(4px);
 		color: var(--accent);
 	}
+
+	/* --- Categorical topic color (option 13) ---
+	   One rule, not a list: every hue lives in the same OKLCH band, only the
+	   angle (--topic-hue, set inline from topics.ts) rotates. Amber stays
+	   reserved for interaction and emphasis — never a category. */
+	.topic-colored {
+		--tc: oklch(52% 0.07 var(--topic-hue));
+		--tc-ink: oklch(42% 0.07 var(--topic-hue));
+		--tc-tint: oklch(96% 0.02 var(--topic-hue));
+		--tc-border: oklch(90% 0.03 var(--topic-hue));
+	}
+	:where(.dark) .topic-colored {
+		--tc: oklch(70% 0.08 var(--topic-hue));
+		--tc-ink: oklch(80% 0.06 var(--topic-hue));
+		--tc-tint: oklch(26% 0.025 var(--topic-hue));
+		--tc-border: oklch(34% 0.035 var(--topic-hue));
+	}
+
+	/* Topics index: tinted tile per thread (13c) */
+	.topic-tile {
+		display: block;
+		border-radius: 12px;
+		padding: 18px 19px;
+		text-decoration: none;
+		background: var(--tc-tint);
+		border: 1px solid var(--tc-border);
+		transition: transform 0.16s ease;
+	}
+	.topic-tile:hover {
+		transform: translateY(-2px);
+	}
+
+	/* Writing archive: active filter pill fills with its topic color (13d) */
+	.pill-active.topic-colored {
+		background: var(--tc);
+		border-color: var(--tc);
+		color: #faf9f7;
+	}
+	:where(.dark) .pill-active.topic-colored {
+		color: #1a1714;
+	}
+
+	/* Writing archive: category dot on each row (13d) */
+	.topic-dot {
+		width: 7px;
+		height: 7px;
+		border-radius: 50%;
+		flex: none;
+		background: var(--tc);
+	}
 }
 
 @layer utilities {

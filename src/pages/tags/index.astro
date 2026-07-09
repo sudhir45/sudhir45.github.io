@@ -26,25 +26,27 @@ const threadWordCap = threadWord.charAt(0).toUpperCase() + threadWord.slice(1);
 			</p>
 		</div>
 
-		<div class="pb-16">
+		<!-- Each thread carries its own hue: a legible map, not a gray list (13c) -->
+		<div class="grid grid-cols-1 gap-3 pb-16 sm:grid-cols-2">
 			{
-				topics.map((topic, i) => (
+				topics.map((topic) => (
 					<a
 						href={`/tags/${topic.slug}`}
-						class:list={[
-							'row-link grid grid-cols-[1fr_auto] items-baseline gap-x-6 gap-y-1 py-6 sm:grid-cols-[minmax(200px,auto)_1fr_auto]',
-							i === 0 ? 'border-t border-[color:var(--line-strong)]' : 'border-line border-t'
-						]}
+						class="topic-tile topic-colored"
+						style={`--topic-hue: ${topic.hue}`}
 					>
-						<span class="row-title font-display text-fg text-[22px] font-medium tracking-[-0.01em] transition-colors sm:min-w-[230px] sm:text-[24px]">
+						<span
+							class="font-display block text-[17px] font-medium leading-[1.2] tracking-[-0.015em]"
+							style="color: var(--tc-ink)"
+						>
 							{topic.name}
 						</span>
-						<span class="text-faint order-3 col-span-2 text-[15px] leading-[1.5] sm:order-none sm:col-span-1">
+						<span class="text-muted mt-1.5 block text-[12.5px] leading-[1.5]">
 							{topic.description}
 						</span>
 						<span
-							class="meta-mono justify-self-end whitespace-nowrap"
-							style={i === 0 ? 'color:var(--accent)' : undefined}
+							class="mt-2.5 block font-mono text-[11px] font-medium"
+							style="color: var(--tc)"
 						>
 							{topic.count} {topic.count === 1 ? 'post' : 'posts'}
 						</span>

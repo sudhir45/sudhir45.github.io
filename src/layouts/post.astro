@@ -7,7 +7,7 @@ import ReadingProgress from '@/components/ReadingProgress.astro';
 import Giscus from '@/components/Giscus.astro';
 import { getPostNeighbors } from '@/utils/posts';
 import { formatDate } from '@/utils/data.util';
-import { topicSlug } from '@/utils/topics';
+import { topicHue, topicSlug } from '@/utils/topics';
 
 const { description } = AppConfig;
 
@@ -27,6 +27,8 @@ const { newer, older } = await getPostNeighbors(cleanSlug);
 const nextPost = older ?? newer;
 
 const category = frontmatter.tags?.[0] as string | undefined;
+const categoryHue = category ? topicHue(category) : undefined;
+const author = frontmatter.author || 'Sudhir';
 const formattedDate = formatDate(frontmatter.pubDate);
 const readTime = frontmatter.minutesRead?.trim() || 'Quick read';
 ---
@@ -67,28 +69,43 @@ const readTime = frontmatter.minutesRead?.trim() || 'Quick read';
 		},
 		"keywords": frontmatter.tags?.join(", ") || ""
 	})} />
-	<ReadingProgress />
+	<ReadingProgress hue={categoryHue} />
 	<Section>
-		<!-- Header -->
-		<header class="mx-auto max-w-[800px] pb-4 pt-10 md:pt-14">
-			{category && (
-				<a
-					href={`/tags/${topicSlug(category)}`}
-					class="eyebrow-amber mb-5 inline-block transition-opacity hover:opacity-70"
-				>
-					{category}
-				</a>
-			)}
-			<h1
-				transition:name={cleanSlug ? `post-title-${cleanSlug}` : undefined}
-				class="font-display text-fg text-[2rem] font-medium leading-[1.1] tracking-[-0.025em] text-balance md:text-[2.75rem]"
+		<!-- Header: the topic hue names the category — eyebrow + spine + progress bar (13b) -->
+		<header
+			class:list={[
+				'mx-auto max-w-[800px] pb-4 pt-10 md:pt-14',
+				categoryHue !== undefined && 'topic-colored'
+			]}
+			style={categoryHue !== undefined ? `--topic-hue: ${categoryHue}` : undefined}
+		>
+			<div
+				class:list={[categoryHue !== undefined && 'border-l-[3px] pl-6 md:pl-8']}
+				style={categoryHue !== undefined ? 'border-color: var(--tc)' : undefined}
 			>
-				{frontmatter.title}
-			</h1>
-			<div class="meta-mono mt-6 flex flex-wrap items-center gap-3">
-				<time datetime={String(frontmatter.pubDate)}>{formattedDate}</time>
-				<span aria-hidden="true">·</span>
-				<span>{readTime}</span>
+				{category && (
+					<a
+						href={`/tags/${topicSlug(category)}`}
+						class="eyebrow-amber mb-5 inline-block transition-opacity hover:opacity-70"
+						style="color: var(--tc)"
+					>
+						{category}
+					</a>
+				)}
+				<h1
+					transition:name={cleanSlug ? `post-title-${cleanSlug}` : undefined}
+					class="font-display text-fg text-[2rem] font-medium leading-[1.1] tracking-[-0.025em] text-balance md:text-[2.75rem]"
+				>
+					{frontmatter.title}
+				</h1>
+				<div class="meta-mono mt-5 flex flex-wrap items-center gap-3 uppercase tracking-[0.06em]">
+					<span class="text-muted">By {author}</span>
+					<span aria-hidden="true">·</span>
+					<time datetime={String(frontmatter.pubDate)}>{formattedDate}</time>
+					<span aria-hidden="true">·</span>
+					<span>{readTime}</span>
+				</div>
+				<div class="mt-6 h-px" style="background: var(--line-strong)" aria-hidden="true"></div>
 			</div>
 		</header>
 

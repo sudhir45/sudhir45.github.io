@@ -1,10 +1,21 @@
+---
+interface Props {
+	/** Optional OKLCH topic hue (option 13b): colors the bar with the post's category. */
+	hue?: number;
+}
+
+const { hue } = Astro.props as Props;
+---
+
 <div
 	data-reading-progress
-	class="pointer-events-none fixed inset-x-0 top-0 z-[60] h-0.5"
+	class:list={['pointer-events-none fixed inset-x-0 top-0 z-[60] h-0.5', hue !== undefined && 'topic-colored']}
+	style={hue !== undefined ? `--topic-hue: ${hue}` : undefined}
 >
 	<div
 		data-reading-progress-bar
-		class="bg-accent h-full origin-left scale-x-0 transition-transform duration-150 ease-out"
+		class="h-full origin-left scale-x-0 transition-transform duration-150 ease-out"
+		style={hue !== undefined ? 'background: var(--tc)' : 'background: var(--accent)'}
 	></div>
 </div>
 

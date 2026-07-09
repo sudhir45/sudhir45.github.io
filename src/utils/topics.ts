@@ -14,6 +14,14 @@ export interface Topic {
 	label: string;
 	/** One-line description shown on the Topics page. */
 	description: string;
+	/**
+	 * OKLCH hue angle for the topic's categorical color. The color itself is a
+	 * rule, not a list: solid = oklch(52% 0.07 h), tint = oklch(96% 0.02 h)
+	 * (see `.topic-colored` in global.css for the full set, incl. dark theme).
+	 * Hues are spaced around the ring and skip amber's ~55°, so a new topic
+	 * just takes a free angle and lands earthy by construction.
+	 */
+	hue: number;
 }
 
 export const TOPICS: Topic[] = [
@@ -21,37 +29,50 @@ export const TOPICS: Topic[] = [
 		name: 'Security architecture',
 		slug: 'security-architecture',
 		label: 'Architecture',
-		description: 'Layering, blast radius, and designing for the exception.'
+		description: 'Layering, blast radius, and designing for the exception.',
+		hue: 155
 	},
 	{
 		name: 'Network security',
 		slug: 'network-security',
 		label: 'Network security',
-		description: 'Firewall policy, segmentation, and hardening at scale.'
+		description: 'Firewall policy, segmentation, and hardening at scale.',
+		hue: 245
 	},
 	{
 		name: 'Compliance',
 		slug: 'compliance',
 		label: 'Compliance',
-		description: 'Controls people actually follow, and audits you can live with.'
+		description: 'Controls people actually follow, and audits you can live with.',
+		hue: 110
 	},
 	{
 		name: 'Vulnerability management',
 		slug: 'vulnerability-management',
 		label: 'Vulnerability mgmt',
-		description: 'Triage, prioritisation, and reading a report like an attacker.'
+		description: 'Triage, prioritisation, and reading a report like an attacker.',
+		hue: 40
 	},
 	{
 		name: 'Offense',
 		slug: 'offense',
 		label: 'Offense',
-		description: 'CTFs, red teaming, and offensive security.'
+		description: 'CTFs, red teaming, and offensive security.',
+		hue: 350
 	},
 	{
 		name: 'AI security',
 		slug: 'ai-security',
 		label: 'AI security',
-		description: 'Prompt injection, model risk, and securing LLM systems.'
+		description: 'Prompt injection, model risk, and securing LLM systems.',
+		hue: 300
+	},
+	{
+		name: 'Certification',
+		slug: 'certification',
+		label: 'Certification',
+		description: 'Exam preparation, study notes, and what the paper is worth.',
+		hue: 200
 	}
 ];
 
@@ -60,6 +81,18 @@ const byName = new Map(TOPICS.map((t) => [t.name, t]));
 
 export const getTopicBySlug = (slug: string): Topic | undefined => bySlug.get(slug);
 export const getTopicByName = (name: string): Topic | undefined => byName.get(name);
+
+/**
+ * OKLCH hue angle for a topic name. Stray tags fall back to a hue derived
+ * from the name, so even an unmapped tag gets a stable in-band color.
+ */
+export const topicHue = (name: string): number => {
+	const known = byName.get(name)?.hue;
+	if (known !== undefined) return known;
+	let hash = 0;
+	for (let i = 0; i < name.length; i++) hash = (hash * 31 + name.charCodeAt(i)) % 360;
+	return hash;
+};
 
 /** Slug for a topic name, falling back to a generic slugify for stray tags. */
 export const topicSlug = (name: string): string =>
