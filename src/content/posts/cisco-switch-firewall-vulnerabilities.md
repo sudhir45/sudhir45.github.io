@@ -1,10 +1,10 @@
 ---
 title: "Recent Cisco Switch & Firewall Vulnerabilities"
 pubDate: 2025-10-04
-description: "Critical IOS XE vulnerabilities are being actively exploited, patch immediately. Click to read more"
+description: "Critical IOS XE vulnerabilities are being actively exploited, patch immediately. Here's how to check if you're exposed - and whether you've already been hit."
 author: "Sudhir"
 isPinned: false
-excerpt: "Critical IOS XE vulnerabilities are being actively exploited, patch immediately. Click to read more"
+excerpt: "Critical IOS XE vulnerabilities are being actively exploited, patch immediately. Here's how to check if you're exposed - and whether you've already been hit."
 tags: ["Vulnerability management", "Network security"]
 ---
 
@@ -20,14 +20,14 @@ Here's exactly what's going on -
 
 ## De-Jargoning: Key Concepts
 
-Before diving into configs and CVEs, let's understand some things first
+Before we get into configs and CVEs, some quick definitions:
 - **IOS XE** - Cisco's OS for enterprise switches, routers, and wireless controllers. If you're running Catalyst 9300s, ISR routers, or 9800 WLCs - that's IOS XE.
 - **Web UI (HTTP/HTTPS server)** - The graphical interface you use to manage the device from a browser. It's convenient… until someone from the internet logs in as admin without your permission.
 - **Privilege escalation** - Attacker starts as "nobody," ends as "god." Enough said.
 - **Implant** - A malicious script or process that lives *inside* the system to maintain access and control, even after reboot.
 
 So, what's new? Attackers found a way to **create admin users** and **install custom implants** through the web UI.
-No creds. No MFA. Just one HTTP request and boom - full control.
+No creds. No MFA. One crafted HTTP request and they own the device.
 
 ---
 
@@ -48,7 +48,6 @@ Here's what Cisco confirmed they found in the wild:
 - Unauthorized configuration changes in `running-config`
 
 These implants can run arbitrary commands, intercept traffic, and even hide their presence.
-It's a nightmare scenario for network admins.
 
 ---
 
@@ -94,7 +93,9 @@ show version | include Version
 ```
 Compare this against Cisco's [Official advisory](https://tools.cisco.com/security/center/publicationListing.x). Find your exact model and see if your version is affected or fixed.
 
-### 3. Hunt for Rogue Admin Accounts
+## Have I Been Hacked?
+
+### 1. Hunt for Rogue Admin Accounts
 
 ```bash
 show running-config | include username
@@ -106,7 +107,19 @@ username cisco_tac_admin privilege 15 secret <hash>
 ```
 and you didn't create it - you've likely been compromised.
 
-### 4. Look for Implant Indicators
+Check the startup-config too - if rogue users appear there as well, the implant persisted across reboots:
+
+```bash
+show startup-config | include username
+```
+
+Remove any unknown accounts:
+```bash
+no username cisco_tac_admin
+write memory
+```
+
+### 2. Look for Implant Indicators
 
 ```bash
 show running-config | include lua
@@ -120,44 +133,12 @@ Any Lua script references are a red flag. Some confirmed implant filenames:
 /usr/binos/scripts/sys_report.lua
 ```
 
-### 5. Review System Logs
+If found:
+    - Copy files for forensic review
+    - Delete them
+    - Reboot into a clean image after patching
 
-```bash
-show logging | include HTTP|user|auth
-```
-Look for unknown IPs accessing the web UI or creating new users.
-
-### 6. Check for Unexpected Processes
-
-```bash
-ps
-```
-You may see unfamiliar processes tied to Lua or nginx serving custom scripts.
-
-If you spot any of these - isolate the device immediately from the network and escalate.
-
-## Have I Been Hacked?
-
-### 1. Identify unauthorized users
-
-```bash
-show running-config | include username
-```
-
-Remove any unknown accounts:
-```bash
-no username cisco_tac_admin
-write memory
-```
-
-### 2. Inspect startup-config for persistence
-```bash
-show startup-config | include username
-```
-
-If rogue users appear here too, the system was compromised and the implant persisted.
-
-### 3. Check for modified web configs
+### 3. Check for Modified Web Configs
 
 ```bash
 dir /all nvram: | include .conf
@@ -166,28 +147,25 @@ more system:running-config
 
 Look for unusual ip http path or reverse proxy directives.
 
-### 4. Search logs for attacker activity
+### 4. Review System Logs
 
 ```bash
+show logging | include HTTP|user|auth
 show logging | include POST|GET|config
 ```
-External IPs performing config actions are a big warning sign.
+Look for unknown IPs accessing the web UI, creating new users, or performing config actions - external IPs doing any of these are a big warning sign.
 
-### 5. Check file system for implant traces
+### 5. Check for Unexpected Processes
 
 ```bash
-dir harddisk:/ | include lua
-dir flash:/ | include lua
+ps
 ```
+You may see unfamiliar processes tied to Lua or nginx serving custom scripts.
 
-If found:
-    - Copy files for forensic review
-    - Delete them
-    - Reboot into clean image after patching
+If you spot any of these - isolate the device immediately from the network and escalate.
 
 ## Action Plan: What to Do RIGHT NOW
 
-This needs immediate attention, no debates there
 Here's the checklist for containment, mitigation, and prevention.
 
 ### 1. Disable Web UI
@@ -263,11 +241,9 @@ And make `show running-config | include username` part of your weekly hygiene ro
 
 ## The Bigger Lesson: Preventing the Next "Big One"
 
-Cisco will patch this. Attackers will pivot. The cycle continues.
-But the root cause? Misplaced convenience.
+Cisco will patch this, and attackers will move to the next flaw. The root cause here was misplaced convenience: a management interface reachable from the internet.
 
-Thing is to Never expose management interfaces directly to the internet.
-Period.
+Never expose management interfaces directly to the internet. Period.
 
 Set up out-of-band management networks, or VPN-gated access for admins.
 Deploy config compliance checks via Ansible, Cisco DNA Center, or your NMS of choice.

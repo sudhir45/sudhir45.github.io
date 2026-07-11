@@ -13,7 +13,7 @@ import aiInCyberSec from '@/assets/images/AIinCyberSec.png';
 
 ## TL;DR
 
-Alright, let's cut to the chase. AI is barging into IT and security, and it's not *just* hype anymore. It's supposed to help us dig through the mountains of data, spot the bad guys faster, and maybe even automate some of the grunt work.
+AI is barging into IT and security, and it's not *just* hype anymore. It's supposed to help us dig through the mountains of data, spot the bad guys faster, and maybe even automate some of the grunt work.
 
 **Quick Hits:**
 
@@ -22,7 +22,7 @@ Alright, let's cut to the chase. AI is barging into IT and security, and it's no
 * **Reality Check:** Companies *are* spending money on this, seeing some wins (faster detection, less alert noise sometimes), but it's not plug-and-play. Integration is often a beast, you need good data (garbage in, garbage out), and finding people who get both AI *and* security is tough.
 * **Tools:** There's a growing pile of AI tools out there - some genuinely useful for endpoint, network, threat intel, even helping us write detection rules or understand malware faster.
 
-Basically, AI is becoming another tool in our arsenal. It won't replace us (yet!), but it *can* make us better if we know how to use it and don't just trust the marketing slides.
+Basically, AI is becoming another tool in the kit. It won't replace us (yet!), but it *can* make us better if we know how to use it and don't just trust the marketing slides.
 
 ---
 
@@ -35,7 +35,7 @@ Basically, AI is becoming another tool in our arsenal. It won't replace us (yet!
 
 _AI in IT Infrastructure and Cybersecurity_
 
-## Setting the Scene: Why We're Even Talking About AI
+## Why We're Even Talking About AI
 
 Look, we all know the drill. We're drowning in alerts, the attackers are getting sneakier, and the network topology diagrams look like spaghetti monsters. Trying to keep up using just traditional SIEM rules, signature-based AV (lol), and manual log sifting is becoming a losing battle.
 
@@ -90,7 +90,7 @@ Let's be real, signature-based detection is dead for anything sophisticated. AI/
 
 ## Are Companies Actually Using This Stuff? (Adoption Real Talk)
 
-Yeah, the vendors are pushing it hard, and execs love the buzzwords. The money is flowing - that $38 billion market projection by 2026 sounds crazy, but probably reflects reality.
+Yeah, the vendors are pushing it hard, and execs love the buzzwords. The money is flowing - that $38 billion market projection by 2026 (MarketsandMarkets' number) sounds crazy, but probably reflects reality.
 
 * **Budget Priority:** Seeing stats like "76% prioritize AI/ML" isn't surprising. Getting budget for "AI-powered security" is easier than for "more analysts."
 * **GenAI Craze:** The **91%** using generative AI? Sounds high, but probably includes folks playing with ChatGPT for writing reports or simple scripts, not necessarily full-blown SecOps integration yet.
@@ -98,20 +98,19 @@ Yeah, the vendors are pushing it hard, and execs love the buzzwords. The money i
 ### What's Working (When it Works):
 * **Faster Detection:** Some orgs genuinely see threats quicker. AI correlation engines *can* connect dots faster.
 * **Quicker Response:** Automation (SOAR-like features) helps contain stuff faster, reducing dwell time. That **90%** reduction sounds optimistic, but improvements are real.
-* **Saving Money?:** The **$3.05 million** saved per breach? Plausible. Faster containment = less damage = lower cost. Plus, *maybe* less need for Tier 1 alert monkeys.
+* **Saving Money?:** The **$3.05 million** saved per breach (IBM's Cost of a Data Breach figure for orgs with mature security AI)? Plausible. Faster containment = less damage = lower cost. Plus, *maybe* less need for Tier 1 alert monkeys.
 * **Fewer False Positives:** Again, *if tuned*. But yes, AI *can* be better than poorly written correlation rules. **30%** reduction seems achievable.
 
 ### The Hurdles We *Actually* Face:
 * **Integration Hell:** Getting the shiny new AI tool to talk nicely to the legacy SIEM, ticketing system, and everything else? Often a nightmare. **30%** reporting issues feels low.
 * **Data Mess:** AI needs clean, relevant data. Pointing it at messy, incomplete logs gives you messy, incomplete results. Getting data quality right is a huge, often underestimated job.
-* **Skills Gap:** Finding people who understand ML *and* the nuances of security operations is like finding a unicorn. We need more cross-trained folks.
+* **Skills Gap:** Finding people who understand ML *and* the nuances of security operations is genuinely hard. We need more cross-trained folks.
 * **Ethics & Privacy:** Are we training AI on sensitive data? How do we avoid bias? Important questions, often overlooked in the rush to deploy.
-* **AI Fighting AI:** Yep, the bad guys are using AI too - crafting better phishing lures, generating polymorphic malware, optimizing attacks. The arms race is on.
+* **AI Fighting AI:** Yep, the bad guys are using AI too - crafting better phishing lures, generating polymorphic malware, optimizing attacks.
 
 ### Quick War Stories (Case Studies):
 * **IBM Watson:** Big Blue threw massive resources at this. Faster investigations make sense if the AI can surface the right context quickly.
 * **Microsoft Copilot:** Like having an AI assistant in your SOC. Helps analyze incidents, suggests queries. Definitely useful for speeding things up, especially if you're a Microsoft shop.
-* **Broadriders SOC:** Using ML for detection/response - sounds like a standard modern SOC approach. Faster detection, less noise - the usual goals.
 
 ---
 
@@ -132,7 +131,7 @@ Okay, enough theory. What tools are out there that actually use AI in ways that 
 * **Vectra AI Platform:** Focuses on finding attacker behaviors *inside* the network (cloud, SaaS, on-prem). Good at spotting lateral movement, C2 comms, identity threats. Needs good network/cloud visibility.
 * **Tessian:** Email security focus. Uses behavioral AI to catch tricky phishing, BEC, data exfil attempts that slip past traditional filters. Email is a huge vector, so this is valuable.
 
-### Generative AI Assistants (The New Hotness):
+### Generative AI Assistants:
 * **Secureframe Comply AI:** Helps figure out *how* to fix failed security controls/tests. Context-aware advice. Could be useful for compliance teams or those drowning in vulnerability scan results.
 * **Google Threat Intel (with Gemini):** Lets you "chat" with threat intel data (Mandiant, VirusTotal). Can analyze malware samples and give you summaries. Powerful for research.
 * **SentinelOne Purple AI:** Natural language interface for threat hunting on their platform. Ask questions like "Show me unusual PowerShell activity on finance servers" instead of writing complex queries. Speed boost potential.
@@ -141,7 +140,7 @@ Okay, enough theory. What tools are out there that actually use AI in ways that 
 ### SOAR (Often with AI sprinkled in):
 * **Cybereason:** Focuses on "MalOps" (Malicious Operations) - mapping out the entire attack sequence. Uses AI to connect related alerts and prioritize. Aims to show the full picture, not just isolated alerts.
 
-### How This Stuff *Actually* Helps Day-to-Day:
+### How This Stuff Helps Day-to-Day:
 * **Spotting Threats Faster:** Less time digging, more time investigating actual badness (hopefully).
 * **Incident Response:** Auto-containment buys time. AI suggestions can speed up investigation.
 * **Vuln Management:** Prioritizing what to patch first based on *real* risk, not just CVSS scores.
@@ -152,7 +151,7 @@ Okay, enough theory. What tools are out there that actually use AI in ways that 
 
 ## My 2 Cents: Advice for Fellow Engineers
 
-Look, AI isn't going away. We need to figure out how to use it effectively without getting blinded by the hype.
+AI isn't going away. We need to figure out how to use it effectively without getting blinded by the hype.
 
 ### Skill Up:
 * **Data Basics:** You don't need a PhD, but understand data analysis fundamentals. How is the AI making decisions? What data does it need? How can we spot bias?
@@ -166,7 +165,7 @@ Look, AI isn't going away. We need to figure out how to use it effectively witho
 * **PoC Everything:** Get hands-on. Run realistic tests. How does it handle *your* environment and *your* common threats? How hard is it *really* to integrate and tune?
 * **Check the Data Needs:** What data does it require? Can you actually provide it reliably and cleanly? Garbage in, garbage out.
 * **False Positives Matter:** How noisy is it out of the box? How easy is it to tune? A tool that cries wolf constantly is useless.
-* **Start Small:** Don't try to boil the ocean. Pick one or two specific use cases, get them working well, demonstrate value, then expand.
+* **Start Small:** Pick one or two specific use cases, get them working well, demonstrate value, then expand.
 
 ### Playing the Org Game:
 * **Have a Plan:** Don't just ask for budget for "AI." Explain the specific problem, how the AI tool will help, what success looks like, and what resources are needed.
@@ -176,11 +175,11 @@ Look, AI isn't going away. We need to figure out how to use it effectively witho
 
 ---
 
-## Wrapping It Up: The Bottom Line
+## Where I Land
 
-So, is AI the silver bullet for cybersecurity? No. Is it useless hype? Also no.
+AI is neither a silver bullet for cybersecurity nor pure hype.
 
-It's a powerful set of tools that *can* seriously level up our game in IT infrastructure and cybersecurity. It helps us handle the sheer scale and speed of modern threats and complex environments in ways we couldn't before. Better visibility, faster detection, smarter response - these are real possibilities.
+It's a powerful set of tools that *can* genuinely make us better at IT infrastructure and cybersecurity. It helps us handle the sheer scale and speed of modern threats and complex environments in ways we couldn't before. Better visibility, faster detection, smarter response - these are real possibilities.
 
 But it's not magic. It needs careful planning, the right data, constant tuning, and skilled engineers who know how to wield it effectively and understand its limitations. We need to be smart consumers and users of this tech, not just passive recipients of vendor marketing.
 

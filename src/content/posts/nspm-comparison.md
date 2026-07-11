@@ -16,7 +16,7 @@ I recently dug into a comparison of the "Big Three" - **Algosec, Tufin, and Fire
 
 Before we get to the comparison, here's the painful backstory. We weren't just window shopping for fun; we were forced into this.
 
-We used to rely on Skybox. Then, out of nowhere, it all went south. Skybox Inc collaspsed and suddenly we were left without any vendor support. No prior warnings, no "heads up" emails - just a sudden, silent collapse. so we had to scramble to find a replacement that wouldn't leave us hanging. That panic is exactly why we evaluated these three alternatives.
+We used to rely on Skybox. Skybox Inc collapsed and we were left without vendor support. No warning, no "heads up" email - nothing. We had to scramble to find a replacement that wouldn't leave us hanging. That panic is exactly why we evaluated these three alternatives.
 
 Algosec, Tufin, and FireMon are the big dogs everyone compares.
 
