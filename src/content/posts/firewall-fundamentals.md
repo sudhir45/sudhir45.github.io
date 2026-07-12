@@ -98,7 +98,7 @@ A shiny NGFW is useless (or even dangerous) if it's poorly configured. These are
 - **Use hardened OS images** where possible. Follow vendor guides and things like [CIS Benchmarks](https://www.cisecurity.org/cis-benchmarks/).
 
 ### Lock Down Management Access
-- **No Telnet, no HTTP.** Only allow SSH (v2) or HTTPS for management. Period.
+- **No Telnet, no HTTP.** SSH (v2) or HTTPS for management, nothing else.
 - Use a **dedicated management interface/network**, separate from data traffic.
 - **Enforce Multi-Factor Authentication (MFA)** for *all* admin logins. Non-negotiable.
 - Implement **Role-Based Access Control (RBAC)**. Not everyone needs full admin rights. Grant least privilege.
@@ -132,26 +132,11 @@ A shiny NGFW is useless (or even dangerous) if it's poorly configured. These are
 
 ## Firewall Trends in 2025
 
-Here's what's actually shaping the space right now:
+Quick reality check on what's actually moving versus what's still slideware.
 
-### AI and Machine Learning in Firewalls
-- Firewalls are getting smarter. Platforms like [Fortinet's FortiAI](https://www.fortinet.com/products/ai-powered-security-operations) or capabilities within [Palo Alto's Cortex](https://www.paloaltonetworks.com/cortex) use ML to spot anomalies, predict threats, and even suggest or automate policy adjustments.
-- The goal: Faster detection and response than humanly possible. It's promising, but watch out for hype - "AI-driven" means different things to different vendors.
+**Zero Trust is the one with teeth.** Access granted per-session, verified user and device, no free pass for being "inside" - and firewalls are how much of it gets enforced, especially internal segmentation firewalls (ISFWs) tied to identity providers ([NIST SP 800-207](https://csrc.nist.gov/publications/detail/sp/800-207/final) is the reference). **Cloud and FWaaS are real but uneven** - cloud-native firewalls and [SASE](https://www.gartner.com/en/information-technology/glossary/secure-access-service-edge-sase)-delivered firewalling make sense for distributed users and multi-cloud, less so for a single data center. **"AI-driven" features** ([FortiAI](https://www.fortinet.com/products/ai-powered-security-operations), [Cortex](https://www.paloaltonetworks.com/cortex), and friends) mean wildly different things per vendor - treat every claim as unverified until your own PoC says otherwise.
 
-### Zero Trust Architecture (ZTA) Isn't Just Buzz
-- **"Never trust, always verify."** ZTA assumes breaches *will* happen. Access is granted per-session, based on strict verification of user and device identity/health, regardless of whether they're inside or outside the network perimeter.
-- Firewalls are *key enablers* of ZTA, particularly internal segmentation firewalls (ISFWs) and those integrating strongly with identity providers to enforce micro-segmentation and least-privilege access.
-
-> Dive deeper with the [NIST Zero Trust Guidelines (SP 800-207)](https://csrc.nist.gov/publications/detail/sp/800-207/final).
-
-### Cloud & Firewall-as-a-Service (FWaaS) Dominate
-- As infrastructure shifts, security must follow. Cloud-native firewalls and virtual appliances are essential for hybrid/multi-cloud.
-- **FWaaS**, often delivered via a **SASE** ([Secure Access Service Edge](https://www.gartner.com/en/information-technology/glossary/secure-access-service-edge-sase)) model, is growing fast. It centralizes cloud-based security policy enforcement (including firewalling, SWG, ZTNA) for users and devices anywhere.
-
-### Other Key Areas:
-- **TLS/SSL Decryption:** You can't inspect what you can't see. Decrypting encrypted traffic (selectively and carefully!) is vital for NGFW features to work effectively, but comes with performance and privacy considerations.
-- **Integrated Threat Intelligence:** Firewalls consuming real-time feeds of malicious IPs, domains, and file hashes to block emerging threats automatically.
-- **Automation & Infrastructure-as-Code (IaC):** Managing firewall policies using tools like Terraform or Ansible for consistency, speed, and version control. This is huge for DevOps/SecOps alignment.
+Meanwhile, the unglamorous stuff quietly matters most: **TLS decryption** (you can't inspect what you can't see - do it selectively, and mind performance and privacy), **integrated threat intel feeds**, and **managing policy as code** with Terraform or Ansible so every change is versioned and reviewable.
 
 ---
 
@@ -161,10 +146,10 @@ Choosing a firewall vendor depends heavily on your specific needs, existing infr
 
 | Vendor                    | Key Strengths / Focus Areas                                     |
 | :------------------------ | :-------------------------------------------------------------- |
-| **Palo Alto Networks**    | Strong NGFW feature set (App-ID, Threat Prevention), Cloud (Prisma), SASE (Prisma Access), Cortex XDR integration. Often seen as a leader in innovation. |
-| **Fortinet**              | High-performance FortiGate appliances (custom ASICs), broad integrated portfolio (Security Fabric), strong UTM/SMB offerings, good value. |
-| **Cisco**                 | Secure Firewall (formerly Firepower), strong networking integration, excellent threat intelligence (Talos), large enterprise presence, SecureX platform. |
-| **Check Point**           | Long-standing security focus, strong central management (SmartConsole), robust threat prevention (SandBlast), growing cloud portfolio (CloudGuard). |
+| **Palo Alto Networks**    | Invented App-ID and still trades on it. Deep NGFW feature set, tight Prisma/Cortex integration - and priced like it knows that. |
+| **Fortinet**              | Custom ASICs make FortiGates the price-performance play, with a broad integrated portfolio (Security Fabric). Subscribe to their PSIRT advisories - you'll need them. |
+| **Cisco**                 | Secure Firewall (ex-Firepower). Talos threat intel is genuinely excellent; the management tooling has historically been the complaint. Natural fit if you're already a Cisco networking shop. |
+| **Check Point**           | The old guard that still ships. SmartConsole central management is a real strength; the cloud portfolio (CloudGuard) is catching up rather than leading. |
 | **Others to Consider**    | **Juniper Networks** (SRX Series, good for routing/security integration), **Sophos** (XG Firewall, strong endpoint integration), **SonicWall** (popular in SMB), **Barracuda**, and open-source options like **pfSense** / **OPNsense** (powerful, flexible, require expertise). |
 
 *Do your homework:* Run bake-offs (POCs), check independent tests (like Gartner Magic Quadrant, Forrester Wave, NSS Labs/CyberRatings), and consider TCO (Total Cost of Ownership), not just the sticker price.

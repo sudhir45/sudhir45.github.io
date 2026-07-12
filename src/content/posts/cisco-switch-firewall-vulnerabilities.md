@@ -38,6 +38,8 @@ Two major vulnerabilities kicked this off:
 - **CVE-2023-20198** - Allows attackers to create arbitrary user accounts with privilege level 15 (full admin) on IOS XE systems with the HTTP/HTTPS Server feature enabled.
 - **CVE-2023-20273** - Used in conjunction with the above to deploy persistent implants using Lua scripts.
 
+Yes, those CVE numbers say 2023. Cisco patched these two years ago - and they were being actively exploited *again* in September 2025, because unpatched, internet-facing IOS XE devices never die. That's the actual scandal here.
+
 In plain terms:
 If your management web interface is reachable from the internet and running an unpatched IOS XE version, attackers can send a crafted HTTP request, create a new admin account, then upload and execute code that lives inside your system.
 
@@ -58,7 +60,7 @@ If any of these are true, assume you're vulnerable and act immediately:
 1. You're running **IOS XE** (e.g., Catalyst 3650/3850, 9000, ISR 4000, WLC 9800, etc.)
 2. You have **HTTP or HTTPS server enabled**
 3. That interface is **reachable from outside your LAN** (public IP or NAT)
-4. You haven't patched since **Cisco's latest fixed versions (Sept-Oct 2025)**
+4. You haven't applied **Cisco's fixed versions (available since late 2023)**
 5. You're unsure which version you're on
 
 ---

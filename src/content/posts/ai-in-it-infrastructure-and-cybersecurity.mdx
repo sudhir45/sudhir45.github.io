@@ -64,7 +64,7 @@ AI promises smarter alerts (less noise!), automated fixes for common infra hiccu
 Predicting hardware failures, resource crunches, performance drops.
 **Why we care:** Again, stability. A system thrashing due to low resources might behave erratically, potentially triggering false security alerts or hiding actual malicious activity. Proactive infra management is generally good for security hygiene.
 
-**Bottom Line for Infra AI:** It's mostly about keeping the lights on efficiently. For us, the benefit is indirect - a more stable, predictable environment is usually a more securable one.
+Infra AI is mostly about keeping the lights on efficiently. For us, the benefit is indirect - a more stable, predictable environment is usually a more securable one.
 
 ---
 
@@ -74,7 +74,7 @@ This is where it gets interesting for us.
 
 ### Threat Detection: Beyond Signatures
 Let's be real, signature-based detection is dead for anything sophisticated. AI/ML approaches are the standard now in most decent tools (EDR, XDR, Network Security).
-* **How it works (simplified):** Instead of looking for exact file hashes, it looks at behaviors, code structure, network patterns, process relationships. Learns what's "normal" for *your* environment (supposedly) and flags weird deviations.
+* **How it works (simplified):** Instead of looking for exact file hashes, it looks at behaviors, code structure, network patterns, process relationships. Learns what's "normal" for *your* environment and flags weird deviations.
 * **What it catches:** Polymorphic malware, fileless attacks, zero-days (sometimes), insider threats (behavioral anomalies), tricky phishing.
 * **The Catch:** Tuning is *crucial*. Out-of-the-box, these things can be noisy as hell or too permissive. You need to teach it what "normal" really looks like in your specific zoo.
 
@@ -90,33 +90,26 @@ Let's be real, signature-based detection is dead for anything sophisticated. AI/
 
 ## Are Companies Actually Using This Stuff? (Adoption Real Talk)
 
-Yeah, the vendors are pushing it hard, and execs love the buzzwords. The money is flowing - that $38 billion market projection by 2026 (MarketsandMarkets' number) sounds crazy, but probably reflects reality.
-
-* **Budget Priority:** Seeing stats like "76% prioritize AI/ML" isn't surprising. Getting budget for "AI-powered security" is easier than for "more analysts."
-* **GenAI Craze:** The **91%** using generative AI? Sounds high, but probably includes folks playing with ChatGPT for writing reports or simple scripts, not necessarily full-blown SecOps integration yet.
+Yeah, the vendors are pushing it hard, and execs love the buzzwords. The money is flowing - MarketsandMarkets projects a $38 billion market by 2026, and that probably reflects reality: getting budget for "AI-powered security" is easier than getting budget for "more analysts." Just remember that a lot of claimed "GenAI adoption" is people using ChatGPT to write reports and scripts, not full-blown SecOps integration.
 
 ### What's Working (When it Works):
 * **Faster Detection:** Some orgs genuinely see threats quicker. AI correlation engines *can* connect dots faster.
-* **Quicker Response:** Automation (SOAR-like features) helps contain stuff faster, reducing dwell time. That **90%** reduction sounds optimistic, but improvements are real.
-* **Saving Money?:** The **$3.05 million** saved per breach (IBM's Cost of a Data Breach figure for orgs with mature security AI)? Plausible. Faster containment = less damage = lower cost. Plus, *maybe* less need for Tier 1 alert monkeys.
-* **Fewer False Positives:** Again, *if tuned*. But yes, AI *can* be better than poorly written correlation rules. **30%** reduction seems achievable.
+* **Quicker Response:** Automation (SOAR-like features) helps contain stuff faster, reducing dwell time.
+* **Saving Money?:** The **$3.05 million** saved per breach (IBM's Cost of a Data Breach figure for orgs with mature security AI)? Plausible. Faster containment = less damage = lower cost. Plus, less need for Tier 1 alert monkeys.
+* **Fewer False Positives:** Again, *if tuned*. But yes, AI *can* be better than poorly written correlation rules.
 
 ### The Hurdles We *Actually* Face:
-* **Integration Hell:** Getting the shiny new AI tool to talk nicely to the legacy SIEM, ticketing system, and everything else? Often a nightmare. **30%** reporting issues feels low.
+* **Integration Hell:** Getting the shiny new AI tool to talk nicely to the legacy SIEM, ticketing system, and everything else? Often a nightmare.
 * **Data Mess:** AI needs clean, relevant data. Pointing it at messy, incomplete logs gives you messy, incomplete results. Getting data quality right is a huge, often underestimated job.
 * **Skills Gap:** Finding people who understand ML *and* the nuances of security operations is genuinely hard. We need more cross-trained folks.
 * **Ethics & Privacy:** Are we training AI on sensitive data? How do we avoid bias? Important questions, often overlooked in the rush to deploy.
 * **AI Fighting AI:** Yep, the bad guys are using AI too - crafting better phishing lures, generating polymorphic malware, optimizing attacks.
 
-### Quick War Stories (Case Studies):
-* **IBM Watson:** Big Blue threw massive resources at this. Faster investigations make sense if the AI can surface the right context quickly.
-* **Microsoft Copilot:** Like having an AI assistant in your SOC. Helps analyze incidents, suggests queries. Definitely useful for speeding things up, especially if you're a Microsoft shop.
-
 ---
 
 ## The Toolbox: AI Gear for Us Security Folks
 
-Okay, enough theory. What tools are out there that actually use AI in ways that might help us? (Disclaimer: Vendor claims vs. reality may vary. Always PoC!)
+Okay, enough theory. What tools are out there that actually use AI in ways that might help us? Fair warning: this is a radar list, not a review - I haven't run most of these in production. Vendor claims vs. reality may vary. Always PoC.
 
 ### Threat Detection / XDR Platforms:
 * **Microsoft Security Copilot:** Built into their ecosystem (Defender, Sentinel). Uses GPT-4 to help investigate, summarize alerts, hunt. Very slick if you're all-in on Azure/M365. Less useful otherwise.
@@ -125,11 +118,11 @@ Okay, enough theory. What tools are out there that actually use AI in ways that 
 
 ### Endpoint Protection (EPP/EDR):
 * **SentinelOne Singularity:** Strong EDR/XDR features. Uses AI for detection, automated response ("Storyline"), and threat hunting. Can be aggressive, needs tuning.
-* **Cylance (BlackBerry):** One of the originals in AI-based prevention. Focuses on stopping malware pre-execution. Lightweight, but maybe less visibility for post-compromise investigation compared to full EDRs.
+* **Cylance (now Arctic Wolf):** One of the originals in AI-based prevention. Focuses on stopping malware pre-execution. Lightweight, but less visibility for post-compromise investigation compared to full EDRs. BlackBerry sold Cylance to Arctic Wolf in early 2025, so check the roadmap before committing.
 
 ### Network Security:
 * **Vectra AI Platform:** Focuses on finding attacker behaviors *inside* the network (cloud, SaaS, on-prem). Good at spotting lateral movement, C2 comms, identity threats. Needs good network/cloud visibility.
-* **Tessian:** Email security focus. Uses behavioral AI to catch tricky phishing, BEC, data exfil attempts that slip past traditional filters. Email is a huge vector, so this is valuable.
+* **Tessian (now part of Proofpoint):** Email security focus. Uses behavioral AI to catch tricky phishing, BEC, data exfil attempts that slip past traditional filters. Proofpoint acquired it in late 2023. Email is a huge vector, so this is valuable.
 
 ### Generative AI Assistants:
 * **Secureframe Comply AI:** Helps figure out *how* to fix failed security controls/tests. Context-aware advice. Could be useful for compliance teams or those drowning in vulnerability scan results.
@@ -141,7 +134,7 @@ Okay, enough theory. What tools are out there that actually use AI in ways that 
 * **Cybereason:** Focuses on "MalOps" (Malicious Operations) - mapping out the entire attack sequence. Uses AI to connect related alerts and prioritize. Aims to show the full picture, not just isolated alerts.
 
 ### How This Stuff Helps Day-to-Day:
-* **Spotting Threats Faster:** Less time digging, more time investigating actual badness (hopefully).
+* **Spotting Threats Faster:** Less time digging, more time investigating actual badness.
 * **Incident Response:** Auto-containment buys time. AI suggestions can speed up investigation.
 * **Vuln Management:** Prioritizing what to patch first based on *real* risk, not just CVSS scores.
 * **SOC Grunt Work:** Automating log review, alert triage, maybe even basic reporting. Frees us up for hunting and analysis.
@@ -183,4 +176,4 @@ It's a powerful set of tools that *can* genuinely make us better at IT infrastru
 
 But it's not magic. It needs careful planning, the right data, constant tuning, and skilled engineers who know how to wield it effectively and understand its limitations. We need to be smart consumers and users of this tech, not just passive recipients of vendor marketing.
 
-For us engineers on the ground, the key is to stay curious, keep learning, and figure out how to integrate these AI capabilities into our workflows to actually make our defenses stronger and our lives (maybe) a little less chaotic. The robots aren't taking over the SOC just yet, but they're definitely becoming important co-pilots.
+If I had budget for exactly one thing this year, it wouldn't be another AI tool. It would be cleaning up the data feeding the tools we already have - the logs, the asset inventory, the alert routing. Every product on that list above is only as good as what you point it at, and most environments are pointing them at a mess.
