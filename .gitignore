@@ -46,6 +46,14 @@ pnpm-debug.log*
 PROJECT_GUIDE.md
 FrontEndSkills.md
 AGENTS.md
+CISSP.txt
+ai-slop-review.html
+
+# AI tooling config (local only)
+.claude/
+.agent/
+.superpowers/
+.worktrees/
 
 # Presentations
 *.pptx
