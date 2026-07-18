@@ -1,15 +1,15 @@
 [
-  {
-    "slug": "firewall-chaos",
-    "title": "Firewall Chaos : Automated Policy Management",
-    "description": "A deep dive into managing firewall policies at scale",
-    "category": "Security",
-    "sourcePath": "f:\\Projects\\sudhir-blog-astro\\astro-tech-blog\\Firewall_Chaos.pptx",
-    "slideCount": 18,
-    "thumbnail": "/presentations/firewall-chaos/slide-1.jpg",
-    "date": "2026-02-26",
-    "venue": "Internal engineering talk",
-    "link": "/presentations/firewall-chaos",
-    "linkLabel": "Slides"
-  }
+	{
+		"slug": "firewall-chaos",
+		"title": "Firewall Chaos : Automated Policy Management",
+		"description": "A deep dive into managing firewall policies at scale",
+		"category": "Security",
+		"sourcePath": "Firewall_Chaos.pptx",
+		"slideCount": 18,
+		"thumbnail": "/presentations/firewall-chaos/slide-1.jpg",
+		"date": "2026-02-26",
+		"venue": "Internal engineering talk",
+		"link": "/presentations/firewall-chaos",
+		"linkLabel": "Slides"
+	}
 ]

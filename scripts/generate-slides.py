@@ -72,10 +72,30 @@ def create_placeholder_slides(output_dir: str, slide_count: int = 10):
     return slide_count
 
 
-def convert_presentation(pres: dict, public_dir: str) -> int:
+def resolve_project_source_path(source_path: str, project_dir: str) -> str:
+    """Resolve a presentation source while keeping it inside the project root."""
+    project_root = Path(project_dir).resolve()
+    candidate = Path(source_path)
+    if not candidate.is_absolute():
+        candidate = project_root / candidate
+    candidate = candidate.resolve()
+
+    try:
+        candidate.relative_to(project_root)
+    except ValueError as exc:
+        raise ValueError("Presentation sourcePath must stay inside the project root") from exc
+
+    return str(candidate)
+
+
+def convert_presentation(pres: dict, project_dir: str, public_dir: str) -> int:
     """Convert a single presentation to slide images."""
     slug = pres["slug"]
-    source_path = pres["sourcePath"]
+    try:
+        source_path = resolve_project_source_path(pres["sourcePath"], project_dir)
+    except ValueError as error:
+        print(f"  ✗ Invalid source path for '{slug}': {error}")
+        return 0
     output_dir = os.path.join(public_dir, slug)
     
     # Check if already generated
@@ -120,7 +140,7 @@ def main():
     
     # Convert each presentation
     for pres in presentations:
-        count = convert_presentation(pres, str(public_dir))
+        count = convert_presentation(pres, str(project_dir), str(public_dir))
         pres["slideCount"] = count
         pres["thumbnail"] = f"/presentations/{pres['slug']}/slide-1.jpg"
     
