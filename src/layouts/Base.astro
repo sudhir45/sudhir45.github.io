@@ -27,7 +27,7 @@ const authorSameAs = SOCIALS.filter((s) => s.url.startsWith('http')).map((s) => 
 
 const siteUrl = Astro.site ? Astro.site.toString().replace(/\/$/, '') : 'https://sudhir.is-a.dev';
 const canonicalUrl = `${siteUrl}${Astro.url.pathname}`;
-const baseOgImage = image ?? '/images/Secure_Architecture.png';
+const baseOgImage = image ?? '/images/sudhir-social-card-v2.png';
 const ogImageUrl = baseOgImage.startsWith('http') ? baseOgImage : `${siteUrl}${baseOgImage}`;
 ---
 

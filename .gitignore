@@ -36,6 +36,7 @@ AGENTS.md
 CISSP.txt
 
 # Local agent tooling and generated plans
+skills-lock.json
 .claude/
 .agent/
 .agents/
