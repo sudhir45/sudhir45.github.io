@@ -20,30 +20,33 @@ const email = SOCIALS.find((s) => s.name === 'Email')?.url || '#';
 		<div class="grid gap-10 pt-10 md:grid-cols-[1fr_auto] md:gap-16 md:pt-14">
 			<div class="order-2 md:order-1">
 				<div class="animate-fade-up stagger-1 text-muted max-w-[720px] text-[17px] leading-[1.75] [&>p]:mb-[18px] [&>p:last-child]:mb-0">
-				<p>
-					I'm Sudhir, a cyber security professional based in Mumbai. I work on network security and
-					compliance for large enterprise environments, the kind with a decade of firewall rules
-					nobody remembers writing and audits that never quite end.
-				</p>
-				<p>
-					Before this, a lot of my time went into CTFs and offensive security. That still shapes how
-					I approach defense: assume someone patient is looking, and design controls that hold up
-					when they do, not just on the compliance checklist.
-				</p>
-				<p>
-					This blog is where I write it down. Occasionally it's useful to someone else doing the same
-					work.
-				</p>
+					<p>
+						I'm Sudhir, a cyber security professional based in Mumbai. I work on network security and
+						compliance for large enterprise environments, the kind with a decade of firewall rules
+						nobody remembers writing and audits that never quite end.
+					</p>
+					<p>
+						Before this, a lot of my time went into CTFs and offensive security. That still shapes how
+						I approach defense: assume someone patient is looking, and design controls that hold up
+						when they do, not just on the compliance checklist.
+					</p>
+					<p>
+						This blog is where I write it down. Occasionally it's useful to someone else doing the same
+						work.
+					</p>
 				</div>
 
 				<!-- Single quiet row of links -->
 				<div
 					class="border-frame animate-fade-up stagger-2 mt-10 flex flex-wrap items-center gap-6 border-t pt-8 text-sm font-medium"
 				>
-					<a href="/posts" class="text-accent transition-opacity hover:opacity-70">Read the writing →</a>
+					<a href="/posts" class="text-accent transition-opacity hover:opacity-70"
+						>Read the writing ↗</a
+					>
 					<a href={github} target="_blank" rel="noopener noreferrer" class="text-faint hover:text-fg transition-colors">GitHub</a>
 					<a href={linkedin} target="_blank" rel="noopener noreferrer" class="text-faint hover:text-fg transition-colors">LinkedIn</a>
 					<a href={email} class="text-faint hover:text-fg transition-colors">Email</a>
+					<a href="/resume.pdf" target="_blank" rel="noopener noreferrer" class="text-faint hover:text-fg transition-colors">Resume</a>
 				</div>
 			</div>
 
