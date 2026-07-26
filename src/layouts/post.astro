@@ -134,29 +134,14 @@ const readTime = frontmatter.minutesRead?.trim() || 'Quick read';
 	</Section>
 
 	<script>
-		document.addEventListener('astro:page-load', () => {
+		import mediumZoom from 'medium-zoom';
 
-			const initZoom = () => {
-				const isDark = document.documentElement.classList.contains('dark');
-				if ((window as any).mediumZoom) {
-					const zoom = (window as any).mediumZoom('img:not(.no-zoom)', {
-						margin: 24,
-						background: isDark ? '#1a1714' : '#faf9f7',
-					});
-					return zoom;
-				} else {
-					const script = document.createElement('script');
-					script.src = 'https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js';
-					script.onload = () => {
-						(window as any).mediumZoom('article img:not(.no-zoom), .prose img:not(.no-zoom)', {
-							margin: 24,
-							background: isDark ? '#1a1714' : '#faf9f7',
-						});
-					};
-					document.head.appendChild(script);
-				}
-			};
-			initZoom();
+		document.addEventListener('astro:page-load', () => {
+			const isDark = document.documentElement.classList.contains('dark');
+			mediumZoom('article img:not(.no-zoom), .prose img:not(.no-zoom)', {
+				margin: 24,
+				background: isDark ? '#1a1714' : '#faf9f7'
+			});
 
 			const blocks = document.querySelectorAll('pre');
 			blocks.forEach((block) => {
