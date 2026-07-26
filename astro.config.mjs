@@ -8,11 +8,7 @@ import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
 import mdx from '@astrojs/mdx';
 const options = {
-	// Specify the theme to use or a custom theme json, in our case
-	// it will be a moonlight-II theme from
-	// https://github.com/atomiks/moonlight-vscode-theme/blob/master/src/moonlight-ii.json
-	// Callbacks to customize the output of the nodes
-	//theme: json,
+	grid: true,
 	onVisitLine(node) {
 		// Prevent lines from collapsing in `display: grid` mode, and
 		// allow empty lines to be copy/pasted
@@ -26,8 +22,11 @@ const options = {
 		}
 	},
 	onVisitHighlightedLine(node) {
-		// Adding a class to the highlighted line
-		node.properties.className = ['highlighted'];
+		node.properties.className = node.properties.className || [];
+		node.properties.className.push('highlighted');
+	},
+	onVisitHighlightedChars(node) {
+		node.properties.className = ['word'];
 	}
 };
 

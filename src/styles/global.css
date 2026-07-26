@@ -460,32 +460,56 @@
 }
 
 @layer utilities {
+	.content [data-rehype-pretty-code-figure] {
+		@apply border-line bg-surface-2 my-6 overflow-hidden rounded-xl border relative shadow-sm;
+	}
+
+	.content [data-rehype-pretty-code-title] {
+		@apply border-b border-line bg-surface-2 px-4 py-2.5 font-mono text-xs font-medium text-muted flex items-center justify-between;
+	}
+
 	.content pre {
-		@apply overflow-x-auto rounded-lg p-0;
+		@apply overflow-x-auto rounded-none p-0 my-0 border-0 bg-transparent;
 	}
 
 	.content code {
-		@apply overflow-x-auto;
+		@apply overflow-x-auto font-mono text-sm leading-relaxed;
 	}
 
 	.content [data-rehype-pretty-code-figure] code {
-		@apply p-0;
+		@apply p-0 grid;
 	}
 
 	.content pre > code span[data-line] {
-		@apply border-l-4 border-transparent px-4;
+		@apply border-l-4 border-transparent px-4 py-0.5;
 	}
 
 	.content pre > code span:first-of-type {
-		@apply rounded-t-lg pt-4;
+		@apply pt-4;
 	}
 
 	.content pre > code span:last-of-type {
-		@apply rounded-b-lg pb-4;
+		@apply pb-4;
 	}
 
 	.content pre > code .highlighted {
-		@apply border-accent/40 bg-accent/5 dark:bg-accent/10 border-l-4;
+		@apply border-accent/60 bg-accent/10 border-l-4;
+	}
+
+	.content pre > code .highlighted-add,
+	.content pre > code [data-line-add],
+	.content pre > code [data-highlighted-line-add] {
+		@apply border-emerald-500/80 bg-emerald-500/10 border-l-4;
+	}
+
+	.content pre > code .highlighted-remove,
+	.content pre > code [data-line-remove],
+	.content pre > code [data-highlighted-line-remove] {
+		@apply border-rose-500/80 bg-rose-500/10 border-l-4;
+	}
+
+	.content code span.word {
+		@apply rounded bg-accent/20 px-1 py-0.5 font-semibold text-accent;
 	}
 
 	.content pre > code[data-line-numbers] {
@@ -495,7 +519,7 @@
 	.content pre > code[data-line-numbers] > span[data-line]::before {
 		counter-increment: line;
 		content: counter(line);
-		@apply text-faint mr-6 inline-block w-6 text-left;
+		@apply text-subtle mr-6 inline-block w-6 text-right select-none;
 		font-variant-numeric: tabular-nums;
 	}
 

@@ -147,28 +147,22 @@ const readTime = frontmatter.minutesRead?.trim() || 'Quick read';
 			blocks.forEach((block) => {
 				if (block.querySelector('.copy-button')) return;
 				
-				const parent = block.parentNode as HTMLElement;
-				if (!parent.classList.contains('relative')) {
-					const wrapper = document.createElement('div');
-					wrapper.className = 'relative group rounded-lg overflow-hidden';
-					parent.insertBefore(wrapper, block);
-					wrapper.appendChild(block);
-				} else {
-					parent.classList.add('group');
-				}
+				const figure = block.closest('[data-rehype-pretty-code-figure]') as HTMLElement | null;
+				const targetContainer = figure || block;
+				targetContainer.classList.add('relative', 'group');
 
 				const btn = document.createElement('button');
-				btn.className = 'copy-button absolute top-3 right-3 p-1.5 rounded bg-zinc-700/50 text-zinc-400 opacity-0 transition-all hover:bg-zinc-600 hover:text-white group-hover:opacity-100 focus:opacity-100';
+				btn.className = 'copy-button absolute top-2.5 right-3 p-1.5 rounded bg-surface border border-line text-muted opacity-0 transition-all hover:bg-surface-2 hover:text-fg group-hover:opacity-100 focus:opacity-100 z-10 cursor-pointer shadow-sm';
 				btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>`;
 				btn.setAttribute('aria-label', 'Copy code');
 				
-				block.appendChild(btn);
+				targetContainer.appendChild(btn);
 
 				btn.addEventListener('click', async () => {
 					const code = block.querySelector('code');
 					if (!code) return;
 					await navigator.clipboard.writeText(code.innerText);
-					btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-green-400"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+					btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-emerald-500"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
 					setTimeout(() => {
 						btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>`;
 					}, 2000);
