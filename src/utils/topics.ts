@@ -107,11 +107,8 @@ export interface TopicWithCount extends Topic {
 	count: number;
 }
 
-/**
- * Topics that have at least one post, ordered by post count (desc), then by
- * their order in TOPICS. The first entry is the "lead" thread (amber count).
- */
-export const getTopicsWithCounts = async (): Promise<TopicWithCount[]> => {
+/** All canonical topics in taxonomy order, including topics with zero public posts. */
+export const getAllTopicsWithCounts = async (): Promise<TopicWithCount[]> => {
 	const posts = await getAllPosts();
 	const counts = new Map<string, number>();
 	for (const post of posts) {
@@ -120,7 +117,15 @@ export const getTopicsWithCounts = async (): Promise<TopicWithCount[]> => {
 		}
 	}
 
-	return TOPICS.map((topic) => ({ ...topic, count: counts.get(topic.name) ?? 0 }))
+	return TOPICS.map((topic) => ({ ...topic, count: counts.get(topic.name) ?? 0 }));
+};
+
+/**
+ * Topics that have at least one post, ordered by post count (desc), then by
+ * their order in TOPICS. The first entry is the "lead" thread (amber count).
+ */
+export const getTopicsWithCounts = async (): Promise<TopicWithCount[]> => {
+	return (await getAllTopicsWithCounts())
 		.filter((topic) => topic.count > 0)
 		.sort((a, b) => b.count - a.count);
 };

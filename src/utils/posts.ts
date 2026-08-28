@@ -47,6 +47,46 @@ export const getPostBySlug = async (slug: string) => {
 	return posts.find((post) => post.slug === slug);
 };
 
+const sharedTopicCount = (current: SitePost, candidate: SitePost): number => {
+	const currentTopics = new Set(current.data.tags);
+	return candidate.data.tags.reduce(
+		(count, topic) => count + (currentTopics.has(topic) ? 1 : 0),
+		0
+	);
+};
+
+/**
+ * Rank onward-reading choices by topic overlap, then publication-date proximity.
+ * Slug is the final tie-breaker so static builds remain deterministic.
+ */
+export const rankRelatedPosts = (current: SitePost, posts: SitePost[], limit = 3): SitePost[] =>
+	posts
+		.filter(
+			(post, index, candidates) =>
+				post.slug !== current.slug &&
+				!post.data.draft &&
+				candidates.findIndex((candidate) => candidate.slug === post.slug) === index
+		)
+		.sort((a, b) => {
+			const topicDelta = sharedTopicCount(current, b) - sharedTopicCount(current, a);
+			if (topicDelta !== 0) return topicDelta;
+
+			const currentTime = current.data.pubDate.getTime();
+			const proximityDelta =
+				Math.abs(a.data.pubDate.getTime() - currentTime) -
+				Math.abs(b.data.pubDate.getTime() - currentTime);
+			if (proximityDelta !== 0) return proximityDelta;
+
+			return a.slug.localeCompare(b.slug);
+		})
+		.slice(0, Math.max(0, limit));
+
+export const getRelatedPosts = async (slug: string, limit = 3): Promise<SitePost[]> => {
+	const posts = await getAllPosts();
+	const current = posts.find((post) => post.slug === slug);
+	return current ? rankRelatedPosts(current, posts, limit) : [];
+};
+
 /** Chronological neighbors of a post (by publish date, newest first). */
 export const getPostNeighbors = async (slug: string) => {
 	const posts = (await getAllPosts())

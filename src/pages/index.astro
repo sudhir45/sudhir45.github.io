@@ -4,23 +4,25 @@ import Base from '@/layouts/Base.astro';
 import Section from '@/components/Section.astro';
 import SelectedPostRow from '@/components/SelectedPostRow.astro';
 import { getAllPosts } from '@/utils/posts';
+import { getAllTopicsWithCounts } from '@/utils/topics';
 
 const { title, description } = AppConfig;
 
 const allPosts = await getAllPosts();
 const selected = allPosts.slice(0, 4);
 const total = allPosts.length;
+const topics = await getAllTopicsWithCounts();
 ---
 
 <Base head={{ title, description }}>
 	<Section>
 		<!-- Statement hero with the double-slit mark on the right (option 9i) -->
 		<div
-			class="animate-fade-up flex items-center justify-between gap-12 pb-14 pt-10 md:pb-16 md:pt-16"
+			class="animate-fade-up flex items-center justify-between gap-12 pt-10 pb-14 md:pt-16 md:pb-16"
 		>
 			<div class="max-w-[880px]">
 				<h1
-					class="font-display text-fg text-[2.5rem] font-medium leading-[1.1] tracking-[-0.025em] text-balance sm:text-[3rem] md:text-[3.25rem]"
+					class="font-display text-fg text-[2.5rem] leading-[1.1] font-medium tracking-[-0.025em] text-balance sm:text-[3rem] md:text-[3.25rem]"
 				>
 					Security work, <span class="ink-underline">written down.</span>
 				</h1>
@@ -82,21 +84,64 @@ const total = allPosts.length;
 		<div class="animate-fade-up stagger-1 pb-16">
 			<div class="rule-draw relative flex items-baseline justify-between pb-4">
 				<h2 class="font-display text-fg text-sm font-semibold">Selected writing</h2>
-				<a href="/posts" class="text-subtle hover:text-fg text-[13px] font-medium transition-colors">
+				<a
+					href="/posts"
+					class="text-subtle hover:text-fg text-[13px] font-medium transition-colors"
+				>
 					All {total} posts
 				</a>
 			</div>
 
 			{
 				selected.map((post, i) => (
-					<SelectedPostRow
-						post={post}
-						accent={i === 0}
-						last={i === selected.length - 1}
-					/>
+					<SelectedPostRow post={post} accent={i === 0} last={i === selected.length - 1} />
 				))
 			}
 		</div>
+
+		<section
+			class="animate-fade-up stagger-2 border-frame border-t pt-7 pb-16"
+			aria-labelledby="explore-topics"
+		>
+			<div class="flex items-baseline justify-between gap-4 pb-4">
+				<h2 id="explore-topics" class="font-display text-fg text-sm font-semibold">
+					Explore by topic
+				</h2>
+				<a
+					href="/tags"
+					class="text-subtle hover:text-fg text-[13px] font-medium whitespace-nowrap transition-colors"
+				>
+					All topics
+				</a>
+			</div>
+			<ul class="border-line grid border-t sm:grid-cols-2">
+				{
+					topics.map((topic, index) => (
+						<li
+							class:list={['topic-colored border-line border-b', index % 2 === 0 && 'sm:border-r']}
+							style={`--topic-hue: ${topic.hue}`}
+						>
+							<a
+								href={`/tags/${topic.slug}`}
+								class="group flex min-h-14 items-center justify-between gap-4 py-3 sm:px-4"
+							>
+								<span class="flex min-w-0 items-center gap-3">
+									<span
+										class="h-2 w-2 flex-none rounded-full"
+										style="background: var(--tc)"
+										aria-hidden="true"
+									/>
+									<span class="text-fg group-hover:text-accent truncate text-sm font-medium transition-colors">
+										{topic.name}
+									</span>
+								</span>
+								<span class="meta-mono flex-none">{topic.count}</span>
+							</a>
+						</li>
+					))
+				}
+			</ul>
+		</section>
 	</Section>
 </Base>
 

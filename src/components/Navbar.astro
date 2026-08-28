@@ -24,12 +24,11 @@ const isActiveRoute = (href: string) => {
 
 <Section>
 	<div id="site-header-shell" class="site-header-shell sticky top-0 z-50 -mx-4 px-4">
-		<div class="site-header-inner flex items-center justify-between pb-4 pt-4">
+		<div class="site-header-inner flex items-center justify-between pt-4 pb-4">
 			<div class="font-display text-lg font-semibold tracking-tight">
 				<a href="/" class="text-fg" aria-label="Sudhir - home">Sudhir</a>
 			</div>
 			<div class="flex items-center gap-5 sm:gap-7">
-
 				<nav>
 					<ul class="hidden flex-row items-center gap-7 text-sm font-medium sm:flex">
 						{
@@ -55,12 +54,8 @@ const isActiveRoute = (href: string) => {
 
 				<ThemeToggle idPrefix="desktop" />
 
+				<Search />
 
-				<div class="hidden sm:block">
-					<Search />
-				</div>
-
-				
 				<button
 					id="mobile-menu-button"
 					class="hover:bg-surface-2 rounded-lg p-2 transition-colors sm:hidden"
@@ -83,10 +78,9 @@ const isActiveRoute = (href: string) => {
 		</div>
 	</div>
 
-	
 	<div
 		id="mobile-menu"
-		class="border-line bg-bg -mx-5 mt-4 hidden border-b border-t pb-3 transition-all duration-200 sm:hidden"
+		class="border-line bg-bg -mx-5 mt-4 hidden border-t border-b pb-3 sm:hidden"
 	>
 		<nav class="flex flex-col py-2">
 			{
