@@ -93,6 +93,7 @@
 
 	html {
 		@apply antialiased;
+		overflow-x: clip;
 		font-feature-settings:
 			'kern' 1,
 			'liga' 1,
@@ -103,6 +104,7 @@
 	}
 
 	body {
+		overflow-x: clip;
 		font-family: var(--font-ui);
 		letter-spacing: -0.012em;
 		line-height: 1.58;
@@ -112,6 +114,8 @@
 	h2,
 	h3,
 	h4 {
+		min-width: 0;
+		overflow-wrap: anywhere;
 		font-family: var(--font-display-stack);
 		letter-spacing: -0.02em;
 		line-height: 1.15;

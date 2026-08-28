@@ -1,67 +1,103 @@
-<div id="search-container">
-	<button
-		data-search-trigger
-		class="text-faint hover:bg-surface-2 hover:text-accent flex cursor-pointer rounded-lg p-2 transition-colors"
-		aria-label="Search posts"
-		aria-expanded="false"
-		aria-controls="search-modal"
+<button
+	data-search-trigger
+	class="text-faint hover:bg-surface-2 hover:text-accent flex min-h-11 min-w-11 cursor-pointer items-center justify-center rounded-lg transition-colors"
+	aria-label="Search posts"
+	aria-expanded="false"
+	aria-controls="search-modal"
+>
+	<svg
+		xmlns="http://www.w3.org/2000/svg"
+		class="h-5 w-5"
+		fill="none"
+		viewBox="0 0 24 24"
+		stroke="currentColor"
+		aria-hidden="true"
 	>
-		<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-			<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-		</svg>
-	</button>
-</div>
-
+		<path
+			stroke-linecap="round"
+			stroke-linejoin="round"
+			stroke-width="2"
+			d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+	</svg>
+</button>
 
 <div
 	id="search-modal"
-	class="fixed inset-0 z-50 hidden bg-zinc-950/60 backdrop-blur-md transition-opacity"
+	class="fixed inset-0 z-50 hidden overflow-y-auto bg-zinc-950/60 px-4 py-10 backdrop-blur-md sm:py-20"
 	role="dialog"
 	aria-modal="true"
+	aria-labelledby="search-title"
 >
-	
-	<div class="mx-auto mt-20 max-w-2xl px-4">
-		<div class="border-line bg-surface overflow-hidden rounded-2xl border shadow-2xl">
-			
-			<div class="border-line relative border-b">
-				<svg
-					class="text-faint pointer-events-none absolute left-4 top-3.5 h-5 w-5"
-					xmlns="http://www.w3.org/2000/svg"
-					fill="none"
-					viewBox="0 0 24 24"
-					stroke="currentColor"
-				>
-					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-				</svg>
-				<input
-					id="search-input"
-					class="text-fg placeholder:text-faint h-14 w-full border-0 bg-transparent pl-12 pr-4 focus:ring-0 sm:text-sm"
-					placeholder="Search posts..."
-					type="text"
-					autocomplete="off"
-				/>
-			</div>
-
-			
-			<ul
-				id="search-results"
-				class="max-h-96 overflow-y-auto p-2 scroll-py-2 text-sm"
-				role="listbox"
+	<div
+		class="border-line bg-surface mx-auto w-full max-w-2xl overflow-hidden rounded-xl border shadow-2xl"
+	>
+		<h2 id="search-title" class="sr-only">Search writing</h2>
+		<div class="border-line relative border-b">
+			<svg
+				class="text-faint pointer-events-none absolute top-4 left-4 h-5 w-5"
+				xmlns="http://www.w3.org/2000/svg"
+				fill="none"
+				viewBox="0 0 24 24"
+				stroke="currentColor"
+				aria-hidden="true"
 			>
-				<li id="empty-state" class="text-muted hidden select-none px-4 py-12 text-center">
-					No results found.
-				</li>
-			</ul>
-			
-			
-			<div class="border-line bg-surface-2 text-muted border-t px-4 py-3 text-xs">
-				Press <kbd class="border-line bg-surface text-muted rounded border px-1.5 py-0.5 font-mono shadow-sm">ESC</kbd> to close
-			</div>
+				<path
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					stroke-width="2"
+					d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+			</svg>
+			<input
+				id="search-input"
+				class="text-fg placeholder:text-faint h-14 w-full border-0 bg-transparent pr-12 pl-12 text-base focus:ring-0 sm:text-sm"
+				placeholder="Search writing"
+				type="search"
+				autocomplete="off"
+				aria-label="Search writing"
+				aria-controls="search-results"
+				aria-autocomplete="list"
+			/>
+			<button
+				data-search-close
+				class="text-faint hover:text-fg absolute top-1.5 right-1.5 flex h-11 w-11 items-center justify-center rounded-lg transition-colors"
+				aria-label="Close search"
+			>
+				<span aria-hidden="true">×</span>
+			</button>
+		</div>
+		<ul
+			id="search-results"
+			class="max-h-[min(60dvh,32rem)] scroll-py-2 overflow-y-auto p-2"
+			role="listbox"
+		>
+		</ul>
+		<p id="search-status" class="sr-only" aria-live="polite"></p>
+		<div
+			class="border-line bg-surface-2 text-muted flex items-center justify-between gap-4 border-t px-4 py-3 text-xs"
+		>
+			<span
+				><kbd class="border-line bg-surface rounded border px-1.5 py-0.5 font-mono">↑↓</kbd> navigate
+				· <kbd class="border-line bg-surface rounded border px-1.5 py-0.5 font-mono">Enter</kbd> open</span
+			>
+			<span class="whitespace-nowrap"
+				><kbd class="border-line bg-surface rounded border px-1.5 py-0.5 font-mono">Esc</kbd> close</span
+			>
 		</div>
 	</div>
 </div>
 
 <script>
+	interface SearchPost {
+		slug: string;
+		url?: string;
+		title: string;
+		description: string;
+		tags: string[];
+		primaryTopic: string;
+		pubDate: string;
+		minutesRead: string;
+	}
+
 	const SEARCH_STATE_KEY = '__fortmatrixSearchState';
 	const SEARCH_BOOTSTRAP_KEY = '__fortmatrixSearchBootstrap';
 
@@ -73,55 +109,156 @@
 
 	function setupSearch() {
 		clearSearchState();
-
-		const modal = document.getElementById('search-modal');
-		const triggerButtons = Array.from(document.querySelectorAll('[data-search-trigger]'));
-		const input = document.getElementById('search-input') as HTMLInputElement | null;
-		const resultsList = document.getElementById('search-results');
-		const emptyState = document.getElementById('empty-state');
-
-		if (!modal || !input || !resultsList || !emptyState || triggerButtons.length === 0) {
-			return;
-		}
-		const modalEl = modal;
-		const inputEl = input;
-		const resultsListEl = resultsList;
-		const emptyStateEl = emptyState;
+		const modal = document.getElementById('search-modal')!;
+		const triggers = Array.from(document.querySelectorAll<HTMLElement>('[data-search-trigger]'));
+		const closeButton = modal.querySelector<HTMLElement>('[data-search-close]')!;
+		const input = document.getElementById('search-input') as HTMLInputElement;
+		const list = document.getElementById('search-results')!;
+		const status = document.getElementById('search-status')!;
+		if (!modal || !closeButton || !input || !list || !status || triggers.length === 0) return;
 
 		let fuse: any = null;
-		let initPromise: Promise<void> | null = null;
+		let posts: SearchPost[] = [];
+		let loading: Promise<void> | null = null;
 		let pendingQuery = '';
+		let selectedIndex = -1;
+		let links: HTMLAnchorElement[] = [];
 		let lastFocused: HTMLElement | null = null;
 
-		function setExpanded(expanded: boolean) {
-			for (const trigger of triggerButtons) {
-				trigger.setAttribute('aria-expanded', String(expanded));
+		const announce = (message: string) => (status.textContent = message);
+		const setExpanded = (value: boolean) =>
+			triggers.forEach((trigger) => trigger.setAttribute('aria-expanded', String(value)));
+		const clearResults = () => {
+			list.replaceChildren();
+			links = [];
+			selectedIndex = -1;
+			input.removeAttribute('aria-activedescendant');
+		};
+
+		function renderMessage(title: string, detail: string, retry = false) {
+			clearResults();
+			const item = document.createElement('li');
+			item.className = 'text-muted select-none px-5 py-10 text-center';
+			item.setAttribute('role', 'presentation');
+			const heading = document.createElement('p');
+			heading.className = 'text-fg font-medium';
+			heading.textContent = title;
+			const copy = document.createElement('p');
+			copy.className = 'mt-1 text-sm';
+			copy.textContent = detail;
+			item.append(heading, copy);
+			if (retry) {
+				const button = document.createElement('button');
+				button.type = 'button';
+				button.className =
+					'border-line text-fg hover:border-line-strong mt-4 min-h-11 rounded-md border px-4 text-sm font-medium transition-colors';
+				button.textContent = 'Try again';
+				button.addEventListener('click', () => void initSearch(true));
+				item.append(button);
 			}
+			list.append(item);
+			announce(`${title}. ${detail}`);
 		}
 
-		function clearResults() {
-			for (const child of Array.from(resultsListEl.children)) {
-				if ((child as HTMLElement).id !== 'empty-state') {
-					child.remove();
-				}
-			}
-			if (!resultsListEl.contains(emptyStateEl)) {
-				resultsListEl.appendChild(emptyStateEl);
-			}
+		function select(index: number, scroll = false) {
+			if (links.length === 0) return;
+			selectedIndex = (index + links.length) % links.length;
+			links.forEach((link, current) => {
+				const selected = current === selectedIndex;
+				link.parentElement?.classList.toggle('bg-surface-2', selected);
+				link.parentElement?.setAttribute('aria-selected', String(selected));
+				link.querySelector('[data-result-title]')?.classList.toggle('text-accent', selected);
+			});
+			const option = links[selectedIndex]?.parentElement;
+			if (option) input.setAttribute('aria-activedescendant', option.id);
+			if (scroll) option?.scrollIntoView({ block: 'nearest' });
 		}
 
-		async function initSearch() {
-			if (fuse) return;
-			if (initPromise) return initPromise;
+		function makeResult(item: SearchPost, index: number) {
+			const li = document.createElement('li');
+			li.id = `search-result-${index}`;
+			li.className = 'group rounded-lg transition-colors';
+			li.setAttribute('role', 'option');
+			li.setAttribute('aria-selected', 'false');
+			const link = document.createElement('a');
+			link.href = item.url ?? item.slug;
+			link.className =
+				'block rounded-lg px-3 py-3 focus-visible:outline-2 focus-visible:outline-offset-[-2px]';
+			const title = document.createElement('span');
+			title.dataset.resultTitle = '';
+			title.className =
+				'text-fg font-display block text-[17px] font-medium leading-snug transition-colors';
+			title.textContent = item.title;
+			const description = document.createElement('span');
+			description.className = 'text-muted mt-1 line-clamp-2 block text-sm leading-relaxed';
+			description.textContent = item.description;
+			const meta = document.createElement('span');
+			meta.className = 'meta-mono mt-2 flex flex-wrap items-center gap-2';
+			const date = new Date(item.pubDate).toLocaleDateString('en-US', {
+				month: 'short',
+				day: 'numeric',
+				year: 'numeric'
+			});
+			meta.textContent = [item.primaryTopic, date, item.minutesRead].filter(Boolean).join(' · ');
+			link.append(title, description, meta);
+			link.addEventListener('mouseenter', () => select(index));
+			link.addEventListener('focus', () => select(index));
+			li.append(link);
+			return { li, link };
+		}
 
-			initPromise = (async () => {
-				const [{ default: Fuse }, res] = await Promise.all([
+		function renderPosts(items: SearchPost[], heading: string) {
+			clearResults();
+			const label = document.createElement('li');
+			label.className = 'meta-mono px-3 pb-2 pt-1';
+			label.setAttribute('role', 'presentation');
+			label.textContent = heading;
+			list.append(label);
+			items.slice(0, 8).forEach((item, index) => {
+				const result = makeResult(item, index);
+				links.push(result.link);
+				list.append(result.li);
+			});
+			if (links.length) select(0);
+			announce(`${links.length} ${links.length === 1 ? 'result' : 'results'} available.`);
+		}
+
+		function showSuggestions() {
+			if (posts.length) renderPosts(posts, 'Suggested writing');
+			else
+				renderMessage(
+					'No writing yet',
+					'Published posts will appear here when they are available.'
+				);
+		}
+
+		function runSearch(query: string) {
+			const matches = fuse
+				.search(query)
+				.slice(0, 8)
+				.map((result: any) => result.item as SearchPost);
+			if (matches.length) renderPosts(matches, 'Search results');
+			else
+				renderMessage('No matching writing', 'Try a broader phrase or browse the topic directory.');
+		}
+
+		async function initSearch(force = false) {
+			if (fuse && !force) {
+				pendingQuery ? runSearch(pendingQuery) : showSuggestions();
+				return;
+			}
+			if (loading) return loading;
+			fuse = null;
+			posts = [];
+			renderMessage('Loading writing', 'Preparing the search index.');
+			loading = (async () => {
+				const [{ default: Fuse }, response] = await Promise.all([
 					import('fuse.js'),
 					fetch('/search.json')
 				]);
-
-				const data = await res.json();
-				fuse = new Fuse(data, {
+				if (!response.ok) throw new Error(`Search index returned ${response.status}`);
+				posts = (await response.json()) as SearchPost[];
+				fuse = new Fuse(posts, {
 					keys: [
 						{ name: 'title', weight: 1 },
 						{ name: 'description', weight: 0.7 },
@@ -130,153 +267,105 @@
 					includeScore: true,
 					threshold: 0.3
 				});
+				pendingQuery ? runSearch(pendingQuery) : showSuggestions();
 			})()
 				.catch((error) => {
 					console.error('Failed to load search index', error);
+					renderMessage(
+						'Search is unavailable',
+						'The index could not be loaded. Check your connection and try again.',
+						true
+					);
 				})
-				.finally(() => {
-					initPromise = null;
-				});
-
-			return initPromise;
+				.finally(() => (loading = null));
+			return loading;
 		}
 
 		function openModal() {
-			lastFocused = document.activeElement instanceof HTMLElement ? document.activeElement : null;
-			modalEl.classList.remove('hidden');
+			if (modal.classList.contains('hidden'))
+				lastFocused = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+			modal.classList.remove('hidden');
 			setExpanded(true);
-			inputEl.focus();
-			void initSearch();
 			document.body.style.overflow = 'hidden';
+			input.focus();
+			pendingQuery = input.value.trim();
+			void initSearch();
 		}
 
-		function closeModal() {
-			modalEl.classList.add('hidden');
+		function closeModal(restoreFocus = true) {
+			modal.classList.add('hidden');
 			setExpanded(false);
-			inputEl.value = '';
-			clearResults();
-			emptyStateEl.classList.add('hidden');
-			document.body.style.overflow = '';
+			input.value = '';
 			pendingQuery = '';
-			lastFocused?.focus();
+			clearResults();
+			document.body.style.overflow = '';
+			if (restoreFocus) lastFocused?.focus();
 			lastFocused = null;
 		}
 
-		function createResultItem(item: any) {
-			const li = document.createElement('li');
-			li.className =
-				'group flex cursor-pointer select-none items-center rounded-lg p-3 transition-colors hover:bg-surface-2';
-			li.role = 'option';
-
-			const link = document.createElement('a');
-			link.href = item.slug;
-			link.className = 'flex-1';
-
-			const title = document.createElement('div');
-			title.className =
-				'text-fg group-hover:text-accent font-medium transition-colors';
-			title.textContent = item.title;
-
-			const description = document.createElement('div');
-			description.className = 'text-muted mt-1 line-clamp-1 text-sm';
-			description.textContent = item.description;
-
-			link.append(title, description);
-			li.append(link);
-			return li;
-		}
-
-		function runSearch(query: string) {
-			clearResults();
-
-			const results = fuse.search(query);
-			if (results.length === 0) {
-				emptyStateEl.classList.remove('hidden');
-				return;
-			}
-
-			emptyStateEl.classList.add('hidden');
-			for (const { item } of results) {
-				resultsListEl.appendChild(createResultItem(item));
-			}
-		}
-
-		const onTriggerClick = (event: Event) => {
+		const onTrigger = (event: Event) => {
 			event.preventDefault();
 			openModal();
 		};
-
-		const onInput = (event: Event) => {
-			const query = (event.target as HTMLInputElement).value;
-			pendingQuery = query;
-
-			if (!query) {
-				clearResults();
-				emptyStateEl.classList.add('hidden');
-				return;
-			}
-
-			if (!fuse) {
-				void initSearch().then(() => {
-					if (fuse && pendingQuery === query) {
-						runSearch(query);
-					}
-				});
-				return;
-			}
-
-			runSearch(query);
+		const onClose = () => closeModal();
+		const onInput = () => {
+			pendingQuery = input.value.trim();
+			if (fuse) pendingQuery ? runSearch(pendingQuery) : showSuggestions();
+			else void initSearch();
 		};
-
-		const onModalClick = (event: Event) => {
-			if (event.target === modalEl) {
-				closeModal();
-			}
+		const onBackdrop = (event: MouseEvent) => {
+			if (event.target === modal) closeModal();
 		};
-
-		const onDocumentKeyDown = (event: KeyboardEvent) => {
-			const modalIsOpen = !modalEl.classList.contains('hidden');
-
-			if (event.key === 'Escape' && modalIsOpen) {
-				closeModal();
-			}
+		const onKeydown = (event: KeyboardEvent) => {
+			const open = !modal.classList.contains('hidden');
 			if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') {
 				event.preventDefault();
 				openModal();
+				return;
 			}
-			if (event.key === 'Tab' && modalIsOpen) {
+			if (!open) return;
+			if (event.key === 'Escape') {
+				event.preventDefault();
+				closeModal();
+			} else if (event.key === 'ArrowDown') {
+				event.preventDefault();
+				select(selectedIndex + 1, true);
+			} else if (event.key === 'ArrowUp') {
+				event.preventDefault();
+				select(selectedIndex - 1, true);
+			} else if (event.key === 'Enter' && document.activeElement === input && selectedIndex >= 0) {
+				event.preventDefault();
+				links[selectedIndex]?.click();
+			} else if (event.key === 'Tab') {
 				const focusables = Array.from(
-					modalEl.querySelectorAll<HTMLElement>('input, a[href], button:not([disabled])')
+					modal.querySelectorAll<HTMLElement>('input, a[href], button:not([disabled])')
 				);
 				const first = focusables[0];
-				const last = focusables[focusables.length - 1];
-				if (!first || !last) return;
-
-				if (event.shiftKey && document.activeElement === first) {
+				const last = focusables.at(-1);
+				if (event.shiftKey && document.activeElement === first && last) {
 					event.preventDefault();
 					last.focus();
-				} else if (!event.shiftKey && document.activeElement === last) {
+				} else if (!event.shiftKey && document.activeElement === last && first) {
 					event.preventDefault();
 					first.focus();
 				}
 			}
 		};
 
-		for (const trigger of triggerButtons) {
-			trigger.addEventListener('click', onTriggerClick);
-		}
-		inputEl.addEventListener('input', onInput);
-		modalEl.addEventListener('click', onModalClick);
-		document.addEventListener('keydown', onDocumentKeyDown);
+		triggers.forEach((trigger) => trigger.addEventListener('click', onTrigger));
+		closeButton.addEventListener('click', onClose);
+		input.addEventListener('input', onInput);
+		modal.addEventListener('click', onBackdrop);
+		document.addEventListener('keydown', onKeydown);
 
 		(window as any)[SEARCH_STATE_KEY] = {
 			cleanup: () => {
-				for (const trigger of triggerButtons) {
-					trigger.removeEventListener('click', onTriggerClick);
-				}
-				inputEl.removeEventListener('input', onInput);
-				modalEl.removeEventListener('click', onModalClick);
-				document.removeEventListener('keydown', onDocumentKeyDown);
+				triggers.forEach((trigger) => trigger.removeEventListener('click', onTrigger));
+				closeButton.removeEventListener('click', onClose);
+				input.removeEventListener('input', onInput);
+				modal.removeEventListener('click', onBackdrop);
+				document.removeEventListener('keydown', onKeydown);
+				if (!modal.classList.contains('hidden')) closeModal(false);
 				document.body.style.overflow = '';
 			}
 		};
@@ -287,6 +376,5 @@
 		document.addEventListener('astro:before-swap', clearSearchState);
 		(window as any)[SEARCH_BOOTSTRAP_KEY] = true;
 	}
-
 	setupSearch();
 </script>
