@@ -8,15 +8,25 @@
 			"automerge": true,
 			"platformAutomerge": true,
 			"labels": ["minor", "patch"],
-			"ignoreTests": true
+			"ignoreTests": false,
+			"minimumReleaseAge": "3 days"
 		},
 		{
-			"matchPackageNames": ["astro", "/^@astrojs//"],
+			"matchPackageNames": ["astro", "/^@astrojs//", "satteri", "/^satteri-/"],
+			"groupName": "Astro and Markdown",
 			"matchUpdateTypes": ["major"],
 			"schedule": ["after 6pm"],
 			"labels": ["astro", "major"],
 			"automerge": false,
-			"ignoreTests": true
+			"ignoreTests": false
+		},
+		{
+			"matchPackageNames": ["react", "react-dom", "@types/react", "@types/react-dom"],
+			"groupName": "React"
+		},
+		{
+			"matchPackageNames": ["tailwindcss", "/^@tailwindcss//", "prettier-plugin-tailwindcss"],
+			"groupName": "Tailwind CSS"
 		}
 	]
 }
