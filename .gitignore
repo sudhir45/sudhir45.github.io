@@ -3,6 +3,11 @@ dist/
 .astro/
 .vercel/
 node_modules/
+.npm-cache/
+.pip-cache/
+.tools/
+.venv/
+mise.local.toml
 
 # Editor and operating-system files
 .vscode/

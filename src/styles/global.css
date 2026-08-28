@@ -460,80 +460,81 @@
 }
 
 @layer utilities {
-	.content [data-rehype-pretty-code-figure] {
-		@apply border-line bg-surface-2 my-6 overflow-hidden rounded-xl border relative shadow-sm;
-	}
-
-	.content [data-rehype-pretty-code-title] {
-		@apply border-b border-line bg-surface-2 px-4 py-2.5 font-mono text-xs font-medium text-muted flex items-center justify-between;
-	}
-
 	.content pre {
-		@apply overflow-x-auto rounded-none p-0 my-0 border-0 bg-transparent;
+		@apply border-line bg-surface-2 relative my-6 overflow-x-auto rounded-xl border p-0 shadow-sm;
+		background-color: var(--surface-2) !important;
 	}
 
-	.content code {
-		@apply overflow-x-auto font-mono text-sm leading-relaxed;
+	.content pre > code {
+		@apply grid min-w-max py-4 font-mono text-sm leading-relaxed;
 	}
 
-	.content [data-rehype-pretty-code-figure] code {
-		@apply p-0 grid;
+	.content pre > code .line {
+		@apply min-h-6 border-l-4 border-transparent px-4 pr-14;
 	}
 
-	.content pre > code span[data-line] {
-		@apply border-l-4 border-transparent px-4 py-0.5;
+	.content .astro-code span {
+		color: var(--shiki-light) !important;
 	}
 
-	.content pre > code span:first-of-type {
-		@apply pt-4;
+	.dark .content .astro-code span {
+		color: var(--shiki-dark) !important;
 	}
 
-	.content pre > code span:last-of-type {
-		@apply pb-4;
+	.content .copy-button {
+		@apply border-line bg-surface text-muted absolute top-2.5 right-3 z-10 cursor-pointer rounded border p-1.5 opacity-0 shadow-sm transition-all;
 	}
 
-	.content pre > code .highlighted {
-		@apply border-accent/60 bg-accent/10 border-l-4;
+	.content pre:hover .copy-button,
+	.content .copy-button:focus-visible,
+	.content .copy-button[data-copy-state='copied'] {
+		@apply opacity-100;
 	}
 
-	.content pre > code .highlighted-add,
-	.content pre > code [data-line-add],
-	.content pre > code [data-highlighted-line-add] {
-		@apply border-emerald-500/80 bg-emerald-500/10 border-l-4;
+	.content .copy-button:hover {
+		@apply bg-surface-2 text-fg;
 	}
 
-	.content pre > code .highlighted-remove,
-	.content pre > code [data-line-remove],
-	.content pre > code [data-highlighted-line-remove] {
-		@apply border-rose-500/80 bg-rose-500/10 border-l-4;
+	.content .copy-button[data-copy-state='copied'] {
+		@apply text-emerald-600 dark:text-emerald-400;
+	}
+}
+
+@layer components {
+	.reading .admonition {
+		--admonition-color: var(--muted);
+		@apply text-fg my-6 rounded-r-lg border-l-4 px-4 py-3;
+		border-color: var(--admonition-color);
+		background: color-mix(in oklab, var(--admonition-color) 8%, var(--surface));
 	}
 
-	.content code span.word {
-		@apply rounded bg-accent/20 px-1 py-0.5 font-semibold text-accent;
+	.reading .admonition-tip {
+		--admonition-color: oklch(57% 0.12 145);
 	}
 
-	.content pre > code[data-line-numbers] {
-		counter-reset: line;
+	.reading .admonition-warning {
+		--admonition-color: oklch(65% 0.13 75);
 	}
 
-	.content pre > code[data-line-numbers] > span[data-line]::before {
-		counter-increment: line;
-		content: counter(line);
-		@apply text-subtle mr-6 inline-block w-6 text-right select-none;
-		font-variant-numeric: tabular-nums;
+	.reading .admonition-caution {
+		--admonition-color: oklch(58% 0.16 30);
 	}
 
-	.content pre > code > span[data-line]::before {
-		content: '';
-		@apply inline-block w-0;
+	.reading .admonition-label {
+		@apply mb-2 flex items-center gap-2 text-sm font-semibold tracking-wide;
+		color: var(--admonition-color);
 	}
 
-	.content pre > code[data-line-numbers-max-digits='2'] > span[data-line]::before {
-		@apply w-8;
+	.reading .admonition-icon {
+		@apply h-5 w-5 shrink-0;
 	}
 
-	.content code[data-line-numbers-max-digits='3'] > span[data-line]::before {
-		@apply w-10;
+	.reading .admonition-body {
+		@apply text-[15px] opacity-90;
+	}
+
+	.reading .admonition-body > :last-child {
+		@apply mb-0;
 	}
 }
 

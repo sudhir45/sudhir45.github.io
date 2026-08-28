@@ -13,7 +13,8 @@ const { description } = AppConfig;
 
 const { frontmatter } = Astro.props;
 
-const slug = (Astro.url.pathname.split('/').pop() || Astro.url.pathname.split('/').slice(-2)[0]) || '';
+const slug =
+	Astro.url.pathname.split('/').pop() || Astro.url.pathname.split('/').slice(-2)[0] || '';
 const cleanSlug = slug.replace(/\/$/, '');
 const siteUrl = Astro.site ? Astro.site.toString().replace(/\/$/, '') : 'https://sudhir.is-a.dev';
 const ogImageUrl = `${siteUrl}/og/${cleanSlug}.png`;
@@ -45,36 +46,40 @@ const readTime = frontmatter.minutesRead?.trim() || 'Quick read';
 		}
 	}}
 >
-	<script type="application/ld+json" is:inline set:html={JSON.stringify({
-		"@context": "https://schema.org",
-		"@type": "BlogPosting",
-		"headline": frontmatter.title,
-		"description": frontmatter.description || description,
-		"image": ogImageUrl,
-		"datePublished": frontmatter.pubDate,
-		"dateModified": frontmatter.updatedDate ?? frontmatter.pubDate,
-		"author": {
-			"@type": "Person",
-			"name": frontmatter.author || "Sudhir",
-			"url": `${siteUrl}/about`,
-			"sameAs": ["https://github.com/sudhir45", "https://linkedin.com/in/dsudhir"]
-		},
-		"publisher": {
-			"@type": "Person",
-			"name": "Sudhir"
-		},
-		"mainEntityOfPage": {
-			"@type": "WebPage",
-			"@id": postUrl
-		},
-		"keywords": frontmatter.tags?.join(", ") || ""
-	})} />
+	<script
+		type="application/ld+json"
+		is:inline
+		set:html={JSON.stringify({
+			'@context': 'https://schema.org',
+			'@type': 'BlogPosting',
+			headline: frontmatter.title,
+			description: frontmatter.description || description,
+			image: ogImageUrl,
+			datePublished: frontmatter.pubDate,
+			dateModified: frontmatter.updatedDate ?? frontmatter.pubDate,
+			author: {
+				'@type': 'Person',
+				name: frontmatter.author || 'Sudhir',
+				url: `${siteUrl}/about`,
+				sameAs: ['https://github.com/sudhir45', 'https://linkedin.com/in/dsudhir']
+			},
+			publisher: {
+				'@type': 'Person',
+				name: 'Sudhir'
+			},
+			mainEntityOfPage: {
+				'@type': 'WebPage',
+				'@id': postUrl
+			},
+			keywords: frontmatter.tags?.join(', ') || ''
+		})}
+	/>
 	<ReadingProgress hue={categoryHue} />
 	<Section>
 		<!-- Header: the topic hue names the category — eyebrow + spine + progress bar (13b) -->
 		<header
 			class:list={[
-				'mx-auto max-w-[800px] pb-4 pt-10 md:pt-14',
+				'mx-auto max-w-[800px] pt-10 pb-4 md:pt-14',
 				categoryHue !== undefined && 'topic-colored'
 			]}
 			style={categoryHue !== undefined ? `--topic-hue: ${categoryHue}` : undefined}
@@ -83,22 +88,24 @@ const readTime = frontmatter.minutesRead?.trim() || 'Quick read';
 				class:list={[categoryHue !== undefined && 'border-l-[3px] pl-6 md:pl-8']}
 				style={categoryHue !== undefined ? 'border-color: var(--tc)' : undefined}
 			>
-				{category && (
-					<a
-						href={`/tags/${topicSlug(category)}`}
-						class="eyebrow-amber mb-5 inline-block transition-opacity hover:opacity-70"
-						style="color: var(--tc)"
-					>
-						{category}
-					</a>
-				)}
+				{
+					category && (
+						<a
+							href={`/tags/${topicSlug(category)}`}
+							class="eyebrow-amber mb-5 inline-block transition-opacity hover:opacity-70"
+							style="color: var(--tc)"
+						>
+							{category}
+						</a>
+					)
+				}
 				<h1
 					transition:name={cleanSlug ? `post-title-${cleanSlug}` : undefined}
-					class="font-display text-fg text-[2rem] font-medium leading-[1.1] tracking-[-0.025em] text-balance md:text-[2.75rem]"
+					class="font-display text-fg text-[2rem] leading-[1.1] font-medium tracking-[-0.025em] text-balance md:text-[2.75rem]"
 				>
 					{frontmatter.title}
 				</h1>
-				<div class="meta-mono mt-5 flex flex-wrap items-center gap-3 uppercase tracking-[0.06em]">
+				<div class="meta-mono mt-5 flex flex-wrap items-center gap-3 tracking-[0.06em] uppercase">
 					<span class="text-muted">By {author}</span>
 					<span aria-hidden="true">·</span>
 					<time datetime={String(frontmatter.pubDate)}>{formattedDate}</time>
@@ -111,22 +118,21 @@ const readTime = frontmatter.minutesRead?.trim() || 'Quick read';
 
 		<PostContent><slot /></PostContent>
 
-		{nextPost && (
-			<div class="border-frame mx-auto mt-4 max-w-[800px] border-t pt-7">
-				<div class="meta-mono mb-3.5">Next</div>
-				<a
-					href={nextPost.url}
-					class="row-link flex items-baseline justify-between gap-5"
-				>
-					<span class="row-title font-display text-fg text-[19px] font-medium leading-[1.3] tracking-[-0.015em] transition-colors md:text-[22px]">
-						{nextPost.data.title}
-					</span>
-					<span class="text-accent whitespace-nowrap text-[13px] font-medium">
-						Read <span class="row-arrow">→</span>
-					</span>
-				</a>
-			</div>
-		)}
+		{
+			nextPost && (
+				<div class="border-frame mx-auto mt-4 max-w-[800px] border-t pt-7">
+					<div class="meta-mono mb-3.5">Next</div>
+					<a href={nextPost.url} class="row-link flex items-baseline justify-between gap-5">
+						<span class="row-title font-display text-fg text-[19px] leading-[1.3] font-medium tracking-[-0.015em] transition-colors md:text-[22px]">
+							{nextPost.data.title}
+						</span>
+						<span class="text-accent text-[13px] font-medium whitespace-nowrap">
+							Read <span class="row-arrow">→</span>
+						</span>
+					</a>
+				</div>
+			)
+		}
 
 		<div class="mx-auto mt-16 max-w-[800px]">
 			<Giscus />
@@ -146,29 +152,27 @@ const readTime = frontmatter.minutesRead?.trim() || 'Quick read';
 			const blocks = document.querySelectorAll('pre');
 			blocks.forEach((block) => {
 				if (block.querySelector('.copy-button')) return;
-				
-				const figure = block.closest('[data-rehype-pretty-code-figure]') as HTMLElement | null;
-				const targetContainer = figure || block;
-				targetContainer.classList.add('relative', 'group');
 
 				const btn = document.createElement('button');
-				btn.className = 'copy-button absolute top-2.5 right-3 p-1.5 rounded bg-surface border border-line text-muted opacity-0 transition-all hover:bg-surface-2 hover:text-fg group-hover:opacity-100 focus:opacity-100 z-10 cursor-pointer shadow-sm';
+				btn.className = 'copy-button';
 				btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>`;
 				btn.setAttribute('aria-label', 'Copy code');
-				
-				targetContainer.appendChild(btn);
+				block.appendChild(btn);
 
 				btn.addEventListener('click', async () => {
 					const code = block.querySelector('code');
 					if (!code) return;
 					await navigator.clipboard.writeText(code.innerText);
+					btn.dataset.copyState = 'copied';
+					btn.setAttribute('aria-label', 'Copied');
 					btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-emerald-500"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
 					setTimeout(() => {
+						delete btn.dataset.copyState;
+						btn.setAttribute('aria-label', 'Copy code');
 						btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>`;
 					}, 2000);
 				});
 			});
-
 		});
 	</script>
 </Base>

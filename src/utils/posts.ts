@@ -5,7 +5,8 @@ export type PostEntry = CollectionEntry<'posts'>;
 export type PostFrontmatter = PostEntry['data'];
 
 /** Reading time computed from the post body, e.g. "5 min read". */
-export const computeReadingTime = (body: string): string => getReadingTime(body ?? '').text;
+export const computeReadingTime = (body: string | undefined): string =>
+	getReadingTime(body ?? '').text;
 
 export interface SitePost {
 	slug: string;
@@ -28,8 +29,8 @@ export const sortPostsByDate = (a: SitePost, b: SitePost) => {
 };
 
 const toSitePost = (entry: PostEntry): SitePost => ({
-	slug: entry.id.replace(/\.mdx?$/, ''),
-	url: `/posts/${entry.id.replace(/\.mdx?$/, '')}`,
+	slug: entry.id,
+	url: `/posts/${entry.id}`,
 	data: {
 		...entry.data,
 		minutesRead: entry.data.minutesRead ?? computeReadingTime(entry.body)
