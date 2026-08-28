@@ -1,34 +1,11 @@
 import { defineConfig } from 'astro/config';
-import { remarkReadingTime } from './src/utils/readingTime';
-import { rehypeImagePerformance } from './src/utils/rehypeImagePerformance';
-import { rehypeAdmonitions } from './src/utils/rehypeAdmonitions';
-import rehypePrettyCode from 'rehype-pretty-code';
+import { satteri } from '@astrojs/markdown-satteri';
+import imgAttr from 'satteri-imgattr';
+import { satteriAdmonitions } from './src/utils/satteriAdmonitions';
 import tailwindcss from '@tailwindcss/vite';
 import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
 import mdx from '@astrojs/mdx';
-const options = {
-	grid: true,
-	onVisitLine(node) {
-		// Prevent lines from collapsing in `display: grid` mode, and
-		// allow empty lines to be copy/pasted
-		if (node.children.length === 0) {
-			node.children = [
-				{
-					type: 'text',
-					value: ' '
-				}
-			];
-		}
-	},
-	onVisitHighlightedLine(node) {
-		node.properties.className = node.properties.className || [];
-		node.properties.className.push('highlighted');
-	},
-	onVisitHighlightedChars(node) {
-		node.properties.className = ['word'];
-	}
-};
 
 // https://astro.build/config
 export default defineConfig({
@@ -36,17 +13,29 @@ export default defineConfig({
 	compressHTML: true,
 
 	markdown: {
-		syntaxHighlight: false,
-		// Disable syntax built-in syntax hightlighting from astro
-		rehypePlugins: [[rehypePrettyCode, options], rehypeImagePerformance, rehypeAdmonitions],
-		remarkPlugins: [remarkReadingTime]
+		processor: satteri({
+			hastPlugins: [
+				imgAttr({ defaults: { loading: 'lazy', decoding: 'async' } }),
+				satteriAdmonitions
+			]
+		}),
+		syntaxHighlight: 'shiki',
+		shikiConfig: {
+			themes: {
+				light: 'github-light',
+				dark: 'github-dark'
+			},
+			defaultColor: false,
+			wrap: false
+		}
 	},
 
 	integrations: [
 		react(),
 		mdx(),
 		sitemap({
-			filter: (page) => !page.endsWith('/search.json') && !page.includes('/og/') && !page.includes('/404')
+			filter: (page) =>
+				!page.endsWith('/search.json') && !page.includes('/og/') && !page.includes('/404')
 		})
 	],
 	output: 'static',
@@ -57,8 +46,10 @@ export default defineConfig({
 			cssMinify: 'lightningcss',
 			rollupOptions: {
 				output: {
-					manualChunks: {
-						'vendor': ['react', 'react-dom']
+					manualChunks(id) {
+						if (id.includes('/node_modules/react/') || id.includes('/node_modules/react-dom/')) {
+							return 'vendor';
+						}
 					}
 				}
 			}
