@@ -1,10 +1,11 @@
 ---
-title: "iHackCTF 2025: How I Solved Some Challenges"
+title: "iHack CTF 2025: Three Challenges I Solved"
 pubDate: 2025-09-02
-description: "Writeup : my approach."
+updatedDate: 2026-08-30
+description: "My path through three iHack CTF 2025 challenges covering source inspection, simple cryptography, and reverse engineering."
 author: "Sudhir"
 isPinned: false
-excerpt: "Writeup : my approach."
+excerpt: "My path through three iHack CTF 2025 challenges covering source inspection, simple cryptography, and reverse engineering."
 tags: ["Offense"]
 ---
 
@@ -12,109 +13,97 @@ import PostImage from '@/components/PostImage.astro';
 import binarySeqMain from '@/assets/images/binary_seq_main.png';
 import functionGhidra from '@/assets/images/function_ghidra.png';
 
-### TL;DR
+I played iHack CTF 2025 solo and finished as the winner. These are three of the challenges I solved and the evidence that moved each one forward.
 
-Event: iHack CTF 2025
-Team: Solo
-Score / Rank: Won
+## Read the Rules
 
-Hey everyone! Here's a quick walkthrough of how I tackled some of the challenges from iHack CTF 2025.
+This was a warm-up web challenge. The clue was the title itself.
 
-### Read the Rules - Web
+I opened the `/rules` page, viewed the HTML source, and searched for comments. The flag was in a comment that the rendered page did not display.
 
-Summary: Warm-up recon; flag hidden in the page source.
+The useful habit is to inspect what the browser received before reaching for a scanner. HTML comments, JavaScript bundles, source maps, and hidden form fields often reveal more than the visible page.
 
-Approach:
-1. Open the `/rules` page in a browser.
-2. View page source and search for HTML comments.
+## Hail Caesar
 
-Reproduction:
-1. Visit `/rules`
-2. View page source
+The challenge supplied two Base64 values. Decoding them was only the first layer.
 
-### Hail Caesar - Crypto
+I decoded both values in CyberChef. One result contained scrambled JavaScript. The structure was close enough to JavaScript that a character shift was worth testing. After reversing the shift, I had a small decryptor. Running that logic against the other decoded value produced the flag.
 
-Summary: Two Base64 blobs - the second decoded to scrambled JS; a Caesar-style shift recovered a small decryptor which was then applied to the first blob.
-
-Approach:
-1. Base64-decode both strings (CyberChef or a local decoder).
-2. Recognize the scrambled JS in the second decoded blob; use a single-character shift to recover valid JavaScript.
-3. Run the recovered decryptor against the first decoded blob to reconstruct the flag.
-
-Tools: CyberChef, browser console, node
-
-Decryptor helper (JS):
+The helper reduced the test to one operation:
 
 ```javascript
-function decrypt(ch, inc) {
-    return String.fromCharCode(ch.charCodeAt(0) + inc);
+function decrypt(ch, increment) {
+    return String.fromCharCode(ch.charCodeAt(0) + increment);
 }
 
-let s = '';
-s += decrypt('h', 0);
-console.log(s);
+let output = '';
+output += decrypt('h', 0);
+console.log(output);
 ```
 
-### From Mars - Reverse
+The original encoded values are not included here, so this section documents the route rather than providing a fully reproducible solver.
 
-This last one was a real head-scratcher - a full-on reverse engineering problem.
+## From Mars
 
-* **File Triage:**
+The challenge presented a file with a `.jpg` extension. An image viewer was not the right first test. I checked the file structure with `binwalk`:
 
-    * They gave us a `.jpg` file that wasn't actually a picture.
+```text
+binwalk challenge.jpg
+```
 
-    * I ran `binwalk` on it, a tool that looks for files hidden inside other files, and sure enough, it found a Windows executable tucked away inside.
+The output showed an embedded Windows executable. After extracting it, I checked printable strings:
 
-    * After renaming it to `.exe`, I ran the `strings` utility on it. This showed me a bunch of text from the file, including references to a C source file (`martian_transmission.c`), which confirmed it was a compiled program.
+```text
+strings extracted.exe
+```
 
-* **Static Analysis with Ghidra:**
+One string referred to `martian_transmission.c`, which supported the idea that I was looking at a compiled challenge binary rather than image data.
 
-    * To figure out what the program was actually doing, I opened it up in Ghidra, a powerful reverse engineering tool.
+### Finding the transformation
 
-    * I went straight to the `main` function (the starting point of most programs) and saw it was calling another function named `process_binary_sequence`. That sounded like where all the important stuff was happening.
+I opened the executable in Ghidra and followed `main`. It called a function named `process_binary_sequence`.
 
 <PostImage
 	light={binarySeqMain}
-	alt="Binary Sequence (main)"
+	alt="Ghidra main function calling process_binary_sequence"
 	width={650}
 	height={455}
 />
 
-* **Deconstructing the Algorithm:**
-
-    1.  Diving into the assembly code, I could see exactly how that `process_binary_sequence` function was being called. It was using three key pieces of information: an array of numbers, a "shift" value of `7`, and a "padding" value of `13`.
-
-    2.  I found the big array of numbers stored in a different part of the program's memory.
+At the call site, I identified three inputs: an array of integers, a shift value of `7`, and a padding value of `13`. The array lived elsewhere in the binary, so I copied the values from Ghidra and checked how the function transformed each element.
 
 <PostImage
 	light={functionGhidra}
-	alt="Ghidra function analysis"
+	alt="Ghidra view of the binary sequence transformation"
 	width={650}
 	height={455}
 />
 
-* **Re-implementing the Decryptor:**
-    After trying a lot of things, instead of trying to debug the live program, I figured it'd be easier to just copy its logic. I grabbed the array of numbers, the shift value, and the pad value, and just rebuilt the whole decryption algorithm in Python.
+The transformation subtracted the index multiplied by the shift, then subtracted the padding. The compiled code kept the result to one byte.
 
-    **My Python Solver:**
+### Rebuilding it in Python
 
-    ```python
-    # numbers I pulled from the program
-    data = [
-        0x76, 0x7c, 0x7c, 0x7c, 0x94, 0xab, 0x9d, 0x91, 0xb5, 0xc7, 0xcd, 0xcd,
-        0xce, 0xec, 0xf9, 0xfe, 0xf8, 0xe1, 0x115, 0x114, 0x102, 0x135, 0x136,
-        0x13c, 0x14e, 0x16a, 0x0
-    ]
+Rather than debug the executable, I reproduced that operation:
 
-    shift = 7
-    pad = 13
+```python
+data = [
+    0x76, 0x7c, 0x7c, 0x7c, 0x94, 0xab, 0x9d, 0x91, 0xb5, 0xc7, 0xcd, 0xcd,
+    0xce, 0xec, 0xf9, 0xfe, 0xf8, 0xe1, 0x115, 0x114, 0x102, 0x135, 0x136,
+    0x13c, 0x14e, 0x16a, 0x0
+]
 
-    # logic from the program, rewritten in Python
-    flag = "".join(chr((n - (i * shift) - pad) & 0xFF) for i, n in enumerate(data) if n != 0)
+shift = 7
+padding = 13
 
-    print(flag)
-    ```
+flag = "".join(
+    chr((value - index * shift - padding) & 0xFF)
+    for index, value in enumerate(data)
+    if value != 0
+)
 
- Why & 0xFF - The compiled program produced single bytes; some constant values exceed 0xFF. Masking with & 0xFF emulates the original wrap-around.
+print(flag)
+```
 
-Looking back, I probably could have solved this a different way. Using a debugger like x64dbg would have let me run the program, pause it right after that special function finished, and just grab the flag straight out of the memory. It would've saved me some coding, but hey, both ways get you the flag!
+The `& 0xFF` matters because several constants exceed `0xFF`. Masking the result reproduces the single-byte wraparound performed by the compiled program.
+
+A debugger offered a shorter route. I could have stopped execution after `process_binary_sequence` returned and inspected the output buffer. Reimplementing the function took longer, but it left me with a solver I could explain and rerun.

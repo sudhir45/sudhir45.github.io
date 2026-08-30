@@ -1,100 +1,94 @@
 ---
 title: "Zero Trust: Why the Perimeter Model Is Dead"
 pubDate: 2025-04-27
-description: "Why perimeter security is dead, what Zero Trust actually means, and how to start implementing it without breaking your org."
+updatedDate: 2026-08-30
+description: "What Zero Trust changes, where to start, and how to replace broad network access without breaking the business."
 author: "Sudhir"
 isPinned: false
-excerpt: "Why perimeter security is dead, what Zero Trust actually means, and how to start implementing it without breaking your org."
+excerpt: "What Zero Trust changes, where to start, and how to replace broad network access without breaking the business."
 tags: ["Security architecture", "Network security"]
 ---
 
-## TL;DR:
+A valid VPN login often gives a user more network access than the job requires. If an attacker steals that user's session, the same convenience becomes a path to internal applications.
 
-- **The old "trust the internal network" model is dead** - users, apps, and threats are everywhere now.
-- **Zero Trust assumes breach by default** and demands continuous verification of users, devices, and applications.
-- **Key tactics**: Verify explicitly, enforce least privilege, segment aggressively, monitor everything.
-- **Industries like healthcare, finance, and IT are adopting Zero Trust fast** to survive modern threats and meet tough regulations.
-- Zero Trust isn't optional anymore - it's the only model that fits networks with no perimeter left to defend.
+Zero Trust changes the question. Instead of asking whether a connection came from the trusted network, it asks who is requesting access, which device they are using, what resource they need, and whether the request still looks safe.
 
----
+It is an architecture, not a product. Buying ZTNA licenses does not fix weak identity, permanent admin rights, or an application estate nobody has mapped.
 
-## Introduction: Why the Old Model is Broken
+## What changes under Zero Trust
 
-For decades, cybersecurity meant building a giant digital wall and trusting everything inside it. Today, networks are scattered across offices, homes, coffee shops, cloud platforms, and maybe even that sketchy free Wi-Fi at the airport.
+Traditional perimeter security grants broad trust after a user or device crosses a boundary. Zero Trust makes a narrower decision for each resource.
 
-If you're still betting on a perimeter-based defense, you're defending a boundary that no longer exists.
+Three principles guide that decision:
 
-**Zero Trust Architecture (ZTA)** fixes this. It assumes nothing and no one can be trusted by default - because they can't. Four forces make it urgent rather than optional: attackers move silently and fast once inside, users connect from everywhere, your SaaS apps live outside any firewall you own, and regulations (HIPAA, PCI DSS, GDPR, DORA) increasingly demand access control you can prove.
+- Verify the user, device, and relevant context.
+- Grant only the access required for the task.
+- Design as if an attacker already has a foothold.
 
----
+These principles affect identity, network design, application access, endpoint management, logging, and incident response. They also expose old assumptions. A shared administrator account or an application that cannot identify its users will block progress long before the team chooses a ZTNA platform.
 
-## What Zero Trust Really Means (No, You Can't Just Buy It)
+## What it looks like in practice
 
-Zero Trust isn't a shiny product you install. It's a strategy, a mindset, and yes, a bit of a lifestyle change for your IT team.
+Consider an engineer who needs a production console. A perimeter model may allow the engineer's laptop onto a large internal network through VPN. A Zero Trust design can require a managed device, phishing-resistant MFA, an approved role, and a time-limited session to that console alone.
 
-**Core Philosophy:**
-- **Verify Everything**: Authenticate every user, device, and app - every time.
-- **Assume Breach**: Plan like attackers are already inside.
-- **Least Privilege**: Users and devices get only the minimal access they need.
-- **Micro-Segmentation**: Cut the network into isolated zones.
-- **Continuous Monitoring**: Watch behavior throughout the session, not just at login.
+The application does not become safe because the access path changed. It still needs authorization, logging, secure sessions, and protection against its own vulnerabilities. Zero Trust narrows exposure. It does not replace application security.
 
----
+The same reasoning applies to devices that cannot run an agent. A hospital may isolate an infusion pump, allow it to reach only the services it requires, and monitor deviations from that pattern. The device remains difficult to secure, but compromising it no longer gives an attacker a useful route to patient records.
 
-## How Different Industries Use Zero Trust
+## Start with one access path
 
-### Healthcare
+A company-wide Zero Trust programme can take years. The first project should be small enough to measure and important enough to matter.
 
-Hospitals are full of medical devices (`IoMT`) that can't run a security agent and will never see a patch. Zero Trust deals with this by isolating those devices in their own segments, so a compromised infusion pump can't reach the patient records database. Access to `PHI` gets gated behind strict identity checks - which also makes HIPAA audits noticeably less painful, because you can actually show who accessed what.
+Privileged remote access is a good candidate. It has clear users, sensitive resources, and an obvious reason to remove broad VPN access.
 
-### Finance
+An illustrative migration might begin with an administrator whose VPN group can route to the entire `10.0.0.0/8` estate for a 12-hour session. The administrator only needs the payroll console and monitoring dashboard.
 
-Banks segment trading platforms, customer accounts, and payment systems so that a compromise in one doesn't cascade into the others. Sensitive actions - large transfers, admin changes - trigger step-up authentication (`MFA`), not just a session cookie from this morning's login.
+The replacement policy exposes those two applications, requires a managed device and phishing-resistant MFA, and grants access for one approved hour. A test should show that the same session cannot discover the database subnet or open an unrelated admin console. The team should also time how long it takes to revoke the session and confirm that both application and policy logs identify the administrator.
 
-### IT and Technology
+Those are sample conditions, not field results. A real project should record its own reachable resources, session lifetime, revocation time, authentication failures, and support tickets before migration.
 
-IT companies apply it to their own privileged users first: admins and engineers get scoped, time-bound access instead of standing keys to everything. The same thinking extends to cloud environments (AWS, Azure, GCP) and gets baked into DevOps pipelines (`DevSecOps`), so a leaked CI token doesn't hand over the whole estate.
+For that path:
 
----
+1. Identify the users, devices, applications, and service dependencies.
+2. Record the access that people use, not only what the policy says they need.
+3. Remove unused access and assign owners to the remaining permissions.
+4. Require strong authentication and managed device checks.
+5. Give users access to the application instead of the surrounding network.
+6. Log policy decisions and test how the team revokes access during an incident.
 
-## How to Actually Start Zero Trust (Without Triggering a Nervous Breakdown)
+Measure the result. Useful measures include the number of reachable resources before and after the change, standing privileged accounts removed, failed device checks, support tickets, and time required to revoke a session.
 
-Zero Trust takes years of incremental work, not a weekend. The good news: every step delivers value on its own.
+## The controls that carry the first year
 
-### Practical Steps:
+Identity is the starting point. Central authentication, MFA, lifecycle management, and clean role definitions support everything that follows. If terminated users keep active accounts or service accounts have unknown owners, a new access proxy will inherit the problem.
 
-1. **Inventory Everything**: You can't protect what you don't know you have - and that includes the forgotten test VM someone spun up two years ago that still has a route to production.
-2. **Map Access Flows**: Understand who needs to access what, and how. Expect surprises: most orgs find piles of standing access that nobody remembers granting and nothing actually uses.
-3. **Design Micro-Segments**: Create small, controlled environments. Start with the crown jewels (payment systems, customer data) rather than trying to segment everything at once.
-4. **Define Access Policies**: Be strict - users must earn access. "Deny by default" is the policy; everything else is an exception with an owner and a reason.
-5. **Monitor Continuously**: Log everything and actively hunt for anomalies. Verification at login means nothing if nobody watches what happens after.
+Endpoint state comes next. The policy needs reliable signals about device ownership, encryption, patch level, and security tooling. Decide what happens when those signals are missing. Blocking every unknown device may be correct for administration and impossible for a public customer service.
 
-### Key Tools You'll Need:
+ZTNA can replace broad remote network access with application-specific access. Network segmentation limits movement for traffic that remains inside the estate. SIEM and endpoint detection help the team investigate the decisions and activity around a session.
 
-Four things carry most of the weight in year one:
+Each control needs an owner. "Continuous verification" means little if nobody maintains the policy or responds to the signal.
 
-- **Identity and Access Management** (`IAM`) - identity is the new perimeter; if this is weak, nothing downstream matters.
-- **Multi-Factor Authentication** (`MFA`) - yes, even for internal users. Especially for internal users.
-- **Zero Trust Network Access** (`ZTNA`) - the piece that actually replaces your VPN.
-- **A SIEM someone actually watches** - continuous verification means nothing if nobody looks at the signals.
+## Where implementations get stuck
 
-`EDR/XDR`, `UEBA`, `CASB`, `CSPM`, and `SASE` all have their place - layer them in once the four above actually work.
+Legacy applications are the usual obstacle. Some depend on fixed IP addresses, shared credentials, old protocols, or broad network discovery. Hiding those requirements behind a new product creates exceptions that may become permanent.
 
-### Challenges to Expect:
+User friction is another real cost. Repeated prompts, broken applications, and slow access drive people toward workarounds. Apply stronger checks when the risk changes instead of interrupting every low-risk action.
 
-- Wrestling with legacy systems.
-- Managing user friction during stricter access enforcement.
-- Finding or upskilling people who understand Zero Trust.
-- Leading the cultural shift from "trust but verify" to "never trust, always verify."
+Finally, do not migrate a messy access model unchanged. Reproducing hundreds of broad VPN groups in a ZTNA portal gives the old design a new interface.
 
----
+## My test for progress
 
-## Where This Leaves You
+I would not measure Zero Trust progress by licenses purchased or users enrolled. I would ask:
 
-Zero Trust is a practical response to how networks actually work now.
+- Can a compromised user reach fewer systems than before?
+- Does privileged access expire without manual cleanup?
+- Can the team explain why a session was allowed?
+- Can responders revoke access quickly?
+- Are exceptions visible, owned, and reviewed?
 
-If you're still relying on perimeter defenses alone, you're defending your network like it's 1999.
+If those answers improve, the architecture is moving in the right direction. If the dashboard looks modern but access remains broad and permanent, it is still the perimeter model underneath.
 
-**Zero Trust gives you visibility, control, and resilience** - no matter where your users, devices, or data are.
+## References
 
-**Ditch the moat. Put a lock on every door, and check identity every time someone walks through one.**
+- [NIST SP 800-207: Zero Trust Architecture](https://csrc.nist.gov/publications/detail/sp/800-207/final)
+- [CISA Zero Trust Maturity Model](https://www.cisa.gov/resources-tools/resources/zero-trust-maturity-model)

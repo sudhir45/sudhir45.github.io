@@ -1,10 +1,11 @@
 ---
 title: "Security Architecture: Principles for Designing Secure Systems and Networks"
 pubDate: 2025-04-30
-description: "Defense in depth, Zero Trust, IAM, segmentation, compliance: the principles that keep systems standing when something inevitably slips through."
+updatedDate: 2026-08-30
+description: "How defense in depth, identity, segmentation, threat modeling, and recovery fit into a security architecture."
 author: "Sudhir"
 isPinned: false
-excerpt: "Defense in depth, Zero Trust, IAM, segmentation, compliance: the principles that keep systems standing when something inevitably slips through."
+excerpt: "How defense in depth, identity, segmentation, threat modeling, and recovery fit into a security architecture."
 tags: ["Security architecture"]
 ---
 
@@ -12,21 +13,11 @@ import PostImage from '@/components/PostImage.astro';
 import secureArchitectureLight from '@/assets/images/Secure_Architecture.png';
 import secureArchitectureDark from '@/assets/images/Secure_Architecture_Dark.png';
 
-*So, your boss just said, "Make it secure." And you thought: "Define... secure?"*
+"Make it secure" is not a design requirement.
 
-That's security architecture: deciding where the defenses go, how strong they need to be, and what to do when - inevitably - something slips through. This post is the map, not the territory. Short version of each area, with pointers to the deeper posts where they exist.
+A security architect has to turn that request into decisions. Which assets matter? Who needs access? Where can an attacker move? Which failures can the business tolerate? What evidence will show that the controls still work six months later?
 
----
-
-## TL;DR
-
-- Apply defense in depth - security at every layer.
-- Use Zero Trust: never assume trust, always verify.
-- Implement least privilege and strong IAM controls.
-- Segment networks, monitor continuously, and automate response.
-- Compliance isn't optional - design with it in mind.
-
----
+Security architecture connects those decisions. It is not a diagram filled with product logos. It is the reasoning behind the trust boundaries, controls, and recovery paths in a system.
 
 <PostImage
 	light={secureArchitectureLight}
@@ -36,98 +27,91 @@ That's security architecture: deciding where the defenses go, how strong they ne
 	height={668}
 />
 
-## What Is Security Architecture, Really?
+I will use a small billing service as the running example. Customers sign in through a web application. The application calls a billing API, which reads account data from a database. Support staff can issue refunds, and engineers administer the service through a separate management path.
 
-It's the blueprint for a fortress - except the fortress is digital, the bricks are firewalls and policies, and the invaders are automated scanners and bored teenagers with Python.
+## Start with the system, not the controls
 
-Think of it as a mix of:
+Before selecting a firewall, identity provider, or monitoring platform, describe the system in plain language:
 
-- **Policies** (aka "we said so")
-- **Controls** (aka "we enforced it")
-- **Technology** (aka "we hope it works")
+- What data does it process?
+- Where does that data enter, move, and leave?
+- Which people, services, and third parties can reach it?
+- What would an attacker gain by compromising it?
+- How long can the service be unavailable?
 
----
+This creates a threat model that is specific enough to guide design. Without it, teams tend to copy a standard control list and call the result architecture.
 
-## Core Principles (A.K.A. Your Security Commandments)
+For the billing service, payment and account data matter most. Stolen customer credentials, an exposed API, a compromised support account, and an engineer's admin session create different paths and need different controls.
 
-### 1. **Defense in Depth**
-If one lock is good, seven are better.
+## Put identity before network location
 
-### 2. **Least Privilege**
-If Dave from HR can reboot prod, start sweating.
+Network location is weak evidence of trust. A device on the corporate network may be unmanaged, compromised, or operated by someone using stolen credentials.
 
-### 3. **Separation of Duties**
-Nobody gets full power without checks and logs.
+Access decisions should use identity, device state, requested resource, and risk. Administrators need stronger controls than ordinary users. Service accounts need ownership and a limited purpose. Temporary access should expire without relying on someone to remember a ticket.
 
-### 4. **Secure by Design**
-Don't bolt security on - bake it in.
+Least privilege is the goal, but it needs an operating process. Define who approves access, how the system records it, and how often owners review it. "Role-based access" on a diagram proves very little if every role contains broad permissions.
 
-### 5. **Keep It Simple (KISS)**
-Simple systems are easier to secure.
+A support role may view an account and request a refund but should not change deployment settings or query the database. An engineer may deploy the API without receiving access to customer payment data.
 
----
+## Use segmentation to limit failure
 
-## Firewalls
+Segmentation reduces how far an attacker or mistake can spread. Production, development, management, and user networks should not share unrestricted paths. Sensitive applications may need smaller boundaries around databases, administrative interfaces, or processing tiers.
 
-Still on duty, still the workhorse. I've gone deep on firewall types, deployment patterns, and hardening in [Firewalls: Still Your Network's Bouncer in 2025](/posts/firewall-fundamentals) - and on the audit side in [Firewall Compliance Without the Checkbox Theatre](/posts/firewall-compliance).
+The useful question is not whether segmentation exists. Ask what a compromised endpoint can reach next.
 
-> Treat firewall rules like expired milk - review often.
+In the example, the public web tier can call the billing API on one service port. It cannot connect directly to the database or management network. The API can reach the database, but the database cannot initiate connections back to the web tier.
 
-## Network Segmentation & Access Control
+Firewalls, security groups, ACLs, service meshes, and identity-aware proxies can enforce these boundaries. The choice depends on where the traffic flows and who manages the control. My deeper guides cover [firewall deployment and hardening](/posts/firewall-fundamentals) and [firewall compliance](/posts/firewall-compliance).
 
-Keep prod, dev, and QA far apart, and enforce it with VLANs, ACLs, and NAC. And remember: IDS/IPS only work if someone actually reads the alerts.
+## Assume one control will fail
 
-## Zero Trust
+Defense in depth is often drawn as a stack of products. That misses the point. The layers should fail differently.
 
-Verify explicitly, least privilege always, assume breach. For the full treatment - what it means, how to start, which tools you'll need - see [Zero Trust: Why the Perimeter Model Is Dead](/posts/zero-trust-fundamentals).
+If an attacker steals a password, MFA should block its use. If the attacker steals a session, device checks and scoped authorization should limit access. If malicious activity reaches an endpoint, EDR should detect it. If detection is late, segmentation and protected backups should reduce the damage.
 
-## Identity & Access Management
+Several products that depend on the same identity source, policy error, or administrative account may represent one failure path rather than several layers.
 
-Authentication, authorization, audit. In the cloud: prefer roles over users, rotate keys, secure service accounts, and federate (SAML/OIDC) where you can.
+## Design the evidence with the control
 
-> No MFA, no access. Everywhere. Yes, there too.
+A control that nobody can verify will decay quietly.
 
-## Threat Modeling & Risk Assessment
+For each important control, decide what evidence it produces and who reviews that evidence. Firewall rules need owners, reasons, review dates, and logs. Privileged access needs approvals and session records. Recovery plans need restore tests, not screenshots of a backup console.
 
-Map the paths attackers might take, then prioritize what's worst - not what's easiest to fix.
+A refund should leave the support identity, customer account, amount, approval, and result in the audit log. A deployment should record a different identity and change reference. Mixing both under one shared administrator account destroys that distinction.
 
-## Compliance
+This is where compliance can help. A good control can meet a regulatory requirement and reduce a real attack path. A bad compliance program collects documents without checking whether the system behaves as described.
 
-GDPR (72-hour breach notification - don't miss it), HIPAA (treat ePHI like state secrets), ISO 27001 (run an ISMS, document everything, cry later).
+## Plan for detection and recovery
 
-## Monitoring & Incident Response
+Prevention will miss something. Architecture should define how the team detects a problem, contains it, restores service, and learns from the incident.
 
-SIEM for correlation, EDR on the endpoints, SOAR when you're ready to automate. When it goes wrong: detect, contain, eradicate, recover, report, debrief - with logs, lessons, and coffee.
+Logging needs enough context to answer who did what, to which resource, and from where. Alerts need an owner and a response path. Backups need isolation and restore tests. Critical services need recovery objectives that the business has accepted.
 
-## Cloud Security
+Cloud services do not remove these responsibilities. Providers secure their infrastructure. You still own identities, configuration, data access, application code, and most of the evidence used during an investigation.
 
-Shared responsibility means you secure your configs, creds, and data; the provider secures the rest. Encrypt everything, harden the CI/CD pipeline, and scan your Infrastructure-as-Code before it deploys. Tools to explore: AWS GuardDuty, Azure Defender, GCP SCC.
+For the billing service, recovery means more than restoring a database backup. The team must reconcile payments created after the backup, rotate exposed credentials, validate the application path, and prove that refund and deployment logs are complete.
 
----
+## A practical architecture review
 
-## Conclusion
+When I review a design, I want clear answers to five questions:
 
-That's the map. Each of these areas earns its own deep dive - firewalls and Zero Trust already have one, more are coming.
+1. What are we protecting, and from whom?
+2. Where does the system make trust decisions?
+3. What can an attacker reach after one control fails?
+4. How will the team know that a control failed?
+5. How will the service recover?
 
-Design for breach. Detect quickly. Respond faster.
+Products come after those answers. A diagram may change as the system grows, but the reasoning should remain traceable.
 
----
+For a closer look at identity-led access, see [Zero Trust: Why the Perimeter Model Is Dead](/posts/zero-trust-fundamentals).
 
 ## References
 
 - [NIST Zero Trust Architecture](https://www.nist.gov/publications/zero-trust-architecture)
 - [Microsoft Zero Trust Guidance](https://learn.microsoft.com/en-us/microsoft-365/security/microsoft-365-zero-trust?view=o365-worldwide)
 - [OWASP Authentication Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html)
-- [HIPAA to ISO 27001 Mapping](https://www.centraleyes.com/mapping-hipaa-to-iso-27001/)
 - [ISO/IEC 27001 Standard](https://www.iso.org/isoiec-27001-information-security.html)
-- [EDPB GDPR Guidance](https://edpb.europa.eu/)
 - [HIPAA Security Rule](https://www.hhs.gov/hipaa/for-professionals/security/index.html)
-
----
-
-## Further Reading
-
 - [NIST SP 800-53: Security Controls](https://csrc.nist.gov/publications/detail/sp/800-53/rev-5/final)
 - [CIS Controls v8](https://www.cisecurity.org/controls/cis-controls-list)
 - [OWASP SAMM](https://owaspsamm.org/)
-- [Google BeyondCorp](https://cloud.google.com/beyondcorp).

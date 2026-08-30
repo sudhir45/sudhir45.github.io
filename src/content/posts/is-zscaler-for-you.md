@@ -1,128 +1,125 @@
 ---
-title: "Cloud Security Overhaul: Is Zscaler the Right Move for Your IT Company?"
+title: "Is Zscaler the Right Move for a Large IT Company?"
 pubDate: 2025-04-26
-description: "Zscaler for large Indian IT companies: what the rollout really involves, what it costs, and when you shouldn't bother."
+updatedDate: 2026-08-30
+description: "A buyer's guide to evaluating Zscaler for a large Indian IT company, including rollout work, costs, failure cases, and proof-of-concept tests."
 author: "Sudhir"
 isPinned: false
-excerpt: "Zscaler for large Indian IT companies: what the rollout really involves, what it costs, and when you shouldn't bother."
+excerpt: "A buyer's guide to evaluating Zscaler for a large Indian IT company, including rollout work, costs, failure cases, and proof-of-concept tests."
 tags: ["Network security"]
 ---
 
-If you run security or infrastructure for a large IT company, this one's for you.
+Zscaler is often introduced as a replacement for VPNs, secure web gateways, and parts of the on-premises security stack. That description is directionally correct and still too simple for a purchasing decision.
 
-Let's talk about a problem most large IT companies are still fighting: securing your massive, distributed workforce when your apps, data, and people are everywhere. If you're in an Indian IT powerhouse, you know the drill - thousands of employees, many working remotely, juggling countless SaaS apps (Hello, M365!), handling sensitive client data, and fielding a constant stream of phishing and ransomware attempts. The old ways of VPNs and data center firewalls? They're starting to creak under the strain.
+For a large Indian IT company, the hard part is not routing a pilot group through the service. It is migrating thousands of users, inspecting traffic without breaking client applications, mapping private applications, handling data requirements, and supporting people across offices and home networks.
 
-You've probably heard of **Zscaler**. But does it actually make sense for the scale and demands of Indian IT giants? Here's what deploying it looks like on the ground here in India.
+The right question is not whether Zscaler has the required feature. Ask whether it improves a defined access path at an acceptable cost and whether your team can operate it.
 
-## Why Even Bother? The Indian IT Security Headache
+This is a buyer's evaluation framework, not a production review of my own Zscaler deployment. Product capability statements should be checked against the current contract, documentation, and proof of concept.
 
-Think about your current reality:
+## What the main products do
 
-* **Workforce Everywhere:** Remember when everyone was in the office? Yeah, me neither. Securing remote and hybrid teams consistently is tough. VPNs often become bottlenecks.
-* **Everything Lives in the Cloud:** Your teams live in AWS, Azure, GCP, Salesforce, etc. Backhauling that traffic through your data center? Slow, expensive, and frustrating for users.
-* **Global Clients, Global Rules:** GDPR, HIPAA, PCI-DSS... your clients demand top-notch security and compliance. Can your current setup prove it easily?
-* **Target on Your Back:** Let's face it, Indian IT handles valuable IP and data, making you a high-value target for cybercriminals.
-* **Need for Speed (and Scale):** Projects spin up, teams expand - your security needs to keep pace without massive hardware rollouts.
+Zscaler Internet Access routes user internet traffic through Zscaler's cloud service. Depending on the license and policy, it can provide secure web gateway, firewall, sandboxing, data loss prevention, cloud application control, and TLS inspection.
 
-If any of this sounds familiar, you're exactly why solutions like Zscaler exist.
+Zscaler Private Access connects an authenticated user to an authorized private application. It avoids placing the user on the wider network in the way a traditional remote-access VPN often does. App Connectors create outbound connections near private applications, which reduces the need to expose inbound services.
 
-## How Zscaler Actually Works
+Zscaler Digital Experience measures parts of the path between a user's device and an application. It can help separate endpoint, local network, provider, and application problems during support investigations.
 
-Imagine ditching the old castle-and-moat security model. Zscaler is built entirely *in the cloud*. Think of it less like a wall around your data center and more like an **intelligent, global security switchboard**.
+These products share policy and telemetry, but they solve different problems. A company that needs internet filtering does not automatically need to replace every VPN connection with ZPA.
 
-Instead of users connecting *to the network* (like with VPNs), Zscaler connects authenticated users *directly and securely* to the application or website they need, whether it's on the internet or internal. This is the core of **Zero Trust** - don't trust anyone by default, verify everything.
+## Where the business case can work
 
-The platform has three main products:
+The strongest case is a large, distributed workforce using SaaS and private applications from many locations. Backhauling all traffic through a data centre can add latency and force the company to maintain more network capacity.
 
-1. **Zscaler Internet Access (ZIA):** Your cloud-based security guard for all internet traffic. It inspects everything (including encrypted traffic), filters malicious sites, stops threats, prevents data leaks (DLP), and ensures compliance - all *before* traffic even hits the internet or your network. It's your Secure Web Gateway, Firewall, CASB, and more, all rolled into one cloud service.
-2. **Zscaler Private Access (ZPA):** The one that retires your VPN. This connects your users securely *only* to the *specific internal apps* they're authorized for (in your data center or private cloud), *not* the whole network. That kills lateral movement, which is where most breaches escalate.
-3. **Zscaler Digital Experience (ZDX):** Ever had remote users complain "the internet is slow" or "the app isn't working"? ZDX is the troubleshooting piece. It monitors performance from the user's laptop, across their network, all the way to the app, pinpointing exactly where the bottleneck is. Genuinely useful for hybrid workforces.
+ZIA can move internet inspection closer to users. ZPA can reduce the number of private resources visible to a remote user. Central policy may also replace several regional gateways and their maintenance work.
 
-## The Rollout, Step by Step
+Those benefits need measurement. Compare application latency, help-desk volume, security coverage, appliance and circuit costs, operational effort, and the number of resources reachable from a user session. Do not build the case from license consolidation alone.
 
-Rolling out Zscaler in a large Indian IT setup takes months of phased work. It usually breaks down like this:
+## What the rollout requires
 
-1. **Planning:** Get your stakeholders together. Map out your users, locations (India offices, global centers, remote folks), critical apps (SaaS & internal), and existing security policies. Decide *how* you'll get traffic to Zscaler (Hint: The **Zscaler Client Connector (ZCC)** agent on laptops/mobiles is the workhorse for remote users; tunnels might work for main offices). Figure out how it plugs into your ID system (like Azure AD). Pick a pilot group!
-2. **Setting Up Shop (in the Cloud):** Configure your policies in the Zscaler admin portal. Connect your identity provider. Get the ZCC software ready to deploy. If you're using ZPA, deploy lightweight "App Connectors" near your internal apps.
-3. **Pilot & Test Drive:** Roll out ZCC to your pilot group. Test *everything* - web access, internal app access (goodbye VPN!), policy enforcement, and *user experience*. Get feedback! Some apps might need tweaking, especially with SSL inspection (it's powerful but can break things if not handled right).
-4. **The Rollout (Phased):** Roll out Zscaler location by location, or department by department. Communication and training matter more than the tech at this stage. People need to know what's changing and why the ZCC icon is now on their machine. Monitor performance closely using Zscaler's dashboards and ZDX.
-5. **Decommission & Fine-Tune:** Once things are stable, start decommissioning those old VPNs and maybe even simplify your on-prem firewall rules. Keep monitoring, keep refining policies, and keep your users happy.
+Start with identity and application inventory. ZPA policy depends on knowing who needs each application, how the application identifies traffic, and which supporting services it uses. Old applications may depend on IP addresses, shared services, or broad network discovery.
 
-## Okay, How Much Does This Cost?
+For endpoint traffic, most remote-user deployments rely on Zscaler Client Connector. Plan distribution, upgrades, diagnostics, tamper protection, and coexistence with endpoint security software. Decide what happens when the client cannot connect to the service.
 
-Let's be upfront: Zscaler isn't typically priced like hardware boxes. It's a **subscription**, usually **per user, per year**.
+TLS inspection deserves its own workstream. Certificate pinning, custom trust stores, mutual TLS, privacy requirements, and poorly implemented applications can all create exceptions. Every bypass reduces inspection coverage, so record an owner and review date rather than letting the exclusion list grow silently.
 
-* **User Count is Key:** The more users, the lower the *per-user* cost (volume discounts are definitely a thing for large Indian IT firms).
-* **Bundles & Add-ons:** They offer different tiers (like "Business" or "Transformation") with different features. Advanced stuff like Sandbox, full DLP, or ZDX might be in higher bundles or as add-ons.
-* **Multi-Year Deals:** Committing to 3 years usually gets you better pricing than just 1 year.
-* **No Public Price List:** You won't find a simple price tag online. You'll need to talk to Zscaler or their partners in India to get a **custom quote** based on your specific user count, required features, and contract length. Negotiation is part of the game.
+A phased rollout should move a representative pilot first. Include developers, administrators, call-centre users, users with poor home connectivity, and teams that handle client data. A pilot made only of cooperative security staff will miss the problems that dominate a large deployment.
 
-## The Payoff: Why Indian IT Companies Are Making the Switch
+## The India-specific questions
 
-Large Indian IT orgs that have gone this route tend to report the same set of wins:
+Large Indian IT companies often support global clients, operate from several Indian cities, and employ a mix of office, remote, and travelling users. Test the service from the locations and providers your staff use. A nearby service edge does not guarantee a fast path to every application.
 
-* Consistent protection everywhere and a drastically reduced attack surface - ZPA in particular stops lateral movement cold.
-* Users get faster access to cloud apps, with no VPN connection woes or sluggish backhauled traffic.
-* One cloud portal manages global security policy, with less hardware to manage, patch, and replace.
-* TCO often works out: reduced MPLS costs, consolidated security tools, lower operational effort.
-* Audits get easier with granular logs, and DLP helps protect client data (important for the DPDP Act 2023).
-* Onboarding thousands of new hires just means adding licenses.
+Data handling also needs legal and contractual review. Identify which logs and content the service processes, where the relevant data is stored, who can access it, and how retention works. Map those answers to client contracts and applicable law, including the Digital Personal Data Protection Act where relevant.
 
-## But Keep Your Eyes Open: Potential Hurdles
+Some Indian firms also deliver managed security services to clients. Keep the internal deployment decision separate from the commercial partnership. Being able to resell or implement a product does not prove it is the best fit for your own workforce.
 
-There are real hurdles. Be prepared for:
+## Cost is more than price per user
 
-* **Upfront Cost:** The subscription can look hefty initially, so focus on the Total Cost of Ownership (TCO) argument.
-* **Implementation Effort:** It takes planning and expertise (either in-house or via a good partner). Don't underestimate this.
-* **Change Management:** Users need to be brought along. Explaining the "why" is crucial.
-* **App Compatibility:** That powerful SSL inspection *can* break poorly coded or finicky apps. Test thoroughly!
-* **Good Partner is Key:** Choose an implementation partner in India who *really* knows Zscaler.
+Zscaler normally sells subscriptions by user and feature bundle. Public list pricing is not a reliable basis for a large purchase, so obtain comparable quotes for the same scope and term.
 
-## When Zscaler Is the Wrong Move
+Model these costs:
 
-The honest counter-cases, because no platform fits everyone:
+- ZIA, ZPA, ZDX, and required add-ons
+- Implementation partner and migration work
+- Internal application discovery and remediation
+- Endpoint deployment and support
+- Logging export, SIEM ingestion, and retention
+- Parallel operation while old VPNs or proxies remain active
+- Training and ongoing policy administration
+- Exit work if the company changes provider later
 
-* **You're too small for the math.** Per-user, per-year pricing makes sense at thousands of seats. At a few hundred, a well-run firewall + VPN or a lighter SASE bundle may deliver a similar risk profile for far less.
-* **Your apps can't survive SSL inspection.** Legacy client-server apps, certificate-pinned software, and finicky homegrown tools can break under inspection. If your app estate is full of these and you can't fix them, you'll end up bypassing inspection so widely that you've paid for a feature you don't use.
-* **Latency-sensitive workloads.** An extra cloud proxy hop is fine for SaaS; it can be a dealbreaker for real-time trading systems, VoIP-heavy operations, or OT environments.
-* **You haven't shortlisted the competition.** Netskope, Palo Alto Prisma Access, and Cato Networks play in the same SSE/SASE space. If a vendor gets chosen without a bake-off, the vendor did the choosing.
+Multi-year discounts can improve the commercial offer while increasing lock-in. Agree on service levels, support escalation, data export, and renewal terms before the migration makes switching expensive.
 
-## The India Angle
+## When I would not choose it
 
-Zscaler gets the Indian market. They have local data centers (ZENs) in Mumbai, Chennai, Bangalore, etc., ensuring good performance. Their features also align well with evolving regulations like India's Digital Personal Data Protection (DPDP) Act 2023.
+A smaller company with a manageable firewall and VPN estate may not recover the subscription and migration cost. A lighter SSE or SASE service may cover the required controls.
 
-## Real-World Deployments in India
+An application estate full of certificate pinning, fixed-IP assumptions, and unsupported protocols can create so many bypasses that the intended security model never appears. Fixing those applications may still be worthwhile, but it belongs in the programme cost.
 
-Curious about how Indian giants are actually rolling out Zscaler? Here are some live examples:
+Latency-sensitive or non-user traffic also needs separate treatment. Voice, trading, industrial systems, server-to-server flows, and bulk transfers should be tested rather than pushed through a user-access design by default.
 
-### Wipro
-- Deployed ZIA when pandemic-era remote work overwhelmed its VPN infrastructure, then added ZPA to displace VPN entirely ([Zscaler's Wipro case study](https://www.zscaler.com/customers/wipro)).
-- Zscaler credits the rollout with a 30% workforce productivity improvement and multimillion-dollar annual savings from simplifying the infrastructure.
+Finally, do not select Zscaler without comparing it with the alternatives that match your scope. Netskope, Palo Alto Prisma Access, Cato Networks, and other providers overlap in different ways. Use the same traffic, applications, and success measures for each proof of concept.
 
-### Infosys
-- Runs a large Zscaler practice (200+ trained professionals) and offers managed Zero Trust access built on the platform ([Infosys Zscaler offering](https://www.infosys.com/services/cyber-security/offerings/zscaler-security-solution.html)).
-- One published Infosys case study migrated 15,000+ applications and 40,000 users to ZPA as part of a business continuity plan.
+## A proof of concept that can fail honestly
 
-### Persistent Systems
-- A Zenith-tier (top level) Zscaler partner, implementing and supporting the platform for its clients' Zero Trust rollouts ([press release](https://www.persistent.com/media/press-releases/persistent-achieves-zenith-tier-partnership-with-zscaler/)).
+Test enough of the real environment to expose weaknesses:
 
-### Beyond the Giants
-- Mid-size IT firms and even startups in India are adopting Zscaler too, often via Managed Security Service Providers (MSSPs).
+1. Route users from several Indian locations and network providers.
+2. Include SaaS, private web applications, thick clients, developer tools, and an application with certificate pinning.
+3. Test normal access, loss of connectivity, client upgrade, and policy rollback.
+4. Measure latency and support effort before and after the change.
+5. Confirm which private resources a compromised user session can discover and reach.
+6. Export logs to the production SIEM and investigate a test event.
+7. Review every bypass and manual exception created during the pilot.
 
-## Should You Do It?
+Define pass and fail thresholds before the vendor demonstrates the product. Otherwise, a polished dashboard can turn every result into a success.
 
-For large, cloud-savvy Indian IT companies wrestling with securing a modern, distributed workforce, Zscaler offers a powerful, scalable, and effective cloud-native security platform. It directly tackles the limitations of legacy approaches.
+### A sample scorecard
 
-Is it the right move for *you*? It demands careful planning, investment, and getting your people on board. But the benefits in security posture, user experience, and operational efficiency are compelling.
+Score the same measures for the current design and every shortlisted provider:
 
-## Useful Resources
+| Measure | Baseline | Pass condition |
+| --- | --- | --- |
+| Median sign-in to usable private application | Record by location | No material regression at tested locations |
+| Private resources reachable by a standard user | Record VPN reachability | Only approved applications are reachable |
+| Applications requiring TLS bypass | Record current exclusions | Every bypass has an owner and accepted reason |
+| Client failures after upgrade | Record pilot incidents | Below the support threshold agreed before testing |
+| Time to revoke a user session | Measure current process | Meets the incident-response target |
+| Events available in the SIEM | List required fields | Required identity, policy, device, and action fields arrive |
 
-- [Zscaler India Website](https://www.zscaler.com)
-- [Learn about ZIA](https://www.zscaler.com/products/zscaler-internet-access)
-- [Learn about ZPA](https://www.zscaler.com/products/zscaler-private-access)
-- [Learn about ZDX](https://www.zscaler.com/products/zscaler-digital-experience)
-- [What is Zero Trust Architecture?](https://www.zscaler.com/zero-trust)
-- [Wipro Case Study - Zscaler](https://www.zscaler.com/customers/wipro)
-- [Infosys + Zscaler Partnership](https://www.zscaler.com/partners/system-integrators/infosys)
-- [Persistent Systems Zscaler Partnership](https://www.persistent.com/partner-ecosystem/zscaler/)
-- [Zscaler's Browser Isolation Technology Explained](https://www.zscaler.com/products/browser-isolation)
+Replace the qualitative pass conditions with numbers before the pilot. The table should make a weak result visible, not help the project justify a decision already made.
+
+## My decision rule
+
+Zscaler is a strong candidate when broad VPN access and central internet backhaul are measurable problems for a large distributed workforce. It is a poor answer to an undefined goal called "move to Zero Trust."
+
+I would buy only after the proof of concept shows fewer reachable private resources, acceptable application performance, manageable TLS exceptions, usable logs, and a support model the operations team trusts.
+
+## Useful resources
+
+- [Zscaler Internet Access](https://www.zscaler.com/products/zscaler-internet-access)
+- [Zscaler Private Access](https://www.zscaler.com/products/zscaler-private-access)
+- [Zscaler Digital Experience](https://www.zscaler.com/products/zscaler-digital-experience)
+- [Zscaler and Wipro case study](https://www.zscaler.com/customers/wipro)
+- [Infosys Zscaler offering](https://www.infosys.com/services/cyber-security/offerings/zscaler-security-solution.html)
+- [Persistent Systems and Zscaler partnership](https://www.persistent.com/media/press-releases/persistent-achieves-zenith-tier-partnership-with-zscaler/)

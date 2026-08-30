@@ -1,256 +1,123 @@
 ---
-title: "Recent Cisco Switch & Firewall Vulnerabilities"
+title: "Cisco IOS XE Web UI Vulnerabilities: How to Check Your Exposure"
 pubDate: 2025-10-04
-description: "Critical IOS XE vulnerabilities are being actively exploited, patch immediately. Here's how to check if you're exposed - and whether you've already been hit."
+updatedDate: 2026-08-30
+description: "How to identify exposure to the IOS XE Web UI vulnerabilities, preserve evidence, restrict management access, and find the correct Cisco release guidance."
 author: "Sudhir"
 isPinned: false
-excerpt: "Critical IOS XE vulnerabilities are being actively exploited, patch immediately. Here's how to check if you're exposed - and whether you've already been hit."
+excerpt: "How to identify exposure to the IOS XE Web UI vulnerabilities, preserve evidence, restrict management access, and find the correct Cisco release guidance."
 tags: ["Vulnerability management", "Network security"]
 ---
 
-If you manage Cisco gear like switches, routers, firewalls; this one's serious.
-Multiple **critical vulnerabilities** in Cisco IOS XE have been actively exploited, allowing attackers to **gain full admin control** over network devices *without authentication*.
+CVE-2023-20198 and CVE-2023-20273 affect the IOS XE Web UI. The first can allow an unauthenticated attacker to create a highly privileged local account. The second can support command injection after access has been gained.
 
-We're not talking about lab PoCs or script-kiddy exploits here. Cisco has confirmed **real-world compromises** where attackers implanted persistent malware directly on production devices.
+The risk depends on configuration and reachability. An IOS XE device is not exposed merely because it runs IOS XE. The HTTP or HTTPS server must be enabled, and an attacker needs a network path to that management service.
 
-If you haven't patched or locked down your management interfaces yet, stop reading this on your production network and go check.
-Here's exactly what's going on -
+This is a triage guide, not a replacement for Cisco's advisory. Use the [Cisco security advisory for CVE-2023-20198](https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-iosxe-webui-privesc-j22SaA4z) to determine affected and fixed releases for the exact device and train you operate.
 
----
+## Check whether the web interface is enabled
 
-## De-Jargoning: Key Concepts
+Run:
 
-Before we get into configs and CVEs, some quick definitions:
-- **IOS XE** - Cisco's OS for enterprise switches, routers, and wireless controllers. If you're running Catalyst 9300s, ISR routers, or 9800 WLCs - that's IOS XE.
-- **Web UI (HTTP/HTTPS server)** - The graphical interface you use to manage the device from a browser. It's convenient… until someone from the internet logs in as admin without your permission.
-- **Privilege escalation** - Attacker starts as "nobody," ends as "god." Enough said.
-- **Implant** - A malicious script or process that lives *inside* the system to maintain access and control, even after reboot.
-
-So, what's new? Attackers found a way to **create admin users** and **install custom implants** through the web UI.
-No creds. No MFA. One crafted HTTP request and they own the device.
-
----
-
-## The Attack Explained
-
-Two major vulnerabilities kicked this off:
-
-- **CVE-2023-20198** - Allows attackers to create arbitrary user accounts with privilege level 15 (full admin) on IOS XE systems with the HTTP/HTTPS Server feature enabled.
-- **CVE-2023-20273** - Used in conjunction with the above to deploy persistent implants using Lua scripts.
-
-Yes, those CVE numbers say 2023. Cisco patched these two years ago - and they were being actively exploited *again* in September 2025, because unpatched, internet-facing IOS XE devices never die. That's the actual scandal here.
-
-In plain terms:
-If your management web interface is reachable from the internet and running an unpatched IOS XE version, attackers can send a crafted HTTP request, create a new admin account, then upload and execute code that lives inside your system.
-
-Here's what Cisco confirmed they found in the wild:
-
-- Rogue user accounts like `cisco_tac_admin`, `cisco_support`, or random usernames
-- Custom Lua-based implants that survive reloads
-- Unauthorized configuration changes in `running-config`
-
-These implants can run arbitrary commands, intercept traffic, and even hide their presence.
-
----
-
-## Am I Vulnerable?
-
-If any of these are true, assume you're vulnerable and act immediately:
-
-1. You're running **IOS XE** (e.g., Catalyst 3650/3850, 9000, ISR 4000, WLC 9800, etc.)
-2. You have **HTTP or HTTPS server enabled**
-3. That interface is **reachable from outside your LAN** (public IP or NAT)
-4. You haven't applied **Cisco's fixed versions (available since late 2023)**
-5. You're unsure which version you're on
-
----
-
-## Verification & Identification Commands
-
-### 1. Check if the Web UI Is Enabled
-```bash
-show running-config | include http
+```text
+show running-config | include ^ip http
 ```
 
-Look for:
+Look for either of these commands:
 
-```bash
+```text
 ip http server
 ip http secure-server
 ```
-If either is present, the web UI is active.
 
-To check if it's bound to public interfaces:
+Their presence means the service is enabled. It does not prove that the service is reachable from the internet.
 
-```bash
-show ip interface brief
+Check the management path separately. Review interface addresses, routing, NAT, upstream firewall policy, VPN access, and management-plane ACLs. Test reachability from an authorized external location if your change and testing process permits it.
+
+Do not assume that an RFC 1918 address makes the service safe. Port forwarding, remote-access VPNs, jump hosts, or an exposed upstream network can still provide a path.
+
+## Record the software release
+
+Run:
+
+```text
+show version
 ```
 
-Compare with NAT or firewall rules - if external users can hit port 80 or 443, you're exposed.
+Record the full release, device model, installation mode, redundancy state, and image. Compare that information with Cisco's advisory and software checker.
 
-### 2. Check the IOS XE Version
+Avoid copying a fixed-version table from an old blog post. Cisco guidance can vary by release train, and the correct upgrade may change as later maintenance releases become available.
 
-```bash
-show version | include Version
-```
-Compare this against Cisco's [Official advisory](https://tools.cisco.com/security/center/publicationListing.x). Find your exact model and see if your version is affected or fixed.
+## Look for signs of unauthorized access
 
-## Have I Been Hacked?
+Start with local users and configuration changes:
 
-### 1. Hunt for Rogue Admin Accounts
-
-```bash
-show running-config | include username
-```
-If you see something like:
-
-```bash
-username cisco_tac_admin privilege 15 secret <hash>
-```
-and you didn't create it - you've likely been compromised.
-
-Check the startup-config too - if rogue users appear there as well, the implant persisted across reboots:
-
-```bash
-show startup-config | include username
+```text
+show running-config | include ^username
+show startup-config | include ^username
+show archive log config all
+show logging
 ```
 
-Remove any unknown accounts:
-```bash
-no username cisco_tac_admin
-write memory
-```
+Compare the output with your source of truth. An unfamiliar privileged account, an unexplained Web UI change, or configuration activity outside an approved window needs investigation.
 
-### 2. Look for Implant Indicators
+Review centralized authentication, SIEM, TACACS+, RADIUS, configuration backup, and network telemetry as well. Logs on a compromised device may be incomplete. The absence of an obvious local indicator does not prove that the device is clean.
 
-```bash
-show running-config | include lua
-dir harddisk:/ | include lua
-dir flash:/ | include lua
-```
+Cisco Talos published technical context and indicators during the original exploitation campaign. Use the [Talos analysis](https://blog.talosintelligence.com/active-exploitation-of-cisco-ios-xe-software/) alongside the current Cisco advisory and your incident-response procedure.
 
-Any Lua script references are a red flag. Some confirmed implant filenames:
-```bash
-/usr/binos/conf/nginx-conf/cisco_service.lua
-/usr/binos/scripts/sys_report.lua
-```
+## Preserve evidence before remediation
 
-If found:
-    - Copy files for forensic review
-    - Delete them
-    - Reboot into a clean image after patching
+If you find an unknown account, suspicious configuration, or other evidence of compromise, do not begin by deleting files and reloading the device.
 
-### 3. Check for Modified Web Configs
+First:
 
-```bash
-dir /all nvram: | include .conf
-more system:running-config
-```
+1. Restrict the management path to stop further access.
+2. Preserve the running and startup configurations.
+3. Export relevant local and centralized logs.
+4. Record time, software version, uptime, interfaces, users, and recent changes.
+5. Engage your incident-response team and Cisco TAC.
 
-Look for unusual ip http path or reverse proxy directives.
+The response team can then decide whether to collect more volatile evidence, rebuild the device, or replace the image. That decision depends on the device, business impact, and available evidence.
 
-### 4. Review System Logs
+Rotate local, TACACS+, RADIUS, API, and automation credentials after containment. If credentials may have been exposed to the device, treat them as compromised even if the accounts still look normal.
 
-```bash
-show logging | include HTTP|user|auth
-show logging | include POST|GET|config
-```
-Look for unknown IPs accessing the web UI, creating new users, or performing config actions - external IPs doing any of these are a big warning sign.
+## Remove unnecessary exposure
 
-### 5. Check for Unexpected Processes
+If the Web UI is not required, disable it through an approved change:
 
-```bash
-ps
-```
-You may see unfamiliar processes tied to Lua or nginx serving custom scripts.
-
-If you spot any of these - isolate the device immediately from the network and escalate.
-
-## Action Plan: What to Do RIGHT NOW
-
-Here's the checklist for containment, mitigation, and prevention.
-
-### 1. Disable Web UI
-```bash
-conf t
+```text
+configure terminal
 no ip http server
 no ip http secure-server
 end
 write memory
 ```
-If you need GUI management, restrict it to a management VLAN or out-of-band network only.
 
-### 2. Patch to Fixed Versions
+If the Web UI is required, restrict it to a dedicated management network or controlled administrative path. Use device-supported management-plane controls and upstream firewalls. Do not publish ports 80 or 443 for device administration directly to the internet.
 
-Check Cisco's official advisory (search for "Cisco IOS XE Web UI privilege escalation vulnerability").
-Update to the fixed IOS XE versions for your devices.
+Test the change from an authorized management host and from a location that should be denied. A configuration line alone does not prove the path is closed.
 
-```bash
-request platform software package install switch all file flash:cat9k_iosxe.BLDVERSION.bin
-```
+## Upgrade safely
 
-Then reload.
+Use Cisco's advisory and software checker to select a fixed release. Read the release notes for hardware support, ROMMON requirements, caveats, and upgrade path.
 
-### 3. Remove Rogue Accounts
-```bash
-conf t
-no username <malicious_user>
-end
-write memory
-```
+Before upgrading:
 
-### 4. Rotate Credentials
+- Back up the configuration and current image information.
+- Confirm available storage and boot variables.
+- Check stack, chassis, or redundancy requirements.
+- Define rollback and console-access plans.
+- Schedule validation for routing, switching, wireless, VPN, and management functions used on the device.
 
-Reset all local user passwords and any TACACS+/RADIUS secrets:
-```bash
-conf t
-username admin secret <NewStrongPassword>
-tacacs-server key <NewKey>
-end
-write memory
-```
+After the upgrade, confirm the running version and management exposure again. Monitor authentication and configuration activity during the following days.
 
-### 5. Restrict Management Access
+## The control that prevents a repeat
 
-Allow management from trusted hosts only:
+Inventory every network-device management interface and test its reachability on a schedule. Record the approved source networks, authentication method, owner, software release, and last review.
 
-```bash
-ip access-list standard MGMT_ONLY
- permit 10.0.0.0 0.0.0.255
- deny any
-!
-ip http access-class MGMT_ONLY
-line vty 0 4
- access-class MGMT_ONLY in
- transport input ssh
-end
-write memory
-```
+The two questions should always have current answers:
 
-### 6. Audit & Monitor Continuously
+1. Which systems can reach this management service?
+2. Who will know when that answer changes?
 
-Set up Syslog, SNMP traps, and config change alerts:
-
-```bash
-logging host <SIEM_IP>
-snmp-server enable traps syslog
-archive
- log config
- notify syslog
-```
-
-And make `show running-config | include username` part of your weekly hygiene routine.
-
-## The Bigger Lesson: Preventing the Next "Big One"
-
-Cisco will patch this, and attackers will move to the next flaw. The root cause here was misplaced convenience: a management interface reachable from the internet.
-
-Never expose management interfaces directly to the internet. Period.
-
-Set up out-of-band management networks, or VPN-gated access for admins.
-Deploy config compliance checks via Ansible, Cisco DNA Center, or your NMS of choice.
-
-And automate your patch management workflow - waiting for a breach to test upgrades is a bad habit.
-
-## My take:
-Every Cisco breach post-mortem has the same line: "HTTP/HTTPS server was accessible from the internet."
+Patching closes a known flaw. Restricting and monitoring the management path limits the next one.
