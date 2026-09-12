@@ -1,37 +1,16 @@
 ---
-import { AppConfig } from '@/utils/AppConfig';
 import Base from '@/layouts/Base.astro';
 import CyberdleGame from '@/components/cyberdle/Cyberdle';
-
-const title = `Cyberdle | ${AppConfig.site_name}`;
-const description =
-	'A daily security-themed word puzzle. Guess the five-letter cyber term in six tries - a fresh word every day.';
 ---
 
-<Base head={{ title, description }}>
-	<div class="mx-auto flex min-h-0 w-full max-w-[1180px] flex-1 flex-col px-5 pb-4 pt-2 md:px-11 md:pb-6">
-		<CyberdleGame client:only="react">
-			<div slot="fallback" class="meta-mono flex flex-1 items-center justify-center">
-				Loading puzzle…
-			</div>
-		</CyberdleGame>
+<Base
+	head={{
+		title: 'Cyberdle | Sudhir',
+		description: 'Find the five-letter security term in six tries. A fresh puzzle each day.'
+	}}
+>
+	<div class="shell game-main">
+		<CyberdleGame client:only="react"
+			><div slot="fallback" class="meta">Loading puzzle...</div></CyberdleGame>
 	</div>
 </Base>
-
-<!-- Zero-scroll layout: the page owns exactly one viewport, nothing below the fold -->
-<style is:global>
-	body {
-		height: 100dvh;
-		overflow: hidden;
-	}
-
-	footer {
-		display: none;
-	}
-
-	#main-content {
-		display: flex;
-		flex-direction: column;
-		min-height: 0;
-	}
-</style>

@@ -1,0 +1,32 @@
+---
+import type { TopicWithCount } from '@/utils/topics';
+interface Props {
+	topics: TopicWithCount[];
+}
+const { topics } = Astro.props;
+---
+
+<ul class="topic-list">
+	{
+		topics.map((topic) => (
+			<li class="topic-colored" style={`--topic-hue:${topic.hue}`}>
+				<a href={`/tags/${topic.slug}`}>
+					<>
+						<span class="topic-copy">
+							<>
+								<span class="topic-name">{topic.name}</span>
+								<span class="topic-description">{topic.description}</span>
+							</>
+						</span>
+						<span class="topic-count">
+							{topic.count} {topic.count === 1 ? 'post' : 'posts'}
+						</span>
+						<span class="topic-arrow" aria-hidden="true">
+							→
+						</span>
+					</>
+				</a>
+			</li>
+		))
+	}
+</ul>

@@ -1,27 +1,18 @@
 ---
 import { AppConfig } from '@/utils/AppConfig';
 import Base from '@/layouts/Base.astro';
-import Section from '@/components/Section.astro';
+import PageHeading from '@/components/PageHeading.astro';
 import PresentationViewer from '@/components/PresentationViewer.astro';
-import presentations from '@/data/presentations.json';
+import { getPresentations, type Presentation } from '@/utils/presentations';
 
 export function getStaticPaths() {
-	return presentations.map((pres) => ({
+	return getPresentations().map((pres) => ({
 		params: { slug: pres.slug },
 		props: { presentation: pres }
 	}));
 }
 
-interface Talk {
-	slug: string;
-	title: string;
-	description?: string;
-	venue?: string;
-	date?: string;
-	slideCount: number;
-}
-
-const { presentation } = Astro.props as { presentation: Talk };
+const { presentation } = Astro.props as { presentation: Presentation };
 const title = `${presentation.title} | ${AppConfig.site_name}`;
 const description = presentation.description ?? presentation.title;
 
@@ -33,48 +24,35 @@ const metaParts = [monthYear, presentation.venue, `${presentation.slideCount} sl
 );
 
 // Next talk: the one after this in reverse-chronological order, if any.
-const sorted = ([...presentations] as Talk[]).sort((a, b) => {
-	const da = a.date ? new Date(a.date).getTime() : 0;
-	const db = b.date ? new Date(b.date).getTime() : 0;
-	return db - da;
-});
+const sorted = getPresentations();
 const idx = sorted.findIndex((t) => t.slug === presentation.slug);
 const nextTalk = sorted[idx + 1] ?? (idx > 0 ? sorted[0] : undefined);
 ---
 
 <Base head={{ title, description }}>
-	<Section>
-		<div class="pt-10 md:pt-12">
-			<a href="/presentations" class="meta-mono hover:text-fg transition-colors">← All talks</a>
-			<h1
-				class="font-display text-fg mt-5 text-[1.625rem] font-medium leading-[1.15] tracking-[-0.02em] text-balance md:text-[2rem]"
-			>
-				{presentation.title}
-			</h1>
-			<div class="meta-mono mt-3">{metaParts.join(' · ')}</div>
-		</div>
-
-		<div class="mt-7">
-			<PresentationViewer
-				slug={presentation.slug}
-				title={presentation.title}
-				slideCount={presentation.slideCount}
-			/>
-		</div>
+	<div class="shell inner-page presentation-page">
+		<a href="/presentations" class="text-link back-link">← All talks</a><PageHeading
+			title={presentation.title.replace(' :', ':')}
+			description={metaParts.join(' · ')}
+		/><PresentationViewer
+			slug={presentation.slug}
+			title={presentation.title}
+			slideCount={presentation.slideCount}
+		/>
 
 		{
 			nextTalk ? (
 				<a
 					href={`/presentations/${nextTalk.slug}`}
-					class="row-link border-line mb-16 mt-9 flex items-baseline justify-between gap-6 border-t pt-6"
+					class="row-link border-line mt-9 mb-16 flex items-baseline justify-between gap-6 border-t pt-6"
 				>
 					<span>
-						<span class="meta-mono block uppercase tracking-[0.06em]">Next talk</span>
+						<span class="meta-mono block tracking-[0.06em] uppercase">Next talk</span>
 						<span class="row-title font-display text-fg mt-2 block text-[20px] font-medium tracking-[-0.01em] transition-colors">
 							{nextTalk.title}
 						</span>
 					</span>
-					<span class="text-faint whitespace-nowrap text-sm font-medium">
+					<span class="text-faint text-sm font-medium whitespace-nowrap">
 						View <span class="row-arrow">→</span>
 					</span>
 				</a>
@@ -82,5 +60,5 @@ const nextTalk = sorted[idx + 1] ?? (idx > 0 ? sorted[0] : undefined);
 				<div class="pb-16" />
 			)
 		}
-	</Section>
+	</div>
 </Base>

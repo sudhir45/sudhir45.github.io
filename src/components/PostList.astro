@@ -1,0 +1,51 @@
+---
+import type { SitePost } from '@/utils/posts';
+import { shortDate } from '@/utils/editorial';
+interface Props {
+	posts: SitePost[];
+	compact?: boolean;
+	inlineDate?: boolean;
+	dense?: boolean;
+}
+const { posts, compact = false, inlineDate = false, dense = false } = Astro.props;
+---
+
+<ul class:list={[compact ? 'post-list' : 'archive-list', { 'archive-list-dense': dense }]}>
+	{
+		posts.map((post) => (
+			<li
+				class={compact ? 'post-row' : 'archive-row'}
+				data-post
+				data-topics={post.data.tags.join('|')}
+			>
+				<a href={post.url}>
+					{!inlineDate && (
+						<time class="meta" datetime={post.data.pubDate.toISOString()}>
+							{shortDate(post.data.pubDate)}
+						</time>
+					)}
+					{compact ? (
+						<span class="post-title">{post.data.title}</span>
+					) : (
+						<span>
+							<span class="archive-title">{post.data.title}</span>
+							{!dense && <span class="archive-description">{post.data.description}</span>}
+							<span class="meta">
+								{inlineDate && (
+									<>
+										<time datetime={post.data.pubDate.toISOString()}>
+											{shortDate(post.data.pubDate)}
+										</time>{' '}
+										·{' '}
+									</>
+								)}
+								{post.data.tags.join(' · ')} · {post.data.minutesRead}
+							</span>
+						</span>
+					)}
+					<span aria-hidden="true">→</span>
+				</a>
+			</li>
+		))
+	}
+</ul>

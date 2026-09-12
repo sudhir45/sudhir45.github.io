@@ -3,6 +3,7 @@ import Footer from '@/components/Footer.astro';
 import Navbar from '@/components/Navbar.astro';
 import { AppConfig, SOCIALS } from '@/utils/AppConfig';
 import '@/styles/global.css';
+import '@/styles/editorial.css';
 import GoogleAnalytics from '@/components/GoogleAnalytics.astro';
 import { ClientRouter } from 'astro:transitions';
 
@@ -116,28 +117,20 @@ const ogImageUrl = baseOgImage.startsWith('http') ? baseOgImage : `${siteUrl}${b
 		<GoogleAnalytics />
 		<ClientRouter />
 		<script is:inline>
-			const applyTheme = () => {
-				const theme = (() => {
-					if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
-						return localStorage.getItem('theme');
-					}
-					if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-						return 'dark';
-					}
-					return 'light';
-				})();
-
-				if (theme === 'light') {
-					document.documentElement.classList.remove('dark');
-				} else {
-					document.documentElement.classList.add('dark');
-				}
-				window.localStorage.setItem('theme', theme);
-			};
-
-			applyTheme();
-
-			document.addEventListener('astro:after-swap', applyTheme);
+			(() => {
+				let saved;
+				try {
+					saved = localStorage.getItem('theme');
+				} catch {}
+				document.documentElement.classList.toggle(
+					'dark',
+					saved === 'dark' ||
+						(saved !== 'light' && matchMedia('(prefers-color-scheme: dark)').matches)
+				);
+			})();
+		</script>
+		<script>
+			import '@/utils/theme';
 		</script>
 	</head>
 	<body class="bg-bg text-fg flex min-h-screen flex-col antialiased">
@@ -148,9 +141,9 @@ const ogImageUrl = baseOgImage.startsWith('http') ? baseOgImage : `${siteUrl}${b
 			Skip to content
 		</a>
 		<Navbar />
-		<div id="main-content" class="flex-1">
+		<main id="main-content" class="flex-1" tabindex="-1">
 			<slot />
-		</div>
+		</main>
 		<Footer />
 	</body>
 </html>

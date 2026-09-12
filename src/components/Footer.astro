@@ -1,48 +1,67 @@
 ---
-import Section from './Section.astro';
+import { Image } from 'astro:assets';
+import blossoms from '@/assets/images/almond-blossom.jpg';
 import { SOCIALS } from '@/utils/AppConfig';
-
 const year = new Date().getFullYear();
-
-const navLinks = [
-	{ href: '/posts', label: 'Writing' },
-	{ href: '/about', label: 'About' },
-	{ href: '/presentations', label: 'Talks' },
-	{ href: '/tags', label: 'Topics' },
-	{ href: '/cyberdle', label: 'Cyberdle' },
-	{ href: '/rss.xml', label: 'RSS' },
-	{ href: '/imprint', label: 'Imprint' }
-];
 ---
 
-<Section>
-	<footer class="border-line border-t pb-10 pt-8">
-		<div class="flex flex-wrap items-baseline justify-between gap-x-10 gap-y-4">
-			<nav class="flex flex-wrap gap-x-6 gap-y-2 text-sm" aria-label="Footer">
-				{
-					navLinks.map(({ href, label }) => (
-						<a class="text-muted hover:text-fg transition-colors" href={href}>
-							{label}
-						</a>
-					))
-				}
-			</nav>
-			<div class="flex flex-wrap gap-x-6 gap-y-2 text-sm">
-				{
-					SOCIALS.map((social: { name: string; url: string }) => (
-						<a
-							class="text-muted hover:text-fg transition-colors"
-							href={social.url}
-							target="_blank"
-							rel="noopener noreferrer"
-						>
-							{social.name}
-						</a>
-					))
-				}
+<footer class="site-footer">
+	<div class="footer-layout">
+		<div class="footer-art" aria-hidden="true">
+			<Image
+				src={blossoms}
+				alt=""
+				widths={[320, 640, 960, 1280]}
+				sizes="100vw"
+				format="webp"
+				quality={80}
+				loading="lazy"
+				decoding="async"
+			/>
+		</div>
+		<div class="shell">
+			<div class="footer">
+				<p>© {year} Sudhir · Mumbai, India</p><nav class="footer-nav" aria-label="Footer">
+					{
+						SOCIALS.map((social) => (
+							<a
+								href={social.url}
+								target={social.url.startsWith('http') ? '_blank' : undefined}
+								rel={social.url.startsWith('http') ? 'noopener noreferrer' : undefined}
+							>
+								{social.name}
+							</a>
+						))
+					}
+					<a href="/tags">Topics</a><a href="/rss.xml">RSS</a><a href="/imprint">Imprint</a>
+				</nav>
 			</div>
 		</div>
+	</div>
+</footer>
 
-		<p class="meta-mono mt-7">© {year} Sudhir · Information Security · Mumbai, India</p>
-	</footer>
-</Section>
+<style>
+	.site-footer {
+		margin-top: 28px;
+		width: 100%;
+	}
+	.footer-art {
+		width: 100%;
+		height: clamp(100px, 13vw, 180px);
+		overflow: clip;
+		border-block: 1px solid var(--line);
+	}
+	.footer-art img {
+		display: block;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: 50% 45%;
+	}
+	:global(.dark) .footer-art img {
+		filter: brightness(0.78) saturate(0.85);
+	}
+	.footer {
+		border: 0;
+	}
+</style>

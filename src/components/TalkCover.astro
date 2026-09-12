@@ -1,0 +1,130 @@
+---
+interface Props {
+	slug: string;
+	title: string;
+	thumbnail?: string;
+	coverImage?: string;
+	loading?: 'eager' | 'lazy';
+}
+const {
+	slug,
+	title,
+	thumbnail = `/presentations/${slug}/slide-1.jpg`,
+	coverImage,
+	loading = 'lazy'
+} = Astro.props;
+---
+
+{
+	coverImage ? (
+		<img
+			class="talk-cover-image"
+			src={coverImage}
+			alt={`Cover for ${title}`}
+			width="1280"
+			height="720"
+			loading={loading}
+		/>
+	) : slug === 'firewall-chaos' ? (
+		<div
+			class="talk-cover"
+			role="img"
+			aria-label="Firewall Chaos: Automated Policy Management. Overlapping rules converge into an ordered policy."
+		>
+			<div class="talk-cover-copy" aria-hidden="true">
+				<>
+					<span class="talk-cover-title">Firewall Chaos</span>
+					<span class="talk-cover-subtitle">Automated policy management</span>
+				</>
+			</div>
+			<svg class="talk-cover-art" viewBox="0 0 640 220" fill="none" aria-hidden="true">
+				<g class="policy-sprawl" stroke-width="1.5">
+					<path d="M12 24H150C230 24 235 188 302 188S370 42 426 42" />
+					<path d="M12 67H106C202 67 242 24 302 24S370 110 426 110" />
+					<path d="M12 110H154C210 110 238 188 302 188S371 178 426 178" />
+					<path d="M12 153H112C191 153 220 42 294 42H426" />
+					<path d="M12 196H148C213 196 238 110 302 110H426" />
+				</g>
+				<path class="policy-route" d="M12 110H102C218 110 226 178 302 178H426" stroke-width="2.5" />
+				<g class="policy-rules" stroke-width="1.5">
+					<path d="M446 26H626M446 58H626M446 94H626M446 126H626M446 162H626M446 194H626" />
+					<path d="M460 42H562M460 110H594M460 178H542" />
+				</g>
+				<g class="policy-points">
+					<>
+						<circle cx="426" cy="42" r="4" />
+						<circle cx="426" cy="110" r="4" />
+						<circle cx="426" cy="178" r="4" />
+					</>
+				</g>
+			</svg>
+		</div>
+	) : (
+		<img
+			class="talk-cover-image"
+			src={thumbnail}
+			alt={`Opening slide of ${title}`}
+			width="1280"
+			height="720"
+			loading={loading}
+		/>
+	)
+}
+
+<style>
+	.talk-cover-image {
+		display: block;
+		width: 100%;
+		aspect-ratio: 16 / 9;
+		object-fit: contain;
+		background: var(--surface);
+		border: 1px solid var(--line);
+	}
+	.talk-cover {
+		position: relative;
+		width: 100%;
+		aspect-ratio: 16 / 9;
+		container-type: inline-size;
+		overflow: clip;
+		background: var(--surface);
+		border: 1px solid var(--line);
+		color: var(--fg);
+	}
+	.talk-cover-copy {
+		position: absolute;
+		top: 9%;
+		left: 7%;
+		right: 7%;
+	}
+	.talk-cover-title {
+		display: block;
+		font: 450 clamp(24px, 7.5cqw, 48px)/1.1 var(--font-display-stack);
+		letter-spacing: -0.025em;
+	}
+	.talk-cover-subtitle {
+		display: block;
+		margin-top: clamp(4px, 1.5cqw, 10px);
+		font: 400 clamp(11px, 2.8cqw, 17px)/1.4 var(--font-ui);
+		color: var(--muted);
+	}
+	.talk-cover-art {
+		position: absolute;
+		width: 88%;
+		height: 44%;
+		left: 6%;
+		bottom: 7%;
+	}
+	.policy-sprawl {
+		stroke: var(--muted);
+		opacity: 0.5;
+	}
+	.policy-route {
+		stroke: var(--accent);
+	}
+	.policy-rules {
+		stroke: var(--muted);
+	}
+	.policy-points {
+		fill: var(--accent);
+	}
+</style>

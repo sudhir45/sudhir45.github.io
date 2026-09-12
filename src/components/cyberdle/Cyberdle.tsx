@@ -64,9 +64,9 @@ const RANK: Record<Evaluation, number> = { absent: 0, present: 1, correct: 2 };
 // Fixed tile colors so the board reads the same in light and dark — terminal
 // green for a hit, brand amber for a near miss, warm stone for a miss.
 const TILE_COLORS: Record<Evaluation, { background: string; color: string }> = {
-	correct: { background: '#15803d', color: '#ffffff' },
-	present: { background: '#b45309', color: '#ffffff' },
-	absent: { background: '#78716c', color: '#ffffff' }
+	correct: { background: 'var(--game-correct)', color: 'var(--bg)' },
+	present: { background: 'var(--accent)', color: 'var(--bg)' },
+	absent: { background: 'var(--muted)', color: 'var(--bg)' }
 };
 
 function evaluateGuess(guess: string, answer: string): Evaluation[] {
@@ -185,10 +185,10 @@ function formatDuration(ms: number): string {
 }
 
 export default function Cyberdle() {
-	const { puzzleNumber, answer } = useMemo<{ puzzleNumber: number; answer: CyberWord }>(
-		() => getDailyPuzzle(new Date(), getUserSeed()),
-		[]
-	);
+	const [{ puzzleNumber, answer }, setPuzzle] = useState<{
+		puzzleNumber: number;
+		answer: CyberWord;
+	}>(() => getDailyPuzzle(new Date(), getUserSeed()));
 
 	const [guesses, setGuesses] = useState<string[]>([]);
 	const [current, setCurrent] = useState('');
@@ -201,6 +201,36 @@ export default function Cyberdle() {
 	const [countdown, setCountdown] = useState('');
 
 	const toastTimer = useRef<number | null>(null);
+	const resultRef = useRef<HTMLDivElement>(null);
+	useEffect(() => {
+		if (!showResult) return;
+		const previous = document.activeElement as HTMLElement | null;
+		const panel = resultRef.current;
+		panel?.querySelector<HTMLButtonElement>('button')?.focus();
+		const onKey = (event: KeyboardEvent) => {
+			if (event.key === 'Escape') {
+				event.preventDefault();
+				setShowResult(false);
+				return;
+			}
+			if (event.key !== 'Tab' || !panel) return;
+			const elements = [...panel.querySelectorAll<HTMLElement>('button,a,input,[tabindex="0"]')];
+			const first = elements[0],
+				last = elements.at(-1);
+			if (event.shiftKey && document.activeElement === first) {
+				event.preventDefault();
+				last?.focus();
+			} else if (!event.shiftKey && document.activeElement === last) {
+				event.preventDefault();
+				first?.focus();
+			}
+		};
+		document.addEventListener('keydown', onKey);
+		return () => {
+			document.removeEventListener('keydown', onKey);
+			previous?.focus();
+		};
+	}, [showResult]);
 
 	const showToast = useCallback((message: string) => {
 		setToast(message);
@@ -211,6 +241,10 @@ export default function Cyberdle() {
 	// Restore today's game + lifetime stats on mount.
 	useEffect(() => {
 		setStats(loadStats());
+		setGuesses([]);
+		setCurrent('');
+		setStatus('playing');
+		setShowResult(false);
 		const saved = loadGameState(puzzleNumber);
 		if (saved) {
 			setGuesses(saved.guesses);
@@ -221,7 +255,11 @@ export default function Cyberdle() {
 
 	// Countdown to the next daily puzzle.
 	useEffect(() => {
-		const tick = () => setCountdown(formatDuration(msUntilNextPuzzle()));
+		const tick = () => {
+			setCountdown(formatDuration(msUntilNextPuzzle()));
+			const next = getDailyPuzzle(new Date(), getUserSeed());
+			setPuzzle((previous) => (previous.puzzleNumber === next.puzzleNumber ? previous : next));
+		};
 		tick();
 		const id = window.setInterval(tick, 1000);
 		return () => window.clearInterval(id);
@@ -259,7 +297,12 @@ export default function Cyberdle() {
 			window.setTimeout(() => {
 				setShowResult(true);
 				if (won) {
-					confetti({ particleCount: 120, spread: 70, origin: { y: 0.6 }, disableForReducedMotion: true });
+					confetti({
+						particleCount: 120,
+						spread: 70,
+						origin: { y: 0.6 },
+						disableForReducedMotion: true
+					});
 				} else {
 					showToast(answer.word);
 				}
@@ -285,7 +328,17 @@ export default function Cyberdle() {
 	// Physical keyboard support.
 	useEffect(() => {
 		const onKeyDown = (event: KeyboardEvent) => {
-			if (event.metaKey || event.ctrlKey || event.altKey) return;
+			if (
+				event.metaKey ||
+				event.ctrlKey ||
+				event.altKey ||
+				(event.target as HTMLElement)?.closest(
+					'input,textarea,select,[contenteditable=true],button,a,summary'
+				) ||
+				document.querySelector('#search-modal:not(.hidden)')
+			)
+				return;
+			if (showResult && event.key !== 'Escape') return;
 			const key = event.key;
 			if (key === 'Escape') {
 				setShowResult(false);
@@ -298,7 +351,7 @@ export default function Cyberdle() {
 		};
 		window.addEventListener('keydown', onKeyDown);
 		return () => window.removeEventListener('keydown', onKeyDown);
-	}, [handleKey]);
+	}, [handleKey, showResult]);
 
 	const keyStates = useMemo(() => buildKeyStates(guesses, answer.word), [guesses, answer.word]);
 
@@ -307,12 +360,20 @@ export default function Cyberdle() {
 		for (let r = 0; r < MAX_GUESSES; r++) {
 			const submitted = guesses[r];
 			if (submitted !== undefined) {
-				out.push({ letters: submitted.split(''), evals: evaluateGuess(submitted, answer.word), isCurrent: false });
+				out.push({
+					letters: submitted.split(''),
+					evals: evaluateGuess(submitted, answer.word),
+					isCurrent: false
+				});
 			} else if (r === guesses.length && status === 'playing') {
 				const letters = Array.from({ length: WORD_LENGTH }, (_, i) => current[i] ?? '');
 				out.push({ letters, evals: null, isCurrent: true });
 			} else {
-				out.push({ letters: Array.from({ length: WORD_LENGTH }, () => ''), evals: null, isCurrent: false });
+				out.push({
+					letters: Array.from({ length: WORD_LENGTH }, () => ''),
+					evals: null,
+					isCurrent: false
+				});
 			}
 		}
 		return out;
@@ -341,44 +402,42 @@ export default function Cyberdle() {
 	}, [answer.word, guesses, puzzleNumber, showToast, status]);
 
 	return (
-		<div className="flex min-h-0 w-full flex-1 flex-col md:flex-row md:gap-16">
+		<div className="game-layout">
 			<style>{CSS}</style>
 
 			{/* Left rail: eyebrow → title → intro → countdown, stats pinned below a hairline.
 			    Collapses to a compact header above the board on narrow screens. */}
-			<div className="flex-none pt-2 md:flex md:w-[320px] md:flex-col md:justify-center md:pt-0">
-				<p className="eyebrow-amber">Daily puzzle</p>
-				<h1 className="font-display text-fg mt-2.5 text-[26px] font-medium leading-[1.05] tracking-[-0.025em] md:mt-3 md:text-[40px]">
-					Cyberdle
-				</h1>
-				<p className="text-muted mt-3.5 hidden text-[15px] leading-[1.6] md:block">
-					Guess the five-letter security term in six tries. Green is the right spot, amber the
-					wrong one.
-				</p>
+			<div className="game-intro">
+				<p className="category">Daily puzzle</p>
+				<h1>Cyberdle</h1>
+				<p>Find the five-letter security term in six tries.</p>
 				<div className="meta-mono mt-2 md:mt-3.5">
 					#{puzzleNumber} · next word in {countdown}
 				</div>
 
-				<div className="border-line mt-9 hidden grid-cols-2 gap-x-6 gap-y-5 border-t pt-5 md:grid">
-					<StatBig value={String(stats.played)} label="Played" />
-					<StatBig value={`${winPct}%`} label="Win rate" />
-					<StatBig value={String(stats.currentStreak)} label="Streak" />
-					<StatBig value={String(stats.maxStreak)} label="Max streak" />
+				<div className="game-legend">
+					<span>
+						<i style={{ background: 'var(--game-correct)' }} />
+						Right place
+					</span>
+					<span>
+						<i style={{ background: 'var(--accent)' }} />
+						Wrong place
+					</span>
+					<span>
+						<i style={{ background: 'var(--muted)' }} />
+						Not in the word
+					</span>
 				</div>
-				{status !== 'playing' && (
-					<button
-						onClick={handleShare}
-						className="text-muted hover:text-fg mt-5 hidden w-fit text-sm font-medium transition-colors md:block"
-					>
-						Share result →
-					</button>
-				)}
+				<button type="button" onClick={() => setShowResult(true)}>
+					Your results
+				</button>
 			</div>
 
 			{/* Game: board + keyboard, vertically centered */}
-			<div className="flex min-h-0 flex-1 flex-col items-center justify-center gap-4 py-3 md:gap-6 md:py-0">
+			<div className="game-play">
 				{/* Board */}
-				<div className="grid gap-1.5" aria-label="Cyberdle board">
+				<div className="grid gap-1.5" role="group" tabIndex={0} aria-label="Cyberdle board">
 					{rows.map((row, r) => (
 						<div key={r} className={`flex gap-1.5 ${shake && row.isCurrent ? 'cd-shake' : ''}`}>
 							{row.letters.map((letter, c) => {
@@ -388,7 +447,7 @@ export default function Cyberdle() {
 								return (
 									<div
 										key={`${r}-${c}-${letter}-${ev ?? 'na'}`}
-										className={`flex h-[46px] w-[46px] items-center justify-center rounded-md border-2 font-mono text-[21px] font-bold uppercase ${
+										className={`game-tile ${
 											ev
 												? 'border-transparent'
 												: letter
@@ -408,16 +467,16 @@ export default function Cyberdle() {
 				{/* Toast */}
 				<div className="relative h-0 w-full" aria-live="polite">
 					{toast && (
-						<div className="bg-fg text-bg absolute left-1/2 top-2 z-10 -translate-x-1/2 rounded-md px-4 py-2 text-sm font-medium shadow-lg">
+						<div className="bg-fg text-bg absolute top-2 left-1/2 z-10 -translate-x-1/2 rounded-md px-4 py-2 text-sm font-medium shadow-lg">
 							{toast}
 						</div>
 					)}
 				</div>
 
 				{/* Keyboard */}
-				<div className="flex w-full max-w-[480px] flex-col items-center gap-1.5 select-none">
+				<div className="game-keyboard">
 					{KEYBOARD_ROWS.map((rowKeys, i) => (
-						<div key={i} className="flex w-full justify-center gap-1.5">
+						<div key={i} className="game-key-row">
 							{i === KEYBOARD_ROWS.length - 1 && (
 								<KeyButton label="Enter" wide onPress={() => handleKey('ENTER')} />
 							)}
@@ -425,7 +484,12 @@ export default function Cyberdle() {
 								<KeyButton key={k} label={k} state={keyStates[k]} onPress={() => handleKey(k)} />
 							))}
 							{i === KEYBOARD_ROWS.length - 1 && (
-								<KeyButton label="⌫" wide ariaLabel="Backspace" onPress={() => handleKey('BACKSPACE')} />
+								<KeyButton
+									label="⌫"
+									wide
+									ariaLabel="Backspace"
+									onPress={() => handleKey('BACKSPACE')}
+								/>
 							)}
 						</div>
 					))}
@@ -436,6 +500,7 @@ export default function Cyberdle() {
 			{showResult && (
 				<div
 					className="fixed inset-0 z-[70] flex items-center justify-center p-5"
+					ref={resultRef}
 					role="dialog"
 					aria-modal="true"
 					aria-label="Puzzle result"
@@ -449,21 +514,29 @@ export default function Cyberdle() {
 						<button
 							onClick={() => setShowResult(false)}
 							aria-label="Close result"
-							className="text-faint hover:text-fg absolute right-4 top-4 text-sm transition-colors"
+							className="text-faint hover:text-fg absolute top-4 right-4 text-sm transition-colors"
 						>
 							✕
 						</button>
 						<h2 className="font-display text-fg text-xl font-medium tracking-[-0.01em]">
-							{status === 'won' ? 'Nice work.' : 'Out of attempts.'}
+							{status === 'playing'
+								? 'Your results'
+								: status === 'won'
+									? 'Nice work.'
+									: 'Out of attempts.'}
 						</h2>
-						<p className="text-muted mt-2 text-sm leading-[1.6]">
-							The word was{' '}
-							<span className="text-accent font-mono font-semibold tracking-wider">{answer.word}</span>
-							. {answer.clue}
-						</p>
+						{status !== 'playing' && (
+							<p className="text-muted mt-2 text-sm leading-[1.6]">
+								The word was{' '}
+								<span className="text-accent font-mono font-semibold tracking-wider">
+									{answer.word}
+								</span>
+								. {answer.clue}
+							</p>
+						)}
 
 						{/* Stats live in the rail on desktop; here on narrow screens */}
-						<div className="border-line mt-5 grid grid-cols-2 gap-x-6 gap-y-4 border-t pt-4 md:hidden">
+						<div className="border-line mt-5 grid grid-cols-2 gap-x-6 gap-y-4 border-t pt-4">
 							<StatBig value={String(stats.played)} label="Played" />
 							<StatBig value={`${winPct}%`} label="Win rate" />
 							<StatBig value={String(stats.currentStreak)} label="Streak" />
@@ -471,7 +544,7 @@ export default function Cyberdle() {
 						</div>
 
 						<div className="mt-5 space-y-1.5">
-							<p className="meta-mono mb-2.5 uppercase tracking-[0.06em]">Guess distribution</p>
+							<p className="meta-mono mb-2.5 tracking-[0.06em] uppercase">Guess distribution</p>
 							{stats.distribution.map((count, i) => {
 								const isRowWin = status === 'won' && guesses.length === i + 1;
 								return (
@@ -482,7 +555,8 @@ export default function Cyberdle() {
 												className="flex h-full items-center justify-end rounded-sm px-2 font-mono font-semibold text-white"
 												style={{
 													width: `${Math.max(8, (count / maxDist) * 100)}%`,
-													background: isRowWin ? '#15803d' : '#78716c'
+													background: isRowWin ? 'var(--game-correct)' : 'var(--muted)',
+													color: 'var(--bg)'
 												}}
 											>
 												{count}
@@ -493,12 +567,14 @@ export default function Cyberdle() {
 							})}
 						</div>
 
-						<button
-							onClick={handleShare}
-							className="bg-fg text-bg mt-6 w-full py-2.5 text-sm font-medium transition-opacity hover:opacity-85"
-						>
-							Share result
-						</button>
+						{status !== 'playing' && (
+							<button
+								onClick={handleShare}
+								className="bg-fg text-bg mt-6 w-full py-2.5 text-sm font-medium transition-opacity hover:opacity-85"
+							>
+								Share result
+							</button>
+						)}
 					</div>
 				</div>
 			)}
@@ -512,7 +588,7 @@ function StatBig({ label, value }: { label: string; value: string }) {
 			<div className="font-display text-fg text-2xl font-medium tracking-[-0.015em] tabular-nums">
 				{value}
 			</div>
-			<div className="text-subtle mt-1 font-mono text-[10px] font-medium uppercase tracking-[0.06em]">
+			<div className="text-subtle mt-1 font-mono text-[10px] font-medium tracking-[0.06em] uppercase">
 				{label}
 			</div>
 		</div>
@@ -537,9 +613,12 @@ function KeyButton({
 		<button
 			type="button"
 			aria-label={ariaLabel ?? label}
-			onClick={onPress}
+			onClick={(event) => {
+				onPress();
+				if (event.detail > 0) event.currentTarget.blur();
+			}}
 			style={style}
-			className={`flex h-[42px] items-center justify-center rounded-md text-xs font-medium uppercase transition-colors ${
+			className={`game-key ${
 				wide ? 'flex-[1.5] text-[11px]' : 'flex-1'
 			} ${state ? '' : 'bg-line/60 text-fg hover:bg-line'}`}
 		>

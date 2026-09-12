@@ -1,84 +1,49 @@
 ---
-import { AppConfig } from '@/utils/AppConfig';
 import Base from '@/layouts/Base.astro';
-import Section from '@/components/Section.astro';
-import presentations from '@/data/presentations.json';
-
-const title = `Talks | ${AppConfig.site_name}`;
-const description =
-	"Where I've spoken about security architecture and defensive work outside the blog.";
-
-interface Talk {
-	slug: string;
-	title: string;
-	venue?: string;
-	date?: string;
-	link?: string;
-	linkLabel?: string;
-}
-
-const talks = ([...presentations] as Talk[]).sort((a, b) => {
-	const da = a.date ? new Date(a.date).getTime() : 0;
-	const db = b.date ? new Date(b.date).getTime() : 0;
-	return db - da;
-});
-
-const monthYear = (date?: string) =>
-	date ? new Date(date).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) : '';
-
-const linkFor = (talk: Talk) => talk.link ?? `/presentations/${talk.slug}`;
-const labelFor = (talk: Talk) => talk.linkLabel ?? 'Slides';
+import PageHeading from '@/components/PageHeading.astro';
+import { getPresentations } from '@/utils/presentations';
+import TalkCover from '@/components/TalkCover.astro';
+import { longDate } from '@/utils/editorial';
+const talks = getPresentations();
 ---
 
-<Base head={{ title, description }}>
-	<Section>
-		<div class="pb-9 pt-10 md:pt-14">
-			<h1 class="font-display text-fg text-[2.25rem] font-medium leading-[1.08] tracking-[-0.025em] md:text-[2.75rem]">
-				Talks &amp; appearances
-			</h1>
-			<p class="text-muted mt-4 max-w-[560px] text-[17px] leading-[1.65]">
-				Where I've spoken about security architecture and defensive work outside the blog.
-			</p>
-		</div>
-
-		<div class="pb-16">
+<Base head={{ title: 'Talks | Sudhir', description: 'Security ideas, shared beyond the blog.' }}
+	><div class="shell inner-page">
+		<PageHeading
+			title="Talks & appearances"
+			description="Security ideas, shared beyond the blog."
+		/><div class="talk-list">
 			{
-				talks.map((talk, i) => (
-					<a
-						href={linkFor(talk)}
-						class:list={[
-							'row-link grid grid-cols-[1fr_auto] items-baseline gap-x-6 gap-y-1 py-6 sm:grid-cols-[150px_1fr_auto] sm:gap-7',
-							i === 0 ? 'border-t border-[color:var(--line-strong)]' : 'border-line border-t'
-						]}
-					>
-						<span class="meta-mono order-2 col-start-2 justify-self-end sm:order-none sm:col-start-auto sm:justify-self-start">
-							{monthYear(talk.date)}
-						</span>
-						<div class="order-1 col-span-2 sm:order-none sm:col-span-1">
-							<div class="row-title font-display text-fg text-[20px] font-medium leading-[1.3] tracking-[-0.01em] transition-colors sm:text-[22px]">
-								{talk.title}
+				talks.map((talk, index) => (
+					<article class="talk-feature">
+						<>
+							<a href={`/presentations/${talk.slug}`}>
+								<TalkCover
+									slug={talk.slug}
+									title={talk.title}
+									thumbnail={talk.thumbnail}
+									coverImage={talk.coverImage}
+									loading={index === 0 ? 'eager' : 'lazy'}
+								/>
+							</a>
+							<div>
+								<>
+									<p class="meta">
+										{[talk.date && longDate(talk.date), talk.venue].filter(Boolean).join(' · ')}
+									</p>
+									<h2>
+										<a href={`/presentations/${talk.slug}`}>{talk.title.replace(' :', ':')}</a>
+									</h2>
+									<p>{talk.description}</p>
+									<a href={`/presentations/${talk.slug}`} class="text-link">
+										View {talk.slideCount} slides →
+									</a>
+								</>
 							</div>
-							{talk.venue && (
-								<div class="text-faint mt-1.5 text-[15px]">{talk.venue}</div>
-							)}
-						</div>
-						<span
-							class="order-3 justify-self-end whitespace-nowrap text-[13px] font-medium sm:order-none"
-							style={i === 0 ? 'color:var(--accent)' : 'color:var(--faint)'}
-						>
-							{labelFor(talk)} <span class="row-arrow">→</span>
-						</span>
-					</a>
+						</>
+					</article>
 				))
 			}
-
-			{talks.length === 0 && <p class="text-muted py-10">No talks yet. Check back soon.</p>}
-
-			{talks.length > 0 && (
-				<p class="border-line text-faint border-t pt-6 text-[14px]">
-					New talks are added here as they happen.
-				</p>
-			)}
-		</div>
-	</Section>
-</Base>
+		</div>{talks.length === 0 && <p class="meta">Talks will appear here as they are added.</p>}
+	</div></Base
+>

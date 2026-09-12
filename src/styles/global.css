@@ -1,7 +1,7 @@
 @import 'tailwindcss';
+@import './tokens.css';
 @config '../../tailwind.config.mjs';
 @import '@fontsource-variable/inter/index.css';
-@import '@fontsource-variable/space-grotesk/index.css';
 @import '@fontsource-variable/jetbrains-mono/index.css';
 
 @plugin '@tailwindcss/typography';
@@ -48,49 +48,6 @@
 }
 
 @layer base {
-	:root {
-		/* Warm "paper" base (stone) + amber accent — light theme */
-		--bg: #faf9f7;
-		--surface: #ffffff;
-		--surface-2: #f4f1ec;
-		--line: #eae7e2;
-		/* Strong section-top rule + pill fill */
-		--line-strong: #1c1917;
-		--frame: #e2ddd4;
-		--fg: #1c1917;
-		--muted: #57534e;
-		/* secondary body text */
-		--faint: #78716c;
-		/* de-emphasised metadata / dates / indices */
-		--subtle: #a8a29e;
-		--accent: #b45309;
-		--accent-strong: #f59e0b;
-		--accent-contrast: #faf9f7;
-
-		--font-display-stack: 'Space Grotesk Variable', 'Space Grotesk', var(--font-ui);
-		--font-ui: 'Inter Variable', 'Inter', 'Segoe UI', 'Helvetica Neue', sans-serif;
-		--font-code: 'JetBrains Mono Variable', 'JetBrains Mono', 'Consolas', 'Monaco', monospace;
-		--content-measure: 68ch;
-	}
-
-	.dark {
-		/* Warm dark "ink paper" (stone) + amber accent — dark theme */
-		--bg: #1a1714;
-		--surface: #201c18;
-		--surface-2: #2a2521;
-		--line: #2f2a25;
-		--line-strong: #f5f0e8;
-		--frame: #3a332c;
-		--fg: #f5f0e8;
-		--muted: #b8afa3;
-		/* WCAG AA: keep readable on --bg */
-		--faint: #a29a8d;
-		--subtle: #7a726a;
-		--accent: #fbbf24;
-		--accent-strong: #f59e0b;
-		--accent-contrast: #1a1714;
-	}
-
 	html {
 		@apply antialiased;
 		overflow-x: clip;
@@ -332,7 +289,7 @@
 @layer utilities {
 	/* --- Reading view (post) prose overrides --- */
 	.reading {
-		font-family: var(--font-ui);
+		font-family: var(--font-reading);
 		color: var(--reading-ink, #3a352f);
 		font-size: 19px;
 		line-height: 1.8;
@@ -343,17 +300,6 @@
 
 	.reading > p {
 		margin: 0 0 26px;
-	}
-
-	/* Space Grotesk drop cap on the first paragraph's first letter */
-	.reading > p:first-of-type::first-letter {
-		font-family: var(--font-display-stack);
-		float: left;
-		font-weight: 500;
-		font-size: 62px;
-		line-height: 0.8;
-		margin: 6px 14px 0 0;
-		color: var(--fg);
 	}
 
 	.reading h2 {
@@ -557,5 +503,40 @@
 
 	::-webkit-scrollbar-thumb:hover {
 		@apply bg-faint;
+	}
+}
+
+@layer base {
+	body {
+		font-size: var(--text-small);
+		letter-spacing: normal;
+	}
+	h1,
+	h2,
+	h3,
+	h4 {
+		font-weight: 450;
+		font-style: normal;
+		letter-spacing: -0.035em;
+		font-optical-sizing: auto;
+		text-wrap: pretty;
+	}
+	a {
+		text-underline-offset: 0.23em;
+	}
+	a:hover {
+		text-decoration: underline;
+	}
+	button {
+		cursor: pointer;
+	}
+	a:focus-visible,
+	button:focus-visible,
+	summary:focus-visible,
+	input:focus-visible,
+	select:focus-visible,
+	[tabindex]:focus-visible {
+		outline: 2px solid var(--accent);
+		outline-offset: 4px;
 	}
 }

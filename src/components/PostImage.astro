@@ -13,16 +13,7 @@ interface Props {
 	loading?: 'lazy' | 'eager';
 }
 
-const {
-	light,
-	dark,
-	alt,
-	width,
-	height,
-	class: className,
-	style,
-	loading = 'lazy'
-} = Astro.props;
+const { light, dark, alt, width, height, class: className, style, loading = 'lazy' } = Astro.props;
 
 const formats = ['avif', 'webp', 'png'] as const;
 type Variants = Record<(typeof formats)[number], string>;
@@ -42,13 +33,25 @@ const darkSet = dark ? await buildVariants(dark) : null;
 ---
 
 <picture>
-	{darkSet && (
-		<>
-			<source srcset={darkSet.avif} type="image/avif" media="(prefers-color-scheme: dark)" />
-			<source srcset={darkSet.webp} type="image/webp" media="(prefers-color-scheme: dark)" />
-			<source srcset={darkSet.png} media="(prefers-color-scheme: dark)" />
-		</>
-	)}
+	{
+		darkSet && (
+			<>
+				<source
+					srcset={darkSet.avif}
+					type="image/avif"
+					media="(prefers-color-scheme: dark)"
+					data-dark-source
+				/>
+				<source
+					srcset={darkSet.webp}
+					type="image/webp"
+					media="(prefers-color-scheme: dark)"
+					data-dark-source
+				/>
+				<source srcset={darkSet.png} media="(prefers-color-scheme: dark)" data-dark-source />
+			</>
+		)
+	}
 	<source srcset={lightSet.avif} type="image/avif" />
 	<source srcset={lightSet.webp} type="image/webp" />
 	<img

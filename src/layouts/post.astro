@@ -1,11 +1,11 @@
 ---
 import { AppConfig } from '@/utils/AppConfig';
 import Base from '@/layouts/Base.astro';
-import Section from '@/components/Section.astro';
+import PostList from '@/components/PostList.astro';
+import { longDate } from '@/utils/editorial';
 import PostContent from '@/components/PostContent.astro';
 import ReadingProgress from '@/components/ReadingProgress.astro';
 import { getRelatedPosts } from '@/utils/posts';
-import { formatDate } from '@/utils/data.util';
 import { topicHue, topicSlug } from '@/utils/topics';
 
 const { description } = AppConfig;
@@ -28,7 +28,7 @@ const relatedPosts = await getRelatedPosts(cleanSlug, 3);
 const category = frontmatter.tags?.[0] as string | undefined;
 const categoryHue = category ? topicHue(category) : undefined;
 const author = frontmatter.author || 'Sudhir';
-const formattedDate = formatDate(frontmatter.pubDate);
+const formattedDate = longDate(frontmatter.pubDate);
 const readTime = frontmatter.minutesRead?.trim() || 'Quick read';
 ---
 
@@ -73,125 +73,43 @@ const readTime = frontmatter.minutesRead?.trim() || 'Quick read';
 		})}
 	/>
 	<ReadingProgress hue={categoryHue} />
-	<Section>
-		<!-- Header: the topic hue names the category — eyebrow + spine + progress bar (13b) -->
-		<header
-			class:list={[
-				'mx-auto max-w-[800px] pt-10 pb-4 md:pt-14',
-				categoryHue !== undefined && 'topic-colored'
-			]}
-			style={categoryHue !== undefined ? `--topic-hue: ${categoryHue}` : undefined}
-		>
-			<div
-				class:list={[categoryHue !== undefined && 'border-l-[3px] pl-6 md:pl-8']}
-				style={categoryHue !== undefined ? 'border-color: var(--tc)' : undefined}
-			>
-				{
-					category && (
-						<a
-							href={`/tags/${topicSlug(category)}`}
-							class="eyebrow-amber mb-5 inline-block transition-opacity hover:opacity-70"
-							style="color: var(--tc)"
-						>
-							{category}
-						</a>
-					)
-				}
-				<h1
-					transition:name={cleanSlug ? `post-title-${cleanSlug}` : undefined}
-					class="font-display text-fg text-[2rem] leading-[1.1] font-medium tracking-[-0.025em] text-balance md:text-[2.75rem]"
-				>
+	<div class="shell inner-page">
+		<div class="reading-layout">
+			<div class="reading-back"><a href="/posts" class="text-link back-link">← All writing</a></div>
+			<header class="article-head">
+				<div class="category">
+					{frontmatter.tags?.map((tag: string) => <a href={`/tags/${topicSlug(tag)}`}>{tag}</a>)}
+				</div>
+				<h1 transition:name={cleanSlug ? `post-title-${cleanSlug}` : undefined}>
 					{frontmatter.title}
 				</h1>
-				<div class="meta-mono mt-5 flex flex-wrap items-center gap-3 tracking-[0.06em] uppercase">
-					<span class="text-muted">By {author}</span>
-					<span aria-hidden="true">·</span>
-					<time datetime={String(frontmatter.pubDate)}>{formattedDate}</time>
-					<span aria-hidden="true">·</span>
-					<span>{readTime}</span>
+				<p class="article-description">{frontmatter.description}</p>
+				<div class="article-meta">
+					<span>By {author}</span><time datetime={publishedTime}>{formattedDate}</time><span
+						>{readTime}</span
+					>{
+						modifiedTime && (
+							<span>
+								Updated <time datetime={modifiedTime}>{longDate(modifiedTime)}</time>
+							</span>
+						)
+					}
 				</div>
-				<div class="mt-6 h-px" style="background: var(--line-strong)" aria-hidden="true"></div>
-			</div>
-		</header>
-
-		<PostContent><slot /></PostContent>
-
-		{
-			relatedPosts.length > 0 && (
-				<section
-					class="border-frame mx-auto mt-4 max-w-[800px] border-t pt-7"
-					aria-labelledby="continue-reading"
-				>
-					<h2 id="continue-reading" class="font-display text-fg mb-2 text-sm font-semibold">
-						Continue reading
-					</h2>
-					<ul>
-						{relatedPosts.map((post) => {
-							const primaryTopic = post.data.tags[0];
-							const hue = primaryTopic ? topicHue(primaryTopic) : undefined;
-							return (
-								<li class="border-line border-b last:border-b-0">
-									<a
-										href={post.url}
-										class="row-link topic-colored block py-4"
-										style={hue !== undefined ? `--topic-hue: ${hue}` : undefined}
-									>
-										<span class="row-title font-display text-fg block text-[18px] leading-[1.3] font-medium tracking-[-0.01em] transition-colors md:text-[20px]">
-											{post.data.title}
-										</span>
-										<span class="meta-mono mt-2 flex flex-wrap items-center gap-2">
-											{primaryTopic && <span style="color: var(--tc)">{primaryTopic}</span>}
-											{primaryTopic && <span aria-hidden="true">·</span>}
-											<time datetime={String(post.data.pubDate)}>
-												{formatDate(post.data.pubDate)}
-											</time>
-											<span aria-hidden="true">·</span>
-											<span>{post.data.minutesRead}</span>
-										</span>
-									</a>
-								</li>
-							);
-						})}
-					</ul>
-				</section>
-			)
-		}
-	</Section>
-
+			</header>
+			<PostContent><slot /></PostContent>
+			{
+				relatedPosts.length > 0 && (
+					<section class="related" aria-labelledby="continue-reading">
+						<>
+							<h2 id="continue-reading">Continue reading</h2>
+							<PostList posts={relatedPosts} inlineDate />
+						</>
+					</section>
+				)
+			}
+		</div>
+	</div>
 	<script>
-		import mediumZoom from 'medium-zoom';
-
-		document.addEventListener('astro:page-load', () => {
-			const isDark = document.documentElement.classList.contains('dark');
-			mediumZoom('article img:not(.no-zoom), .prose img:not(.no-zoom)', {
-				margin: 24,
-				background: isDark ? '#1a1714' : '#faf9f7'
-			});
-
-			const blocks = document.querySelectorAll('pre');
-			blocks.forEach((block) => {
-				if (block.querySelector('.copy-button')) return;
-
-				const btn = document.createElement('button');
-				btn.className = 'copy-button';
-				btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>`;
-				btn.setAttribute('aria-label', 'Copy code');
-				block.appendChild(btn);
-
-				btn.addEventListener('click', async () => {
-					const code = block.querySelector('code');
-					if (!code) return;
-					await navigator.clipboard.writeText(code.innerText);
-					btn.dataset.copyState = 'copied';
-					btn.setAttribute('aria-label', 'Copied');
-					btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-emerald-500"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
-					setTimeout(() => {
-						delete btn.dataset.copyState;
-						btn.setAttribute('aria-label', 'Copy code');
-						btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>`;
-					}, 2000);
-				});
-			});
-		});
+		import '@/utils/reading';
 	</script>
 </Base>

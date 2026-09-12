@@ -1,141 +1,100 @@
 ---
-import { AppConfig } from '@/utils/AppConfig';
 import Base from '@/layouts/Base.astro';
-import Section from '@/components/Section.astro';
+import PageHeading from '@/components/PageHeading.astro';
+import PostList from '@/components/PostList.astro';
 import { getAllPosts } from '@/utils/posts';
-import { getTopicsWithCounts, topicHue } from '@/utils/topics';
-
-const title = `Writing | ${AppConfig.site_name}`;
-const description =
-	'Practical writing on security architecture, firewall policy, compliance, and network security.';
-
-const allPosts = await getAllPosts();
-const total = allPosts.length;
-const topics = await getTopicsWithCounts();
-
-// Strict reverse-chronological grouping by year.
-const chronological = [...allPosts].sort(
-	(a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime()
-);
-
-const groups = new Map<number, typeof chronological>();
-for (const post of chronological) {
-	const year = post.data.pubDate.getFullYear();
-	if (!groups.has(year)) groups.set(year, []);
-	groups.get(year)!.push(post);
-}
-const years = [...groups.keys()].sort((a, b) => b - a);
-
-const shortMeta = (post: (typeof chronological)[number]) => {
-	const month = post.data.pubDate.toLocaleDateString('en-US', { month: 'short' });
-	const read = (post.data.minutesRead ?? '').replace(/\s*read$/i, '').trim();
-	return read ? `${month} · ${read}` : month;
-};
+import { getAllTopicsWithCounts } from '@/utils/topics';
+import { chronologicalPosts } from '@/utils/editorial';
+const posts = chronologicalPosts(await getAllPosts());
+const topics = await getAllTopicsWithCounts();
+const years = [...new Set(posts.map((post) => post.data.pubDate.getUTCFullYear()))];
 ---
 
-<Base head={{ title, description }}>
-	<Section>
-		<div class="pt-10 md:pt-14">
-			<h1 class="font-display text-fg text-[2.25rem] font-medium leading-[1.08] tracking-[-0.025em] md:text-[2.75rem]">
-				Writing
-			</h1>
-			<p class="text-muted mt-4 max-w-[560px] text-[17px] leading-[1.65]">
-				{total} posts on security architecture, network security, and compliance.
-			</p>
-
-			<!-- Topic filter pills -->
-			<div class="mt-7 flex flex-wrap gap-2.5" data-filter-bar>
-				<button type="button" class="pill pill-active" data-filter="all" aria-pressed="true">All</button>
+<Base
+	head={{
+		title: 'Writing | Sudhir',
+		description: 'Essays, technical breakdowns, and notes from working in cybersecurity.'
+	}}
+>
+	<div class="shell inner-page writing-archive">
+		<PageHeading
+			title="Writing"
+			description="Essays, technical breakdowns, and notes from working in cybersecurity."
+		/>
+		<div class="archive-tools">
+			<fieldset class="topic-filters">
+				<legend class="sr-only">Filter by topic</legend>
+				<button type="button" data-topic-filter="all" aria-pressed="true">All topics</button>
 				{
 					topics.map((topic) => (
-						<button
-							type="button"
-							class="pill pill-inactive topic-colored"
-							style={`--topic-hue: ${topic.hue}`}
-							data-filter={topic.name}
-							aria-pressed="false"
-						>
-							{topic.label}
+						<button type="button" data-topic-filter={topic.name} aria-pressed="false">
+							{topic.name}
 						</button>
 					))
 				}
+			</fieldset>
+			<div class="archive-mobile-filter">
+				<label for="topic-filter">Filter by topic</label>
+				<select id="topic-filter"
+					><option value="all">All topics</option>{
+						topics.map((topic) => <option value={topic.name}>{topic.name}</option>)
+					}</select>
 			</div>
+			<p id="archive-count" class="meta" role="status">{posts.length} posts</p>
 		</div>
-
-		<div class="pb-16 pt-8">
-			{
-				years.map((year) => (
-					<div class="mt-7 grid grid-cols-1 gap-x-6 gap-y-2 border-t border-[color:var(--line-strong)] pt-5 md:grid-cols-[120px_1fr]" data-year-group>
-						<div class="font-display text-subtle text-[15px] font-medium">{year}</div>
-						<div>
-							{groups.get(year)!.map((post) => (
-								<a
-									href={post.url}
-									class="row-link border-line grid grid-cols-[1fr_auto] items-baseline gap-5 border-b py-4 last:border-b-0"
-									data-post
-									data-topics={post.data.tags.join('|')}
-								>
-									<span class="flex items-baseline gap-3">
-										<span
-											class="topic-dot topic-colored self-center"
-											style={`--topic-hue: ${topicHue(post.data.tags[0] ?? '')}`}
-											aria-hidden="true"
-										/>
-										<span class="row-title font-display text-fg text-[18px] font-medium leading-[1.3] tracking-[-0.01em] transition-colors md:text-[20px]">
-											{post.data.title}
-										</span>
-									</span>
-									<span class="flex items-baseline gap-4 whitespace-nowrap">
-										{post.data.isPinned && (
-											<span class="text-accent font-mono text-[11px] font-medium">★ Featured</span>
-										)}
-										<span class="meta-mono">{shortMeta(post)}</span>
-									</span>
-								</a>
-							))}
-						</div>
-					</div>
-				))
-			}
-		</div>
-	</Section>
-
+		{
+			years.map((year) => (
+				<section class="archive-year" data-year-group>
+					<>
+						<h2>{year}</h2>
+						<PostList
+							posts={posts.filter((post) => post.data.pubDate.getUTCFullYear() === year)}
+							dense
+							inlineDate
+						/>
+					</>
+				</section>
+			))
+		}
+		<p id="archive-empty" class="meta" hidden>
+			No posts in this topic yet. Choose another topic or view all writing.
+		</p>
+	</div>
 	<script>
+		let abort: AbortController | undefined;
 		document.addEventListener('astro:page-load', () => {
-			const bar = document.querySelector('[data-filter-bar]');
-			if (!bar) return;
-			const buttons = Array.from(bar.querySelectorAll<HTMLButtonElement>('[data-filter]'));
-			const posts = Array.from(document.querySelectorAll<HTMLElement>('[data-post]'));
-			const groupsEls = Array.from(document.querySelectorAll<HTMLElement>('[data-year-group]'));
-
-			const setActive = (btn: HTMLButtonElement) => {
-				for (const b of buttons) {
-					const on = b === btn;
-					b.classList.toggle('pill-active', on);
-					b.classList.toggle('pill-inactive', !on);
-					b.setAttribute('aria-pressed', String(on));
-				}
-			};
-
-			const apply = (filter: string) => {
-				for (const post of posts) {
-					const topics = (post.dataset.topics || '').split('|');
-					const show = filter === 'all' || topics.includes(filter);
-					post.classList.toggle('hidden', !show);
-				}
-				// Hide year groups whose posts are all filtered out.
-				for (const group of groupsEls) {
-					const anyVisible = group.querySelectorAll('[data-post]:not(.hidden)').length > 0;
-					group.classList.toggle('hidden', !anyVisible);
-				}
-			};
-
-			for (const btn of buttons) {
-				btn.addEventListener('click', () => {
-					setActive(btn);
-					apply(btn.dataset.filter || 'all');
+			abort?.abort();
+			abort = new AbortController();
+			const filter = document.querySelector<HTMLSelectElement>('#topic-filter');
+			if (!filter) return;
+			const rows = [...document.querySelectorAll<HTMLElement>('[data-post]')];
+			const buttons = [...document.querySelectorAll<HTMLButtonElement>('[data-topic-filter]')];
+			const apply = (topic: string) => {
+				filter.value = topic;
+				buttons.forEach((button) =>
+					button.setAttribute('aria-pressed', String(button.dataset.topicFilter === topic))
+				);
+				let count = 0;
+				rows.forEach((row) => {
+					row.hidden =
+						filter.value !== 'all' && !(row.dataset.topics || '').split('|').includes(filter.value);
+					if (!row.hidden) count++;
 				});
-			}
+				document.querySelectorAll<HTMLElement>('[data-year-group]').forEach((group) => {
+					group.hidden = !group.querySelector('[data-post]:not([hidden])');
+				});
+				document.getElementById('archive-count')!.textContent =
+					`${count} ${count === 1 ? 'post' : 'posts'}`;
+				document.getElementById('archive-empty')!.hidden = count > 0;
+			};
+			filter.addEventListener('change', () => apply(filter.value), { signal: abort.signal });
+			buttons.forEach((button) =>
+				button.addEventListener('click', () => apply(button.dataset.topicFilter || 'all'), {
+					signal: abort!.signal
+				})
+			);
+			apply(filter.value);
 		});
+		document.addEventListener('astro:before-swap', () => abort?.abort());
 	</script>
 </Base>

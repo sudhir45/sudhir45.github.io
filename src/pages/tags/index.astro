@@ -1,58 +1,16 @@
 ---
 import Base from '@/layouts/Base.astro';
-import Section from '@/components/Section.astro';
-import { AppConfig } from '@/utils/AppConfig';
-import { getTopicsWithCounts } from '@/utils/topics';
-
-const title = `Topics | ${AppConfig.site_name}`;
-const description =
-	'The threads that run through the writing: security architecture, network security, compliance, and more.';
-
-const topics = await getTopicsWithCounts();
-const threadCount = topics.length;
-const numberWords = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
-const threadWord = numberWords[threadCount] ?? String(threadCount);
-const threadWordCap = threadWord.charAt(0).toUpperCase() + threadWord.slice(1);
+import PageHeading from '@/components/PageHeading.astro';
+import TopicList from '@/components/TopicList.astro';
+import { getAllTopicsWithCounts } from '@/utils/topics';
+const topics = await getAllTopicsWithCounts();
 ---
 
-<Base head={{ title, description }}>
-	<Section>
-		<div class="pb-9 pt-10 md:pt-14">
-			<h1 class="font-display text-fg text-[2.25rem] font-medium leading-[1.08] tracking-[-0.025em] md:text-[2.75rem]">
-				Topics
-			</h1>
-			<p class="text-muted mt-4 max-w-[520px] text-[17px] leading-[1.65]">
-				{threadWordCap} threads run through everything here. Pick one to follow.
-			</p>
-		</div>
-
-		<!-- Each thread carries its own hue: a legible map, not a gray list (13c) -->
-		<div class="grid grid-cols-1 gap-3 pb-16 sm:grid-cols-2">
-			{
-				topics.map((topic) => (
-					<a
-						href={`/tags/${topic.slug}`}
-						class="topic-tile topic-colored"
-						style={`--topic-hue: ${topic.hue}`}
-					>
-						<span
-							class="font-display block text-[17px] font-medium leading-[1.2] tracking-[-0.015em]"
-							style="color: var(--tc-ink)"
-						>
-							{topic.name}
-						</span>
-						<span class="text-muted mt-1.5 block text-[12.5px] leading-[1.5]">
-							{topic.description}
-						</span>
-						<span
-							class="mt-2.5 block font-mono text-[11px] font-medium"
-							style="color: var(--tc)"
-						>
-							{topic.count} {topic.count === 1 ? 'post' : 'posts'}
-						</span>
-					</a>
-				))
-			}
-		</div>
-	</Section>
-</Base>
+<Base head={{ title: 'Topics | Sudhir', description: 'Find cybersecurity writing by subject.' }}
+	><div class="shell inner-page">
+		<PageHeading
+			title="Browse by topic"
+			description="Find the writing that relates to your work or curiosity."
+		/><div class="directory-list"><TopicList topics={topics} /></div>
+	</div></Base
+>

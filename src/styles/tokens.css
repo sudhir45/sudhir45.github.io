@@ -1,0 +1,71 @@
+/* Approved editorial serif: warm paper, charcoal, restrained amber. */
+
+@font-face {
+	font-family: 'Source Serif 4';
+	src: url('../assets/fonts/source-serif-4.ttf') format('truetype');
+	font-weight: 200 900;
+	font-style: normal;
+	font-display: swap;
+}
+:root {
+	--font-display-stack: 'Source Serif 4', Georgia, serif;
+	--font-reading: var(--font-display-stack);
+	--font-ui: 'Inter Variable', 'Inter', 'Segoe UI', 'Helvetica Neue', sans-serif;
+	--font-code: 'JetBrains Mono Variable', 'JetBrains Mono', 'Consolas', 'Monaco', monospace;
+	--content-measure: 65ch;
+	--line-strong: var(--fg);
+	color-scheme: light;
+	--game-correct: oklch(43% 0.075 145);
+	--bg: oklch(97.7% 0.009 82);
+	--surface: var(--bg);
+	--surface-2: oklch(94% 0.012 82);
+	--fg: oklch(23% 0.012 65);
+	--body-ink: oklch(34% 0.012 65);
+	--muted: oklch(47% 0.014 65);
+	--faint: var(--muted);
+	--subtle: var(--muted);
+	--line: oklch(82% 0.016 82);
+	--frame: oklch(58% 0.014 65);
+	--accent: oklch(46% 0.095 57);
+	--accent-strong: var(--accent);
+	--accent-contrast: var(--bg);
+	--art: oklch(67% 0.024 82);
+	--art-edge: oklch(49% 0.024 82);
+	--art-tint: oklch(88% 0.019 82);
+	--space-md: 16px;
+	--space-lg: 24px;
+	--space-3xl: 64px;
+	--space-sm: 8px;
+	--page-gutter: clamp(20px, 5vw, 76px);
+	--text-meta: 0.8125rem;
+	--text-small: 0.9375rem;
+	--text-body: 1.125rem;
+	--text-prose: 1.25rem;
+	--text-display: clamp(2.5rem, 5.5vw, 5rem);
+	--text-section: clamp(1.75rem, 3vw, 2.5rem);
+	--text-title: clamp(2.25rem, 4.2vw, 3.375rem);
+	--radius: 3px;
+	--dur-micro: 120ms;
+	--dur-long: 420ms;
+	--ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+.dark {
+	color-scheme: dark;
+	--game-correct: oklch(76% 0.075 145);
+	--bg: oklch(21% 0.012 65);
+	--surface: var(--bg);
+	--surface-2: oklch(25% 0.014 65);
+	--fg: oklch(94% 0.012 82);
+	--body-ink: oklch(84% 0.014 82);
+	--muted: oklch(72% 0.016 82);
+	--faint: var(--muted);
+	--subtle: var(--muted);
+	--line: oklch(38% 0.017 65);
+	--frame: oklch(59% 0.014 65);
+	--accent: oklch(76% 0.085 65);
+	--accent-strong: var(--accent);
+	--accent-contrast: var(--bg);
+	--art: oklch(48% 0.027 82);
+	--art-edge: oklch(67% 0.023 82);
+	--art-tint: oklch(29% 0.02 82);
+}

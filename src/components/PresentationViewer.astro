@@ -16,7 +16,13 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 <div class="presentation-viewer" data-slide-count={slideCount} data-slug={slug}>
 	<!-- 2px amber slide progress, pinned to the top of the viewport like the reading view -->
 	<div class="progress-bar-container">
-		<div class="progress-bar" role="progressbar" aria-valuemin="1" aria-valuemax={slideCount} aria-valuenow="1">
+		<div
+			class="progress-bar"
+			role="progressbar"
+			aria-valuemin="1"
+			aria-valuemax={slideCount}
+			aria-valuenow="1"
+		>
 			<div class="progress-fill"></div>
 		</div>
 	</div>
@@ -36,13 +42,17 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 				alt={`Slide 1 of ${slideCount}`}
 				data-slides={JSON.stringify(slides)}
 			/>
-			<img class="slide-image slide-image-b" src="" alt="" />
+			<img class="slide-image slide-image-b" src={slides[0]?.src} alt="" />
 
 			<div class="zoom-overlay hidden">
-				<img class="zoom-image" src="" alt="Zoomed slide" />
+				<img class="zoom-image" src={slides[0]?.src} alt="Zoomed slide" />
 				<button class="zoom-close" aria-label="Close zoom">
-					<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+					<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M6 18L18 6M6 6l12 12"></path>
 					</svg>
 				</button>
 				<p class="zoom-hint">Scroll to zoom · drag to pan · click to close</p>
@@ -52,49 +62,78 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 		<!-- Quiet text controls -->
 		<div class="flex flex-wrap items-center justify-between gap-x-5 gap-y-2 px-0.5 py-4">
 			<span class="meta-mono slide-counter whitespace-nowrap">
-				<span class="slide-current">1</span><span class="slide-separator"> / </span><span class="slide-total">{slideCount}</span>
+				<span class="slide-current">1</span><span class="slide-separator"> / </span><span
+					class="slide-total">{slideCount}</span
+				>
 			</span>
 			<div class="flex items-center gap-6 text-sm font-medium">
-				<button class="prev-btn text-faint hover:text-fg transition-colors disabled:cursor-not-allowed disabled:opacity-40" aria-label="Previous slide">
+				<button
+					class="prev-btn text-faint hover:text-fg transition-colors disabled:cursor-not-allowed disabled:opacity-40"
+					aria-label="Previous slide"
+				>
 					← Previous
 				</button>
-				<button class="next-btn text-accent transition-opacity hover:opacity-70 disabled:cursor-not-allowed disabled:opacity-40" aria-label="Next slide">
+				<button
+					class="next-btn text-accent transition-opacity hover:opacity-70 disabled:cursor-not-allowed disabled:opacity-40"
+					aria-label="Next slide"
+				>
 					Next →
 				</button>
 			</div>
 			<div class="flex items-center gap-5 text-[13px] font-medium">
-				<button class="grid-btn text-faint hover:text-fg transition-colors" aria-label="Slide grid overview" title="Slide grid (G)">
+				<button
+					class="grid-btn text-faint hover:text-fg transition-colors"
+					aria-label="Slide grid overview"
+					title="Slide grid (G)"
+				>
 					Grid
 				</button>
-				<button class="fullscreen-btn text-faint hover:text-fg transition-colors" aria-label="Toggle fullscreen" title="Fullscreen (F)">
-					<span class="fullscreen-expand">Fullscreen</span>
-					<span class="fullscreen-compress hidden">Exit</span>
+				<button
+					class="fullscreen-btn text-faint hover:text-fg transition-colors"
+					aria-label="Toggle fullscreen"
+					title="Fullscreen (F)"
+				>
+					<span class="fullscreen-expand">Expand</span>
+					<span class="fullscreen-compress hidden">Close expanded view</span>
 				</button>
 			</div>
 		</div>
 
 		<!-- Thumbnails -->
 		<div class="thumbnail-strip">
-			{slides.map((slide) => (
-				<button class="thumbnail-btn" data-slide-num={slide.number} aria-label={`Go to slide ${slide.number}`}>
-					<img src={slide.src} alt={`Thumbnail ${slide.number}`} loading="lazy" />
-				</button>
-			))}
+			{
+				slides.map((slide) => (
+					<button
+						class="thumbnail-btn"
+						data-slide-num={slide.number}
+						aria-label={`Go to slide ${slide.number}`}
+					>
+						<img src={slide.src} alt={`Thumbnail ${slide.number}`} loading="lazy" />
+					</button>
+				))
+			}
 		</div>
 	</div>
 
 	<!-- Shortcuts modal (opened with ?) -->
-	<div class="shortcuts-modal hidden" role="dialog" aria-modal="true" aria-labelledby="shortcuts-title">
+	<div
+		class="shortcuts-modal hidden"
+		role="dialog"
+		aria-modal="true"
+		aria-labelledby="shortcuts-title"
+	>
 		<div class="shortcuts-backdrop"></div>
 		<div class="shortcuts-content">
 			<h3 id="shortcuts-title">Keyboard shortcuts</h3>
 			<div class="shortcuts-grid">
 				<div class="shortcut-row">
-					<kbd>←</kbd> <kbd>→</kbd>
+					<kbd>←</kbd>
+					<kbd>→</kbd>
 					<span>Navigate slides</span>
 				</div>
 				<div class="shortcut-row">
-					<kbd>Home</kbd> <kbd>End</kbd>
+					<kbd>Home</kbd>
+					<kbd>End</kbd>
 					<span>First / last slide</span>
 				</div>
 				<div class="shortcut-row">
@@ -129,26 +168,40 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 			<div class="grid-header">
 				<h3 id="grid-title">All slides</h3>
 				<button class="grid-close" aria-label="Close slide overview">
-					<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+					<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M6 18L18 6M6 6l12 12"></path>
 					</svg>
 				</button>
 			</div>
 			<div class="grid-list">
-				{slides.map((slide) => (
-					<button class="grid-slide-btn" data-grid-slide-num={slide.number} aria-label={`Open slide ${slide.number}`}>
-						<img src={slide.src} alt={`Slide ${slide.number}`} loading="lazy" />
-						<span class="grid-slide-number">Slide {slide.number}</span>
-					</button>
-				))}
+				{
+					slides.map((slide) => (
+						<button
+							class="grid-slide-btn"
+							data-grid-slide-num={slide.number}
+							aria-label={`Open slide ${slide.number}`}
+						>
+							<img src={slide.src} alt={`Slide ${slide.number}`} loading="lazy" />
+							<span class="grid-slide-number">Slide {slide.number}</span>
+						</button>
+					))
+				}
 			</div>
 		</div>
 	</div>
 
-	<p class="sr-only slide-announcer" aria-live="polite" aria-atomic="true">Slide 1 of {slideCount}</p>
+	<p class="slide-announcer sr-only" aria-live="polite" aria-atomic="true">
+		Slide 1 of {slideCount}
+	</p>
 
 	<p class="viewer-hints meta-mono pt-3 text-center">
-		<span class="hint-desktop">← → navigate &nbsp;·&nbsp; F fullscreen &nbsp;·&nbsp; G grid &nbsp;·&nbsp; Z zoom</span>
+		<span class="hint-desktop"
+			>← → navigate &nbsp;·&nbsp; F fullscreen &nbsp;·&nbsp; G grid &nbsp;·&nbsp; Z zoom</span
+		>
 		<span class="hint-mobile">Swipe to navigate &nbsp;·&nbsp; tap slide to zoom</span>
 	</p>
 </div>
@@ -307,8 +360,8 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 		position: fixed;
 		inset: 0;
 		background: color-mix(in oklab, var(--bg) 96%, transparent);
-		backdrop-filter: blur(6px);
-		-webkit-backdrop-filter: blur(6px);
+		backdrop-filter: none;
+		-webkit-backdrop-filter: none;
 		z-index: 100;
 		display: flex;
 		align-items: center;
@@ -612,7 +665,6 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 </style>
 
 <script>
-
 	function setupPresentationViewers() {
 		const viewers = document.querySelectorAll('.presentation-viewer');
 
@@ -653,7 +705,11 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 				} else {
 					url.searchParams.set('slide', String(slideNum));
 				}
-				window.history.replaceState(window.history.state, '', `${url.pathname}${url.search}${url.hash}`);
+				window.history.replaceState(
+					window.history.state,
+					'',
+					`${url.pathname}${url.search}${url.hash}`
+				);
 			};
 
 			let currentSlide = getSlideFromUrl();
@@ -723,7 +779,13 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 					btn.classList.toggle('active', btnNum === currentSlide);
 
 					if (scrollIntoView && btnNum === currentSlide && thumbnailStrip) {
-						(btn as HTMLElement).scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+						(btn as HTMLElement).scrollIntoView({
+							behavior: matchMedia('(prefers-reduced-motion: reduce)').matches
+								? 'instant'
+								: 'smooth',
+							block: 'nearest',
+							inline: 'center'
+						});
 					}
 				});
 
@@ -782,7 +844,6 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 				}, 300);
 
 				inactiveImage.onload = () => {
-
 					if (spinnerTimeout) {
 						clearTimeout(spinnerTimeout);
 						spinnerTimeout = null;
@@ -858,24 +919,32 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 			let touchStartY = 0;
 			let isSwiping = false;
 
-			slideContainer?.addEventListener('touchstart', (e) => {
-				const touch = e.touches[0];
-				if (!touch) return;
-				touchStartX = touch.clientX;
-				touchStartY = touch.clientY;
-				isSwiping = true;
-			}, { passive: true });
+			slideContainer?.addEventListener(
+				'touchstart',
+				(e) => {
+					const touch = e.touches[0];
+					if (!touch) return;
+					touchStartX = touch.clientX;
+					touchStartY = touch.clientY;
+					isSwiping = true;
+				},
+				{ passive: true }
+			);
 
-			slideContainer?.addEventListener('touchmove', (e) => {
-				if (!isSwiping) return;
-				const touch = e.touches[0];
-				if (!touch) return;
-				const deltaY = Math.abs(touch.clientY - touchStartY);
+			slideContainer?.addEventListener(
+				'touchmove',
+				(e) => {
+					if (!isSwiping) return;
+					const touch = e.touches[0];
+					if (!touch) return;
+					const deltaY = Math.abs(touch.clientY - touchStartY);
 
-				if (deltaY > 30) {
-					isSwiping = false;
-				}
-			}, { passive: true });
+					if (deltaY > 30) {
+						isSwiping = false;
+					}
+				},
+				{ passive: true }
+			);
 
 			slideContainer?.addEventListener('touchend', (e) => {
 				if (!isSwiping) return;
@@ -955,11 +1024,12 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 			}) as EventListener);
 
 			addDocumentListener('keydown', ((e: KeyboardEvent) => {
-
 				if (
 					e.target instanceof HTMLInputElement ||
 					e.target instanceof HTMLTextAreaElement ||
-					(e.target as HTMLElement)?.isContentEditable
+					(e.target as HTMLElement)?.isContentEditable ||
+					e.target instanceof HTMLSelectElement ||
+					document.querySelector('#search-modal:not(.hidden)')
 				) {
 					return;
 				}
@@ -1044,24 +1114,31 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 				viewer.classList.toggle('fullscreen');
 				const isFullscreen = viewer.classList.contains('fullscreen');
 				fullscreenBtn.querySelector('.fullscreen-expand')?.classList.toggle('hidden', isFullscreen);
-				fullscreenBtn.querySelector('.fullscreen-compress')?.classList.toggle('hidden', !isFullscreen);
+				fullscreenBtn
+					.querySelector('.fullscreen-compress')
+					?.classList.toggle('hidden', !isFullscreen);
 			});
 		});
 
-		document.addEventListener('astro:before-swap', () => {
-			documentListeners.forEach(({ type, handler }) => {
-				document.removeEventListener(type, handler);
-			});
-			windowListeners.forEach(({ type, handler }) => {
-				window.removeEventListener(type, handler);
-			});
-			documentListeners.length = 0;
-			windowListeners.length = 0;
+		document.addEventListener(
+			'astro:before-swap',
+			() => {
+				documentListeners.forEach(({ type, handler }) => {
+					document.removeEventListener(type, handler);
+				});
+				windowListeners.forEach(({ type, handler }) => {
+					window.removeEventListener(type, handler);
+				});
+				documentListeners.length = 0;
+				windowListeners.length = 0;
 
-			viewers.forEach((viewerEl) => {
-				(viewerEl as HTMLElement).dataset.initialized = '';
-			});
-		}, { once: true });
+				document.body.style.overflow = '';
+				viewers.forEach((viewerEl) => {
+					(viewerEl as HTMLElement).dataset.initialized = '';
+				});
+			},
+			{ once: true }
+		);
 	}
 
 	document.addEventListener('astro:page-load', setupPresentationViewers);

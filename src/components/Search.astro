@@ -1,37 +1,12 @@
-<button
-	data-search-trigger
-	class="text-faint hover:bg-surface-2 hover:text-accent flex min-h-11 min-w-11 cursor-pointer items-center justify-center rounded-lg transition-colors"
-	aria-label="Search posts"
-	aria-expanded="false"
-	aria-controls="search-modal"
->
-	<svg
-		xmlns="http://www.w3.org/2000/svg"
-		class="h-5 w-5"
-		fill="none"
-		viewBox="0 0 24 24"
-		stroke="currentColor"
-		aria-hidden="true"
-	>
-		<path
-			stroke-linecap="round"
-			stroke-linejoin="round"
-			stroke-width="2"
-			d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-	</svg>
-</button>
-
 <div
 	id="search-modal"
-	class="fixed inset-0 z-50 hidden overflow-y-auto bg-zinc-950/60 px-4 py-10 backdrop-blur-md sm:py-20"
+	class="fixed inset-0 z-50 hidden overflow-y-auto bg-zinc-950/60 px-4 py-10 sm:py-20"
 	role="dialog"
 	aria-modal="true"
 	aria-labelledby="search-title"
 >
-	<div
-		class="border-line bg-surface mx-auto w-full max-w-2xl overflow-hidden rounded-xl border shadow-2xl"
-	>
-		<h2 id="search-title" class="sr-only">Search writing</h2>
+	<div class="border-line bg-surface mx-auto w-full max-w-2xl overflow-hidden border">
+		<h2 id="search-title" class="px-6 pt-6 pb-4">Search the writing</h2>
 		<div class="border-line relative border-b">
 			<svg
 				class="text-faint pointer-events-none absolute top-4 left-4 h-5 w-5"
@@ -284,6 +259,11 @@
 		function openModal() {
 			if (modal.classList.contains('hidden'))
 				lastFocused = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+			const menu = document.querySelector<HTMLDetailsElement>('.mobile-nav');
+			if (menu?.open) {
+				lastFocused = menu.querySelector('summary');
+				menu.open = false;
+			}
 			modal.classList.remove('hidden');
 			setExpanded(true);
 			document.body.style.overflow = 'hidden';

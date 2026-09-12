@@ -1,66 +1,90 @@
 ---
-import { AppConfig, SOCIALS } from '@/utils/AppConfig';
-import { Image } from 'astro:assets';
 import Base from '@/layouts/Base.astro';
-import Section from '@/components/Section.astro';
+import { SOCIALS } from '@/utils/AppConfig';
+import { Image } from 'astro:assets';
 import avatar from '@/assets/images/avatar.png';
-
-const title = `About | ${AppConfig.site_name}`;
-const description =
-	'Sudhir - a security architect in Mumbai working on network security and compliance for large enterprise environments.';
-
-const github = SOCIALS.find((s) => s.name === 'GitHub')?.url || '#';
-const linkedin = SOCIALS.find((s) => s.name === 'LinkedIn')?.url || '#';
-const email = SOCIALS.find((s) => s.name === 'Email')?.url || '#';
+import { getAllPosts } from '@/utils/posts';
+import { EDITORIAL, selectEditorialPosts } from '@/utils/editorial';
+import PostList from '@/components/PostList.astro';
+const picks = selectEditorialPosts(await getAllPosts(), EDITORIAL.about, 3);
 ---
 
-<Base head={{ title, description }}>
-	<Section>
-		<h1 class="sr-only">About Sudhir</h1>
-		<div class="grid gap-10 pt-10 md:grid-cols-[1fr_auto] md:gap-16 md:pt-14">
-			<div class="order-2 md:order-1">
-				<div class="animate-fade-up stagger-1 text-muted max-w-[720px] text-[17px] leading-[1.75] [&>p]:mb-[18px] [&>p:last-child]:mb-0">
-					<p>
-						I'm Sudhir, a cyber security professional based in Mumbai. I work on network security and
-						compliance for large enterprise environments, the kind with a decade of firewall rules
-						nobody remembers writing and audits that never quite end.
+<Base
+	head={{
+		title: 'About | Sudhir',
+		description: 'I work in cybersecurity. I write about what holds up in practice.'
+	}}
+>
+	<div class="shell inner-page">
+		<div class="profile-overview">
+			<section class="profile-hero" aria-labelledby="profile-name">
+				<div class="profile-opening">
+					<h1 id="profile-name">About Sudhir</h1><p class="profile-deck">
+						I work in cybersecurity. I write about what holds up in practice.
 					</p>
+				</div><div class="profile-identity">
+					<figure class="profile-photo">
+						<Image
+							src={avatar}
+							width={288}
+							height={288}
+							format="webp"
+							loading="eager"
+							alt="Sudhir"
+						/>
+					</figure><div class="profile-credentials">
+						<span>CISSP-certified</span><a
+							href="/resume.pdf"
+							target="_blank"
+							rel="noopener noreferrer">View resume ↗</a>
+					</div>
+				</div>
+			</section>
+			<section class="profile-story" aria-label="Background">
+				<div class="profile-prose">
 					<p>
-						Before this, a lot of my time went into CTFs and offensive security. That still shapes how
-						I approach defense: assume someone patient is looking, and design controls that hold up
-						when they do, not just on the compliance checklist.
-					</p>
-					<p>
-						This blog is where I write it down. Occasionally it's useful to someone else doing the same
-						work.
+						Earlier, a lot of my time went into CTFs and offensive security. That still shapes how I
+						approach defense. I think about how a control could fail, and what someone could do with
+						that failure.
+					</p><p>
+						This site is where I work through those questions in writing. Some posts take apart a
+						technical problem. Others cover a security decision, an exam, or CTF challenges I
+						solved.
 					</p>
 				</div>
-
-				<!-- Single quiet row of links -->
-				<div
-					class="border-frame animate-fade-up stagger-2 mt-10 flex flex-wrap items-center gap-6 border-t pt-8 text-sm font-medium"
-				>
-					<a href="/posts" class="text-accent transition-opacity hover:opacity-70"
-						>Read the writing ↗</a
-					>
-					<a href={github} target="_blank" rel="noopener noreferrer" class="text-faint hover:text-fg transition-colors">GitHub</a>
-					<a href={linkedin} target="_blank" rel="noopener noreferrer" class="text-faint hover:text-fg transition-colors">LinkedIn</a>
-					<a href={email} class="text-faint hover:text-fg transition-colors">Email</a>
-					<a href="/resume.pdf" target="_blank" rel="noopener noreferrer" class="text-faint hover:text-fg transition-colors">Resume</a>
-				</div>
-			</div>
-
-			<div class="order-1 md:order-2">
-				<Image
-					src={avatar}
-					alt="Portrait of Sudhir"
-					width={288}
-					format="webp"
-					quality={82}
-					loading="eager"
-					class="border-frame bg-surface-2 animate-fade-up h-24 w-24 rounded-full border object-cover object-top md:h-36 md:w-36"
-				/>
-			</div>
+			</section>
 		</div>
-	</Section>
+		{
+			picks.length > 0 && (
+				<section class="profile-reading" aria-labelledby="profile-reading-title">
+					<>
+						<div class="profile-section-heading">
+							<>
+								<h2 id="profile-reading-title">A few places to start.</h2>
+								<a href="/posts" class="text-link">
+									All writing →
+								</a>
+							</>
+						</div>
+						<PostList posts={picks} inlineDate />
+					</>
+				</section>
+			)
+		}
+		<section class="profile-contact" aria-labelledby="profile-contact-title">
+			<h2 id="profile-contact-title">Elsewhere</h2><nav aria-label="Contact Sudhir">
+				{
+					SOCIALS.map((social) => (
+						<a
+							href={social.url}
+							target={social.url.startsWith('http') ? '_blank' : undefined}
+							rel={social.url.startsWith('http') ? 'noopener noreferrer' : undefined}
+						>
+							{social.name === 'Email' ? 'Email me' : social.name} ↗
+						</a>
+					))
+				}
+			</nav>
+		</section>
+	</div>
 </Base>

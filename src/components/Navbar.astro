@@ -1,203 +1,77 @@
 ---
-import Section from './Section.astro';
 import Search from './Search.astro';
 import ThemeToggle from './ThemeToggle.astro';
-
-const normalizePath = (value: string) => {
-	const trimmed = value.replace(/\/+$/, '');
-	return trimmed.length > 0 ? trimmed : '/';
-};
-
-const currentPath = normalizePath(Astro.url.pathname);
-const navItems = [
+const current = Astro.url.pathname.replace(/\/$/, '') || '/';
+const items = [
 	{ href: '/posts', label: 'Writing' },
 	{ href: '/about', label: 'About' },
 	{ href: '/presentations', label: 'Talks' },
 	{ href: '/cyberdle', label: 'Cyberdle' }
 ];
-
-const isActiveRoute = (href: string) => {
-	const normalizedHref = normalizePath(href);
-	return currentPath === normalizedHref || currentPath.startsWith(`${normalizedHref}/`);
-};
+const active = (href: string) => current === href || current.startsWith(href + '/');
 ---
 
-<Section>
-	<div id="site-header-shell" class="site-header-shell sticky top-0 z-50 -mx-4 px-4">
-		<div class="site-header-inner flex items-center justify-between pt-4 pb-4">
-			<div class="font-display text-lg font-semibold tracking-tight">
-				<a href="/" class="text-fg" aria-label="Sudhir - home">Sudhir</a>
-			</div>
-			<div class="flex items-center gap-5 sm:gap-7">
-				<nav>
-					<ul class="hidden flex-row items-center gap-7 text-sm font-medium sm:flex">
-						{
-							navItems.map(({ href, label }) => {
-								const isActive = isActiveRoute(href);
-								return (
-									<li>
-										<a
-											href={href}
-											aria-current={isActive ? 'page' : undefined}
-											class={`transition-colors ${
-												isActive ? 'text-fg' : 'text-muted hover:text-fg'
-											}`}
-										>
-											{label}
-										</a>
-									</li>
-								);
-							})
-						}
-					</ul>
+<header class="shell nav-shell">
+	<div class="masthead">
+		<a class="wordmark" href="/" aria-label="Sudhir home">Sudhir<span aria-hidden="true">.</span></a
+		>
+		<div class="header-actions">
+			<nav class="desktop-nav" aria-label="Main navigation">
+				{
+					items.map((item) => (
+						<a href={item.href} aria-current={active(item.href) ? 'page' : undefined}>
+							{item.label}
+						</a>
+					))
+				}<button
+					type="button"
+					data-search-trigger
+					aria-controls="search-modal"
+					aria-expanded="false">Search</button>
+			</nav>
+			<ThemeToggle />
+			<details class="mobile-nav">
+				<summary>Menu</summary><nav aria-label="Mobile navigation">
+					{
+						items.map((item) => (
+							<a href={item.href} aria-current={active(item.href) ? 'page' : undefined}>
+								{item.label}
+							</a>
+						))
+					}<button
+						type="button"
+						data-search-trigger
+						aria-controls="search-modal"
+						aria-expanded="false">Search</button>
 				</nav>
-
-				<ThemeToggle idPrefix="desktop" />
-
-				<Search />
-
-				<button
-					id="mobile-menu-button"
-					class="hover:bg-surface-2 rounded-lg p-2 transition-colors sm:hidden"
-					aria-label="Toggle mobile menu"
-					aria-expanded="false"
-					aria-controls="mobile-menu"
-				>
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						class="h-6 w-6"
-						fill="none"
-						viewBox="0 0 24 24"
-						stroke="currentColor"
-						stroke-width="2"
-					>
-						<path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"></path>
-					</svg>
-				</button>
-			</div>
+			</details>
 		</div>
 	</div>
-
-	<div
-		id="mobile-menu"
-		class="border-line bg-bg -mx-5 mt-4 hidden border-t border-b pb-3 sm:hidden"
-	>
-		<nav class="flex flex-col py-2">
-			{
-				navItems.map(({ href, label }) => {
-					const isActive = isActiveRoute(href);
-					return (
-						<a
-							href={href}
-							data-mobile-nav-link
-							aria-current={isActive ? 'page' : undefined}
-							class={`px-5 py-2.5 text-sm font-medium transition-colors ${
-								isActive ? 'text-accent' : 'text-muted hover:text-fg'
-							}`}
-						>
-							{label}
-						</a>
-					);
-				})
-			}
-
-			<ThemeToggle idPrefix="mobile" showLabel={true} />
-		</nav>
-	</div>
-</Section>
-
-<style>
-	.site-header-shell {
-		transition: background-color 250ms ease;
-	}
-
-	.site-header-inner {
-		border-bottom: 1px solid transparent;
-		transition: border-color 250ms ease;
-	}
-
-	.site-header-shell.is-scrolled {
-		background: color-mix(in oklab, var(--bg) 96%, transparent);
-	}
-
-	.site-header-shell.is-scrolled .site-header-inner {
-		border-color: var(--line);
-	}
-</style>
-
+</header>
+<Search />
 <script>
-	const NAVBAR_STATE_KEY = '__fortmatrixNavbarState';
-	const NAVBAR_BOOTSTRAP_KEY = '__fortmatrixNavbarBootstrap';
-	const MOBILE_OPEN_ICON = `
-		<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-			<path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-		</svg>
-	`;
-	const MOBILE_CLOSE_ICON = `
-		<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-			<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-		</svg>
-	`;
-
-	function clearNavbarState() {
-		const state = (window as any)[NAVBAR_STATE_KEY];
-		state?.cleanup?.();
-		(window as any)[NAVBAR_STATE_KEY] = null;
-	}
-
-	function setupNavbar() {
-		clearNavbarState();
-
-		const root = document.getElementById('site-header-shell');
-		const mobileMenuButton = document.getElementById('mobile-menu-button');
-		const mobileMenu = document.getElementById('mobile-menu');
-		const mobileNavLinks = Array.from(document.querySelectorAll('[data-mobile-nav-link]'));
-
-		const setMenuState = (isOpen: boolean) => {
-			if (!mobileMenuButton || !mobileMenu) return;
-			mobileMenu.classList.toggle('hidden', !isOpen);
-			mobileMenuButton.setAttribute('aria-expanded', String(isOpen));
-			mobileMenuButton.innerHTML = isOpen ? MOBILE_CLOSE_ICON : MOBILE_OPEN_ICON;
-		};
-
-		const onMobileMenuClick = () => {
-			if (!mobileMenuButton) return;
-			const isOpen = mobileMenuButton.getAttribute('aria-expanded') === 'true';
-			setMenuState(!isOpen);
-		};
-
-		const onMobileNavClick = () => setMenuState(false);
-
-		if (mobileMenuButton && mobileMenu) {
-			setMenuState(false);
-			mobileMenuButton.addEventListener('click', onMobileMenuClick);
-			for (const link of mobileNavLinks) {
-				link.addEventListener('click', onMobileNavClick);
-			}
-		}
-
-		const onScroll = () => {
-			root?.classList.toggle('is-scrolled', window.scrollY > 8);
-		};
-		onScroll();
-		window.addEventListener('scroll', onScroll, { passive: true });
-
-		(window as any)[NAVBAR_STATE_KEY] = {
-			cleanup: () => {
-				mobileMenuButton?.removeEventListener('click', onMobileMenuClick);
-				for (const link of mobileNavLinks) {
-					link.removeEventListener('click', onMobileNavClick);
+	let abort: AbortController | undefined;
+	document.addEventListener('astro:page-load', () => {
+		abort?.abort();
+		abort = new AbortController();
+		const menu = document.querySelector<HTMLDetailsElement>('.mobile-nav');
+		document.addEventListener(
+			'keydown',
+			(event) => {
+				if (event.key === 'Escape' && menu?.open) {
+					menu.open = false;
+					menu.querySelector('summary')?.focus();
 				}
-				window.removeEventListener('scroll', onScroll);
-			}
-		};
-	}
-
-	if (!(window as any)[NAVBAR_BOOTSTRAP_KEY]) {
-		document.addEventListener('astro:page-load', setupNavbar);
-		document.addEventListener('astro:before-swap', clearNavbarState);
-		(window as any)[NAVBAR_BOOTSTRAP_KEY] = true;
-	}
-
-	setupNavbar();
+			},
+			{ signal: abort.signal }
+		);
+		document.addEventListener(
+			'click',
+			(event) => {
+				if (menu?.open && !menu.contains(event.target as Node)) menu.open = false;
+			},
+			{ signal: abort.signal }
+		);
+	});
+	document.addEventListener('astro:before-swap', () => abort?.abort());
 </script>
