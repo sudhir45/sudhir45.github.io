@@ -88,7 +88,9 @@ summary {
 	font-size: var(--text-meta);
 }
 .introduction p {
-	max-width: 610px;
+	max-width: 96ch;
+	font-size: var(--text-small);
+	line-height: 1.7;
 }
 .introduction .place {
 	flex-shrink: 0;

@@ -24,7 +24,14 @@ const talk = getPresentations()[0];
 <Base head={{ title: AppConfig.title, description: AppConfig.description }}>
 	<div class="shell">
 		<div class="introduction">
-			<p>Security work, written down. I'm Sudhir, a CISSP-certified security professional.</p>
+			<p>
+				<span class="underline"> Security work, written down. </span>
+				<br>
+				I'm Sudhir, a CISSP-certified Cyber Security Professional
+				working on enterprise security, governance, compliance, and validation. I write practical
+				notes on how security controls are designed, assessed, operated, and evidenced in large
+				enterprise environments.
+			</p>
 		</div>
 		{
 			lead ? (
@@ -136,9 +143,8 @@ const talk = getPresentations()[0];
 		</section>
 		<section class="author" aria-label="About the author">
 			<Image src={avatar} width={144} height={144} format="webp" alt="Sudhir" /><p>
-				I work in cybersecurity. I write about how security decisions play out in practice. <a
-					href="/about">More about me ↗</a
-				>
+				I'm a Cyber Security Professional. I write about how security decisions play out in
+				practice. <a href="/about">More about me ↗</a>
 			</p>
 		</section>
 	</div>
