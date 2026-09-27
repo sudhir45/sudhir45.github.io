@@ -1,6 +1,6 @@
 ---
 interface Props {
-	/** Optional OKLCH topic hue (option 13b): colors the bar with the post's category. */
+	/** OKLCH topic hue: colours the bar with the post's first topic. */
 	hue?: number;
 }
 
@@ -8,52 +8,59 @@ const { hue } = Astro.props as Props;
 ---
 
 <div
-	data-reading-progress
-	class:list={['pointer-events-none fixed inset-x-0 top-0 z-[60] h-0.5', hue !== undefined && 'topic-colored']}
+	class:list={['reading-progress', hue !== undefined && 'topic-colored']}
 	style={hue !== undefined ? `--topic-hue: ${hue}` : undefined}
+	aria-hidden="true"
 >
-	<div
-		data-reading-progress-bar
-		class="h-full origin-left scale-x-0 transition-transform duration-150 ease-out"
-		style={hue !== undefined ? 'background: var(--tc)' : 'background: var(--accent)'}
-	></div>
+	<div data-reading-progress-bar></div>
 </div>
 
-<script is:inline>
-	document.addEventListener('astro:page-load', () => {
-		const progressBar = document.querySelector('[data-reading-progress-bar]');
-		const article = document.querySelector('article.content');
+<style>
+	.reading-progress {
+		position: fixed;
+		inset: 0 0 auto;
+		z-index: 60;
+		height: 2px;
+		pointer-events: none;
+	}
+	[data-reading-progress-bar] {
+		height: 100%;
+		background: var(--tc, var(--accent));
+		transform: scaleX(0);
+		transform-origin: left;
+	}
+</style>
 
-		if (!(progressBar instanceof HTMLElement) || !(article instanceof HTMLElement)) {
-			return;
-		}
-
-		const existingHandler = window.__fortmatrixReadingProgressHandler;
-		if (existingHandler) {
-			window.removeEventListener('scroll', existingHandler);
-			window.removeEventListener('resize', existingHandler);
-		}
-
-		const updateProgress = () => {
-			const articleTop = article.offsetTop;
-			const articleBottom = articleTop + article.offsetHeight;
-			const viewportTop = window.scrollY;
-			const maxScrollable = articleBottom - window.innerHeight;
-
-			let progress = 0;
-			if (maxScrollable <= articleTop) {
-				progress = viewportTop > articleTop ? 1 : 0;
-			} else {
-				progress = (viewportTop - articleTop) / (maxScrollable - articleTop);
+<script>
+	import { onPage } from '@/motion/lifecycle';
+	// Follows scroll through the article and keeps the masthead's "{n} min left" current.
+	onPage((signal) => {
+		const bar = document.querySelector<HTMLElement>('[data-reading-progress-bar]');
+		const article = document.querySelector<HTMLElement>('article.content');
+		if (!bar || !article) return;
+		const timeLeft = document.querySelector<HTMLElement>('[data-time-left]');
+		const minutes = Number(timeLeft?.dataset.minutes ?? 0);
+		let frame = 0;
+		const update = () => {
+			frame = 0;
+			const top = article.getBoundingClientRect().top + window.scrollY;
+			const end = top + article.offsetHeight - window.innerHeight;
+			const progress =
+				end <= top
+					? Number(window.scrollY > top)
+					: Math.min(1, Math.max(0, (window.scrollY - top) / (end - top)));
+			bar.style.transform = `scaleX(${progress})`;
+			if (timeLeft && minutes) {
+				const left = Math.ceil(minutes * (1 - progress));
+				timeLeft.textContent = left > 0 ? `${left} min left` : 'Finished';
 			}
-
-			const clampedProgress = Math.max(0, Math.min(1, progress));
-			progressBar.style.transform = `scaleX(${clampedProgress})`;
 		};
-
-		window.__fortmatrixReadingProgressHandler = updateProgress;
-		updateProgress();
-		window.addEventListener('scroll', updateProgress, { passive: true });
-		window.addEventListener('resize', updateProgress);
+		const schedule = () => {
+			if (!frame) frame = requestAnimationFrame(update);
+		};
+		update();
+		window.addEventListener('scroll', schedule, { passive: true, signal });
+		window.addEventListener('resize', schedule, { passive: true, signal });
+		signal.addEventListener('abort', () => cancelAnimationFrame(frame));
 	});
 </script>

@@ -1,0 +1,54 @@
+---
+import { Image } from 'astro:assets';
+import avatar from '@/assets/images/avatar.png';
+---
+
+<section class="author" aria-label="About the author">
+	<Image src={avatar} width={112} height={112} densities={[1, 2]} format="webp" alt="Sudhir" data-iris />
+	<p class="ui">
+		I'm a Cyber Security Professional. I write about how security decisions play out in practice. <a
+			href="/about"
+			class="text-link hit">More about me <span class="arrow" aria-hidden="true">↗</span></a
+		>
+	</p>
+</section>
+
+<style>
+	.author {
+		display: flex;
+		align-items: center;
+		gap: 28px;
+		padding: 36px 0 16px;
+		border-top: 1px solid var(--line);
+	}
+	img {
+		flex: none;
+		width: 112px;
+		height: 112px;
+		border-radius: 50%;
+		object-fit: cover;
+	}
+	p {
+		max-width: 620px;
+		font-size: var(--text-body);
+		line-height: 1.55;
+		color: var(--body-ink);
+	}
+	.text-link {
+		display: inline;
+		min-height: 0;
+		color: var(--accent);
+	}
+	@media (max-width: 767px) {
+		.author {
+			gap: 18px;
+		}
+		img {
+			width: 80px;
+			height: 80px;
+		}
+		p {
+			font-size: var(--text-ui-lg);
+		}
+	}
+</style>

@@ -14,14 +14,12 @@ I passed the CISSP on April 6, 2026. The exam stopped at 100 questions, and I ha
 
 I bought the Official Study Guide in April 2025, then studied inconsistently for several months. Focused preparation began on December 25, 2025. From that point, I studied for at least two hours on weekdays and four to five hours on weekends.
 
-<div class="mx-auto my-6 flex justify-center sm:float-right sm:ml-8 sm:mt-0 sm:mb-4 sm:block">
+<div class="margin-note">
   <div data-iframe-width="150" data-iframe-height="270" data-share-badge-id="f1f1db23-496b-4efa-9dca-780330f50c5c" data-share-badge-host="https://www.credly.com"></div>
 </div>
 <script type="text/javascript" async src="https://cdn.credly.com/assets/utilities/embed.js"></script>
 
 The method that worked was simple. I studied one topic, answered questions on it the same day, and returned to the material when my mistakes showed a pattern. Separating months of reading from a later practice phase would not have worked for me.
-
-<div class="clear-both"></div>
 
 ## My preparation timeline
 

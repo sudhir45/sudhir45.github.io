@@ -1,0 +1,60 @@
+---
+import { splitTitle } from '@/utils/editorial';
+import RiseLines from './RiseLines.astro';
+
+/** A display heading whose lines rise out of their line boxes when revealed. */
+interface Props {
+	/** A title to split automatically, or explicit display lines. */
+	title?: string;
+	lines?: string[];
+	level?: 1 | 2 | 3;
+	/** Set the last line in italic (the Folio headline treatment). */
+	italicLast?: boolean;
+	href?: string;
+	rise?: boolean;
+	delay?: number;
+	transitionName?: string;
+	/** Carries over from a list row during page change, so it renders still when navigated to. */
+	carry?: boolean;
+	id?: string;
+	class?: string;
+}
+
+const {
+	title = '',
+	lines = splitTitle(title) as string[],
+	level = 2,
+	italicLast = true,
+	href,
+	rise = true,
+	delay = 0,
+	transitionName,
+	carry = false,
+	id,
+	class: className
+} = Astro.props;
+
+const attrs = {
+	id,
+	class: ['rise-title', className].filter(Boolean).join(' '),
+	'data-rise': rise ? '' : undefined,
+	'data-carry': carry ? '' : undefined,
+	style: rise ? `--delay:${delay}ms` : undefined
+};
+---
+
+{
+	level === 1 ? (
+		<h1 {...attrs} transition:name={transitionName}>
+			<RiseLines lines={lines} italicLast={italicLast} href={href} />
+		</h1>
+	) : level === 3 ? (
+		<h3 {...attrs} transition:name={transitionName}>
+			<RiseLines lines={lines} italicLast={italicLast} href={href} />
+		</h3>
+	) : (
+		<h2 {...attrs} transition:name={transitionName}>
+			<RiseLines lines={lines} italicLast={italicLast} href={href} />
+		</h2>
+	)
+}

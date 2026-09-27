@@ -1,16 +1,23 @@
 ---
+import type { MarkdownHeading } from 'astro';
 import { AppConfig } from '@/utils/AppConfig';
 import Base from '@/layouts/Base.astro';
-import PostList from '@/components/PostList.astro';
-import { longDate } from '@/utils/editorial';
+import { longDate, minutesFrom } from '@/utils/editorial';
 import PostContent from '@/components/PostContent.astro';
 import ReadingProgress from '@/components/ReadingProgress.astro';
+import RiseTitle from '@/components/RiseTitle.astro';
+import Contents from '@/components/Contents.astro';
+import IndexList from '@/components/IndexList.astro';
 import { getRelatedPosts } from '@/utils/posts';
 import { topicHue, topicSlug } from '@/utils/topics';
 
-const { description } = AppConfig;
+interface Props {
+	frontmatter: Record<string, any>;
+	headings?: MarkdownHeading[];
+}
 
-const { frontmatter } = Astro.props;
+const { description } = AppConfig;
+const { frontmatter, headings = [] } = Astro.props;
 
 const slug =
 	Astro.url.pathname.split('/').pop() || Astro.url.pathname.split('/').slice(-2)[0] || '';
@@ -25,11 +32,13 @@ const modifiedTime = frontmatter.updatedDate
 
 const relatedPosts = await getRelatedPosts(cleanSlug, 3);
 
-const category = frontmatter.tags?.[0] as string | undefined;
+const tags: string[] = frontmatter.tags ?? [];
+const category = tags[0];
 const categoryHue = category ? topicHue(category) : undefined;
 const author = frontmatter.author || 'Sudhir';
 const formattedDate = longDate(frontmatter.pubDate);
 const readTime = frontmatter.minutesRead?.trim() || 'Quick read';
+const hasContents = headings.filter((heading) => heading.depth === 2).length > 1;
 ---
 
 <Base
@@ -43,6 +52,7 @@ const readTime = frontmatter.minutesRead?.trim() || 'Quick read';
 			tags: frontmatter.tags
 		}
 	}}
+	masthead={{ variant: 'post', runningTitle: frontmatter.title, minutes: minutesFrom(readTime) }}
 >
 	<script
 		type="application/ld+json"
@@ -73,43 +83,211 @@ const readTime = frontmatter.minutesRead?.trim() || 'Quick read';
 		})}
 	/>
 	<ReadingProgress hue={categoryHue} />
-	<div class="shell inner-page">
-		<div class="reading-layout">
-			<div class="reading-back"><a href="/posts" class="text-link back-link">← All writing</a></div>
-			<header class="article-head">
-				<div class="category">
-					{frontmatter.tags?.map((tag: string) => <a href={`/tags/${topicSlug(tag)}`}>{tag}</a>)}
-				</div>
-				<h1 transition:name={cleanSlug ? `post-title-${cleanSlug}` : undefined}>
-					{frontmatter.title}
-				</h1>
-				<p class="article-description">{frontmatter.description}</p>
-				<div class="article-meta">
-					<span>By {author}</span><time datetime={publishedTime}>{formattedDate}</time><span
-						>{readTime}</span
-					>{
-						modifiedTime && (
-							<span>
-								Updated <time datetime={modifiedTime}>{longDate(modifiedTime)}</time>
-							</span>
-						)
-					}
-				</div>
-			</header>
-			<PostContent><slot /></PostContent>
+	<header class="shell post-header grid-12">
+		<div class="post-kicker ui" data-show style="--delay:200ms">
+			<a href="/posts" class="text-link is-back"><span class="arrow" aria-hidden="true">←</span> All writing</a>
+			<ul class="post-topics" aria-label="Topics">
+				{
+					tags.map((tag) => (
+						<li class="topic-colored" style={`--topic-hue:${topicHue(tag)}`}>
+							<a href={`/tags/${topicSlug(tag)}`} class="sc">
+								<span class="topic-dot" aria-hidden="true" />
+								{tag}
+							</a>
+						</li>
+					))
+				}
+			</ul>
+		</div>
+		<RiseTitle
+			level={1}
+			class="post-title"
+			title={frontmatter.title}
+			delay={350}
+			transitionName={cleanSlug ? `post-title-${cleanSlug}` : undefined}
+			carry
+		/>
+		{frontmatter.description && <p class="post-deck" data-show style="--delay:800ms">{frontmatter.description}</p>}
+		<div class="post-rule" data-draw style="--delay:900ms"></div>
+		<div class="post-meta ui" data-show style="--delay:1000ms">
+			<span>By <span class="author">{author}</span></span>
+			<time datetime={publishedTime}>{formattedDate}</time>
+			<span>{readTime}</span>
 			{
-				relatedPosts.length > 0 && (
-					<section class="related" aria-labelledby="continue-reading">
-						<>
-							<h2 id="continue-reading">Continue reading</h2>
-							<PostList posts={relatedPosts} inlineDate />
-						</>
-					</section>
+				modifiedTime && (
+					<span>
+						Updated <time datetime={modifiedTime}>{longDate(modifiedTime)}</time>
+					</span>
 				)
 			}
 		</div>
+	</header>
+	<div class:list={['shell post-grid grid-12', { 'has-contents': hasContents }]}>
+		<Contents headings={headings} />
+		<PostContent><slot /></PostContent>
 	</div>
+	{
+		relatedPosts.length > 0 && (
+			<section class="shell post-continue grid-12" aria-labelledby="continue-reading">
+				<div class="continue-inner">
+					<h2 id="continue-reading">Continue reading</h2>
+					<IndexList posts={relatedPosts} columns={['topic']} />
+				</div>
+			</section>
+		)
+	}
 	<script>
 		import '@/utils/reading';
 	</script>
 </Base>
+
+<style>
+	.post-header {
+		padding-top: clamp(32px, 4vw, 58px);
+	}
+	.post-kicker {
+		grid-column: 1 / -1;
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 4px 24px;
+		font-size: var(--text-ui);
+	}
+	.post-kicker .text-link {
+		gap: 6px;
+	}
+	.post-topics {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 4px 18px;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	.post-topics a {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		min-height: 44px;
+		color: var(--accent);
+		transition: color var(--dur-micro);
+	}
+	.post-topics a:hover,
+	.post-topics a:focus-visible {
+		color: var(--fg);
+	}
+	.post-header :global(.post-title) {
+		grid-column: 1 / span 11;
+		margin-top: 32px;
+		font-size: var(--text-title);
+		font-weight: 420;
+		line-height: 0.98;
+		letter-spacing: -0.03em;
+	}
+	.post-deck {
+		grid-column: 1 / span 8;
+		margin-top: 30px;
+		font-family: var(--font-reading);
+		font-size: var(--text-deck);
+		font-style: italic;
+		line-height: 1.38;
+		color: var(--body-ink);
+	}
+	.post-rule {
+		grid-column: 1 / -1;
+		height: 1px;
+		margin-top: 42px;
+		background: var(--fg);
+	}
+	.post-meta {
+		grid-column: 1 / -1;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 6px 34px;
+		padding: 14px 0;
+		border-bottom: 1px solid var(--line);
+		font-size: var(--text-ui);
+		color: var(--muted);
+	}
+	.author {
+		color: var(--fg);
+	}
+
+	.post-grid {
+		padding-top: 56px;
+	}
+	.post-grid > :global(article) {
+		grid-column: 4 / span 6;
+		grid-row: 1;
+	}
+	.post-grid > :global(.contents-rail) {
+		grid-column: 1 / span 3;
+		grid-row: 1;
+	}
+
+	.post-continue {
+		padding-top: 64px;
+	}
+	.continue-inner {
+		grid-column: 4 / span 8;
+	}
+	.continue-inner h2 {
+		font-family: var(--font-display-stack);
+		margin-bottom: 16px;
+		font-size: clamp(2rem, 2.8vw, 2.5rem);
+		font-style: italic;
+		font-weight: 380;
+		letter-spacing: -0.015em;
+	}
+
+	@media (max-width: 1099px) {
+		.post-header :global(.post-title) {
+			grid-column: 1 / -1;
+		}
+		.post-deck {
+			grid-column: 1 / span 10;
+		}
+		.post-grid {
+			row-gap: 36px;
+			padding-top: 40px;
+		}
+		.post-grid > :global(.contents-bar) {
+			grid-column: 3 / span 8;
+			grid-row: 1;
+		}
+		.post-grid > :global(article) {
+			grid-column: 3 / span 8;
+			grid-row: 2;
+		}
+		.post-grid:not(.has-contents) > :global(article) {
+			grid-row: 1;
+		}
+		.continue-inner {
+			grid-column: 3 / span 8;
+		}
+	}
+	@media (max-width: 767px) {
+		.post-header > :global(*),
+		.post-grid > :global(*),
+		.continue-inner {
+			grid-column: 1 / -1 !important;
+		}
+		.post-deck {
+			margin-top: 22px;
+		}
+		.post-rule {
+			margin-top: 28px;
+		}
+		.post-meta {
+			gap: 4px 20px;
+			font-size: var(--text-meta);
+		}
+		.post-grid {
+			row-gap: 28px;
+			padding-top: 28px;
+		}
+		.post-continue {
+			padding-top: 48px;
+		}
+	}
+</style>

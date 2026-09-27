@@ -10,8 +10,6 @@ export interface Topic {
 	name: string;
 	/** URL slug used by /tags/[tag]. */
 	slug: string;
-	/** Short label for the archive filter pills. */
-	label: string;
 	/** One-line description shown on the Topics page. */
 	description: string;
 	/**
@@ -28,49 +26,42 @@ export const TOPICS: Topic[] = [
 	{
 		name: 'Security architecture',
 		slug: 'security-architecture',
-		label: 'Architecture',
 		description: 'Layering, blast radius, and designing for the exception.',
 		hue: 155
 	},
 	{
 		name: 'Network security',
 		slug: 'network-security',
-		label: 'Network security',
 		description: 'Firewall policy, segmentation, and hardening at scale.',
 		hue: 245
 	},
 	{
 		name: 'Compliance',
 		slug: 'compliance',
-		label: 'Compliance',
 		description: 'Controls people actually follow, and audits you can live with.',
 		hue: 110
 	},
 	{
 		name: 'Vulnerability management',
 		slug: 'vulnerability-management',
-		label: 'Vulnerability mgmt',
 		description: 'Triage, prioritisation, and reading a report like an attacker.',
 		hue: 40
 	},
 	{
 		name: 'Offense',
 		slug: 'offense',
-		label: 'Offense',
 		description: 'CTFs, red teaming, and offensive security.',
 		hue: 350
 	},
 	{
 		name: 'AI security',
 		slug: 'ai-security',
-		label: 'AI security',
 		description: 'Prompt injection, model risk, and securing LLM systems.',
 		hue: 300
 	},
 	{
 		name: 'Certification',
 		slug: 'certification',
-		label: 'Certification',
 		description: 'Exam preparation, study notes, and what the paper is worth.',
 		hue: 200
 	}

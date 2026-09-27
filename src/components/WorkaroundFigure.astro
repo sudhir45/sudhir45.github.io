@@ -1,0 +1,210 @@
+---
+/**
+ * "The workaround": a task line blocked at an approvals gate, with an amber dashed path around it.
+ * Timings (ms) are relative to the figure entering view.
+ * figure.ts moves the dot along [data-route] and replays the sequence on hover or focus.
+ */
+interface Props {
+	quote: string;
+	href: string;
+	delay?: number;
+	/** Prefix for the SVG mask ids, unique per page. */
+	uid?: string;
+}
+const { quote, href, delay = 0, uid = 'wa' } = Astro.props;
+const at = (ms: number) => `--delay:${delay + ms}ms`;
+const label =
+	'A task heads toward done through three controls. The approvals control blocks it, and a dashed workaround curves around that control to reach done anyway.';
+
+const wide = {
+	id: `${uid}-mask-wide`,
+	view: '0 0 636 240',
+	gates: ['M176 112 V 188 M184 112 V 188', 'M314 112 V 188 M322 112 V 188', 'M452 112 V 188 M460 112 V 188'],
+	labels: [
+		{ x: 180, y: 212, text: 'MFA' },
+		{ x: 318, y: 212, text: 'SIX APPROVALS' },
+		{ x: 456, y: 212, text: 'DLP' },
+		{ x: 14, y: 182, text: 'THE TASK', anchor: 'start' },
+		{ x: 622, y: 182, text: 'DONE', anchor: 'end' }
+	],
+	dotted: 'M330 150 H 606',
+	task: 'M30 150 H 304',
+	stop: 'M304 138 V 162',
+	arc: 'M250 150 C 272 52, 364 52, 386 150',
+	after: 'M386 150 H 606',
+	route: 'M250 150 C 272 52, 364 52, 386 150 H 612',
+	word: { x: 318, y: 62, size: 17 },
+	start: { x: 24, y: 150 },
+	end: { x: 612, y: 150 }
+};
+const compact = {
+	id: `${uid}-mask-compact`,
+	view: '0 0 350 200',
+	gates: ['M96 88 V 150 M101 88 V 150', 'M172 88 V 150 M177 88 V 150', 'M248 88 V 150 M253 88 V 150'],
+	labels: [
+		{ x: 98, y: 170, text: 'MFA' },
+		{ x: 175, y: 170, text: 'APPROVALS' },
+		{ x: 250, y: 170, text: 'DLP' },
+		{ x: 4, y: 146, text: 'TASK', anchor: 'start' },
+		{ x: 346, y: 146, text: 'DONE', anchor: 'end' }
+	],
+	dotted: 'M182 120 H 330',
+	task: 'M18 120 H 166',
+	stop: 'M166 109 V 131',
+	arc: 'M136 120 C 148 42, 202 42, 214 120',
+	after: 'M214 120 H 330',
+	route: 'M136 120 C 148 42, 202 42, 214 120 H 336',
+	word: { x: 175, y: 40, size: 14 },
+	start: { x: 12, y: 120 },
+	end: { x: 336, y: 120 }
+};
+---
+
+<figure class="workaround" data-reveal>
+	{
+		[wide, compact].map((g, n) => (
+			<svg
+				class:list={['wa-svg', n === 0 ? 'is-wide' : 'is-compact']}
+				viewBox={g.view}
+				role="img"
+				aria-label={label}
+				data-workaround
+				data-dot-delay={delay + 2600}
+			>
+				<defs>
+					<mask id={g.id} maskUnits="userSpaceOnUse" x="0" y="0" width="636" height="240">
+						<path
+							d={g.arc}
+							pathLength="1"
+							fill="none"
+							stroke="#fff"
+							stroke-width="6"
+							data-stroke
+							style={`--d:1000ms;${at(2600)}`}
+						/>
+					</mask>
+				</defs>
+				<g class="wa-ink" stroke-width="1" fill="none">
+					{g.gates.map((d, i) => (
+						<path d={d} pathLength="1" data-stroke style={`--d:600ms;${at(1000 + i * 120)}`} />
+					))}
+				</g>
+				<g class="wa-labels" data-show style={at(1400)}>
+					{g.labels.map((l) => (
+						<text x={l.x} y={l.y} text-anchor={l.anchor ?? 'middle'}>
+							{l.text}
+						</text>
+					))}
+				</g>
+				<path class="wa-dotted" d={g.dotted} data-show style={at(1400)} />
+				<path class="wa-task" d={g.task} pathLength="1" data-stroke style={`--d:800ms;${at(1600)}`} />
+				<path class="wa-stop" d={g.stop} data-show style={at(2350)} />
+				<path class="wa-arc" d={g.arc} mask={`url(#${g.id})`} />
+				<path class="wa-after" d={g.after} pathLength="1" data-stroke style={`--d:900ms;${at(3500)}`} />
+				<text class="wa-word" x={g.word.x} y={g.word.y} font-size={g.word.size} text-anchor="middle" data-show style={at(3000)}>
+					the workaround
+				</text>
+				<circle class="wa-start" cx={g.start.x} cy={g.start.y} r="5" />
+				<circle class="wa-end" cx={g.end.x} cy={g.end.y} r="5" />
+				<path d={g.route} fill="none" stroke="none" data-route />
+				<circle class="wa-dot" r="4" data-dot />
+			</svg>
+		))
+	}
+	<figcaption class="ui" data-show style={at(3600)}>
+		<span class="fig">Fig. 1</span> "{quote}" <a href={href} class="grow-link hit">From the lead essay.</a>
+	</figcaption>
+</figure>
+
+<style>
+	.workaround {
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+		margin: 0;
+	}
+	.wa-svg {
+		display: block;
+		width: 100%;
+		height: auto;
+		overflow: visible;
+	}
+	.is-compact {
+		display: none;
+	}
+	.wa-ink,
+	.wa-task,
+	.wa-stop {
+		stroke: var(--fg);
+	}
+	.wa-task {
+		fill: none;
+		stroke-width: 1.4;
+	}
+	.wa-stop {
+		stroke-width: 2;
+	}
+	.wa-labels {
+		font: 400 10px var(--font-ui);
+		letter-spacing: 1.4px;
+		fill: var(--muted);
+	}
+	.wa-dotted {
+		fill: none;
+		stroke: var(--line);
+		stroke-width: 1;
+		stroke-dasharray: 2 5;
+	}
+	.wa-arc {
+		fill: none;
+		stroke: var(--accent);
+		stroke-width: 1.4;
+		stroke-dasharray: 6 5;
+	}
+	.wa-after {
+		fill: none;
+		stroke: var(--accent);
+		stroke-width: 1.4;
+	}
+	.wa-word {
+		font-family: var(--font-reading);
+		font-style: italic;
+		fill: var(--accent);
+	}
+	.wa-start {
+		fill: var(--fg);
+	}
+	.wa-end {
+		fill: none;
+		stroke: var(--fg);
+		stroke-width: 1.2;
+	}
+	.wa-dot {
+		fill: var(--accent);
+		opacity: 0;
+	}
+	figcaption {
+		font-size: var(--text-meta);
+		line-height: 1.5;
+		color: var(--muted);
+	}
+	.fig {
+		font-weight: 600;
+		color: var(--accent);
+	}
+	figcaption a {
+		padding-block: 14px;
+		color: var(--muted);
+	}
+	figcaption a:hover {
+		color: var(--fg);
+	}
+	@media (max-width: 767px) {
+		.is-wide {
+			display: none;
+		}
+		.is-compact {
+			display: block;
+		}
+	}
+</style>

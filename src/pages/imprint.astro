@@ -1,5 +1,5 @@
 ---
-import Section from '@/components/Section.astro';
+import PageHeading from '@/components/PageHeading.astro';
 import Base from '@/layouts/Base.astro';
 import { AppConfig } from '@/utils/AppConfig';
 
@@ -8,14 +8,10 @@ const description = 'Imprint and legal information for sudhir.is-a.dev.';
 ---
 
 <Base head={{ title, description }}>
-	<Section class="inner-page"
-		><div class="legal-copy">
-			<div>
-				<h1>Imprint</h1>
-				<p>Legal information for sudhir.is-a.dev.</p>
-			</div>
-
-			<div>
+	<div class="shell">
+		<PageHeading title="Imprint" description="Legal information for sudhir.is-a.dev." />
+		<div class="legal grid-12">
+			<div class="prose">
 				<section>
 					<h2>Site &amp; responsibility</h2>
 					<p>
@@ -37,7 +33,7 @@ const description = 'Imprint and legal information for sudhir.is-a.dev.';
 				<section>
 					<h2>Disclaimer</h2>
 
-					<p>Liability for content</p>
+					<h3>Liability for content</h3>
 					<p>
 						All content on our website has been created with the utmost care and to the best of our
 						knowledge. However, we cannot guarantee the accuracy, completeness, and timeliness of
@@ -53,7 +49,7 @@ const description = 'Imprint and legal information for sudhir.is-a.dev.';
 						this content immediately.
 					</p>
 
-					<p>Limitation of liability for external links</p>
+					<h3>Limitation of liability for external links</h3>
 					<p>
 						Our website contains links to external websites of third parties. We have no influence
 						on the content of these directly or indirectly linked websites. Therefore, we cannot
@@ -65,7 +61,7 @@ const description = 'Imprint and legal information for sudhir.is-a.dev.';
 						immediately.
 					</p>
 
-					<p>Copyright</p>
+					<h3>Copyright</h3>
 					<p>
 						The content and works published on this website are subject to <a
 							href="http://www.gesetze-im-internet.de/bundesrecht/urhg/gesamt.pdf"
@@ -80,6 +76,34 @@ const description = 'Imprint and legal information for sudhir.is-a.dev.';
 					</p>
 				</section>
 			</div>
-		</div></Section
-	>
+		</div>
+	</div>
 </Base>
+
+<style>
+	.legal {
+		padding-top: 48px;
+	}
+	.prose {
+		grid-column: 4 / span 6;
+	}
+	.prose :global(section + section) {
+		margin-top: 40px;
+	}
+	.prose :global(section > p) {
+		margin-bottom: 18px;
+	}
+	.prose :global(h2) {
+		margin-top: 0;
+	}
+	@media (max-width: 1099px) {
+		.prose {
+			grid-column: 2 / span 10;
+		}
+	}
+	@media (max-width: 767px) {
+		.prose {
+			grid-column: 1 / -1;
+		}
+	}
+</style>

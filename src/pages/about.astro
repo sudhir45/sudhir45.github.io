@@ -1,93 +1,320 @@
 ---
 import Base from '@/layouts/Base.astro';
-import { SOCIALS } from '@/utils/AppConfig';
-import { Image } from 'astro:assets';
+import PageHeading from '@/components/PageHeading.astro';
+import IndexList from '@/components/IndexList.astro';
+import { AppConfig, SOCIALS } from '@/utils/AppConfig';
+import { Image, getImage } from 'astro:assets';
 import avatar from '@/assets/images/avatar.png';
 import { getAllPosts } from '@/utils/posts';
 import { EDITORIAL, selectEditorialPosts } from '@/utils/editorial';
-import PostList from '@/components/PostList.astro';
-const picks = selectEditorialPosts(await getAllPosts(), EDITORIAL.about, 3);
+
+const posts = await getAllPosts();
+const picks = selectEditorialPosts(posts, EDITORIAL.about, 3);
+const summary =
+	'Sudhir is a CISSP-certified security professional in Mumbai who works across security architecture, network security, vulnerability management, and governance, risk and compliance.';
+const postUrl = (slug: string) => posts.find((post) => post.slug === slug)?.url;
+const cisspUrl = postUrl('cissp-passing-journey');
+const deck = 'I write about what holds up in practice.';
+
+// Contact: email first, since it is the direct way to reach Sudhir.
+const contacts = [...SOCIALS].sort(
+	(a, b) => Number(b.url.startsWith('mailto:')) - Number(a.url.startsWith('mailto:'))
+);
+
+// Contact rows show the handle, not only the service name.
+const handle = (url: string) =>
+	url.startsWith('mailto:') ? url.slice(7) : url.replace(/^https?:\/\/(www\.)?/, '');
+
+// Structured data: the page describes a person, for search engines and link previews.
+// Every value restates the About text, which avoids details that date quickly
+// (employer, years, counts, tools). Update both together.
+const siteUrl = Astro.site ? Astro.site.toString().replace(/\/$/, '') : 'https://sudhir.is-a.dev';
+const portrait = await getImage({ src: avatar, width: 512, height: 512, format: 'jpg' });
+const person = {
+	'@type': 'Person',
+	'@id': `${siteUrl}/about#person`,
+	name: AppConfig.author,
+	url: `${siteUrl}/about`,
+	image: `${siteUrl}${portrait.src}`,
+	jobTitle: 'Information Security Professional',
+	description: summary,
+	homeLocation: {
+		'@type': 'Place',
+		name: 'Mumbai, India',
+		address: { '@type': 'PostalAddress', addressLocality: 'Mumbai', addressCountry: 'IN' }
+	},
+	knowsAbout: [
+		'Security architecture',
+		'Network security',
+		'Vulnerability management',
+		'Governance, risk and compliance',
+		'Security assessments',
+		'Security compliance automation',
+		'ISO 27001',
+		'PCI DSS',
+		'Capture the Flag'
+	],
+	hasCredential: {
+		'@type': 'EducationalOccupationalCredential',
+		name: 'CISSP',
+		credentialCategory: 'certification',
+		recognizedBy: { '@type': 'Organization', name: 'ISC2', url: 'https://www.isc2.org' }
+	},
+	sameAs: SOCIALS.filter((social) => social.url.startsWith('http')).map((social) => social.url),
+	email: SOCIALS.find((social) => social.url.startsWith('mailto:'))?.url
+};
+const profilePage = {
+	'@context': 'https://schema.org',
+	'@type': 'ProfilePage',
+	url: `${siteUrl}/about`,
+	name: 'About Sudhir',
+	description: summary,
+	mainEntity: person
+};
 ---
 
-<Base
-	head={{
-		title: 'About | Sudhir',
-		description:
-			"I'm a CISSP-certified Cyber Security Professional. I write about what holds up in practice."
-	}}
->
-	<div class="shell inner-page">
-		<div class="profile-overview">
-			<section class="profile-hero" aria-labelledby="profile-name">
-				<div class="profile-opening">
-					<h1 id="profile-name">About Sudhir</h1><p class="profile-deck">
-						I'm a CISSP-certified Cyber Security Professional. I write about what holds up in
-						practice.
-					</p>
-				</div><div class="profile-identity">
-					<figure class="profile-photo">
-						<Image
-							src={avatar}
-							width={288}
-							height={288}
-							format="webp"
-							loading="eager"
-							alt="Sudhir"
-						/>
-					</figure><div class="profile-credentials">
-						<span>CISSP-certified</span><a
-							href="/resume.pdf"
-							target="_blank"
-							rel="noopener noreferrer">View resume ↗</a
-						>
-					</div>
-				</div>
-			</section>
-			<section class="profile-story" aria-label="Background">
-				<div class="profile-prose">
-					<p>
-						Earlier, a lot of my time went into CTFs and offensive security. That still shapes how I
-						approach defense. I think about how a control could fail, and what someone could do with
-						that failure.
-					</p><p>
-						This site is where I work through those questions in writing. Some posts take apart a
-						technical problem. Others cover a security decision, an exam, or CTF challenges I
-						solved.
-					</p>
-				</div>
-			</section>
+<Base head={{ title: 'About | Sudhir', description: summary, profile: true }}>
+	<script type="application/ld+json" is:inline set:html={JSON.stringify(profilePage)} />
+	<div class="shell">
+		<div class="profile grid-12">
+			<div class="profile-heading">
+				<PageHeading title="About" description={deck} rule={false} />
+			</div>
+			<figure class="portrait">
+				<Image
+					src={avatar}
+					width={187}
+					height={187}
+					densities={[1, 2]}
+					format="webp"
+					loading="eager"
+					alt="Sudhir"
+					data-iris
+				/>
+				<figcaption class="ui">
+					<a href="/resume.pdf" target="_blank" rel="noopener noreferrer" class="text-link"
+						>View resume <span class="arrow" aria-hidden="true">↗</span></a
+					>
+				</figcaption>
+			</figure>
 		</div>
+		<div class="page-heading-rule" aria-hidden="true"></div>
+		<section class="story grid-12" aria-label="Background">
+			<div class="story-prose">
+				<p>
+					Hi, I'm Sudhir, a {
+						cisspUrl ? <a href={cisspUrl}>CISSP-certified</a> : 'CISSP-certified'
+					} security professional based in Mumbai. I work in large enterprise environments, covering
+					security architecture, network security, vulnerability management, and governance, risk and
+					compliance.
+				</p>
+				<p>
+					I help define security standards and assess whether systems meet them. When they fall short,
+					I work with the teams responsible to address the gaps or formally accept the risk. I also
+					support audits against standards such as CIS, ISO 27001 and PCI DSS.
+				</p>
+				<p>Part of my work involves automating manual checks and reporting to make them repeatable.</p>
+				<p>
+					I enjoy testing my skills in Capture the Flag competitions. Beyond cybersecurity, I like
+					exploring new tools and figuring out how they work. Outside work, I enjoy cricket, playing
+					chess, and reading Hindi literature.
+				</p>
+			</div>
+		</section>
+
+		<section class="contact grid-12" aria-labelledby="contact-title">
+			<h2 id="contact-title">Get in touch</h2>
+			<ul class="contact-list">
+				{
+					contacts.map((social) => {
+						const external = social.url.startsWith('http');
+						return (
+							<li>
+								<a
+									href={social.url}
+									class="contact-row"
+									target={external ? '_blank' : undefined}
+									rel={external ? 'noopener noreferrer' : undefined}
+								>
+									<span class="service">{social.name}</span>
+									<span class="handle">{handle(social.url)}</span>
+								</a>
+							</li>
+						);
+					})
+				}
+			</ul>
+		</section>
+
 		{
 			picks.length > 0 && (
-				<section class="profile-reading" aria-labelledby="profile-reading-title">
-					<>
-						<div class="profile-section-heading">
-							<>
-								<h2 id="profile-reading-title">A few places to start.</h2>
-								<a href="/posts" class="text-link">
-									All writing →
-								</a>
-							</>
-						</div>
-						<PostList posts={picks} inlineDate />
-					</>
+				<section class="start" aria-labelledby="start-title">
+					<div class="section-head">
+						<h2 id="start-title">A few places to start</h2>
+						<a href="/posts" class="text-link">
+							All writing <span class="arrow" aria-hidden="true">→</span>
+						</a>
+					</div>
+					<IndexList posts={picks} />
 				</section>
 			)
 		}
-		<section class="profile-contact" aria-labelledby="profile-contact-title">
-			<h2 id="profile-contact-title">Elsewhere</h2><nav aria-label="Contact Sudhir">
-				{
-					SOCIALS.map((social) => (
-						<a
-							href={social.url}
-							target={social.url.startsWith('http') ? '_blank' : undefined}
-							rel={social.url.startsWith('http') ? 'noopener noreferrer' : undefined}
-						>
-							{social.name === 'Email' ? 'Email me' : social.name} ↗
-						</a>
-					))
-				}
-			</nav>
-		</section>
 	</div>
 </Base>
+
+<style>
+	/* The portrait's top lines up with the heading's, clear of the masthead rule. */
+	.profile {
+		align-items: start;
+	}
+	.profile-heading {
+		grid-column: 1 / span 8;
+	}
+	.portrait {
+		grid-column: 10 / span 3;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 14px;
+		margin: clamp(40px, 7vw, 76px) 0 clamp(28px, 4vw, 48px);
+	}
+	.portrait img {
+		width: min(100%, 187px);
+		height: auto;
+		aspect-ratio: 1;
+		border-radius: 50%;
+		object-fit: cover;
+	}
+	figcaption {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 4px 18px;
+	}
+	figcaption .text-link {
+		font-size: var(--text-ui);
+	}
+	.story {
+		padding-top: 48px;
+	}
+	.story-prose {
+		grid-column: 4 / span 6;
+		display: flex;
+		flex-direction: column;
+		gap: 22px;
+		font-family: var(--font-reading);
+		font-size: var(--text-prose);
+		line-height: 1.66;
+		color: var(--body-ink);
+	}
+	.story-prose p:first-child {
+		font-size: 1.19em;
+		line-height: 1.5;
+		color: var(--fg);
+	}
+	.story-prose a {
+		padding-block: 8px;
+		text-decoration: underline;
+		text-decoration-color: var(--line);
+		text-decoration-thickness: 1px;
+		text-underline-offset: 0.2em;
+		transition: text-decoration-color var(--dur-fade);
+	}
+	.story-prose a:hover,
+	.story-prose a:focus-visible {
+		text-decoration-color: var(--accent);
+	}
+
+	/* Get in touch: heading in the left columns, rows in the same column as the story. */
+	.contact {
+		align-items: baseline;
+		row-gap: 12px;
+		padding-top: clamp(48px, 6vw, 72px);
+	}
+	.contact h2 {
+		grid-column: 1 / span 3;
+		font-family: var(--font-display-stack);
+		font-size: clamp(2rem, 2.6vw, 2.5rem);
+		font-style: italic;
+		font-weight: 380;
+		line-height: 1.02;
+		letter-spacing: -0.02em;
+	}
+	.contact-list {
+		grid-column: 4 / span 6;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	.contact-row {
+		display: grid;
+		grid-template-columns: 110px minmax(0, 1fr);
+		align-items: baseline;
+		gap: 24px;
+		padding: 12px 0;
+		border-bottom: 1px solid var(--line);
+		transition: border-color var(--dur-fade);
+	}
+	.service {
+		font-family: var(--font-ui);
+		font-size: var(--text-meta);
+		color: var(--muted);
+	}
+	.handle {
+		overflow-wrap: anywhere;
+		font-family: var(--font-reading);
+		font-size: var(--text-prose);
+		color: var(--fg);
+		transition: color var(--dur-fade);
+	}
+	.contact-row:hover,
+	.contact-row:focus-visible {
+		border-color: var(--fg);
+	}
+	.contact-row:hover .handle,
+	.contact-row:focus-visible .handle {
+		color: var(--accent);
+	}
+
+	.start {
+		padding-top: clamp(56px, 7vw, 88px);
+	}
+
+	@media (max-width: 1099px) {
+		.profile-heading {
+			grid-column: 1 / span 7;
+		}
+		.portrait {
+			grid-column: 9 / -1;
+		}
+		.story-prose,
+		.contact-list {
+			grid-column: 2 / span 10;
+		}
+		.contact h2 {
+			grid-column: 2 / span 10;
+		}
+	}
+	@media (max-width: 767px) {
+		.profile-heading,
+		.portrait,
+		.story-prose,
+		.contact h2,
+		.contact-list {
+			grid-column: 1 / -1;
+		}
+		.portrait img {
+			width: 125px;
+		}
+		.portrait {
+			margin-top: 0;
+		}
+		.story {
+			padding-top: 32px;
+		}
+		.contact-row {
+			grid-template-columns: minmax(0, 1fr);
+			gap: 2px;
+		}
+	}
+</style>

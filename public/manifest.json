@@ -4,8 +4,8 @@
 	"description": "Sudhir, a CISSP-certified Cyber Security Professional, writes about enterprise security, governance, compliance, and validation.",
 	"start_url": "/",
 	"display": "standalone",
-	"background_color": "#fafafa",
-	"theme_color": "#f59e0b",
+	"background_color": "#1f1b17",
+	"theme_color": "#1f1b17",
 	"orientation": "portrait-primary",
 	"icons": [
 		{

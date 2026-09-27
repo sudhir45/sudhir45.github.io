@@ -35,13 +35,21 @@ export default defineConfig({
 		mdx(),
 		sitemap({
 			filter: (page) =>
-				!page.endsWith('/search.json') && !page.includes('/og/') && !page.includes('/404')
+				!page.endsWith('/search.json') &&
+				!page.includes('/og/') &&
+				!page.includes('/404') &&
+				!page.includes('/specs')
 		})
 	],
 	output: 'static',
 
 	vite: {
 		plugins: [tailwindcss()],
+		// Search imports fuse.js lazily; pre-bundling it stops the dev server's
+		// "Outdated Optimize Dep" 504 when the dialog first opens.
+		optimizeDeps: {
+			include: ['fuse.js']
+		},
 		build: {
 			cssMinify: 'lightningcss',
 			rollupOptions: {

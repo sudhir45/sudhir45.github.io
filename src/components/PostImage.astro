@@ -2,26 +2,40 @@
 import { getImage } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 
+/**
+ * Dark sources render with media="all" because dark is the site default; theme.ts switches
+ * them to "not all" when a reader chooses the light theme.
+ *
+ * Post figure: optimized light and optional dark art, a numbered caption (defaults to the alt text)
+ * that sits in the margin from 1100px, and a one-time unmask when it first enters view.
+ */
 interface Props {
 	light: ImageMetadata;
 	dark?: ImageMetadata;
 	alt: string;
 	width: number;
 	height: number;
+	/** Caption text. Pass an empty string to omit the caption. */
+	caption?: string;
 	class?: string;
 	style?: string;
 	loading?: 'lazy' | 'eager';
 }
 
-const { light, dark, alt, width, height, class: className, style, loading = 'lazy' } = Astro.props;
+const { light, dark, alt, width, height, caption = alt, class: className, loading = 'lazy' } = Astro.props;
 
 const formats = ['avif', 'webp', 'png'] as const;
 type Variants = Record<(typeof formats)[number], string>;
 
+// Render at up to 1320px so the figure stays sharp at the full body width on dense screens.
+const target = (image: ImageMetadata) => Math.min(image.width, Math.max(width, 1320));
+
 const buildVariants = async (image: ImageMetadata): Promise<Variants> => {
+	const w = target(image);
+	const h = Math.round((w * height) / width);
 	const entries = await Promise.all(
 		formats.map(async (format) => {
-			const generated = await getImage({ src: image, width, height, format });
+			const generated = await getImage({ src: image, width: w, height: h, format });
 			return [format, generated.src] as const;
 		})
 	);
@@ -32,36 +46,37 @@ const lightSet = await buildVariants(light);
 const darkSet = dark ? await buildVariants(dark) : null;
 ---
 
-<picture>
-	{
-		darkSet && (
-			<>
-				<source
-					srcset={darkSet.avif}
-					type="image/avif"
-					media="(prefers-color-scheme: dark)"
-					data-dark-source
-				/>
-				<source
-					srcset={darkSet.webp}
-					type="image/webp"
-					media="(prefers-color-scheme: dark)"
-					data-dark-source
-				/>
-				<source srcset={darkSet.png} media="(prefers-color-scheme: dark)" data-dark-source />
-			</>
-		)
-	}
-	<source srcset={lightSet.avif} type="image/avif" />
-	<source srcset={lightSet.webp} type="image/webp" />
-	<img
-		src={lightSet.png}
-		alt={alt}
-		width={width}
-		height={height}
-		class={className}
-		style={style}
-		loading={loading}
-		decoding="async"
-	/>
-</picture>
+<figure class:list={['figure', { 'is-narrow': width < 560 }, className]} data-unmask>
+	<picture>
+		{
+			darkSet && (
+				<>
+					<source
+						srcset={darkSet.avif}
+						type="image/avif"
+						media="all"
+						data-dark-source
+					/>
+					<source
+						srcset={darkSet.webp}
+						type="image/webp"
+						media="all"
+						data-dark-source
+					/>
+					<source srcset={darkSet.png} media="all" data-dark-source />
+				</>
+			)
+		}
+		<source srcset={lightSet.avif} type="image/avif" />
+		<source srcset={lightSet.webp} type="image/webp" />
+		<img
+			src={lightSet.png}
+			alt={alt}
+			width={width}
+			height={height}
+			loading={loading}
+			decoding="async"
+		/>
+	</picture>
+	{caption && <figcaption>{caption}</figcaption>}
+</figure>

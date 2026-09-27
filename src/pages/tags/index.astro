@@ -2,15 +2,38 @@
 import Base from '@/layouts/Base.astro';
 import PageHeading from '@/components/PageHeading.astro';
 import TopicList from '@/components/TopicList.astro';
-import { getAllTopicsWithCounts } from '@/utils/topics';
+import TopicSentence from '@/components/TopicSentence.astro';
+import { getAllTopicsWithCounts, getTopicsWithCounts } from '@/utils/topics';
 const topics = await getAllTopicsWithCounts();
+const withPosts = await getTopicsWithCounts();
 ---
 
-<Base head={{ title: 'Topics | Sudhir', description: 'Find cybersecurity writing by subject.' }}
-	><div class="shell inner-page">
+<Base head={{ title: 'Topics | Sudhir', description: 'Find cybersecurity writing by subject.' }}>
+	<div class="shell">
 		<PageHeading
 			title="Browse by topic"
 			description="Find the writing that relates to your work or curiosity."
-		/><div class="directory-list"><TopicList topics={topics} /></div>
-	</div></Base
->
+			rule={false}
+		/>
+		<div class="sentence">
+			<TopicSentence topics={withPosts} />
+		</div>
+		<h2 class="sc list-label">All topics</h2>
+		<TopicList topics={topics} />
+	</div>
+</Base>
+
+<style>
+	.sentence {
+		max-width: 1000px;
+		padding-bottom: clamp(48px, 6vw, 80px);
+	}
+	.list-label {
+		margin-bottom: 12px;
+		font-family: var(--font-ui);
+		font-size: var(--text-smallcaps);
+		font-weight: 600;
+		letter-spacing: 0.14em;
+		color: var(--fg);
+	}
+</style>

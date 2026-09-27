@@ -1,0 +1,245 @@
+---
+import type { SitePost } from '@/utils/posts';
+import { shortDate } from '@/utils/editorial';
+import { topicHue } from '@/utils/topics';
+
+interface Props {
+	posts: SitePost[];
+	/** Columns shown beside the title on wide screens. */
+	columns?: Array<'date' | 'topic' | 'minutes'>;
+	/** Rows show 50ms apart when the list enters view (first 8 rows). */
+	reveal?: boolean;
+	/** Give each title the post's shared transition name. Only when each post appears once on the page. */
+	transitions?: boolean;
+	class?: string;
+	/** Accessible name for the list. */
+	label?: string;
+	/** Show each post's description under its title. */
+	descriptions?: boolean;
+}
+
+const {
+	posts,
+	columns = ['date', 'topic', 'minutes'],
+	reveal = false,
+	transitions = true,
+	class: className,
+	label,
+	descriptions = false
+} = Astro.props;
+const has = (column: 'date' | 'topic' | 'minutes') => columns.includes(column);
+const template = [
+	has('date') && '110px',
+	'minmax(0, 1fr)',
+	has('topic') && 'minmax(120px, 220px)',
+	has('minutes') && '90px',
+	'24px'
+]
+	.filter(Boolean)
+	.join(' ');
+---
+
+<ul
+	class:list={['index-list', className]}
+	style={`--row-columns:${template};--title-column:${has('date') ? 2 : 1}`}
+	aria-label={label}
+	data-reveal={reveal ? '' : undefined}
+>
+	{
+		posts.map((post, i) => {
+			const topic = post.data.tags[0];
+			return (
+				<li
+					class="index-item topic-colored"
+					style={`--topic-hue:${topic ? topicHue(topic) : 0}`}
+					data-post
+					data-topics={post.data.tags.join('|')}
+				>
+					<a
+						href={post.url}
+						class="index-row"
+						data-show={reveal && i < 8 ? '' : undefined}
+						style={reveal && i < 8 ? `--delay:${i * 50}ms` : undefined}
+					>
+						{has('date') && (
+							<time class="row-date" datetime={post.data.pubDate.toISOString()}>
+								{shortDate(post.data.pubDate)}
+							</time>
+						)}
+						<span class="row-title">
+							<span class="topic-dot" aria-hidden="true" />
+							<span
+								class="row-title-text"
+								transition:name={transitions ? `post-title-${post.slug}` : undefined}
+							>
+								{post.data.title}
+							</span>
+						</span>
+						{descriptions && <span class="row-desc">{post.data.description}</span>}
+						<span class="row-meta">
+							{[topic, has('date') && shortDate(post.data.pubDate), has('minutes') && post.data.minutesRead]
+								.filter(Boolean)
+								.join(' · ')}
+						</span>
+						{has('topic') && <span class="row-topic">{topic}</span>}
+						{has('minutes') && <span class="row-minutes">{post.data.minutesRead}</span>}
+						<span class="arrow" aria-hidden="true">
+							→
+						</span>
+					</a>
+				</li>
+			);
+		})
+	}
+</ul>
+
+<style>
+	.index-list {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		border-bottom: 1px solid var(--line);
+	}
+	.index-item[hidden] {
+		display: none;
+	}
+	.index-row {
+		position: relative;
+		display: grid;
+		grid-template-columns: var(--row-columns);
+		column-gap: 24px;
+		align-items: baseline;
+		padding: 18px 0;
+		border-top: 1px solid var(--line);
+		font-family: var(--font-ui);
+		color: var(--fg);
+	}
+	.index-row::before {
+		content: '';
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: -1px;
+		height: 1px;
+		background: var(--fg);
+		transform: scaleX(0);
+		transform-origin: right;
+		transition: transform var(--dur-underline) var(--ease-rise);
+	}
+	.index-row:hover::before,
+	.index-row:focus-visible::before {
+		transform: scaleX(1);
+		transform-origin: left;
+	}
+	.index-row:focus-visible {
+		outline-offset: 2px;
+	}
+	.row-date,
+	.row-topic,
+	.row-minutes,
+	.row-meta {
+		font-size: var(--text-meta);
+		color: var(--muted);
+	}
+	.row-meta {
+		display: none;
+	}
+	.row-title {
+		display: flex;
+		gap: 12px;
+		align-items: baseline;
+		min-width: 0;
+		font-family: var(--font-reading);
+		font-size: clamp(1.25rem, 1.8vw, 1.5625rem);
+		line-height: 1.22;
+		letter-spacing: -0.01em;
+	}
+	.row-title .topic-dot {
+		transform: translateY(-3px);
+	}
+	.row-desc {
+		grid-column: var(--title-column);
+		grid-row: 2;
+		max-width: 62ch;
+		margin-top: 6px;
+		font-size: var(--text-small);
+		line-height: 1.5;
+		color: var(--body-ink);
+	}
+	/* Rows with a description align their side columns with the title line. */
+	@media (min-width: 1100px) {
+		.index-row > :not(.row-desc) {
+			grid-row: 1;
+		}
+	}
+	.index-row:hover .row-title-text,
+	.index-row:focus-visible .row-title-text {
+		font-style: italic;
+	}
+	.arrow {
+		justify-self: end;
+		color: var(--muted);
+		transition:
+			transform var(--dur-nudge) var(--ease-rise),
+			color var(--dur-fade);
+	}
+	.index-row:hover .arrow,
+	.index-row:focus-visible .arrow {
+		transform: translateX(6px);
+		color: var(--accent);
+	}
+
+	/* Below 1100px the side columns would squeeze the title, so metadata moves above it. */
+	@media (max-width: 1099px) {
+		.index-row {
+			grid-template-columns: minmax(0, 1fr) 24px;
+			row-gap: 6px;
+			padding: 16px 0 18px;
+		}
+		.row-date,
+		.row-topic,
+		.row-minutes {
+			display: none;
+		}
+		.row-meta {
+			display: flex;
+			align-items: center;
+			gap: 8px;
+			grid-column: 1;
+			grid-row: 1;
+			font-size: var(--text-xs);
+		}
+		.row-title {
+			grid-column: 1;
+			grid-row: 2;
+		}
+		.row-desc {
+			grid-column: 1;
+			grid-row: 3;
+			margin-top: 2px;
+		}
+		.arrow {
+			grid-column: 2;
+			grid-row: 1 / span 3;
+			align-self: center;
+		}
+		.row-meta::before {
+			content: '';
+			width: 7px;
+			height: 7px;
+			border-radius: 50%;
+			background: var(--tc);
+		}
+		.row-title .topic-dot {
+			display: none;
+		}
+	}
+	@media (max-width: 767px) {
+		.index-row {
+			grid-template-columns: minmax(0, 1fr);
+		}
+		.arrow {
+			display: none;
+		}
+	}
+</style>

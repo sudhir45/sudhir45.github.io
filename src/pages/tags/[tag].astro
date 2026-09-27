@@ -1,9 +1,10 @@
 ---
 import Base from '@/layouts/Base.astro';
 import PageHeading from '@/components/PageHeading.astro';
-import PostList from '@/components/PostList.astro';
+import IndexList from '@/components/IndexList.astro';
+import TopicSentence from '@/components/TopicSentence.astro';
 import { getAllPosts, type SitePost } from '@/utils/posts';
-import { TOPICS, type Topic } from '@/utils/topics';
+import { TOPICS, getAllTopicsWithCounts, type Topic } from '@/utils/topics';
 export async function getStaticPaths() {
 	const posts = await getAllPosts();
 	return TOPICS.map((topic) => ({
@@ -16,26 +17,65 @@ interface Props {
 	posts: SitePost[];
 }
 const { topic, posts } = Astro.props;
+const others = (await getAllTopicsWithCounts()).filter((t) => t.slug !== topic.slug);
 ---
 
-<Base head={{ title: `${topic.name} | Sudhir`, description: topic.description }}
-	><div class="shell inner-page">
-		<a href="/tags" class="back-link text-link">← All topics</a><PageHeading
+<Base head={{ title: `${topic.name} | Sudhir`, description: topic.description }}>
+	<div class="shell">
+		<PageHeading
 			title={topic.name}
 			description={topic.description}
-		/><p class="meta archive-summary">
-			{posts.length}
-			{posts.length === 1 ? 'post' : 'posts'}
-		</p><PostList posts={posts} />{
-			posts.length === 0 && <p>No writing here yet. Browse the other topics below.</p>
-		}<div class="other-topics">
-			<h2>Other topics</h2><nav aria-label="Other topics">
-				{
-					TOPICS.filter((t) => t.slug !== topic.slug).map((t) => (
-						<a href={`/tags/${t.slug}`}>{t.name}</a>
-					))
-				}
-			</nav>
-		</div>
-	</div></Base
->
+			kicker={`Topic · ${posts.length} ${posts.length === 1 ? 'post' : 'posts'}`}
+			hue={topic.hue}
+			rule={false}
+		>
+			<a href="/tags" class="text-link is-back back"><span class="arrow" aria-hidden="true">←</span> All topics</a>
+		</PageHeading>
+		{
+			posts.length > 0 ? (
+				<IndexList posts={posts} columns={['date', 'minutes']} descriptions reveal />
+			) : (
+				<p class="empty">No writing here yet. Browse the other topics below.</p>
+			)
+		}
+		<section class="others grid-12" aria-labelledby="other-topics">
+			<h2 id="other-topics">Other topics</h2>
+			<div class="others-list">
+				<TopicSentence topics={others} size="medium" label="Other topics" />
+			</div>
+		</section>
+	</div>
+</Base>
+
+<style>
+	.back {
+		margin-top: 18px;
+		font-size: var(--text-ui);
+	}
+	.empty {
+		padding-block: 24px;
+		font-family: var(--font-reading);
+		font-size: 22px;
+		font-style: italic;
+		color: var(--muted);
+	}
+	.others {
+		row-gap: 16px;
+		padding-top: 64px;
+	}
+	.others h2 {
+		font-family: var(--font-display-stack);
+		grid-column: 1 / span 3;
+		font-size: var(--text-section);
+		font-weight: 450;
+	}
+	.others-list {
+		grid-column: 4 / -1;
+	}
+	@media (max-width: 767px) {
+		.others h2,
+		.others-list {
+			grid-column: 1 / -1;
+		}
+	}
+</style>

@@ -2,6 +2,7 @@
 import { AppConfig } from '@/utils/AppConfig';
 import Base from '@/layouts/Base.astro';
 import PageHeading from '@/components/PageHeading.astro';
+import { longDate, splitTitle } from '@/utils/editorial';
 import PresentationViewer from '@/components/PresentationViewer.astro';
 import { getPresentations, type Presentation } from '@/utils/presentations';
 
@@ -17,7 +18,7 @@ const title = `${presentation.title} | ${AppConfig.site_name}`;
 const description = presentation.description ?? presentation.title;
 
 const monthYear = presentation.date
-	? new Date(presentation.date).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
+	? longDate(presentation.date)
 	: '';
 const metaParts = [monthYear, presentation.venue, `${presentation.slideCount} slides`].filter(
 	Boolean
@@ -30,35 +31,87 @@ const nextTalk = sorted[idx + 1] ?? (idx > 0 ? sorted[0] : undefined);
 ---
 
 <Base head={{ title, description }}>
-	<div class="shell inner-page presentation-page">
-		<a href="/presentations" class="text-link back-link">← All talks</a><PageHeading
-			title={presentation.title.replace(' :', ':')}
-			description={metaParts.join(' · ')}
-		/><PresentationViewer
+	<div class="shell presentation-page">
+		<PageHeading
+			title={splitTitle(presentation.title)[0]}
+			tail={splitTitle(presentation.title)[1]}
+			kicker={metaParts.join(' · ')}
+			rule={false}
+		>
+			<a href="/presentations" class="text-link is-back back"
+				><span class="arrow" aria-hidden="true">←</span> All talks</a
+			>
+		</PageHeading>
+		<PresentationViewer
 			slug={presentation.slug}
 			title={presentation.title}
 			slideCount={presentation.slideCount}
 		/>
-
 		{
-			nextTalk ? (
-				<a
-					href={`/presentations/${nextTalk.slug}`}
-					class="row-link border-line mt-9 mb-16 flex items-baseline justify-between gap-6 border-t pt-6"
-				>
-					<span>
-						<span class="meta-mono block tracking-[0.06em] uppercase">Next talk</span>
-						<span class="row-title font-display text-fg mt-2 block text-[20px] font-medium tracking-[-0.01em] transition-colors">
-							{nextTalk.title}
-						</span>
-					</span>
-					<span class="text-faint text-sm font-medium whitespace-nowrap">
-						View <span class="row-arrow">→</span>
+			nextTalk && (
+				<a href={`/presentations/${nextTalk.slug}`} class="next-talk">
+					<span class="sc">Next talk</span>
+					<span class="next-title">{nextTalk.title}</span>
+					<span class="arrow" aria-hidden="true">
+						→
 					</span>
 				</a>
-			) : (
-				<div class="pb-16" />
 			)
 		}
 	</div>
 </Base>
+
+<style>
+	.presentation-page {
+		max-width: calc(1180px + 2 * var(--page-gutter));
+	}
+	.presentation-page :global(.page-heading h1) {
+		font-size: clamp(2.25rem, 4.4vw, 4rem);
+	}
+	.presentation-page :global(.page-heading .kicker) {
+		color: var(--muted);
+	}
+	.back {
+		margin-top: 12px;
+		font-size: var(--text-ui);
+	}
+	.next-talk {
+		display: grid;
+		grid-template-columns: auto minmax(0, 1fr) 24px;
+		align-items: baseline;
+		gap: 24px;
+		margin-top: 40px;
+		padding: 22px 0;
+		border-block: 1px solid var(--line);
+	}
+	.next-talk .sc {
+		color: var(--muted);
+	}
+	.next-title {
+		font-family: var(--font-reading);
+		font-size: clamp(1.25rem, 2vw, 1.625rem);
+		line-height: 1.2;
+	}
+	.next-talk:hover .next-title {
+		font-style: italic;
+	}
+	.arrow {
+		color: var(--muted);
+		transition:
+			transform var(--dur-nudge) var(--ease-rise),
+			color var(--dur-fade);
+	}
+	.next-talk:hover .arrow {
+		transform: translateX(6px);
+		color: var(--accent);
+	}
+	@media (max-width: 767px) {
+		.next-talk {
+			grid-template-columns: minmax(0, 1fr);
+			gap: 6px;
+		}
+		.next-talk .arrow {
+			display: none;
+		}
+	}
+</style>
