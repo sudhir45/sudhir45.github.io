@@ -6,10 +6,12 @@ description: "How direct and indirect prompt injection cross trust boundaries, a
 author: "Sudhir"
 isPinned: false
 excerpt: "How direct and indirect prompt injection cross trust boundaries, and how to limit what a manipulated model can expose or do."
+pullQuote: "The model can propose an action. Code with deterministic checks should authorize and execute it."
 tags: ["AI security", "Offense"]
 ---
 
 import PostImage from '@/components/PostImage.astro';
+import PullQuote from '@/components/PullQuote.astro';
 import promptInjectionLight from '@/assets/images/Prompt_Injection_light.png';
 import promptInjectionDark from '@/assets/images/Prompt_Injection_Dark.png';
 
@@ -68,6 +70,8 @@ More importantly, natural language has no reliable separator equivalent to a par
 Treat prompt filtering as one detection signal. Do not make it the authorization control.
 
 ## Keep authority outside the model
+
+<PullQuote>The model can propose an action. Code with deterministic checks should authorize and execute it.</PullQuote>
 
 The application should decide what a user and session may do before the model requests a tool.
 

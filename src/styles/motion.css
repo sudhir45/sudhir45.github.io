@@ -1,0 +1,289 @@
+/*
+ * Motion primitives. Markup opts in with attributes; JavaScript only sets data-in.
+ * Initial states apply only under html[data-motion='full'], so text is readable without JS
+ * and under reduced or off motion. Only transform, opacity, clip-path, stroke-dashoffset and
+ * font-variation-settings animate.
+ *
+ *   data-rise    each .rise-line > span moves up out of its line box
+ *   data-draw    rule scales in from the left; data-draw="y" from the top
+ *   data-stroke  SVG path with pathLength="1" draws; per-path --d sets its duration
+ *   data-show    opacity only
+ *   data-ink     drop cap weight and opacity
+ *   data-unmask  figure opens from the top
+ *   data-band    footer band opens from the centre
+ *   data-iris    portrait opens as a circle
+ *   data-slide   margin note slides in 14px
+ *
+ * Timing: --delay on the element. data-in="instant" skips to the final state.
+ */
+
+@layer components {
+	/* Rise titles are display settings (hero, post, lead and page titles). */
+	.rise-title {
+		font-family: var(--font-display-stack);
+	}
+	.rise-line {
+		display: block;
+		overflow: hidden;
+		padding-bottom: 0.2em;
+		margin-bottom: -0.2em;
+	}
+	.rise-line > span {
+		display: block;
+		text-wrap: balance;
+	}
+	[data-draw] {
+		transform-origin: left center;
+	}
+	[data-draw='y'] {
+		transform-origin: center top;
+	}
+}
+
+@keyframes folio-rise {
+	from {
+		transform: translateY(108%);
+	}
+	to {
+		transform: none;
+	}
+}
+@keyframes folio-draw {
+	from {
+		transform: scaleX(0);
+	}
+	to {
+		transform: scaleX(1);
+	}
+}
+@keyframes folio-draw-y {
+	from {
+		transform: scaleY(0);
+	}
+	to {
+		transform: scaleY(1);
+	}
+}
+@keyframes folio-stroke {
+	from {
+		stroke-dashoffset: 1;
+	}
+	to {
+		stroke-dashoffset: 0;
+	}
+}
+@keyframes folio-show {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+@keyframes folio-ink {
+	from {
+		font-variation-settings: 'wght' 200;
+		opacity: 0.1;
+	}
+	to {
+		font-variation-settings: 'wght' 520;
+		opacity: 1;
+	}
+}
+@keyframes folio-unmask {
+	from {
+		clip-path: inset(0 0 100% 0);
+	}
+	to {
+		clip-path: inset(0);
+	}
+}
+@keyframes folio-band {
+	from {
+		clip-path: inset(50% 0 50% 0);
+	}
+	to {
+		clip-path: inset(0);
+	}
+}
+@keyframes folio-iris {
+	from {
+		clip-path: circle(0% at 50% 50%);
+	}
+	to {
+		clip-path: circle(50% at 50% 50%);
+	}
+}
+@keyframes folio-slide {
+	from {
+		opacity: 0;
+		transform: translateX(14px);
+	}
+	to {
+		opacity: 1;
+		transform: none;
+	}
+}
+
+html[data-motion='full'] {
+	& [data-rise] .rise-line > span {
+		animation: folio-rise var(--dur-rise) var(--ease-rise) both;
+		animation-delay: calc(var(--delay, 0s) + var(--line-i, 0) * 120ms);
+	}
+	& [data-draw] {
+		animation: folio-draw var(--dur-draw) var(--ease-draw) both;
+		animation-delay: var(--delay, 0s);
+	}
+	& [data-draw='y'] {
+		animation-name: folio-draw-y;
+		animation-duration: 1100ms;
+	}
+	& [data-stroke] {
+		stroke-dasharray: 1;
+		animation: folio-stroke var(--d, 1s) var(--ease-draw) both;
+		animation-delay: var(--delay, 0s);
+	}
+	& [data-show] {
+		animation: folio-show 700ms ease both;
+		animation-delay: var(--delay, 0s);
+	}
+	& [data-ink] {
+		animation: folio-ink 1600ms var(--ease-rise) both;
+		animation-delay: var(--delay, 0s);
+	}
+	& [data-unmask] {
+		animation: folio-unmask var(--dur-draw) var(--ease-draw) both;
+		animation-delay: var(--delay, 0s);
+	}
+	& [data-band] {
+		animation: folio-band 1200ms var(--ease-draw) both;
+		animation-delay: var(--delay, 0s);
+	}
+	& [data-iris] {
+		animation: folio-iris 900ms var(--ease-rise) both;
+		animation-delay: var(--delay, 0s);
+	}
+	& [data-slide] {
+		animation: folio-slide 900ms var(--ease-rise) both;
+		animation-delay: var(--delay, 0s);
+	}
+
+	/* Hold every primitive at its first frame until it is revealed. */
+	& :is([data-rise] .rise-line > span, [data-draw], [data-stroke], [data-show], [data-ink], [data-unmask], [data-band], [data-iris], [data-slide]) {
+		animation-play-state: paused;
+	}
+	& :is([data-rise][data-in] .rise-line > span, [data-in]:is([data-draw], [data-stroke], [data-show], [data-ink], [data-unmask], [data-band], [data-iris], [data-slide])) {
+		animation-play-state: running;
+	}
+	& :is([data-in='instant'] .rise-line > span, [data-in='instant']) {
+		animation: none;
+	}
+}
+
+/* Reduced and off: final states, no nudges. */
+html:not([data-motion='full']) {
+	& .text-link .arrow,
+	& .index-row .arrow,
+	& .topic-sentence sup,
+	& .topic-index .arrow {
+		transform: none !important;
+	}
+	& .index-row::before {
+		transition: none !important;
+	}
+}
+html[data-motion='off'] *,
+html[data-motion='off'] *::before,
+html[data-motion='off'] *::after {
+	transition-duration: 0s !important;
+}
+
+/* Page change: the old page lifts 12px and fades; the new one settles. Titles morph by shared name. */
+@keyframes folio-page-out {
+	to {
+		opacity: 0;
+		transform: translateY(-12px);
+	}
+}
+@keyframes folio-page-in {
+	from {
+		opacity: 0;
+	}
+}
+html[data-motion='full'] {
+	&::view-transition-old(root) {
+		animation: folio-page-out 180ms var(--ease-out) both;
+	}
+	&::view-transition-new(root) {
+		animation: folio-page-in 340ms var(--ease-out) 180ms both;
+	}
+	&::view-transition-group(*) {
+		animation-duration: var(--dur-page);
+		animation-timing-function: var(--ease-out);
+	}
+}
+html[data-motion='reduced'] {
+	&::view-transition-group(*),
+	&::view-transition-old(*),
+	&::view-transition-new(*) {
+		animation-duration: 150ms !important;
+	}
+}
+html[data-motion='off'] {
+	&::view-transition-group(*),
+	&::view-transition-old(*),
+	&::view-transition-new(*) {
+		animation: none !important;
+	}
+}
+
+/* Theme change: the new theme slides in from the right edge behind a thin amber line. */
+@keyframes folio-turn {
+	from {
+		clip-path: inset(0 0 0 100%);
+	}
+	to {
+		clip-path: inset(0);
+	}
+}
+/* The edge's group sits at the viewport origin once its default animation is replaced. */
+@keyframes folio-edge {
+	from {
+		transform: translateX(calc(100vw - 1px));
+	}
+	to {
+		transform: translateX(0);
+	}
+}
+html.theme-turning {
+	&::view-transition-old(root) {
+		animation: none;
+		opacity: 1;
+		transform: none;
+	}
+	/* !important: Astro's router styles also target the view-transition tree. */
+	&::view-transition-new(root) {
+		animation: folio-turn 520ms cubic-bezier(0.65, 0, 0.35, 1) both !important;
+	}
+	&::view-transition-group(theme-edge) {
+		animation: folio-edge 520ms cubic-bezier(0.65, 0, 0.35, 1) both !important;
+	}
+	&::view-transition-new(theme-edge) {
+		animation: none;
+	}
+}
+/* Named elements would crossfade on their own; the whole page turns as one sheet. */
+html.theme-turning [data-astro-transition-scope] {
+	view-transition-name: none !important;
+}
+.theme-edge {
+	position: fixed;
+	top: 0;
+	right: 0;
+	width: 1px;
+	height: 100vh;
+	background: var(--accent);
+	view-transition-name: theme-edge;
+	pointer-events: none;
+	z-index: 100;
+}

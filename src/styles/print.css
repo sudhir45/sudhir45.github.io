@@ -1,0 +1,47 @@
+/* Posts print as plain text on white, without site chrome. */
+@media print {
+	:root,
+	.dark {
+		--bg: #fff;
+		--surface-2: #f4f4f4;
+		--fg: #111;
+		--body-ink: #222;
+		--muted: #555;
+		--line: #ccc;
+		--accent: #6b4a1a;
+	}
+	.site-masthead,
+	.site-footer,
+	.post-contents,
+	.reading-progress,
+	.post-continue,
+	.skip-link,
+	#search-modal,
+	.copy-button {
+		display: none !important;
+	}
+	.post-grid {
+		display: block !important;
+	}
+	.prose {
+		font-size: 11.5pt;
+	}
+	.prose a {
+		background: none;
+		text-decoration: underline;
+	}
+	.prose .pull-quote,
+	.prose .figure figcaption {
+		float: none !important;
+		position: static !important;
+		width: auto !important;
+		margin: 16px 0 !important;
+		transform: none !important;
+	}
+	.prose pre {
+		white-space: pre-wrap;
+	}
+	html[data-motion] * {
+		animation: none !important;
+	}
+}

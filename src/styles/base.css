@@ -1,0 +1,96 @@
+/* Element defaults, focus, selection. */
+
+@layer base {
+	html {
+		overflow-x: clip;
+		/* Fonts ship limited weight ranges; never fake bold or italic. */
+		font-synthesis: none;
+		font-feature-settings:
+			'kern' 1,
+			'liga' 1,
+			'cv11' 1;
+		text-rendering: optimizeLegibility;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+	}
+
+	html[data-motion='full'] {
+		scroll-behavior: smooth;
+	}
+
+	body {
+		overflow-x: clip;
+		background: var(--bg);
+		color: var(--fg);
+		font-family: var(--font-ui);
+		font-size: var(--text-small);
+		line-height: 1.58;
+	}
+
+	h1,
+	h2,
+	h3,
+	h4 {
+		min-width: 0;
+		margin: 0;
+		overflow-wrap: break-word;
+		font-family: var(--font-reading);
+		font-weight: 450;
+		letter-spacing: -0.02em;
+		line-height: 1.12;
+		text-wrap: pretty;
+	}
+
+	p {
+		margin: 0;
+	}
+
+	code,
+	pre,
+	kbd {
+		font-family: var(--font-code);
+	}
+
+	img {
+		height: auto;
+		max-width: 100%;
+	}
+
+	a {
+		color: inherit;
+		text-decoration: none;
+		text-underline-offset: 0.23em;
+	}
+
+	button {
+		cursor: pointer;
+		color: inherit;
+	}
+
+	a:focus-visible,
+	button:focus-visible,
+	summary:focus-visible,
+	input:focus-visible,
+	select:focus-visible,
+	[tabindex]:focus-visible {
+		outline: 2px solid var(--accent);
+		outline-offset: 3px;
+	}
+
+	::selection {
+		background-color: var(--accent);
+		color: var(--accent-contrast);
+	}
+
+	::-webkit-scrollbar {
+		width: 8px;
+		height: 8px;
+	}
+	::-webkit-scrollbar-track {
+		background: transparent;
+	}
+	::-webkit-scrollbar-thumb {
+		background: var(--line);
+		border-radius: 999px;
+	}
+}

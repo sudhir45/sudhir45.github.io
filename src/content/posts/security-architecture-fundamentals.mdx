@@ -6,10 +6,12 @@ description: "How defense in depth, identity, segmentation, threat modeling, and
 author: "Sudhir"
 isPinned: false
 excerpt: "How defense in depth, identity, segmentation, threat modeling, and recovery fit into a security architecture."
+pullQuote: "A control that nobody can verify will decay quietly."
 tags: ["Security architecture"]
 ---
 
 import PostImage from '@/components/PostImage.astro';
+import PullQuote from '@/components/PullQuote.astro';
 import secureArchitectureLight from '@/assets/images/Secure_Architecture.png';
 import secureArchitectureDark from '@/assets/images/Secure_Architecture_Dark.png';
 
@@ -64,6 +66,8 @@ In the example, the public web tier can call the billing API on one service port
 Firewalls, security groups, ACLs, service meshes, and identity-aware proxies can enforce these boundaries. The choice depends on where the traffic flows and who manages the control. My deeper guides cover [firewall deployment and hardening](/posts/firewall-fundamentals) and [firewall compliance](/posts/firewall-compliance).
 
 ## Assume one control will fail
+
+<PullQuote>A control that nobody can verify will decay quietly.</PullQuote>
 
 Defense in depth is often drawn as a stack of products. That misses the point. The layers should fail differently.
 

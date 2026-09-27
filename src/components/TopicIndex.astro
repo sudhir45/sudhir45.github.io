@@ -1,0 +1,239 @@
+---
+import type { SitePost } from '@/utils/posts';
+import type { TopicWithCount } from '@/utils/topics';
+import { chronologicalPosts } from '@/utils/editorial';
+
+/**
+ * Homepage topic index: a grid of topic entries, each with its colour, post count, description
+ * and latest post. The first cell holds the section title so seven topics fill two rows of four.
+ * Each entry is one link (the topic name) stretched over the cell.
+ */
+interface Props {
+	topics: TopicWithCount[];
+	posts: SitePost[];
+	title?: string;
+	intro?: string;
+	/** Heading id, unique per page. */
+	id?: string;
+}
+const {
+	topics,
+	posts,
+	title = 'Browse by topic',
+	intro = 'Choose a subject to see the related writing.',
+	id = 'topic-index-title'
+} = Astro.props;
+const newest = chronologicalPosts(posts);
+const latest = (name: string) => newest.find((post) => post.data.tags.includes(name));
+---
+
+<section class="topic-index" aria-labelledby={id} data-reveal>
+	<div class="cell intro">
+		<span class="rule" data-draw aria-hidden="true"></span>
+		<h2 id={id}>{title}</h2>
+		<p class="ui">{intro}</p>
+		<a href="/tags" class="text-link">All topics <span class="arrow" aria-hidden="true">→</span></a>
+	</div>
+	{
+		topics.map((topic, i) => {
+			const post = latest(topic.name);
+			return (
+				<article class="cell entry topic-colored" style={`--topic-hue:${topic.hue}`}>
+					<span class="rule" data-draw style={`--delay:${(i + 1) * 60}ms`} aria-hidden="true" />
+					<span class="accent" aria-hidden="true" />
+					<p class="count ui">
+						<span class="topic-dot" aria-hidden="true" />
+						{topic.count} {topic.count === 1 ? 'post' : 'posts'}
+					</p>
+					<h3>
+						<a href={`/tags/${topic.slug}`}>{topic.name}</a>
+					</h3>
+					<p class="description ui">{topic.description}</p>
+					{post && (
+						<p class="latest ui">
+							<span class="sc">Latest</span>
+							<span class="latest-title">{post.data.title}</span>
+						</p>
+					)}
+					<span class="arrow" aria-hidden="true">
+						→
+					</span>
+				</article>
+			);
+		})
+	}
+</section>
+
+<style>
+	/* Each cell spans four subgrid rows, so counts, names, descriptions and latest titles align across a row. */
+	.topic-index {
+		display: grid;
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+		gap: 48px var(--grid-gap);
+		padding-bottom: 88px;
+	}
+	.cell {
+		position: relative;
+		display: grid;
+		grid-row: span 4;
+		grid-template-rows: subgrid;
+		row-gap: 10px;
+		align-items: start;
+		justify-items: start;
+		min-width: 0;
+		padding-top: 20px;
+	}
+	.rule,
+	.accent {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: 1px;
+		background: var(--line);
+	}
+	.intro .rule {
+		background: var(--fg);
+	}
+	/* The intro spans the same four rows but lays out on its own, so only entries size the tracks. */
+	.intro {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 10px;
+	}
+	/* Hover: a 2px rule in the topic colour draws over the hairline. */
+	.accent {
+		height: 2px;
+		top: -1px;
+		background: var(--tc);
+		transform: scaleX(0);
+		transform-origin: right;
+		transition: transform var(--dur-underline) var(--ease-rise);
+	}
+	.entry:hover .accent,
+	.entry:focus-within .accent {
+		transform: scaleX(1);
+		transform-origin: left;
+	}
+
+	.intro h2 {
+		font-family: var(--font-display-stack);
+		font-size: clamp(2rem, 2.6vw, 2.5rem);
+		font-style: italic;
+		font-weight: 380;
+		line-height: 1.02;
+		letter-spacing: -0.02em;
+	}
+	.intro p {
+		max-width: 26ch;
+		font-size: var(--text-small);
+		line-height: 1.55;
+		color: var(--muted);
+	}
+	.intro .text-link {
+		margin-top: auto;
+		font-size: var(--text-ui);
+	}
+
+	.count {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		font-size: var(--text-meta);
+		color: var(--muted);
+	}
+	/* Names sit on the bottom of their track so they stay next to their description. */
+	h3 {
+		align-self: end;
+		font-size: clamp(1.5rem, 2vw, 1.875rem);
+		font-weight: 450;
+		line-height: 1.1;
+		letter-spacing: -0.015em;
+	}
+	/* The name is the link; its hit area covers the whole entry. */
+	h3 a {
+		color: var(--fg);
+		transition: color var(--dur-fade);
+	}
+	h3 a::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+	}
+	.entry:hover h3 a,
+	h3 a:focus-visible {
+		color: var(--tc);
+	}
+	h3 a:focus-visible {
+		outline: none;
+	}
+	.entry:focus-within {
+		outline: 2px solid var(--accent);
+		outline-offset: 6px;
+	}
+	.description {
+		font-size: var(--text-small);
+		line-height: 1.5;
+		color: var(--body-ink);
+	}
+	.latest {
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+		padding-top: 12px;
+		font-size: var(--text-meta);
+		line-height: 1.4;
+		color: var(--muted);
+	}
+	.latest .sc {
+		font-size: 11px;
+	}
+	.latest-title {
+		display: -webkit-box;
+		overflow: hidden;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+	}
+	.entry > .arrow {
+		position: absolute;
+		top: 20px;
+		right: 0;
+		color: var(--muted);
+		transition:
+			transform var(--dur-nudge) var(--ease-rise),
+			color var(--dur-fade);
+	}
+	.entry:hover > .arrow,
+	.entry:focus-within > .arrow {
+		transform: translateX(6px);
+		color: var(--tc);
+	}
+
+	@media (max-width: 1099px) {
+		.topic-index {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			gap: 40px var(--grid-gap);
+		}
+	}
+	@media (max-width: 767px) {
+		.topic-index {
+			grid-template-columns: minmax(0, 1fr);
+			gap: 32px;
+			padding-bottom: 56px;
+		}
+		.cell {
+			grid-row: auto;
+			grid-template-rows: none;
+		}
+		.intro .text-link {
+			margin-top: 0;
+		}
+		.latest {
+			display: none;
+		}
+		.latest {
+			padding-top: 4px;
+		}
+	}
+</style>

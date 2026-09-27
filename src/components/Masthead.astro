@@ -1,0 +1,323 @@
+---
+import Search from './Search.astro';
+import ThemeToggle from './ThemeToggle.astro';
+import DoubleRule from './DoubleRule.astro';
+
+interface Props {
+	/** 'post' is the compact reading masthead with the running title and time left. */
+	variant?: 'site' | 'post';
+	runningTitle?: string;
+	minutes?: number;
+}
+
+const { variant = 'site', runningTitle, minutes } = Astro.props;
+const current = Astro.url.pathname.replace(/\/$/, '') || '/';
+const isHome = current === '/';
+const items = [
+	{ href: '/posts', label: 'Writing' },
+	{ href: '/about', label: 'About' },
+	{ href: '/presentations', label: 'Talks' },
+	{ href: '/cyberdle', label: 'Cyberdle' }
+];
+const active = (href: string) =>
+	current === href ||
+	current.startsWith(href + '/') ||
+	(href === '/posts' && current.startsWith('/tags'));
+---
+
+<header class:list={['site-masthead', `is-${variant}`]}>
+	<div class="shell masthead-row">
+		<a class="wordmark" href="/" aria-label="Sudhir, home">Sudhir<span aria-hidden="true">.</span></a>
+		{
+			variant === 'post' && (
+				<span class="running sc" aria-hidden="true">
+					{runningTitle}
+				</span>
+			)
+		}
+		<div class="masthead-actions">
+			{
+				variant === 'site' && (
+					<nav class="desktop-nav ui" aria-label="Main navigation">
+						{items.map((item) => (
+							<a href={item.href} aria-current={active(item.href) ? 'page' : undefined}>
+								{item.label}
+							</a>
+						))}
+					</nav>
+				)
+			}
+			{
+				variant === 'post' && minutes !== undefined && (
+					<span class="time-left meta" data-time-left data-minutes={minutes}>
+						{minutes} min left
+					</span>
+				)
+			}
+			<button
+				type="button"
+				class="btn-line search-button"
+				data-search-trigger
+				aria-controls="search-modal"
+				aria-expanded="false"
+				aria-keyshortcuts="Control+K"
+				><span>Search</span><kbd>Ctrl K</kbd></button
+			>
+			<ThemeToggle />
+			{variant === 'site' && (
+			<details class="mobile-nav" data-mobile-nav>
+				<summary><span>Menu</span><span class="plus" aria-hidden="true">+</span></summary>
+				<nav aria-label="Main navigation" class="mobile-panel">
+					{
+						items.map((item) => (
+							<a href={item.href} aria-current={active(item.href) ? 'page' : undefined}>
+								{item.label}
+							</a>
+						))
+					}
+					<button
+						type="button"
+						data-search-trigger
+						aria-controls="search-modal"
+						aria-expanded="false">Search</button
+					>
+				</nav>
+			</details>
+			)}
+		</div>
+	</div>
+	{
+		variant === 'site' && (
+			<div class="shell">
+				<DoubleRule draw={isHome} />
+			</div>
+		)
+	}
+</header>
+<Search />
+
+<style>
+	.site-masthead {
+		position: relative;
+		z-index: 40;
+		background: var(--bg);
+	}
+	.site-masthead.is-site {
+		padding-top: clamp(18px, 2.4vw, 34px);
+	}
+	.site-masthead.is-post {
+		position: sticky;
+		top: 0;
+		border-bottom: 1px solid var(--line);
+	}
+	.masthead-row {
+		display: grid;
+		grid-template-columns: 1fr auto 1fr;
+		align-items: center;
+		gap: 24px;
+	}
+	.is-site .masthead-row {
+		grid-template-columns: auto 1fr;
+		padding-bottom: 22px;
+	}
+	.is-post .masthead-row {
+		padding-block: 14px 12px;
+	}
+	.wordmark {
+		display: inline-flex;
+		align-items: center;
+		min-height: 44px;
+		justify-self: start;
+		font-family: var(--font-reading);
+		font-size: 34px;
+		font-weight: 600;
+		line-height: 1.1;
+		letter-spacing: -0.02em;
+		color: var(--fg);
+	}
+	.is-post .wordmark {
+		font-size: 28px;
+	}
+	.wordmark span {
+		color: var(--accent);
+	}
+	.running {
+		max-width: 48ch;
+		overflow: hidden;
+		color: var(--muted);
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+	.masthead-actions {
+		justify-self: end;
+		display: flex;
+		align-items: center;
+		gap: 28px;
+	}
+	.is-post .masthead-actions {
+		gap: 18px;
+	}
+	.desktop-nav {
+		display: flex;
+		align-items: center;
+		gap: 28px;
+		font-size: var(--text-small);
+		font-weight: 500;
+	}
+	.desktop-nav a {
+		position: relative;
+		padding: 6px 0;
+		color: var(--fg);
+	}
+	.desktop-nav a::after,
+	.mobile-panel a::after {
+		content: '';
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		height: 1px;
+		background: var(--accent);
+		transform: scaleX(0);
+		transform-origin: right;
+		transition: transform var(--dur-nudge) var(--ease-rise);
+	}
+	.desktop-nav a:hover::after,
+	.desktop-nav a:focus-visible::after,
+	.desktop-nav a[aria-current='page']::after {
+		transform: scaleX(1);
+		transform-origin: left;
+	}
+	.search-button kbd {
+		font: 500 11px var(--font-ui);
+		letter-spacing: 0.02em;
+	}
+	.is-post .search-button {
+		display: none;
+	}
+	.time-left {
+		white-space: nowrap;
+	}
+
+	/* Menu disclosure: phones, and posts at every width */
+	.mobile-nav {
+		display: none;
+		position: static;
+	}
+	summary {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		min-height: 44px;
+		font: 500 var(--text-small) var(--font-ui);
+		list-style: none;
+		cursor: pointer;
+	}
+	summary::-webkit-details-marker {
+		display: none;
+	}
+	.plus {
+		display: inline-block;
+		font-size: var(--text-body);
+		font-weight: 300;
+		transition: transform var(--dur-move) var(--ease-rise);
+	}
+	details[open] .plus {
+		transform: rotate(45deg);
+	}
+	.mobile-panel {
+		position: absolute;
+		top: 100%;
+		left: 0;
+		right: 0;
+		display: flex;
+		flex-direction: column;
+		padding: 8px var(--page-gutter) 24px;
+		background: var(--bg);
+		border-bottom: 1px solid var(--fg);
+	}
+	.mobile-panel a,
+	.mobile-panel button {
+		position: relative;
+		display: flex;
+		align-items: center;
+		min-height: 52px;
+		padding: 0;
+		border: 0;
+		border-top: 1px solid var(--line);
+		background: none;
+		font: 400 26px/1.2 var(--font-reading);
+		letter-spacing: -0.015em;
+		color: var(--fg);
+		text-align: left;
+	}
+	.mobile-panel a[aria-current='page'] {
+		font-style: italic;
+	}
+	.mobile-panel a[aria-current='page']::after {
+		transform: scaleX(1);
+		transform-origin: left;
+		width: 48px;
+		right: auto;
+	}
+
+	@media (max-width: 1099px) {
+		.masthead-row {
+			grid-template-columns: auto 1fr;
+		}
+		.running {
+			display: none;
+		}
+		.is-post .running {
+			display: none;
+		}
+	}
+	@media (max-width: 767px) {
+		.wordmark {
+			font-size: 28px;
+		}
+		.is-post .wordmark {
+			font-size: 24px;
+		}
+		.desktop-nav,
+		.search-button {
+			display: none;
+		}
+		.masthead-actions,
+		.is-post .masthead-actions {
+			gap: 10px;
+		}
+		.mobile-nav {
+			display: block;
+		}
+		.is-site .masthead-row {
+			padding-bottom: 14px;
+		}
+	}
+</style>
+
+<script>
+	import { onPage } from '@/motion/lifecycle';
+	// The phone menu closes on Escape (returning focus to its summary) and on outside clicks.
+	onPage((signal) => {
+		const menu = document.querySelector<HTMLDetailsElement>('[data-mobile-nav]');
+		if (!menu) return;
+		document.addEventListener(
+			'keydown',
+			(event) => {
+				if (event.key === 'Escape' && menu.open) {
+					menu.open = false;
+					menu.querySelector('summary')?.focus();
+				}
+			},
+			{ signal }
+		);
+		document.addEventListener(
+			'click',
+			(event) => {
+				if (menu.open && !menu.contains(event.target as Node)) menu.open = false;
+			},
+			{ signal }
+		);
+	});
+</script>

@@ -25,3 +25,32 @@
 			d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"></path></svg
 	>
 </button>
+
+<style>
+	.theme-toggle {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 44px;
+		height: 44px;
+		margin-right: -10px;
+		border: 0;
+		background: transparent;
+		color: var(--fg);
+		transition: color var(--dur-micro);
+	}
+	.theme-toggle:hover {
+		color: var(--accent);
+	}
+	svg {
+		width: 20px;
+		height: 20px;
+	}
+	.theme-sun,
+	:global(.dark) .theme-moon {
+		display: none;
+	}
+	:global(.dark) .theme-sun {
+		display: block;
+	}
+</style>

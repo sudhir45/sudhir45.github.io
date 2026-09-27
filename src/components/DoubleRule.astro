@@ -1,0 +1,14 @@
+---
+interface Props {
+	/** Draw the rules in from the left (line two 120ms after line one). */
+	draw?: boolean;
+	delay?: number;
+}
+const { draw = false, delay = 0 } = Astro.props;
+---
+
+<div class="double-rule" aria-hidden="true" data-arrival={draw ? '' : undefined}>
+	<span data-draw={draw ? '' : undefined} style={draw ? `--delay:${delay}ms` : undefined}></span>
+	<span data-draw={draw ? '' : undefined} style={draw ? `--delay:${delay + 120}ms` : undefined}
+	></span>
+</div>

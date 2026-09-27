@@ -1,0 +1,102 @@
+---
+import type { Presentation } from '@/utils/presentations';
+import { longDate } from '@/utils/editorial';
+import TalkCover from './TalkCover.astro';
+
+interface Props {
+	talk: Presentation;
+	/** Show the description under the title (talks page). */
+	description?: boolean;
+	headingLevel?: 'h2' | 'h3';
+	loading?: 'eager' | 'lazy';
+}
+const { talk, description = false, headingLevel: Heading = 'h2', loading = 'lazy' } = Astro.props;
+const href = `/presentations/${talk.slug}`;
+const title = talk.title;
+---
+
+<article class="talk grid-12" data-reveal>
+	<a href={href} class="talk-cover" tabindex="-1" aria-hidden="true">
+		<TalkCover
+			slug={talk.slug}
+			title={talk.title}
+			thumbnail={talk.thumbnail}
+			coverImage={talk.coverImage}
+			loading={loading}
+		/>
+	</a>
+	<div class="talk-copy">
+		<span class="meta">
+			{['Talk', talk.date && longDate(talk.date), `${talk.slideCount} slides`].filter(Boolean).join(' · ')}
+		</span>
+		<Heading><a href={href}>{title}</a></Heading>
+		{talk.venue && <span class="meta">{talk.venue}</span>}
+		{description && talk.description && <p class="ui">{talk.description}</p>}
+		<a href={href} class="text-link" tabindex="-1" aria-hidden="true"
+			>View the slides <span class="arrow">→</span></a
+		>
+	</div>
+</article>
+
+<style>
+	.talk {
+		align-items: center;
+		row-gap: 24px;
+	}
+	.talk-cover {
+		grid-column: 1 / span 6;
+		display: block;
+	}
+	.talk-copy {
+		grid-column: 7 / span 5;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 12px;
+		padding-left: 16px;
+	}
+	.talk-copy :is(h2, h3) {
+		font-family: var(--font-display-stack);
+		font-size: clamp(1.875rem, 3.1vw, 2.75rem);
+		font-weight: 450;
+		line-height: 1.08;
+		letter-spacing: -0.02em;
+	}
+	.talk-copy :is(h2, h3) a {
+		background: linear-gradient(var(--accent), var(--accent)) left 100% / 0 1px no-repeat;
+		transition: background-size var(--dur-underline) var(--ease-rise);
+	}
+	.talk:hover :is(h2, h3) a,
+	.talk-copy :is(h2, h3) a:focus-visible {
+		background-size: 100% 1px;
+	}
+	p {
+		max-width: 52ch;
+		font-size: var(--text-ui-lg);
+		line-height: 1.6;
+		color: var(--body-ink);
+	}
+	.text-link {
+		margin-top: 6px;
+		font-size: var(--text-small);
+	}
+	.talk:hover .text-link .arrow {
+		transform: translateX(5px);
+		color: var(--accent);
+	}
+	@media (max-width: 1099px) {
+		.talk-copy {
+			grid-column: 7 / -1;
+			padding-left: 0;
+		}
+	}
+	@media (max-width: 767px) {
+		.talk-cover,
+		.talk-copy {
+			grid-column: 1 / -1;
+		}
+		.talk-copy {
+			gap: 10px;
+		}
+	}
+</style>

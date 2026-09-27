@@ -1,152 +1,208 @@
 ---
 import Base from '@/layouts/Base.astro';
 import { AppConfig } from '@/utils/AppConfig';
-import { Image } from 'astro:assets';
-import avatar from '@/assets/images/avatar.png';
 import { getAllPosts } from '@/utils/posts';
-import { getAllTopicsWithCounts } from '@/utils/topics';
-import { EDITORIAL, selectEditorialPosts, chronologicalPosts, longDate } from '@/utils/editorial';
-import PostList from '@/components/PostList.astro';
-import TopicList from '@/components/TopicList.astro';
-import BoundaryIllustration from '@/components/BoundaryIllustration.astro';
+import { getTopicsWithCounts } from '@/utils/topics';
+import { EDITORIAL, selectEditorialPosts, chronologicalPosts } from '@/utils/editorial';
 import { getPresentations } from '@/utils/presentations';
-import TalkCover from '@/components/TalkCover.astro';
+import RiseTitle from '@/components/RiseTitle.astro';
+import WorkaroundFigure from '@/components/WorkaroundFigure.astro';
+import LeadSpread from '@/components/LeadSpread.astro';
+import NumberedCard from '@/components/NumberedCard.astro';
+import IndexList from '@/components/IndexList.astro';
+import TalkFeature from '@/components/TalkFeature.astro';
+import TopicIndex from '@/components/TopicIndex.astro';
+import AuthorStrip from '@/components/AuthorStrip.astro';
+
 const posts = await getAllPosts();
 const [lead, ...supporting] = selectEditorialPosts(posts, EDITORIAL.home, 3);
 const featured = new Set([lead, ...supporting].flatMap((post) => (post ? [post.slug] : [])));
 const recent = chronologicalPosts(posts)
 	.filter((post) => !featured.has(post.slug))
 	.slice(0, EDITORIAL.recentLimit);
-const topics = await getAllTopicsWithCounts();
+const topics = await getTopicsWithCounts();
 const talk = getPresentations()[0];
+const figureQuote = 'Each workaround creates a path the original design did not consider.';
+const figureEssay = posts.find((post) => post.slug === 'good-enough-security')?.url ?? '/posts';
 ---
 
 <Base head={{ title: AppConfig.title, description: AppConfig.description }}>
-	<div class="shell">
-		<div class="introduction">
-			<p>
-				<span class="underline"> Security work, written down. </span>
-				<br>
-				<br>
-				I'm Sudhir, a CISSP-certified Cyber Security Professional
-				working on enterprise security, governance, compliance, and validation. I write practical
-				notes on how security controls are designed, assessed, operated, and evidenced in large
-				enterprise environments.
-			</p>
-		</div>
-		{
-			lead ? (
-				<section class="lead" aria-labelledby="lead-title">
-					<>
-						<div class="lead-copy">
-							<>
-								<div class="category">
-									<>
-										<span>{lead.data.tags[0]}</span>
-										<span aria-hidden="true">-</span>
-										<span>Essay</span>
-									</>
-								</div>
-								<h1 id="lead-title" transition:name={`post-title-${lead.slug}`}>
-									<a href={lead.url}>{lead.data.title}</a>
-								</h1>
-								<p class="lead-description">{lead.data.description}</p>
-								<div class="lead-bottom">
-									<>
-										<a href={lead.url} class="text-link">
-											Read the essay <span aria-hidden="true">↗</span>
-										</a>
-										<span class="meta">{lead.data.minutesRead}</span>
-									</>
-								</div>
-							</>
-						</div>
-						<figure class="lead-art">
-							<>
-								<BoundaryIllustration />
-								<figcaption>The exception becomes the route.</figcaption>
-							</>
-						</figure>
-					</>
-				</section>
-			) : (
-				<header class="page-heading">
-					<>
-						<h1>Security work, written down.</h1>
-						<p>New writing will appear here.</p>
-					</>
-				</header>
-			)
-		}
+	<div class="shell home">
+		<section class="hero grid-12" aria-labelledby="hero-title" data-reveal data-arrival>
+			<RiseTitle
+				level={1}
+				id="hero-title"
+				class="hero-title"
+				lines={['Security work,', 'written down.']}
+				delay={350}
+			/>
+			<div class="hero-intro">
+				<div class="hero-rule" data-draw style="--delay:1000ms"></div>
+				<p class="ui" data-show style="--delay:1100ms">
+					I'm Sudhir, a CISSP-certified Cyber Security Professional working on enterprise security,
+					governance, compliance, and validation. I write practical notes on how security controls
+					are designed, assessed, operated, and evidenced in large enterprise environments.
+				</p>
+			</div>
+			<div class="hero-figure">
+				<WorkaroundFigure quote={figureQuote} href={figureEssay} />
+			</div>
+		</section>
+
+		{lead && <LeadSpread post={lead} />}
+
 		{
 			supporting.length > 0 && (
-				<section class="supporting" aria-label="Selected writing">
-					{supporting.map((post) => (
-						<article>
-							<span class="meta">
-								{post.data.tags[0]} · {post.data.minutesRead}
-							</span>
-							<h2>
-								<a href={post.url}>{post.data.title}</a>
-							</h2>
-							<p>{post.data.description}</p>
-							<a href={post.url} class="text-link">
-								Read essay <span aria-hidden="true">→</span>
-							</a>
-						</article>
-					))}
+				<section class="selected" aria-labelledby="selected-heading" data-reveal>
+					<div class="section-label">
+						<h2 id="selected-heading">Selected writing</h2>
+						<span data-draw />
+					</div>
+					<div class="selected-grid grid-12">
+						{supporting.map((post, i) => (
+							<NumberedCard post={post} number={String(i + 2).padStart(2, '0')} delay={100 + i * 100} />
+						))}
+					</div>
 				</section>
 			)
 		}
-		<section class="writing" aria-labelledby="writing-heading">
+
+		<section class="more" aria-labelledby="more-heading">
 			<div class="section-head">
-				<h2 id="writing-heading">More from the writing</h2><a href="/posts" class="text-link"
-					>All {posts.length} posts <span aria-hidden="true">→</span></a
+				<h2 id="more-heading">More from the writing</h2>
+				<a href="/posts" class="text-link all-posts is-top"
+					>All {posts.length} posts <span class="arrow" aria-hidden="true">→</span></a
 				>
-			</div><PostList posts={recent} compact />
+			</div>
+			<IndexList posts={recent} reveal />
+			<a href="/posts" class="text-link all-posts is-bottom"
+				>All {posts.length} posts <span class="arrow" aria-hidden="true">→</span></a
+			>
 		</section>
+
 		{
 			talk && (
-				<section class="talk" aria-labelledby="talk-heading">
-					<>
-						<a href={`/presentations/${talk.slug}`} aria-label={`Open ${talk.title} slides`}>
-							<TalkCover
-								slug={talk.slug}
-								title={talk.title}
-								thumbnail={talk.thumbnail}
-								coverImage={talk.coverImage}
-							/>
-						</a>
-						<div>
-							<>
-								<p class="meta">
-									{['Talk', talk.date && longDate(talk.date), `${talk.slideCount} slides`]
-										.filter(Boolean)
-										.join(' · ')}
-								</p>
-								<h2 id="talk-heading">{talk.title.replace(' :', ':')}</h2>
-								<p class="meta">{talk.venue}</p>
-								<a href={`/presentations/${talk.slug}`} class="text-link">
-									View the slides <span aria-hidden="true">→</span>
-								</a>
-							</>
-						</div>
-					</>
+				<section class="talk-section" aria-label="Latest talk">
+					<TalkFeature talk={talk} />
 				</section>
 			)
 		}
-		<section class="topics" aria-labelledby="topics-heading">
-			<div class="topics-intro">
-				<h2 id="topics-heading">Browse by topic</h2><p>
-					Choose a subject to see the related writing.
-				</p>
-			</div><TopicList topics={topics} />
-		</section>
-		<section class="author" aria-label="About the author">
-			<Image src={avatar} width={144} height={144} format="webp" alt="Sudhir" /><p>
-				I'm a Cyber Security Professional. I write about how security decisions play out in
-				practice. <a href="/about">More about me ↗</a>
-			</p>
-		</section>
+
+		<TopicIndex topics={topics} posts={posts} />
+
+		<AuthorStrip />
 	</div>
 </Base>
+
+<style>
+	.hero {
+		row-gap: 56px;
+		padding-top: clamp(40px, 5.3vw, 76px);
+	}
+	.hero :global(.hero-title) {
+		grid-column: 1 / -1;
+		font-size: var(--text-hero);
+		font-weight: 420;
+		line-height: 0.93;
+		letter-spacing: -0.035em;
+	}
+	.hero :global(.hero-title .is-italic) {
+		padding-left: 0.76em;
+		font-weight: 300;
+	}
+	.hero-intro {
+		grid-column: 1 / span 5;
+		align-self: start;
+		padding-top: 6px;
+	}
+	.hero-rule {
+		width: 48px;
+		height: 1px;
+		margin-bottom: 20px;
+		background: var(--accent);
+	}
+	.hero-intro p {
+		font-size: var(--text-body);
+		line-height: 1.62;
+		color: var(--body-ink);
+	}
+	.hero-figure {
+		grid-column: 7 / span 6;
+		align-self: center;
+	}
+
+	.selected {
+		display: flex;
+		flex-direction: column;
+		gap: 28px;
+		padding-bottom: 84px;
+	}
+	.selected-grid > :global(:first-child) {
+		grid-column: 1 / span 5;
+	}
+	.selected-grid > :global(:nth-child(2)) {
+		grid-column: 7 / span 5;
+	}
+
+	.more {
+		padding-bottom: 88px;
+	}
+	/* On phones the link to the archive follows the list, where a reader finishes it. */
+	.all-posts.is-bottom {
+		display: none;
+		margin-top: 12px;
+		font-size: var(--text-ui);
+	}
+	@media (max-width: 767px) {
+		.all-posts.is-top {
+			display: none;
+		}
+		.all-posts.is-bottom {
+			display: inline-flex;
+		}
+	}
+
+	.talk-section {
+		padding-bottom: 88px;
+	}
+
+
+	@media (max-width: 1099px) {
+		.hero-intro {
+			grid-column: 1 / span 8;
+		}
+		.hero-figure {
+			grid-column: 1 / -1;
+		}
+		.selected-grid > :global(:first-child) {
+			grid-column: 1 / span 6;
+		}
+		.selected-grid > :global(:nth-child(2)) {
+			grid-column: 7 / span 6;
+		}
+	}
+	@media (max-width: 767px) {
+		.hero {
+			row-gap: 40px;
+		}
+		.hero :global(.hero-title .is-italic) {
+			padding-left: 0.6em;
+		}
+		.hero-intro,
+		.hero-figure,
+		.selected-grid > :global(*) {
+			grid-column: 1 / -1 !important;
+		}
+		.hero-intro p {
+			font-size: var(--text-ui-lg);
+		}
+		.selected-grid {
+			row-gap: 44px;
+		}
+		.selected,
+		.more,
+		.talk-section {
+			padding-bottom: 64px;
+		}
+	}
+</style>

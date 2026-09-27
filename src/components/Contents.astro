@@ -1,0 +1,153 @@
+---
+import type { MarkdownHeading } from 'astro';
+
+/**
+ * Post contents. From 1100px it is a sticky rail beside the body; below that it is a dropdown bar
+ * above the body that shows the current section. contents.ts moves the marker and the current label.
+ */
+interface Props {
+	headings: MarkdownHeading[];
+	label?: string;
+}
+const { headings, label = 'In this essay' } = Astro.props;
+const sections = headings.filter((heading) => heading.depth === 2);
+const first = sections[0]?.text ?? '';
+---
+
+{
+	sections.length > 1 && (
+		<>
+			<nav class="contents-rail ui" aria-label={label} data-contents>
+				<span class="sc">{label}</span>
+				<div class="rail-list">
+					<span class="marker" data-contents-marker aria-hidden="true" />
+					{sections.map((heading) => (
+						<a href={`#${heading.slug}`}>{heading.text}</a>
+					))}
+				</div>
+			</nav>
+			<details class="contents-bar ui" data-contents>
+				<summary>
+					<span class="sc">{label}</span>
+					<span class="current" data-contents-current data-default={first}>
+						{first}
+					</span>
+					<span class="plus" aria-hidden="true">
+						+
+					</span>
+				</summary>
+				<nav aria-label={label}>
+					{sections.map((heading) => (
+						<a href={`#${heading.slug}`}>{heading.text}</a>
+					))}
+				</nav>
+			</details>
+		</>
+	)
+}
+
+<style>
+	.contents-rail {
+		position: sticky;
+		top: 104px;
+		align-self: start;
+	}
+	.contents-rail .sc {
+		display: block;
+		margin-bottom: 10px;
+		color: var(--fg);
+	}
+	.rail-list {
+		position: relative;
+	}
+	.rail-list a {
+		display: block;
+		padding: 9px 0 9px 22px;
+		font-size: var(--text-ui);
+		line-height: 1.35;
+		color: var(--muted);
+		transition: color var(--dur-fade);
+	}
+	.rail-list a:hover,
+	.rail-list a:focus-visible,
+	.rail-list a[aria-current] {
+		color: var(--fg);
+	}
+	.marker {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 12px;
+		height: 1px;
+		background: var(--accent);
+		opacity: 0;
+		transition:
+			transform var(--dur-move) var(--ease-rise),
+			opacity var(--dur-micro);
+	}
+
+	.contents-bar {
+		display: none;
+		border: 1px solid var(--line);
+		border-radius: var(--radius);
+		background: var(--surface-2);
+	}
+	summary {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		min-height: 52px;
+		padding: 0 16px;
+		list-style: none;
+		cursor: pointer;
+	}
+	summary::-webkit-details-marker {
+		display: none;
+	}
+	summary .sc {
+		flex: none;
+		color: var(--muted);
+	}
+	.current {
+		flex: 1;
+		min-width: 0;
+		overflow: hidden;
+		font-size: var(--text-ui);
+		color: var(--fg);
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+	.plus {
+		font-size: var(--text-body);
+		font-weight: 300;
+		transition: transform var(--dur-move) var(--ease-rise);
+	}
+	details[open] .plus {
+		transform: rotate(45deg);
+	}
+	.contents-bar nav {
+		display: flex;
+		flex-direction: column;
+		padding: 0 16px 10px;
+	}
+	.contents-bar nav a {
+		display: flex;
+		align-items: center;
+		min-height: 44px;
+		border-top: 1px solid var(--line);
+		font-size: var(--text-small);
+		color: var(--muted);
+	}
+	.contents-bar nav a[aria-current] {
+		color: var(--fg);
+	}
+
+	@media (max-width: 1099px) {
+		.contents-rail {
+			display: none;
+		}
+		.contents-bar {
+			display: block;
+		}
+	}
+</style>

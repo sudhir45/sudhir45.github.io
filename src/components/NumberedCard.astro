@@ -1,0 +1,83 @@
+---
+import type { SitePost } from '@/utils/posts';
+import { topicHue } from '@/utils/topics';
+
+interface Props {
+	post: SitePost;
+	number: string;
+	delay?: number;
+	/** Shared title transition name. Off where the post may appear twice on a page. */
+	transition?: boolean;
+}
+const { post, number, delay = 0, transition = true } = Astro.props;
+const topic = post.data.tags[0];
+---
+
+<article
+	class="card topic-colored"
+	style={`--topic-hue:${topic ? topicHue(topic) : 0};--delay:${delay}ms`}
+	data-show
+>
+	<span class="card-number" aria-hidden="true">{number}</span>
+	<span class="card-meta ui">
+		<span class="topic-dot" aria-hidden="true"></span>
+		{[topic, post.data.minutesRead].filter(Boolean).join(' · ')}
+	</span>
+	<h3>
+		<a href={post.url} transition:name={transition ? `post-title-${post.slug}` : undefined}>{post.data.title}</a>
+	</h3>
+	<p class="ui">{post.data.description}</p>
+	<a href={post.url} class="text-link" tabindex="-1" aria-hidden="true"
+		>Read essay <span class="arrow">→</span></a
+	>
+</article>
+
+<style>
+	.card {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 14px;
+		min-width: 0;
+	}
+	.card-number {
+		font-family: var(--font-display-stack);
+		font-size: 40px;
+		font-weight: 200;
+		line-height: 1;
+		color: var(--accent);
+	}
+	.card-meta {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		font-size: var(--text-meta);
+		color: var(--muted);
+	}
+	h3 {
+		font-size: clamp(1.625rem, 2.4vw, 2.125rem);
+		font-weight: 460;
+		line-height: 1.12;
+		letter-spacing: -0.012em;
+	}
+	h3 a {
+		background: linear-gradient(var(--accent), var(--accent)) left 100% / 0 1px no-repeat;
+		transition: background-size var(--dur-underline) var(--ease-rise);
+	}
+	.card:hover h3 a,
+	h3 a:focus-visible {
+		background-size: 100% 1px;
+	}
+	p {
+		font-size: var(--text-ui-lg);
+		line-height: 1.6;
+		color: var(--body-ink);
+	}
+	.text-link {
+		font-size: var(--text-ui);
+	}
+	.card:hover .text-link .arrow {
+		transform: translateX(5px);
+		color: var(--accent);
+	}
+</style>

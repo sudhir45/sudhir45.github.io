@@ -1,0 +1,431 @@
+/*
+ * Everything Markdown and MDX can emit inside a post body.
+ * The body sits in 6 of 12 columns; pull quotes and figure captions use the 3 columns to its right
+ * from 1100px up, and fall back inline below that.
+ */
+
+@layer components {
+	.prose {
+		--gap: var(--grid-gap);
+		counter-reset: figure;
+		min-width: 0;
+		font-family: var(--font-reading);
+		font-size: var(--text-prose);
+		line-height: 1.66;
+		color: var(--body-ink);
+		font-optical-sizing: auto;
+	}
+
+	.prose > * {
+		margin-block: 0 22px;
+	}
+
+	.prose > p:first-of-type {
+		font-size: 1.19em;
+		line-height: 1.5;
+		color: var(--fg);
+	}
+
+	.prose :is(h2, h3, h4) {
+		scroll-margin-top: 96px;
+		color: var(--fg);
+	}
+	.prose h2 {
+		margin: 48px 0 18px;
+		font-size: clamp(1.625rem, 2.6vw, 2.25rem);
+		font-weight: 470;
+		line-height: 1.15;
+		letter-spacing: -0.015em;
+	}
+	.prose h3 {
+		margin: 36px 0 12px;
+		font-size: clamp(1.3125rem, 1.8vw, 1.5rem);
+		font-weight: 500;
+		line-height: 1.25;
+		letter-spacing: -0.01em;
+	}
+	.prose h4 {
+		margin: 28px 0 10px;
+		font-size: 1.05em;
+		font-weight: 600;
+	}
+
+	.prose strong {
+		font-weight: 600;
+		color: var(--fg);
+	}
+
+	.prose a {
+		color: var(--fg);
+		text-decoration: underline;
+		text-decoration-color: var(--line);
+		text-decoration-thickness: 1px;
+		text-underline-offset: 0.2em;
+		background: linear-gradient(var(--accent), var(--accent)) left calc(100% - 0.02em) / 0 1px
+			no-repeat;
+		transition:
+			background-size var(--dur-underline) var(--ease-rise),
+			text-decoration-color var(--dur-fade);
+	}
+	.prose a:hover,
+	.prose a:focus-visible {
+		background-size: 100% 1px;
+		text-decoration-color: transparent;
+	}
+
+	/* Bulleted lists keep a quiet amber marker. */
+	.prose ul {
+		padding-left: 1.2em;
+		list-style: none;
+	}
+	.prose ul > li {
+		position: relative;
+		margin-bottom: 8px;
+	}
+	.prose ul > li::before {
+		content: '';
+		position: absolute;
+		left: -1.05em;
+		top: 0.72em;
+		width: 6px;
+		height: 1px;
+		background: var(--accent);
+	}
+
+	/* Numbered lists are set as ruled rows with a light serif numeral. */
+	.prose ol {
+		padding: 0;
+		list-style: none;
+		counter-reset: step;
+		border-bottom: 1px solid var(--line);
+	}
+	.prose ol > li {
+		counter-increment: step;
+		display: grid;
+		grid-template-columns: 52px minmax(0, 1fr);
+		align-items: baseline;
+		padding: 14px 0;
+		border-top: 1px solid var(--line);
+	}
+	.prose ol > li::before {
+		content: counter(step);
+		font-size: 1.5em;
+		font-weight: 200;
+		line-height: 1;
+		color: var(--accent);
+	}
+	.prose ol > li > * {
+		grid-column: 2;
+	}
+	.prose ol > li > :first-child {
+		grid-row: 1;
+	}
+	.prose li > p {
+		margin: 0;
+	}
+	.prose li > p + p,
+	.prose li > :is(ul, ol) {
+		margin-top: 10px;
+	}
+	.prose li :is(ul, ol) {
+		border-bottom: 0;
+	}
+
+	.prose blockquote {
+		margin-block: 34px;
+		padding: 2px 0 2px 22px;
+		border-left: 1px solid var(--accent);
+		font-size: 1.12em;
+		font-style: italic;
+		font-weight: 350;
+		line-height: 1.4;
+		color: var(--fg);
+	}
+	.prose blockquote p + p {
+		margin-top: 12px;
+	}
+
+	.prose hr {
+		margin-block: 44px;
+		border: 0;
+		border-top: 1px solid var(--line);
+	}
+
+	.prose :not(pre) > code {
+		padding: 0.1em 0.35em;
+		border-radius: var(--radius);
+		background: var(--surface-2);
+		font-size: 0.8em;
+		color: var(--fg);
+	}
+
+	/* Code blocks */
+	.prose pre {
+		position: relative;
+		margin-block: 30px;
+		overflow-x: auto;
+		padding: 0;
+		border: 1px solid var(--line);
+		border-radius: var(--radius);
+		background: var(--surface-2) !important;
+		font-size: 0.72em;
+		line-height: 1.65;
+	}
+	.prose pre > code {
+		display: grid;
+		min-width: max-content;
+		padding: 18px 0;
+	}
+	.prose pre > code .line {
+		min-height: 1.65em;
+		padding: 0 72px 0 20px;
+	}
+	.prose .astro-code span {
+		color: var(--shiki-light) !important;
+	}
+	.dark .prose .astro-code span {
+		color: var(--shiki-dark) !important;
+	}
+	.prose .copy-button {
+		position: absolute;
+		top: 10px;
+		right: 12px;
+		padding: 4px 6px;
+		border: 0;
+		background: var(--surface-2);
+		font: 500 var(--text-xs) var(--font-ui);
+		color: var(--muted);
+		text-decoration: underline transparent;
+		text-underline-offset: 0.25em;
+		transition: color var(--dur-micro);
+	}
+	.prose .copy-button:hover {
+		color: var(--fg);
+	}
+	.prose .copy-button[data-copy-state='copied'] {
+		color: var(--accent);
+		text-decoration-color: currentColor;
+	}
+
+	/* Tables are wrapped in a scrollable region by reading.ts */
+	.prose .wide-content {
+		max-width: 100%;
+		overflow-x: auto;
+		margin-block: 30px;
+	}
+	.prose table {
+		width: 100%;
+		border-collapse: collapse;
+		font: 400 var(--text-small)/1.55 var(--font-ui);
+		color: var(--body-ink);
+	}
+	.prose th,
+	.prose td {
+		min-width: 120px;
+		padding: 12px 14px 12px 0;
+		border-bottom: 1px solid var(--line);
+		text-align: left;
+		vertical-align: top;
+	}
+	.prose th {
+		font-size: var(--text-smallcaps);
+		font-weight: 600;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		color: var(--fg);
+		border-bottom-color: var(--fg);
+	}
+
+	/* Images and figures */
+	.prose img {
+		display: block;
+		border: 1px solid var(--line);
+	}
+	.prose > p > img {
+		margin-inline: auto;
+	}
+	.prose .figure {
+		position: relative;
+		margin-block: 34px;
+		counter-increment: figure;
+	}
+	.prose .figure img {
+		float: none !important;
+		width: 100%;
+		margin: 0 !important;
+	}
+	.prose .figure.is-narrow img {
+		width: auto;
+		max-width: min(100%, 480px);
+		margin-inline: auto !important;
+	}
+	.prose .figure figcaption {
+		margin-top: 12px;
+		font: 400 var(--text-meta)/1.5 var(--font-ui);
+		color: var(--muted);
+	}
+	.prose .figure figcaption::before {
+		content: 'Fig. ' counter(figure) '\00a0\00a0';
+		font-weight: 600;
+		color: var(--accent);
+	}
+
+	/* Pull quotes */
+	.prose .pull-quote {
+		margin-block: 30px;
+		padding-left: 20px;
+		border-left: 1px solid var(--accent);
+		font-size: clamp(1.375rem, 1.8vw, 1.5625rem);
+		font-style: italic;
+		font-weight: 300;
+		line-height: 1.26;
+		color: var(--fg);
+	}
+	.prose .pull-quote[data-draw-rule] {
+		border-left: 0;
+		position: relative;
+	}
+	.prose .pull-quote .pull-rule {
+		position: absolute;
+		left: 0;
+		top: 0;
+		bottom: 0;
+		width: 1px;
+		background: var(--accent);
+	}
+
+	/* Expandable sections (<details>) */
+	.prose details {
+		margin-block: 30px;
+		border-block: 1px solid var(--line);
+	}
+	.prose summary {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 16px;
+		min-height: 52px;
+		font: 500 var(--text-smallcaps) var(--font-ui);
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: var(--fg);
+		list-style: none;
+		cursor: pointer;
+	}
+	.prose summary::-webkit-details-marker {
+		display: none;
+	}
+	.prose summary::after {
+		content: '+';
+		font-size: 18px;
+		font-weight: 300;
+		letter-spacing: 0;
+		transition: transform var(--dur-move) var(--ease-rise);
+	}
+	.prose details[open] summary::after {
+		transform: rotate(45deg);
+	}
+	.prose summary:hover {
+		color: var(--accent);
+	}
+	.prose details > :not(summary) {
+		margin-block: 4px 22px;
+	}
+	/* Quoted material inside a details block is reference text, set at body size. */
+	.prose details blockquote {
+		font-size: 1em;
+		line-height: 1.6;
+	}
+
+	/* Embeds that sit beside the text, such as a certification badge. The height is reserved
+	   so the text does not move when a third-party embed loads. */
+	.prose .margin-note {
+		display: flex;
+		justify-content: center;
+		min-height: 270px;
+		margin-block: 30px;
+	}
+
+	/* Admonitions from satteriAdmonitions */
+	.prose .admonition {
+		--admonition-color: var(--muted);
+		margin-block: 30px;
+		padding: 16px 20px;
+		border-left: 2px solid var(--admonition-color);
+		background: color-mix(in oklab, var(--admonition-color) 7%, transparent);
+		color: var(--fg);
+	}
+	.prose .admonition-tip {
+		--admonition-color: oklch(52% 0.07 155);
+	}
+	.prose .admonition-warning {
+		--admonition-color: var(--accent);
+	}
+	.prose .admonition-caution {
+		--admonition-color: oklch(52% 0.12 30);
+	}
+	.dark .prose .admonition-tip {
+		--admonition-color: oklch(70% 0.08 155);
+	}
+	.dark .prose .admonition-caution {
+		--admonition-color: oklch(70% 0.11 30);
+	}
+	.prose .admonition-label {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		margin-bottom: 6px;
+		font: 600 var(--text-smallcaps) var(--font-ui);
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: var(--admonition-color);
+	}
+	.prose .admonition-icon {
+		width: 16px;
+		height: 16px;
+		flex: none;
+	}
+	.prose .admonition-body {
+		font-size: 0.86em;
+	}
+	.prose .admonition-body > :last-child {
+		margin-bottom: 0;
+	}
+	.prose .admonition-body > p + p {
+		margin-top: 12px;
+	}
+
+	/* Footnotes */
+	.prose .footnotes {
+		margin-top: 48px;
+		padding-top: 18px;
+		border-top: 1px solid var(--line);
+		font: 400 var(--text-ui)/1.6 var(--font-ui);
+		color: var(--muted);
+	}
+
+	/* Margin column from 1100px: pull quotes float into it, figure captions sit beside the figure. */
+	@media (min-width: 1100px) {
+		.prose .pull-quote {
+			float: right;
+			clear: right;
+			width: calc(50% - var(--gap) / 2);
+			margin: 4px calc(-50% - var(--gap) / 2) 24px 0;
+		}
+		.prose .margin-note {
+			float: right;
+			clear: right;
+			justify-content: flex-start;
+			width: calc(50% - var(--gap) / 2);
+			margin: 4px calc(-50% - var(--gap) / 2) 24px 0;
+		}
+		.prose .figure figcaption {
+			position: absolute;
+			top: 50%;
+			left: calc(100% + var(--gap));
+			width: calc(50% - var(--gap) / 2);
+			margin: 0;
+			transform: translateY(-50%);
+		}
+	}
+}

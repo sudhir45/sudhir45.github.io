@@ -1,21 +1,9 @@
-/* Approved editorial serif: warm paper, charcoal, restrained amber. */
+/* Folio tokens: warm paper, charcoal, restrained amber. Colour values are unchanged from the editorial serif design. */
 
-@font-face {
-	font-family: 'Source Serif 4';
-	src: url('../assets/fonts/source-serif-4.ttf') format('truetype');
-	font-weight: 200 900;
-	font-style: normal;
-	font-display: swap;
-}
 :root {
-	--font-display-stack: 'Source Serif 4', Georgia, serif;
-	--font-reading: var(--font-display-stack);
-	--font-ui: 'Inter Variable', 'Inter', 'Segoe UI', 'Helvetica Neue', sans-serif;
-	--font-code: 'JetBrains Mono Variable', 'JetBrains Mono', 'Consolas', 'Monaco', monospace;
-	--content-measure: 65ch;
-	--line-strong: var(--fg);
 	color-scheme: light;
-	--game-correct: oklch(43% 0.075 145);
+
+	/* Colour */
 	--bg: oklch(97.7% 0.009 82);
 	--surface: var(--bg);
 	--surface-2: oklch(94% 0.012 82);
@@ -25,33 +13,68 @@
 	--faint: var(--muted);
 	--subtle: var(--muted);
 	--line: oklch(82% 0.016 82);
+	--line-strong: var(--fg);
 	--frame: oklch(58% 0.014 65);
 	--accent: oklch(46% 0.095 57);
 	--accent-strong: var(--accent);
 	--accent-contrast: var(--bg);
+	--accent-tint: oklch(46% 0.095 57 / 0.07);
+	--game-correct: oklch(43% 0.075 145);
 	--art: oklch(67% 0.024 82);
 	--art-edge: oklch(49% 0.024 82);
 	--art-tint: oklch(88% 0.019 82);
+
+	/* Type */
+	/* Two optical cuts of Source Serif 4 (see fonts.css): Display for about 30px and up, Text below. */
+	--font-display-stack: 'Source Serif Display', Georgia, serif;
+	--font-reading: 'Source Serif Text', Georgia, serif;
+	--font-ui: 'Inter Folio', 'Inter', 'Segoe UI', 'Helvetica Neue', sans-serif;
+	--font-code: 'JetBrains Mono Folio', 'JetBrains Mono', Consolas, Monaco, monospace;
+
+	--text-hero: clamp(4rem, 11vw, 9.875rem);
+	--text-title: clamp(2.875rem, 7.5vw, 6.25rem);
+	--text-lead-title: clamp(2.5rem, 4.6vw, 4.25rem);
+	--text-display: clamp(2.5rem, 5.5vw, 4.5rem);
+	--text-section: clamp(1.75rem, 2.5vw, 2.25rem);
+	--text-section-italic: clamp(2.25rem, 3.8vw, 3.375rem);
+	--text-deck: clamp(1.25rem, 2vw, 1.8125rem);
+	--text-prose: clamp(1.0625rem, 0.9rem + 0.9vw, 1.3125rem);
+	--text-body: 1.125rem; /* 18px */
+	--text-ui-lg: 1rem; /* 16px */
+	--text-small: 0.9375rem; /* 15px */
+	--text-ui: 0.875rem; /* 14px */
+	--text-meta: 0.8125rem; /* 13px */
+	--text-smallcaps: 0.75rem; /* 12px, Inter 500 uppercase, 0.14em tracking */
+	--text-xs: 0.75rem; /* 12px */
+
+	/* Layout */
+	--page-gutter: clamp(20px, 5vw, 72px);
+	--page-max: 1440px;
+	--grid-gap: 24px;
+	--content-measure: 660px;
+	--radius: 3px;
+	--space-sm: 8px;
 	--space-md: 16px;
 	--space-lg: 24px;
 	--space-3xl: 64px;
-	--space-sm: 8px;
-	--page-gutter: clamp(20px, 5vw, 76px);
-	--text-meta: 0.8125rem;
-	--text-small: 0.9375rem;
-	--text-body: 1.125rem;
-	--text-prose: 1.25rem;
-	--text-display: clamp(2.5rem, 5.5vw, 5rem);
-	--text-section: clamp(1.75rem, 3vw, 2.5rem);
-	--text-title: clamp(2.25rem, 4.2vw, 3.375rem);
-	--radius: 3px;
-	--dur-micro: 120ms;
+
+	/* Motion */
+	--dur-micro: 160ms; /* button borders, text colour */
+	--dur-fade: 300ms; /* hover colour changes */
+	--dur-move: 320ms; /* contents marker, highlight bar, filter underline */
+	--dur-nudge: 450ms; /* arrows and counts that shift on hover */
+	--dur-underline: 600ms; /* rules and underlines that draw on hover */
+	--dur-page: 520ms;
+	--dur-rise: 1150ms;
+	--dur-draw: 1300ms;
 	--dur-long: 420ms;
+	--ease-rise: cubic-bezier(0.2, 0.7, 0.1, 1);
+	--ease-draw: cubic-bezier(0.65, 0, 0.35, 1);
 	--ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
+
 .dark {
 	color-scheme: dark;
-	--game-correct: oklch(76% 0.075 145);
 	--bg: oklch(21% 0.012 65);
 	--surface: var(--bg);
 	--surface-2: oklch(25% 0.014 65);
@@ -65,6 +88,8 @@
 	--accent: oklch(76% 0.085 65);
 	--accent-strong: var(--accent);
 	--accent-contrast: var(--bg);
+	--accent-tint: oklch(76% 0.085 65 / 0.08);
+	--game-correct: oklch(76% 0.075 145);
 	--art: oklch(48% 0.027 82);
 	--art-edge: oklch(67% 0.023 82);
 	--art-tint: oklch(29% 0.02 82);

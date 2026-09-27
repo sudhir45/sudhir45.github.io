@@ -6,10 +6,12 @@ description: "A practical framework for evaluating AI in monitoring, threat dete
 author: "Sudhir"
 isPinned: false
 excerpt: "A practical framework for evaluating AI in monitoring, threat detection, investigation, and response."
+pullQuote: "That is a hypothesis, not a finding."
 tags: ["AI security", "Security architecture"]
 ---
 
 import PostImage from '@/components/PostImage.astro';
+import PullQuote from '@/components/PullQuote.astro';
 import aiInCyberSec from '@/assets/images/AIinCyberSec.png';
 
 AI is already inside infrastructure and security products. Sometimes it means a statistical anomaly model. Sometimes it means a language model summarizing an alert. Vendors often put both behind the same label.
@@ -77,6 +79,8 @@ An assistant may summarize those events as account compromise followed by malwar
 The useful output links each sentence to the source event and exposes the generated query. The dangerous output turns three nearby alerts into a confident attack narrative with no trace back to evidence.
 
 ## Automated response
+
+<PullQuote>That is a hypothesis, not a finding.</PullQuote>
 
 Automation can shorten containment time. It can also disable the wrong account or isolate a critical server.
 

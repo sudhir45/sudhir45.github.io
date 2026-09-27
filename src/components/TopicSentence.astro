@@ -1,0 +1,94 @@
+---
+import type { TopicWithCount } from '@/utils/topics';
+
+interface Props {
+	topics: TopicWithCount[];
+	/** Post counts as superscripts after each name. */
+	counts?: boolean;
+	current?: string;
+	size?: 'large' | 'medium';
+	label?: string;
+}
+const { topics, counts = true, current, size = 'large', label = 'Topics' } = Astro.props;
+// The count stays on the same line as the last word of the topic name.
+const parts = (name: string) => {
+	const at = name.lastIndexOf(' ');
+	return at < 0 ? ['', name] : [name.slice(0, at + 1), name.slice(at + 1)];
+};
+---
+
+<p class:list={['topic-sentence', `is-${size}`]}>
+	<span class="visually-hidden">{label}: </span>
+	{
+		topics.map((topic, i) => (
+			<>
+				<a
+					href={`/tags/${topic.slug}`}
+					class="topic topic-colored"
+					style={`--topic-hue:${topic.hue}`}
+					aria-current={current === topic.slug ? 'page' : undefined}
+				>
+					{parts(topic.name)[0]}
+					{/* prettier-ignore */}
+					<span class="keep">{parts(topic.name)[1]}{counts && <sup><span class="visually-hidden"> (</span>{topic.count}<span class="visually-hidden">{topic.count === 1 ? ' post)' : ' posts)'}</span></sup>}</span>
+				</a>
+				{i < topics.length - 1 && <span aria-hidden="true"> · </span>}
+			</>
+		))
+	}
+</p>
+
+<style>
+	.topic-sentence {
+		font-family: var(--font-display-stack);
+		font-weight: 380;
+		line-height: 1.36;
+		letter-spacing: -0.01em;
+		color: var(--fg);
+	}
+	.is-large {
+		font-size: clamp(1.5rem, 2.6vw, 2.25rem);
+	}
+	.is-medium {
+		font-family: var(--font-reading);
+		font-size: clamp(1.25rem, 1.8vw, 1.625rem);
+	}
+	/* Below 30px the Text cut reads better than the Display cut. */
+	@media (max-width: 767px) {
+		.topic-sentence {
+			font-family: var(--font-reading);
+		}
+	}
+	.topic {
+		transition: color var(--dur-fade);
+	}
+	.keep {
+		white-space: nowrap;
+	}
+	/* Inline links: pad vertically for a 44px touch target without changing the line box. */
+	.topic {
+		padding-block: 8px;
+	}
+	.topic:hover,
+	.topic:focus-visible,
+	.topic[aria-current='page'] {
+		color: var(--tc);
+	}
+	.topic[aria-current='page'] {
+		font-style: italic;
+	}
+	sup {
+		display: inline-block;
+		margin-left: 3px;
+		font: 400 var(--text-meta) var(--font-ui);
+		color: var(--muted);
+		transition:
+			transform var(--dur-nudge) var(--ease-rise),
+			color var(--dur-fade);
+	}
+	.topic:hover sup,
+	.topic:focus-visible sup {
+		transform: translateY(-6px);
+		color: var(--tc);
+	}
+</style>

@@ -1,7 +1,7 @@
 [
 	{
 		"slug": "firewall-chaos",
-		"title": "Firewall Chaos : Automated Policy Management",
+		"title": "Firewall Chaos: Automated Policy Management",
 		"description": "A deep dive into managing firewall policies at scale",
 		"category": "Security",
 		"sourcePath": "Firewall_Chaos.pptx",

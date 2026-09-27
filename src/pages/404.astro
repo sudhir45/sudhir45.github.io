@@ -5,23 +5,35 @@ import Base from '@/layouts/Base.astro';
 <Base
 	head={{ title: 'Page not found | Sudhir', description: 'This page does not exist or has moved.' }}
 >
-	<div class="shell inner-page">
-		<section class="not-found" aria-labelledby="missing-title">
+	<div class="shell">
+		<section class="not-found grid-12" aria-labelledby="missing-title">
 			<div class="missing-copy">
-				<p class="category">404 · Page not found</p><h1 id="missing-title">Nothing here.</h1><p>
+				<p class="sc kicker">404 · Page not found</p>
+				<p class="missing-path" aria-hidden="true">
+					<span data-missing-path>/this-page</span>
+					<span class="strike" data-draw style="--delay:200ms"></span>
+				</p>
+				<h1 id="missing-title" data-rise style="--delay:400ms">
+					<span class="rise-line"><span>Nothing here.</span></span>
+				</h1>
+				<p class="missing-deck">
 					The page you're looking for may have moved, or the address isn't quite right.
-				</p><div class="recovery-links">
-					<a href="/" class="text-link">← Back home</a><a href="/posts" class="text-link"
-						>Browse the writing</a>
-				</div><button
-					type="button"
-					data-search-trigger
-					aria-controls="search-modal"
-					aria-expanded="false"
-					class="missing-search">Search the site →</button>
-			</div><figure class="missing-scene">
+				</p>
+				<div class="recovery-links ui">
+					<a href="/" class="text-link is-back"><span class="arrow" aria-hidden="true">←</span> Back home</a>
+					<a href="/posts" class="text-link">Browse the writing <span class="arrow" aria-hidden="true">→</span></a>
+					<button
+						type="button"
+						data-search-trigger
+						aria-controls="search-modal"
+						aria-expanded="false"
+						class="btn-line">Search the site</button
+					>
+				</div>
+			</div>
+			<figure class="missing-scene">
 				<div class="missing-stage">
-					<span class="missing-number" aria-hidden="true">404</span><img
+					<img
 						id="looking-around"
 						src="/images/travolta-confused.gif"
 						width="250"
@@ -34,54 +46,142 @@ import Base from '@/layouts/Base.astro';
 						role="img"
 						aria-label="John Travolta looking around, confused."
 						hidden></canvas>
-				</div><figcaption>
-					<span>He can't find it either.</span><button id="meme-motion" hidden
-						>Pause animation</button>
+				</div>
+				<figcaption class="ui">
+					<span>He can't find it either.</span>
 				</figcaption>
 			</figure>
 		</section>
 	</div>
 	<script>
-		let cleanup: (() => void) | undefined;
-		document.addEventListener('astro:page-load', () => {
-			cleanup?.();
+		import { onPage } from '@/motion/lifecycle';
+		onPage((signal) => {
+			const path = document.querySelector<HTMLElement>('[data-missing-path]');
+			if (path) path.textContent = decodeURI(location.pathname);
+			// The GIF plays under full motion; reduced or off shows a still frame instead.
 			const img = document.querySelector<HTMLImageElement>('#looking-around'),
-				canvas = document.querySelector<HTMLCanvasElement>('#looking-still'),
-				button = document.querySelector<HTMLButtonElement>('#meme-motion');
-			if (!img || !canvas || !button) return;
+				canvas = document.querySelector<HTMLCanvasElement>('#looking-still');
+			if (!img || !canvas) return;
 			const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-			const abort = new AbortController();
-			let paused = reduced.matches;
 			const render = () => {
 				if (!img.complete || !img.naturalWidth) return;
+				const still = document.documentElement.dataset.motion !== 'full';
 				canvas.getContext('2d')?.drawImage(img, 0, 0, 250, 250);
-				canvas.hidden = !paused;
-				img.hidden = paused;
-				button.hidden = false;
-				button.textContent = paused ? 'Play animation' : 'Pause animation';
-				button.setAttribute('aria-pressed', String(paused));
+				canvas.hidden = !still;
+				img.hidden = still;
 			};
-			img.addEventListener('load', render, { signal: abort.signal });
-			button.addEventListener(
-				'click',
-				() => {
-					paused = !paused;
-					img.classList.toggle('motion-enabled', !paused);
-					render();
-				},
-				{ signal: abort.signal }
-			);
-			reduced.addEventListener(
-				'change',
-				() => {
-					paused = reduced.matches;
-					render();
-				},
-				{ signal: abort.signal }
-			);
+			img.addEventListener('load', render, { signal });
+			reduced.addEventListener('change', render, { signal });
+			// Wait a frame so the runtime has applied the new level first.
+			document
+				.querySelector('[data-motion-control]')
+				?.addEventListener('change', () => requestAnimationFrame(render), { signal });
 			render();
-			cleanup = () => abort.abort();
 		});
-		document.addEventListener('astro:before-swap', () => cleanup?.());
 	</script>
 </Base>
+
+<style>
+	.not-found {
+		align-items: center;
+		row-gap: 48px;
+		padding-block: clamp(48px, 8vw, 112px) clamp(24px, 4vw, 48px);
+	}
+	.missing-copy {
+		grid-column: 1 / span 7;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 22px;
+	}
+	.kicker {
+		color: var(--accent);
+	}
+	.missing-path {
+		position: relative;
+		max-width: 100%;
+		overflow: hidden;
+		font: 400 clamp(15px, 1.6vw, 20px) / 1.4 var(--font-code);
+		color: var(--muted);
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+	.strike {
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: 52%;
+		height: 2px;
+		background: var(--accent);
+	}
+	:global(html[data-motion='full']) .strike {
+		animation-duration: var(--dur-nudge);
+	}
+	h1 {
+		font-family: var(--font-display-stack);
+		font-size: var(--text-display);
+		font-weight: 420;
+		line-height: 0.98;
+		letter-spacing: -0.03em;
+	}
+	:global(html[data-motion='full']) h1 .rise-line > span {
+		animation-duration: 700ms;
+	}
+	.missing-deck {
+		max-width: 40ch;
+		font-family: var(--font-reading);
+		font-size: var(--text-deck);
+		font-style: italic;
+		line-height: 1.38;
+		color: var(--body-ink);
+	}
+	.recovery-links {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 8px 28px;
+		font-size: var(--text-small);
+	}
+	.missing-scene {
+		grid-column: 9 / span 4;
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+		margin: 0;
+	}
+	.missing-stage img,
+	.missing-stage canvas {
+		display: block;
+		width: 100%;
+		max-width: 320px;
+		height: auto;
+		aspect-ratio: 1;
+		border-bottom: 1px solid var(--line);
+	}
+	figcaption {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 8px 16px;
+		font-size: var(--text-meta);
+		color: var(--muted);
+	}
+	@media (max-width: 1099px) {
+		.missing-copy {
+			grid-column: 1 / span 7;
+		}
+		.missing-scene {
+			grid-column: 8 / -1;
+		}
+	}
+	@media (max-width: 767px) {
+		.missing-copy,
+		.missing-scene {
+			grid-column: 1 / -1;
+		}
+		.missing-stage img,
+		.missing-stage canvas {
+			max-width: 220px;
+		}
+	}
+</style>

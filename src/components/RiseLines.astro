@@ -1,0 +1,42 @@
+---
+/** The masked display lines inside a RiseTitle heading. */
+interface Props {
+	lines: string[];
+	italicLast: boolean;
+	href?: string;
+}
+const { lines, italicLast, href } = Astro.props;
+const italic = (i: number) => italicLast && i > 0 && i === lines.length - 1;
+---
+
+{
+	href ? (
+		<a href={href}>
+			{lines.map((line, i) => (
+				<span class="rise-line">
+					<span class:list={{ 'is-italic': italic(i) }} style={`--line-i:${i}`}>
+						{line}{' '}
+					</span>
+				</span>
+			))}
+		</a>
+	) : (
+		lines.map((line, i) => (
+			<span class="rise-line">
+				<span class:list={{ 'is-italic': italic(i) }} style={`--line-i:${i}`}>
+					{line}{' '}
+				</span>
+			</span>
+		))
+	)
+}
+
+<style>
+	.is-italic {
+		font-style: italic;
+		font-weight: 320;
+	}
+	a {
+		color: inherit;
+	}
+</style>

@@ -1,5 +1,11 @@
 import { Resvg } from '@resvg/resvg-js';
+import { resolve } from 'node:path';
 import { getAllPosts, getPostBySlug } from '@/utils/posts';
+import { longDate } from '@/utils/editorial';
+
+// OFL fonts for the card renderer only (resvg reads TTF, not woff2). Paths resolve from the project root.
+const SERIF = resolve('src/og-fonts/SourceSerif4-VF.ttf');
+const MONO = resolve('src/og-fonts/JetBrainsMono-VF.ttf');
 
 const escapeXml = (value: string) =>
 	value
@@ -52,77 +58,53 @@ export async function GET({ params }: { params: { slug: string } }) {
 	}
 
 	const { title, description, tags, pubDate } = post.data;
-	const titleLines = toLines(title, 30, 2).map(escapeXml);
-	const descriptionLines = toLines(description, 60, 2).map(escapeXml);
-	const safeDate = escapeXml(
-		pubDate.toLocaleDateString('en-US', {
-			year: 'numeric',
-			month: 'long',
-			day: 'numeric'
-		})
-	);
-	const tagLabels = (tags as string[])
-		.slice(0, 3)
-		.map((tag: string) => escapeXml(`#${truncate(tag, 20)}`));
+	const titleLines = toLines(title, 28, 3).map(escapeXml);
+	const descriptionLines = toLines(description, 62, 2).map(escapeXml);
+	const safeDate = escapeXml(longDate(pubDate));
+	const topic = escapeXml(truncate(((tags as string[])[0] ?? 'Essay').toUpperCase(), 32));
 
+	// Folio paper palette (sRGB approximations of the light theme tokens).
+	const paper = '#faf7f1';
+	const ink = '#221e1a';
+	const body = '#403a33';
+	const muted = '#685f57';
+	const line = '#cfc8bb';
+	const amber = '#7f4c1b';
+
+	const titleSize = titleLines.length > 2 ? 64 : 76;
+	const titleLead = Math.round(titleSize * 1.04);
+	const titleTop = 238;
 	const titleMarkup = titleLines
-		.map((line, index) => `<tspan x="60" dy="${index === 0 ? 0 : 76}">${line}</tspan>`)
+		.map((text, index) => `<tspan x="72" dy="${index === 0 ? 0 : titleLead}">${text}</tspan>`)
 		.join('');
-
+	const descriptionTop = titleTop + titleLead * (titleLines.length - 1) + 78;
 	const descriptionMarkup = descriptionLines
-		.map((line, index) => `<tspan x="60" dy="${index === 0 ? 0 : 46}">${line}</tspan>`)
-		.join('');
-
-	let tagX = 60;
-	const tagMarkup = tagLabels
-		.map((tag: string) => {
-			const width = Math.round(tag.length * 13 + 36);
-			const markup = `
-				<rect x="${tagX}" y="516" rx="22" ry="22" width="${width}" height="44" fill="#18181b" stroke="#3f3f46" />
-				<text x="${tagX + 18}" y="545" fill="#fbbf24" font-size="24" font-family="monospace">${tag}</text>
-			`;
-			tagX += width + 16;
-			return markup;
-		})
+		.map((text, index) => `<tspan x="72" dy="${index === 0 ? 0 : 42}">${text}</tspan>`)
 		.join('');
 
 	const svg = `
 		<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
-			<defs>
-				<linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
-					<stop offset="0%" stop-color="#18181b" />
-					<stop offset="100%" stop-color="#09090b" />
-				</linearGradient>
-				<linearGradient id="title" x1="0" y1="0" x2="1" y2="0">
-					<stop offset="0%" stop-color="#ffffff" />
-					<stop offset="100%" stop-color="#d4d4d8" />
-				</linearGradient>
-				<pattern id="dots" width="26" height="26" patternUnits="userSpaceOnUse">
-					<circle cx="1.5" cy="1.5" r="1.3" fill="#27272a" />
-				</pattern>
-			</defs>
-			<rect width="1200" height="630" fill="url(#bg)" />
-			<rect width="1200" height="630" fill="url(#dots)" />
-			<rect x="0" y="0" width="8" height="630" fill="#f59e0b" />
+			<rect width="1200" height="630" fill="${paper}" />
+			<text x="72" y="92" fill="${ink}" font-family="Source Serif 4" font-size="44" font-weight="600">Sudhir<tspan fill="${amber}">.</tspan></text>
+			<text x="1128" y="86" text-anchor="end" fill="${muted}" font-family="JetBrains Mono" font-size="20" letter-spacing="2">SUDHIR.IS-A.DEV</text>
+			<rect x="72" y="118" width="1056" height="3" fill="${ink}" />
+			<rect x="72" y="125" width="1056" height="1.5" fill="${ink}" />
 
-			<rect x="60" y="50" width="10" height="34" rx="1" fill="#f59e0b" />
-			<text x="86" y="78" fill="#fafafa" font-size="36" font-weight="700">Sudhir</text>
-			<text x="1140" y="78" text-anchor="end" fill="#71717a" font-size="24" font-family="monospace">sudhir.is-a.dev</text>
+			<text x="72" y="${titleTop}" fill="${ink}" font-family="Source Serif 4" font-size="${titleSize}" font-weight="420" letter-spacing="-1.5">${titleMarkup}</text>
+			<text x="72" y="${descriptionTop}" fill="${body}" font-family="Source Serif 4" font-size="32">${descriptionMarkup}</text>
 
-			<text x="60" y="220" fill="url(#title)" font-size="70" font-weight="700">
-				${titleMarkup}
-			</text>
-			<text x="60" y="386" fill="#a1a1aa" font-size="34">${descriptionMarkup}</text>
-
-			<line x1="60" y1="470" x2="1140" y2="470" stroke="#27272a" stroke-width="2" />
-			${tagMarkup}
-			<text x="1140" y="545" text-anchor="end" fill="#71717a" font-size="26" font-family="monospace">${safeDate}</text>
+			<rect x="72" y="532" width="1056" height="1.5" fill="${line}" />
+			<circle cx="78" cy="570" r="6" fill="${amber}" />
+			<text x="96" y="577" fill="${amber}" font-family="JetBrains Mono" font-size="20" letter-spacing="2">${topic}</text>
+			<text x="1128" y="577" text-anchor="end" fill="${muted}" font-family="JetBrains Mono" font-size="20">${safeDate}</text>
 		</svg>
 	`;
 
 	const resvg = new Resvg(svg, {
 		font: {
-			defaultFontFamily: 'Arial'
+			fontFiles: [SERIF, MONO],
+			loadSystemFonts: false,
+			defaultFontFamily: 'Source Serif 4'
 		}
 	});
 	const pngData = resvg.render();

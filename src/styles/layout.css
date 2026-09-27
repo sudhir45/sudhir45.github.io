@@ -1,0 +1,233 @@
+/* Page shell, grid and the shared Folio vocabulary used by more than one component. */
+
+@layer components {
+	.shell {
+		width: 100%;
+		max-width: var(--page-max);
+		margin-inline: auto;
+		padding-inline: var(--page-gutter);
+	}
+
+	.grid-12 {
+		display: grid;
+		grid-template-columns: repeat(12, minmax(0, 1fr));
+		column-gap: var(--grid-gap);
+	}
+
+	.ui {
+		font-family: var(--font-ui);
+		letter-spacing: -0.012em;
+	}
+
+	/* Small caps running heads and kickers */
+	.sc {
+		font-family: var(--font-ui);
+		font-size: var(--text-smallcaps);
+		font-weight: 500;
+		letter-spacing: 0.14em;
+		line-height: 1.4;
+		text-transform: uppercase;
+	}
+
+	.meta {
+		font-family: var(--font-ui);
+		font-size: var(--text-meta);
+		color: var(--muted);
+	}
+
+	/* Categorical topic colour: one OKLCH band, only the hue rotates. Amber stays reserved for interaction. */
+	.topic-colored {
+		--tc: oklch(52% 0.07 var(--topic-hue));
+	}
+	:where(.dark) .topic-colored {
+		--tc: oklch(70% 0.08 var(--topic-hue));
+	}
+
+	.topic-dot {
+		display: inline-block;
+		flex: none;
+		width: 7px;
+		height: 7px;
+		border-radius: 50%;
+		background: var(--tc, var(--muted));
+	}
+
+	/* Text links such as "Read the essay ->": the arrow moves and turns amber. */
+	.text-link {
+		display: inline-flex;
+		align-items: center;
+		gap: 10px;
+		font-family: var(--font-ui);
+		font-weight: 600;
+		color: var(--fg);
+		min-height: 44px;
+	}
+	.text-link .arrow {
+		display: inline-block;
+		transition:
+			transform var(--dur-nudge) var(--ease-rise),
+			color var(--dur-fade);
+	}
+	.text-link:hover .arrow,
+	.text-link:focus-visible .arrow {
+		transform: translateX(5px);
+		color: var(--accent);
+	}
+	.text-link.is-back:hover .arrow,
+	.text-link.is-back:focus-visible .arrow {
+		transform: translateX(-5px);
+	}
+
+	/* Inline links inside running text: a taller hit area without moving the line. */
+	.hit {
+		padding-block: 12px;
+	}
+	/* Underline that grows from the left over a quiet link */
+	.grow-link {
+		background: linear-gradient(var(--accent), var(--accent)) left 100% / 0 1px no-repeat;
+		transition: background-size var(--dur-underline) var(--ease-rise);
+	}
+	.grow-link:hover,
+	.grow-link:focus-visible {
+		background-size: 100% 1px;
+	}
+
+	/* Hairline button */
+	.btn-line {
+		display: inline-flex;
+		align-items: center;
+		gap: 10px;
+		min-height: 36px;
+		padding: 6px 10px;
+		border: 1px solid var(--line);
+		border-radius: var(--radius);
+		background: transparent;
+		font: 400 var(--text-meta) var(--font-ui);
+		color: var(--muted);
+		transition:
+			border-color var(--dur-micro),
+			color var(--dur-micro);
+	}
+	.btn-line:hover,
+	.btn-line:focus-visible {
+		border-color: var(--fg);
+		color: var(--fg);
+	}
+	@media (max-width: 767px) {
+		.btn-line {
+			min-height: 44px;
+		}
+	}
+
+	/* Double rule: 2px over 1px, 3px apart */
+	.double-rule {
+		display: flex;
+		flex-direction: column;
+		gap: 3px;
+	}
+	.double-rule > span {
+		display: block;
+		height: 2px;
+		background: var(--fg);
+	}
+	.double-rule > span + span {
+		height: 1px;
+	}
+
+	/* Page headings for interior pages */
+	.page-heading {
+		padding-block: clamp(40px, 7vw, 76px) clamp(28px, 4vw, 48px);
+	}
+	.page-heading h1 {
+		font-family: var(--font-display-stack);
+		font-size: var(--text-display);
+		font-weight: 420;
+		line-height: 0.98;
+		letter-spacing: -0.03em;
+	}
+	.page-heading h1 em {
+		font-weight: 320;
+	}
+	.page-heading .deck {
+		margin-top: 22px;
+		max-width: 40ch;
+		font-family: var(--font-reading);
+		font-size: var(--text-deck);
+		font-style: italic;
+		line-height: 1.38;
+		color: var(--body-ink);
+	}
+	.page-heading .kicker {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		margin-bottom: 22px;
+		color: var(--accent);
+	}
+	.page-heading-rule {
+		height: 1px;
+		background: var(--fg);
+	}
+
+	/* Section label with a rule running to the right edge */
+	.section-label {
+		display: flex;
+		align-items: center;
+		gap: 24px;
+	}
+	.section-label h2 {
+		font-family: var(--font-ui);
+		font-size: var(--text-smallcaps);
+		font-weight: 600;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		white-space: nowrap;
+	}
+	.section-label > span {
+		flex: 1;
+		height: 1px;
+		background: var(--line);
+	}
+
+	/* Italic serif section heading with an optional link on the right */
+	.section-head {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 12px 24px;
+		padding-bottom: 18px;
+	}
+	.section-head h2 {
+		font-family: var(--font-display-stack);
+		font-size: var(--text-section-italic);
+		font-style: italic;
+		font-weight: 380;
+		letter-spacing: -0.02em;
+	}
+	.section-head .text-link {
+		font-size: var(--text-ui);
+	}
+
+	.visually-hidden {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		padding: 0;
+		margin: -1px;
+		overflow: hidden;
+		clip: rect(0, 0, 0, 0);
+		white-space: nowrap;
+		border: 0;
+	}
+
+	/* Phones: one column unless a component sets its own template. */
+	@media (max-width: 767px) {
+		.grid-12 {
+			grid-template-columns: minmax(0, 1fr);
+		}
+		.grid-12 > * {
+			grid-column: 1 / -1;
+		}
+	}
+}

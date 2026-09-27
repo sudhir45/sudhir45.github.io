@@ -14,6 +14,8 @@ const posts = defineCollection({
 			isPinned: z.boolean().default(false),
 			minutesRead: z.string().optional(),
 			excerpt: z.string(),
+			/** Optional line for the homepage lead spread's margin quote. */
+			pullQuote: z.string().optional(),
 			tags: z.array(z.string()).default([]),
 			draft: z.boolean().default(false),
 			image: z

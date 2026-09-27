@@ -6,27 +6,102 @@ interface Props {
 const { topics } = Astro.props;
 ---
 
-<ul class="topic-list">
+<ul class="topic-list" data-reveal>
 	{
-		topics.map((topic) => (
+		topics.map((topic, i) => (
 			<li class="topic-colored" style={`--topic-hue:${topic.hue}`}>
-				<a href={`/tags/${topic.slug}`}>
-					<>
-						<span class="topic-copy">
-							<>
-								<span class="topic-name">{topic.name}</span>
-								<span class="topic-description">{topic.description}</span>
-							</>
-						</span>
-						<span class="topic-count">
-							{topic.count} {topic.count === 1 ? 'post' : 'posts'}
-						</span>
-						<span class="topic-arrow" aria-hidden="true">
-							→
-						</span>
-					</>
+				<span class="row-rule" data-draw style={`--delay:${i * 60}ms`} aria-hidden="true" />
+				<a href={`/tags/${topic.slug}`} class="topic-row">
+					<span class="topic-dot" aria-hidden="true" />
+					<span class="topic-name">{topic.name}</span>
+					<span class="topic-description ui">{topic.description}</span>
+					<span class="topic-count ui">
+						{topic.count} {topic.count === 1 ? 'post' : 'posts'}
+					</span>
+					<span class="arrow" aria-hidden="true">
+						→
+					</span>
 				</a>
 			</li>
 		))
 	}
 </ul>
+
+<style>
+	.topic-list {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		border-bottom: 1px solid var(--line);
+	}
+	li {
+		position: relative;
+	}
+	.row-rule {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: 1px;
+		background: var(--line);
+	}
+	.topic-row {
+		display: grid;
+		grid-template-columns: 7px minmax(0, 1fr) minmax(0, 1.4fr) 80px 24px;
+		column-gap: 24px;
+		align-items: baseline;
+		padding: 22px 0;
+	}
+	.topic-dot {
+		transform: translateY(-4px);
+	}
+	.topic-name {
+		font-family: var(--font-reading);
+		font-size: clamp(1.5rem, 2.4vw, 2rem);
+		font-weight: 420;
+		letter-spacing: -0.015em;
+		line-height: 1.15;
+		transition: color var(--dur-fade);
+	}
+	.topic-row:hover .topic-name,
+	.topic-row:focus-visible .topic-name {
+		color: var(--tc);
+		font-style: italic;
+	}
+	.topic-description {
+		font-size: var(--text-small);
+		line-height: 1.5;
+		color: var(--body-ink);
+	}
+	.topic-count {
+		font-size: var(--text-meta);
+		color: var(--muted);
+		white-space: nowrap;
+	}
+	.arrow {
+		justify-self: end;
+		color: var(--muted);
+		transition:
+			transform var(--dur-nudge) var(--ease-rise),
+			color var(--dur-fade);
+	}
+	.topic-row:hover .arrow,
+	.topic-row:focus-visible .arrow {
+		transform: translateX(6px);
+		color: var(--accent);
+	}
+	@media (max-width: 767px) {
+		.topic-row {
+			grid-template-columns: 7px minmax(0, 1fr) auto;
+			row-gap: 6px;
+			column-gap: 12px;
+		}
+		.topic-description {
+			grid-column: 2 / -1;
+			grid-row: 2;
+		}
+		.arrow {
+			display: none;
+		}
+	}
+</style>

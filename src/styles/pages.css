@@ -1,0 +1,254 @@
+/*
+ * Classes emitted by the Cyberdle React island and the presentation viewer, which cannot use
+ * Astro scoped styles. Everything else lives in component styles.
+ */
+
+@layer components {
+	/* Small caps kicker, used by the game intro */
+	.category {
+		font-family: var(--font-ui);
+		font-size: var(--text-smallcaps);
+		font-weight: 500;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: var(--accent);
+	}
+
+	/* Quiet metadata line (counts, counters, hints) */
+	.meta-mono {
+		font-family: var(--font-ui);
+		font-size: var(--text-xs);
+		font-weight: 500;
+		color: var(--muted);
+	}
+
+	/* ---------- Cyberdle ---------- */
+	body:has(.game-main) {
+		height: 100dvh;
+	}
+	body:has(.game-main) .site-footer {
+		display: none;
+	}
+	body:has(.game-main) #main-content {
+		display: flex;
+		min-height: 0;
+	}
+	.game-main {
+		display: flex;
+		align-items: center;
+		min-height: 0;
+		padding-block: 24px;
+	}
+	.game-layout {
+		width: 100%;
+		display: grid;
+		grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+		gap: 80px;
+		align-items: center;
+	}
+	.game-intro .category {
+		margin-bottom: 18px;
+	}
+	.game-intro h1 {
+		font-family: var(--font-display-stack);
+		margin-bottom: 20px;
+		font-size: clamp(2.75rem, 5vw, 4.5rem);
+		font-weight: 420;
+		line-height: 0.98;
+		letter-spacing: -0.03em;
+	}
+	.game-intro > p:not(.category) {
+		max-width: 340px;
+		margin-bottom: 20px;
+		font-family: var(--font-reading);
+		font-size: 19px;
+		font-style: italic;
+		line-height: 1.45;
+		color: var(--body-ink);
+	}
+	.game-intro > button {
+		min-height: 44px;
+		padding: 0;
+		border: 0;
+		background: none;
+		font: 600 var(--text-ui) var(--font-ui);
+		text-decoration: underline;
+		text-decoration-color: var(--line);
+		text-underline-offset: 0.25em;
+	}
+	.game-intro > button:hover {
+		text-decoration-color: var(--accent);
+	}
+	.game-legend {
+		display: grid;
+		gap: 12px;
+		margin-block: 32px;
+		padding-top: 20px;
+		border-top: 1px solid var(--line);
+		font-size: var(--text-meta);
+		color: var(--muted);
+	}
+	.game-legend span {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+	}
+	.game-legend i {
+		width: 16px;
+		height: 16px;
+		border: 1px solid var(--frame);
+	}
+	.game-play {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 16px;
+		min-width: 0;
+	}
+	.game-tile {
+		display: grid;
+		place-items: center;
+		width: clamp(34px, 5.6dvh, 52px);
+		height: clamp(34px, 5.6dvh, 52px);
+		border: 1px solid var(--frame);
+		font: 500 23px var(--font-code);
+	}
+	.game-keyboard {
+		display: grid;
+		gap: 6px;
+		width: 100%;
+		max-width: 480px;
+	}
+	.game-key-row {
+		display: flex;
+		justify-content: center;
+		gap: 5px;
+	}
+	.game-key {
+		min-width: 0;
+		min-height: 44px;
+		padding: 0;
+		border: 1px solid var(--line);
+		border-radius: 0;
+		background: var(--surface-2);
+		font: 500 var(--text-meta) var(--font-ui);
+		transition:
+			border-color var(--dur-micro),
+			color var(--dur-micro);
+	}
+	.game-key:hover {
+		border-color: var(--fg);
+	}
+	.game-layout [role='dialog'] {
+		overflow-y: auto;
+	}
+	@media (max-width: 960px) {
+		.game-layout {
+			gap: 32px;
+		}
+	}
+	@media (max-width: 700px) {
+		.game-main {
+			align-items: start;
+			padding-block: 16px;
+		}
+		.game-layout {
+			grid-template-columns: minmax(0, 1fr);
+			gap: 16px;
+		}
+		.game-intro {
+			position: relative;
+		}
+		.game-intro .category,
+		.game-legend {
+			display: none;
+		}
+		.game-intro h1 {
+			margin-bottom: 8px;
+			font-size: 34px;
+		}
+		.game-intro > p:not(.category) {
+			margin-bottom: 8px;
+			font-size: var(--text-ui);
+		}
+		.game-intro > button {
+			position: absolute;
+			top: 0;
+			right: 0;
+			font-size: var(--text-xs);
+		}
+		.game-play {
+			gap: 12px;
+		}
+	}
+	@media (max-width: 700px) and (max-height: 700px) {
+		.game-main {
+			padding-block: 8px;
+		}
+		.game-layout {
+			gap: 8px;
+		}
+		.game-intro h1 {
+			font-size: 30px;
+		}
+		.game-intro > p:not(.category) {
+			margin-bottom: 4px;
+			font-size: var(--text-xs);
+		}
+		.game-play {
+			gap: 8px;
+		}
+		.game-tile {
+			width: clamp(28px, 4.8dvh, 36px);
+			height: clamp(28px, 4.8dvh, 36px);
+		}
+	}
+
+	/* ---------- Presentation viewer ---------- */
+	.presentation-viewer:not(.fullscreen) .slide-container {
+		width: 100%;
+		height: auto;
+		aspect-ratio: 16 / 9;
+		max-height: max(160px, calc(100dvh - 400px));
+	}
+	.presentation-viewer button {
+		min-height: 44px;
+		white-space: nowrap;
+	}
+	.presentation-viewer .thumbnail-strip {
+		margin-top: 12px;
+	}
+	.presentation-viewer .slide-placeholder {
+		display: none;
+	}
+}
+
+/* The game's result dialog enters with a short rise when motion is full. */
+@keyframes fade-up {
+	from {
+		opacity: 0;
+		transform: translateY(12px);
+	}
+	to {
+		opacity: 1;
+		transform: none;
+	}
+}
+html[data-motion='full'] .animate-fade-up {
+	animation: fade-up var(--dur-underline) var(--ease-rise) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.presentation-viewer *,
+	.presentation-viewer *::before,
+	.presentation-viewer *::after {
+		transition: none !important;
+		animation: none !important;
+		scroll-behavior: auto !important;
+	}
+	.medium-zoom-image,
+	.medium-zoom-overlay {
+		/* A near-instant transition preserves the zoom library's completion events. */
+		transition-duration: 0.01ms !important;
+	}
+}

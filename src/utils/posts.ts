@@ -12,6 +12,8 @@ export interface SitePost {
 	slug: string;
 	url: string;
 	data: PostFrontmatter;
+	/** Raw Markdown or MDX source, used for the homepage lead excerpt. */
+	body?: string;
 }
 
 export const sortPostsByDate = (a: SitePost, b: SitePost) => {
@@ -34,7 +36,8 @@ const toSitePost = (entry: PostEntry): SitePost => ({
 	data: {
 		...entry.data,
 		minutesRead: entry.data.minutesRead ?? computeReadingTime(entry.body)
-	}
+	},
+	body: entry.body
 });
 
 export const getAllPosts = async () => {

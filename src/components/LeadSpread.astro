@@ -1,0 +1,212 @@
+---
+import type { SitePost } from '@/utils/posts';
+import { leadParagraphs } from '@/utils/editorial';
+import RiseTitle from './RiseTitle.astro';
+
+interface Props {
+	post: SitePost;
+	number?: string;
+	transition?: boolean;
+}
+const { post, number = '01', transition = true } = Astro.props;
+const [first = '', ...rest] = leadParagraphs(post.body, 2);
+const dropLetter = first.charAt(0);
+const topic = post.data.tags[0];
+const quote = post.data.pullQuote;
+---
+
+<section class="lead grid-12" aria-labelledby="lead-title" data-reveal>
+	<div class="lead-rule" data-draw></div>
+	<div class="lead-number" data-show style="--delay:150ms" aria-hidden="true">{number}</div>
+	<div class="lead-copy">
+		<p class="sc lead-kicker" data-show style="--delay:150ms">
+			{topic ? `${topic} · Essay` : 'Essay'}
+		</p>
+		<RiseTitle
+			id="lead-title"
+			class="lead-title"
+			lines={[post.data.title]}
+			italicLast={false}
+			href={post.url}
+			delay={200}
+			transitionName={transition ? `post-title-${post.slug}` : undefined}
+		/>
+		<p class="lead-deck" data-show style="--delay:450ms">{post.data.description}</p>
+		{
+			first && (
+				<div class="lead-excerpt" data-show style="--delay:500ms">
+					<p>
+						<span class="drop" data-ink style="--delay:300ms" aria-hidden="true">
+							{dropLetter}
+						</span>
+						<span class="visually-hidden">{dropLetter}</span>
+						{first.slice(1)}
+					</p>
+					{rest.map((paragraph) => <p>{paragraph}</p>)}
+				</div>
+			)
+		}
+		<div class="lead-bottom ui" data-show style="--delay:600ms">
+			<a href={post.url} class="text-link">Read the essay <span class="arrow" aria-hidden="true">↗</span></a>
+			<span class="meta">{post.data.minutesRead}</span>
+		</div>
+	</div>
+	{
+		quote && (
+			<figure class="lead-quote">
+				<div class="quote-rule" data-draw="y" style="--delay:700ms" />
+				<blockquote data-show style="--delay:900ms">
+					"{quote}"
+				</blockquote>
+			</figure>
+		)
+	}
+</section>
+
+<style>
+	.lead {
+		padding: 52px 0 76px;
+	}
+	.lead-rule {
+		grid-column: 1 / -1;
+		height: 1px;
+		margin-bottom: 40px;
+		background: var(--fg);
+	}
+	.lead-number {
+		grid-column: 1 / span 1;
+		font-family: var(--font-display-stack);
+		font-size: clamp(2.75rem, 4.4vw, 4rem);
+		font-weight: 200;
+		line-height: 1;
+		color: var(--accent);
+	}
+	.lead-copy {
+		grid-column: 2 / span 8;
+		display: flex;
+		flex-direction: column;
+		gap: 22px;
+		min-width: 0;
+	}
+	.lead-kicker {
+		color: var(--accent);
+	}
+	.lead-copy :global(.lead-title) {
+		font-size: var(--text-lead-title);
+		font-weight: 450;
+		line-height: 1.02;
+		letter-spacing: -0.025em;
+	}
+	.lead-copy :global(.lead-title a:hover) {
+		color: var(--accent);
+	}
+	.lead-deck {
+		max-width: 640px;
+		font-family: var(--font-reading);
+		font-size: clamp(1.25rem, 1.8vw, 1.625rem);
+		font-style: italic;
+		line-height: 1.4;
+		color: var(--body-ink);
+	}
+	.lead-excerpt {
+		columns: 2;
+		column-gap: 32px;
+		margin-top: 8px;
+		font-family: var(--font-reading);
+		font-size: var(--text-body);
+		line-height: 1.62;
+		color: var(--body-ink);
+	}
+	.lead-excerpt p {
+		margin: 0 0 14px;
+	}
+	.drop {
+		float: left;
+		font-family: var(--font-display-stack);
+		margin: 9px 14px 0 0;
+		font-size: 108px;
+		font-weight: 520;
+		line-height: 0.8;
+		color: var(--accent);
+	}
+	.lead-bottom {
+		display: flex;
+		align-items: baseline;
+		gap: 22px;
+		font-size: var(--text-small);
+	}
+	.lead-quote {
+		grid-column: 10 / span 3;
+		align-self: center;
+		display: flex;
+		gap: 22px;
+		margin: 0;
+	}
+	.quote-rule {
+		flex: none;
+		width: 1px;
+		background: var(--accent);
+	}
+	blockquote {
+		margin: 0;
+		font-family: var(--font-display-stack);
+		font-size: clamp(1.5rem, 2.3vw, 2.0625rem);
+		font-style: italic;
+		font-weight: 300;
+		line-height: 1.2;
+		color: var(--fg);
+	}
+
+	@media (max-width: 1099px) {
+		.lead-number {
+			grid-column: 1 / span 2;
+		}
+		.lead-copy {
+			grid-column: 3 / -1;
+		}
+		.lead-quote {
+			grid-column: 3 / -1;
+			margin-top: 36px;
+		}
+	}
+	@media (max-width: 767px) {
+		.lead {
+			grid-template-columns: auto minmax(0, 1fr);
+			column-gap: 14px;
+			padding: 36px 0 56px;
+		}
+		.lead > * {
+			grid-column: 1 / -1;
+		}
+		.lead-rule {
+			margin-bottom: 28px;
+		}
+		.lead .lead-number {
+			grid-column: 1;
+			font-size: 2.5rem;
+		}
+		.lead-copy {
+			display: contents;
+		}
+		.lead .lead-kicker {
+			grid-column: 2;
+			align-self: center;
+		}
+		.lead-copy > :global(:not(.lead-kicker)) {
+			grid-column: 1 / -1;
+			margin-top: 16px;
+		}
+		.lead-quote {
+			margin-top: 32px;
+		}
+		.lead-excerpt {
+			columns: 1;
+		}
+		.lead-excerpt p + p {
+			display: none;
+		}
+		.drop {
+			font-size: 84px;
+		}
+	}
+</style>

@@ -1,9 +1,38 @@
 ---
+import RiseTitle from './RiseTitle.astro';
+
 interface Props {
 	title: string;
+	/** Optional second headline line, set in italic. */
+	tail?: string;
 	description?: string;
+	/** Small caps kicker above the title. */
+	kicker?: string;
+	/** Topic hue for a dot beside the kicker. */
+	hue?: number;
+	/** Draw a rule under the heading. */
+	rule?: boolean;
+	carry?: boolean;
+	transitionName?: string;
 }
-const { title, description } = Astro.props;
+const { title, tail, description, kicker, hue, rule = true, carry = false, transitionName } = Astro.props;
 ---
 
-<header class="page-heading"><h1>{title}</h1>{description && <p>{description}</p>}</header>
+<header class="page-heading">
+	{
+		kicker && (
+			<p
+				class:list={['kicker sc', { 'topic-colored': hue !== undefined }]}
+				style={hue !== undefined ? `--topic-hue:${hue}` : undefined}
+				data-show
+			>
+				{hue !== undefined && <span class="topic-dot" aria-hidden="true" />}
+				{kicker}
+			</p>
+		)
+	}
+	<RiseTitle level={1} lines={tail ? [title, tail] : [title]} delay={100} carry={carry} transitionName={transitionName} />
+	{description && <p class="deck" data-show style="--delay:400ms">{description}</p>}
+	<slot />
+</header>
+{rule && <div class="page-heading-rule" data-draw style="--delay:300ms" aria-hidden="true"></div>}

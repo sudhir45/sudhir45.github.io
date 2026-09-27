@@ -1,49 +1,34 @@
 ---
 import Base from '@/layouts/Base.astro';
 import PageHeading from '@/components/PageHeading.astro';
+import TalkFeature from '@/components/TalkFeature.astro';
 import { getPresentations } from '@/utils/presentations';
-import TalkCover from '@/components/TalkCover.astro';
-import { longDate } from '@/utils/editorial';
 const talks = getPresentations();
 ---
 
-<Base head={{ title: 'Talks | Sudhir', description: 'Security ideas, shared beyond the blog.' }}
-	><div class="shell inner-page">
-		<PageHeading
-			title="Talks & appearances"
-			description="Security ideas, shared beyond the blog."
-		/><div class="talk-list">
+<Base head={{ title: 'Talks | Sudhir', description: 'Security ideas, shared beyond the blog.' }}>
+	<div class="shell">
+		<PageHeading title="Talks &" tail="appearances" description="Security ideas, shared beyond the blog." />
+		<div class="talk-list">
 			{
 				talks.map((talk, index) => (
-					<article class="talk-feature">
-						<>
-							<a href={`/presentations/${talk.slug}`}>
-								<TalkCover
-									slug={talk.slug}
-									title={talk.title}
-									thumbnail={talk.thumbnail}
-									coverImage={talk.coverImage}
-									loading={index === 0 ? 'eager' : 'lazy'}
-								/>
-							</a>
-							<div>
-								<>
-									<p class="meta">
-										{[talk.date && longDate(talk.date), talk.venue].filter(Boolean).join(' · ')}
-									</p>
-									<h2>
-										<a href={`/presentations/${talk.slug}`}>{talk.title.replace(' :', ':')}</a>
-									</h2>
-									<p>{talk.description}</p>
-									<a href={`/presentations/${talk.slug}`} class="text-link">
-										View {talk.slideCount} slides →
-									</a>
-								</>
-							</div>
-						</>
-					</article>
+					<TalkFeature talk={talk} description headingLevel="h2" loading={index === 0 ? 'eager' : 'lazy'} />
 				))
 			}
-		</div>{talks.length === 0 && <p class="meta">Talks will appear here as they are added.</p>}
-	</div></Base
->
+		</div>
+		{talks.length === 0 && <p class="meta">Talks will appear here as they are added.</p>}
+	</div>
+</Base>
+
+<style>
+	.talk-list {
+		display: flex;
+		flex-direction: column;
+		gap: 64px;
+		padding-top: clamp(32px, 5vw, 56px);
+	}
+	.talk-list > :global(* + *) {
+		padding-top: 64px;
+		border-top: 1px solid var(--line);
+	}
+</style>
