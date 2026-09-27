@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import confetti from 'canvas-confetti';
+import { isFull } from '@/motion/level';
 import {
 	getDailyPuzzle,
 	msUntilNextPuzzle,
@@ -60,6 +61,12 @@ const DEFAULT_STATS: Stats = {
 
 const KEYBOARD_ROWS = ['QWERTYUIOP', 'ASDFGHJKL', 'ZXCVBNM'] as const;
 const RANK: Record<Evaluation, number> = { absent: 0, present: 1, correct: 2 };
+// Spoken result per tile and key; the visible mark (bar or dot) carries the same meaning without colour.
+const RESULT_LABEL: Record<Evaluation, string> = {
+	correct: 'right place',
+	present: 'wrong place',
+	absent: 'not in the word'
+};
 
 // Fixed tile colors so the board reads the same in light and dark — terminal
 // green for a hit, brand amber for a near miss, warm stone for a miss.
@@ -147,6 +154,15 @@ function loadStats(): Stats {
 	}
 }
 
+// A streak survives only while the last result is a win on today's or yesterday's puzzle.
+function normalizeStreak(stats: Stats, puzzleNumber: number): Stats {
+	const alive =
+		stats.lastResult === 'won' &&
+		stats.lastPuzzle !== null &&
+		puzzleNumber - stats.lastPuzzle <= 1;
+	return alive || stats.currentStreak === 0 ? stats : { ...stats, currentStreak: 0 };
+}
+
 function saveStats(stats: Stats): void {
 	try {
 		localStorage.setItem(STATS_KEY, JSON.stringify(stats));
@@ -199,6 +215,7 @@ export default function Cyberdle() {
 	const [shake, setShake] = useState(false);
 	const [showResult, setShowResult] = useState(false);
 	const [countdown, setCountdown] = useState('');
+	const [announcement, setAnnouncement] = useState('');
 
 	const toastTimer = useRef<number | null>(null);
 	const resultRef = useRef<HTMLDivElement>(null);
@@ -240,7 +257,7 @@ export default function Cyberdle() {
 
 	// Restore today's game + lifetime stats on mount.
 	useEffect(() => {
-		setStats(loadStats());
+		setStats(normalizeStreak(loadStats(), puzzleNumber));
 		setGuesses([]);
 		setCurrent('');
 		setStatus('playing');
@@ -281,6 +298,14 @@ export default function Cyberdle() {
 		const nextStatus: GameStatus = won ? 'won' : lost ? 'lost' : 'playing';
 		const revealRow = nextGuesses.length - 1;
 
+		const spoken = evaluateGuess(guess, answer.word)
+			.map((ev, i) => `${guess[i]} ${RESULT_LABEL[ev]}`)
+			.join(', ');
+		setAnnouncement(
+			`Guess ${nextGuesses.length} of ${MAX_GUESSES}: ${spoken}.${
+				won ? ' Solved.' : lost ? ` Out of attempts. The word was ${answer.word}.` : ''
+			}`
+		);
 		setGuesses(nextGuesses);
 		setCurrent('');
 		setAnimateRow(revealRow);
@@ -293,10 +318,10 @@ export default function Cyberdle() {
 				saveStats(updated);
 				return updated;
 			});
-			const revealMs = WORD_LENGTH * 150 + 400;
+			const revealMs = isFull() ? WORD_LENGTH * 150 + 400 : 0;
 			window.setTimeout(() => {
 				setShowResult(true);
-				if (won) {
+				if (won && isFull()) {
 					confetti({
 						particleCount: 120,
 						spread: 70,
@@ -417,11 +442,11 @@ export default function Cyberdle() {
 
 				<div className="game-legend">
 					<span>
-						<i style={{ background: 'var(--game-correct)' }} />
+						<i className="game-mark-correct" style={{ background: 'var(--game-correct)' }} />
 						Right place
 					</span>
 					<span>
-						<i style={{ background: 'var(--accent)' }} />
+						<i className="game-mark-present" style={{ background: 'var(--accent)' }} />
 						Wrong place
 					</span>
 					<span>
@@ -439,7 +464,19 @@ export default function Cyberdle() {
 				{/* Board */}
 				<div className="grid gap-1.5" role="group" tabIndex={0} aria-label="Cyberdle board">
 					{rows.map((row, r) => (
-						<div key={r} className={`flex gap-1.5 ${shake && row.isCurrent ? 'cd-shake' : ''}`}>
+						<div
+							key={r}
+							role="group"
+							aria-label={
+								row.evals
+									? `Guess ${r + 1}`
+									: row.isCurrent
+										? `Guess ${r + 1}, in progress`
+										: undefined
+							}
+							aria-hidden={!row.evals && !row.isCurrent ? true : undefined}
+							className={`flex gap-1.5 ${shake && row.isCurrent ? 'cd-shake' : ''}`}
+						>
 							{row.letters.map((letter, c) => {
 								const ev = row.evals?.[c];
 								const animate = animateRow === r && ev !== undefined;
@@ -453,16 +490,25 @@ export default function Cyberdle() {
 												: letter
 													? 'border-faint text-fg cd-pop'
 													: 'border-line text-fg'
-										} ${animate ? 'cd-flip' : ''}`}
+										} ${ev ? `game-mark-${ev}` : ''} ${animate ? 'cd-flip' : ''}`}
 										style={animate ? { ...style, animationDelay: `${c * 150}ms` } : style}
 									>
 										{letter}
+										{ev && (
+											<span className="sr-only">
+												, position {c + 1}, {RESULT_LABEL[ev]}
+											</span>
+										)}
 									</div>
 								);
 							})}
 						</div>
 					))}
 				</div>
+
+				<p className="sr-only" aria-live="polite" aria-atomic="true">
+					{announcement}
+				</p>
 
 				{/* Toast */}
 				<div className="relative h-0 w-full" aria-live="polite">
@@ -609,10 +655,11 @@ function KeyButton({
 	onPress: () => void;
 }) {
 	const style = state ? TILE_COLORS[state] : undefined;
+	const name = ariaLabel ?? label;
 	return (
 		<button
 			type="button"
-			aria-label={ariaLabel ?? label}
+			aria-label={state ? `${name}, ${RESULT_LABEL[state]}` : name}
 			onClick={(event) => {
 				onPress();
 				if (event.detail > 0) event.currentTarget.blur();
@@ -620,7 +667,7 @@ function KeyButton({
 			style={style}
 			className={`game-key ${
 				wide ? 'flex-[1.5] text-[11px]' : 'flex-1'
-			} ${state ? '' : 'bg-line/60 text-fg hover:bg-line'}`}
+			} ${state ? `game-mark-${state}` : 'bg-line/60 text-fg hover:bg-line'}`}
 		>
 			{label}
 		</button>
@@ -628,7 +675,7 @@ function KeyButton({
 }
 
 const CSS = `
-@media (prefers-reduced-motion: no-preference) {
+html[data-motion='full'] {
 	.cd-pop { animation: cd-pop 0.1s ease-in-out; }
 	.cd-flip { animation: cd-flip 0.5s ease forwards; backface-visibility: hidden; }
 	.cd-shake { animation: cd-shake 0.5s ease-in-out; }

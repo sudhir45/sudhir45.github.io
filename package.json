@@ -11,11 +11,10 @@
 		"start": "astro dev",
 		"secure:pdfs": "python scripts/secure-public-pdfs.py",
 		"secure:certs": "npm run secure:pdfs",
-		"secure:headers": "node scripts/generate-security-headers.mjs",
 		"check": "astro check",
 		"check:content": "node scripts/check-content.mjs",
 		"format:check": "prettier --check \"README.md\" \".github/workflows/ci.yml\" \".github/workflows/deploy.yml\"",
-		"build": "npm run secure:pdfs && astro check && astro build && npm run secure:headers",
+		"build": "npm run secure:pdfs && astro check && astro build",
 		"preview": "astro preview",
 		"astro": "astro"
 	},

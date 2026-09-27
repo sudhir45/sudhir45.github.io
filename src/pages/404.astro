@@ -3,7 +3,11 @@ import Base from '@/layouts/Base.astro';
 ---
 
 <Base
-	head={{ title: 'Page not found | Sudhir', description: 'This page does not exist or has moved.' }}
+	head={{
+		title: 'Page not found | Sudhir',
+		description: 'This page does not exist or has moved.',
+		noindex: true
+	}}
 >
 	<div class="shell">
 		<section class="not-found grid-12" aria-labelledby="missing-title">

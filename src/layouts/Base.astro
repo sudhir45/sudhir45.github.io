@@ -59,8 +59,18 @@ const ogImageUrl = baseOgImage.startsWith('http') ? baseOgImage : `${siteUrl}${b
 				? 'noindex, nofollow'
 				: 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'}
 		/>
-		<meta http-equiv="X-Content-Type-Options" content="nosniff" />
-		<meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
+		<!-- GitHub Pages cannot send custom response headers, so the policies a meta tag can carry live
+		     here. frame-ancestors, X-Frame-Options, nosniff, HSTS, and Permissions-Policy need a header
+		     layer. Credly: the CISSP badge embed. Google: GA4 tag and collection endpoints. -->
+		{
+			import.meta.env.PROD && (
+				<meta
+					http-equiv="Content-Security-Policy"
+					content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://cdn.credly.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self'; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; frame-src https://www.credly.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests"
+				/>
+			)
+		}
+		<meta name="referrer" content="strict-origin-when-cross-origin" />
 
 		<link rel="canonical" href={canonicalUrl} />
 

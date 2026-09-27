@@ -4,7 +4,8 @@ import Base from '@/layouts/Base.astro';
 import { AppConfig } from '@/utils/AppConfig';
 
 const title = `Imprint | ${AppConfig.site_name}`;
-const description = 'Imprint and legal information for sudhir.is-a.dev.';
+const description = 'Imprint, privacy, and legal information for sudhir.is-a.dev.';
+const analyticsEnabled = Boolean(import.meta.env.PUBLIC_GA_MEASUREMENT_ID?.trim());
 ---
 
 <Base head={{ title, description }}>
@@ -28,6 +29,50 @@ const description = 'Imprint and legal information for sudhir.is-a.dev.';
 						Unless specified otherwise, Sudhir is the creator of all graphics and images on this
 						site.
 					</p>
+				</section>
+
+				<section id="privacy">
+					<h2>Privacy and analytics</h2>
+					{
+						analyticsEnabled ? (
+							<>
+								<p>
+									This site uses Google Analytics 4 to count page views. When it runs, your browser
+									loads Google's tag from googletagmanager.com and sends Google the page path and
+									title, the page you came from, and technical details such as browser, device type,
+									and screen size. Google derives an approximate location from your IP address.
+									Query strings and anything after <code>#</code> are removed before sending. Google
+									sets two first-party cookies, <code>_ga</code> and <code>_ga_&lt;id&gt;</code>, to
+									tell repeat visits apart.
+								</p>
+								<p>
+									Analytics does not load if your browser sends Global Privacy Control, or after you
+									turn it off here. The choice is stored in this browser only.
+								</p>
+								<p class="analytics-control" data-analytics-control>
+									<span data-analytics-status>Analytics is on in this browser.</span>{' '}
+									<button type="button" class="btn-line" data-analytics-toggle>
+										Turn analytics off
+									</button>
+								</p>
+							</>
+						) : (
+							<p>This site does not load analytics.</p>
+						)
+					}
+					<p>A few settings live in your browser's storage. They never leave your device.</p>
+					<ul>
+						<li><code>theme</code> · light or dark mode</li>
+						<li><code>motion</code> · the motion level chosen in the footer</li>
+						<li>
+							<code>cyberdle:v1:*</code> · Cyberdle progress, statistics, and the random offset that picks
+							your daily word
+						</li>
+						<li><code>analytics</code> · your analytics choice, if you made one</li>
+						<li>
+							<code>folio:arrived</code> (session storage) · plays the homepage intro once per visit
+						</li>
+					</ul>
 				</section>
 
 				<section>
@@ -80,6 +125,83 @@ const description = 'Imprint and legal information for sudhir.is-a.dev.';
 	</div>
 </Base>
 
+<script>
+	import { onPage } from '@/motion/lifecycle';
+
+	const KEY = 'analytics';
+
+	function readOptOut() {
+		try {
+			return localStorage.getItem(KEY) === 'off';
+		} catch {
+			return false;
+		}
+	}
+
+	// Remove Google's _ga cookies at every domain level they may have been set on.
+	function clearGaCookies() {
+		const parts = location.hostname.split('.');
+		const domains = [''];
+		for (let i = 0; i < parts.length - 1; i++)
+			domains.push(`; domain=.${parts.slice(i).join('.')}`);
+		document.cookie
+			.split(';')
+			.map((cookie) => cookie.split('=')[0]?.trim() ?? '')
+			.filter((name) => name === '_ga' || name.startsWith('_ga_'))
+			.forEach((name) => {
+				domains.forEach((domain) => {
+					document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/${domain}`;
+				});
+			});
+	}
+
+	onPage((signal) => {
+		const control = document.querySelector<HTMLElement>('[data-analytics-control]');
+		const button = control?.querySelector<HTMLButtonElement>('[data-analytics-toggle]');
+		const status = control?.querySelector<HTMLElement>('[data-analytics-status]');
+		if (!control || !button || !status) return;
+
+		const gpc = (navigator as Navigator & { globalPrivacyControl?: boolean }).globalPrivacyControl;
+		const render = () => {
+			const off = readOptOut();
+			if (gpc && !off) {
+				status.textContent = 'Analytics is off because your browser sends Global Privacy Control.';
+				button.hidden = true;
+				return;
+			}
+			status.textContent = off
+				? 'Analytics is off in this browser.'
+				: 'Analytics is on in this browser.';
+			button.textContent = off ? 'Turn analytics on' : 'Turn analytics off';
+		};
+
+		button.addEventListener(
+			'click',
+			() => {
+				const off = !readOptOut();
+				try {
+					if (off) localStorage.setItem(KEY, 'off');
+					else localStorage.removeItem(KEY);
+				} catch {
+					status.textContent = 'This browser blocks storage, so the choice cannot be saved.';
+					return;
+				}
+				const id = (window as unknown as Record<string, unknown>).__gaMeasurementId;
+				if (typeof id === 'string') {
+					(window as unknown as Record<string, unknown>)[`ga-disable-${id}`] = off;
+				}
+				if (off) clearGaCookies();
+				render();
+				if (!off && typeof (window as unknown as Record<string, unknown>).gtag !== 'function') {
+					status.textContent = 'Analytics is on. It starts after the page reloads.';
+				}
+			},
+			{ signal }
+		);
+		render();
+	});
+</script>
+
 <style>
 	.legal {
 		padding-top: 48px;
@@ -95,6 +217,12 @@ const description = 'Imprint and legal information for sudhir.is-a.dev.';
 	}
 	.prose :global(h2) {
 		margin-top: 0;
+	}
+	.analytics-control {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 12px 16px;
 	}
 	@media (max-width: 1099px) {
 		.prose {

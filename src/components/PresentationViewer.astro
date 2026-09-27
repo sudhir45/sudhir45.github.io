@@ -44,19 +44,6 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 			/>
 			<img class="slide-image slide-image-b" src={slides[0]?.src} alt="" />
 
-			<div class="zoom-overlay hidden">
-				<img class="zoom-image" src={slides[0]?.src} alt="Zoomed slide" />
-				<button class="zoom-close" aria-label="Close zoom">
-					<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M6 18L18 6M6 6l12 12"></path>
-					</svg>
-				</button>
-				<p class="zoom-hint">Scroll to zoom · drag to pan · click to close</p>
-			</div>
 		</div>
 
 		<!-- Quiet text controls -->
@@ -115,13 +102,20 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 		</div>
 	</div>
 
+	<!-- Zoom: its own modal dialog, outside the slide so touch gestures never reach slide swipes -->
+	<dialog class="zoom-overlay" aria-label="Zoomed slide">
+		<img class="zoom-image" src={slides[0]?.src} alt="Zoomed slide" draggable="false" />
+		<button class="zoom-close" aria-label="Close zoom">
+			<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"
+				></path>
+			</svg>
+		</button>
+		<p class="zoom-hint">Pinch or scroll to zoom · drag to pan · Esc or tap outside to close</p>
+	</dialog>
+
 	<!-- Shortcuts modal (opened with ?) -->
-	<div
-		class="shortcuts-modal hidden"
-		role="dialog"
-		aria-modal="true"
-		aria-labelledby="shortcuts-title"
-	>
+	<dialog class="shortcuts-modal" aria-labelledby="shortcuts-title">
 		<div class="shortcuts-backdrop"></div>
 		<div class="shortcuts-content">
 			<h3 id="shortcuts-title">Keyboard shortcuts</h3>
@@ -159,10 +153,10 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 			</div>
 			<button class="shortcuts-close">Got it</button>
 		</div>
-	</div>
+	</dialog>
 
 	<!-- Grid overview modal -->
-	<div class="grid-modal hidden" role="dialog" aria-modal="true" aria-labelledby="grid-title">
+	<dialog class="grid-modal" aria-labelledby="grid-title">
 		<div class="grid-backdrop"></div>
 		<div class="grid-content">
 			<div class="grid-header">
@@ -192,7 +186,7 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 				}
 			</div>
 		</div>
-	</div>
+	</dialog>
 
 	<p class="slide-announcer sr-only" aria-live="polite" aria-atomic="true">
 		Slide 1 of {slideCount}
@@ -356,32 +350,54 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 	}
 
 	/* Zoom overlay: paper lightbox, matching medium-zoom on posts */
-	.zoom-overlay {
+	/* Overlays are native modal dialogs: the browser makes the page behind them inert,
+	   keeps Tab inside, and closes them on Escape. These rules undo the UA dialog box. */
+	dialog.zoom-overlay,
+	dialog.shortcuts-modal,
+	dialog.grid-modal {
 		position: fixed;
 		inset: 0;
-		background: color-mix(in oklab, var(--bg) 96%, transparent);
-		backdrop-filter: none;
-		-webkit-backdrop-filter: none;
-		z-index: 100;
+		width: 100%;
+		height: 100%;
+		max-width: none;
+		max-height: none;
+		margin: 0;
+		padding: 0;
+		border: 0;
+		background: transparent;
+		color: inherit;
+		overflow: hidden;
+	}
+
+	dialog::backdrop {
+		background: transparent;
+	}
+
+	.zoom-overlay {
+		background: color-mix(in oklab, var(--bg) 96%, transparent) !important;
+		cursor: grab;
+		touch-action: none;
+	}
+
+	.zoom-overlay[open] {
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		cursor: grab;
 	}
 
-	.zoom-overlay:active {
+	.zoom-overlay.dragging {
 		cursor: grabbing;
 	}
 
-	.zoom-overlay.hidden {
-		display: none;
-	}
-
+	/* Scale 1 fits the whole slide on screen; zoom and pan are applied as a transform. */
 	.zoom-image {
-		max-width: none;
-		max-height: none;
+		max-width: 94vw;
+		max-height: 86vh;
+		width: auto;
+		height: auto;
 		transform-origin: center center;
-		transition: transform 0.1s ease-out;
+		user-select: none;
+		-webkit-user-select: none;
 	}
 
 	.zoom-close {
@@ -395,6 +411,7 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 		color: var(--muted);
 		cursor: pointer;
 		transition: color var(--transition-ui);
+		z-index: 1;
 	}
 
 	.zoom-close:hover {
@@ -413,20 +430,16 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 		font-size: 12px;
 		font-weight: 500;
 		color: var(--subtle);
+		max-width: calc(100% - 32px);
+		text-align: center;
+		pointer-events: none;
 	}
 
 	/* Modals: plain paper panels, hairline borders, no glass */
-	.shortcuts-modal {
-		position: fixed;
-		inset: 0;
-		z-index: 200;
+	.shortcuts-modal[open] {
 		display: flex;
 		align-items: center;
 		justify-content: center;
-	}
-
-	.shortcuts-modal.hidden {
-		display: none;
 	}
 
 	.shortcuts-backdrop {
@@ -503,17 +516,10 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 		opacity: 0.85;
 	}
 
-	.grid-modal {
-		position: fixed;
-		inset: 0;
-		z-index: 190;
+	.grid-modal[open] {
 		display: flex;
 		align-items: center;
 		justify-content: center;
-	}
-
-	.grid-modal.hidden {
-		display: none;
 	}
 
 	.grid-backdrop {
@@ -611,7 +617,8 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 	}
 
 	/* Keyboard focus */
-	.presentation-viewer button:focus-visible {
+	.presentation-viewer button:focus-visible,
+	.presentation-viewer dialog button:focus-visible {
 		outline: 2px solid var(--accent);
 		outline-offset: 2px;
 	}
@@ -665,6 +672,8 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 </style>
 
 <script>
+	import { isFull } from '@/motion/level';
+
 	function setupPresentationViewers() {
 		const viewers = document.querySelectorAll('.presentation-viewer');
 
@@ -727,10 +736,10 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 			const fullscreenBtn = viewer.querySelector('.fullscreen-btn') as HTMLButtonElement;
 			const gridBtn = viewer.querySelector('.grid-btn') as HTMLButtonElement;
 			const shortcutsBtn = viewer.querySelector('.shortcuts-btn') as HTMLButtonElement;
-			const shortcutsModal = viewer.querySelector('.shortcuts-modal') as HTMLElement;
+			const shortcutsModal = viewer.querySelector('.shortcuts-modal') as HTMLDialogElement;
 			const shortcutsClose = viewer.querySelector('.shortcuts-close') as HTMLButtonElement;
 			const shortcutsBackdrop = viewer.querySelector('.shortcuts-backdrop') as HTMLElement;
-			const gridModal = viewer.querySelector('.grid-modal') as HTMLElement;
+			const gridModal = viewer.querySelector('.grid-modal') as HTMLDialogElement;
 			const gridClose = viewer.querySelector('.grid-close') as HTMLButtonElement;
 			const gridBackdrop = viewer.querySelector('.grid-backdrop') as HTMLElement;
 			const thumbnailBtns = viewer.querySelectorAll('.thumbnail-btn');
@@ -741,7 +750,7 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 			const progressBar = viewer.querySelector('.progress-bar-container') as HTMLElement;
 			const slideAnnouncer = viewer.querySelector('.slide-announcer') as HTMLElement;
 			const zoomBtn = viewer.querySelector('.zoom-btn') as HTMLButtonElement;
-			const zoomOverlay = viewer.querySelector('.zoom-overlay') as HTMLElement;
+			const zoomOverlay = viewer.querySelector('.zoom-overlay') as HTMLDialogElement;
 			const zoomImage = viewer.querySelector('.zoom-image') as HTMLImageElement;
 			const zoomClose = viewer.querySelector('.zoom-close') as HTMLButtonElement;
 			const slideContainer = viewer.querySelector('.slide-container') as HTMLElement;
@@ -780,9 +789,7 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 
 					if (scrollIntoView && btnNum === currentSlide && thumbnailStrip) {
 						(btn as HTMLElement).scrollIntoView({
-							behavior: matchMedia('(prefers-reduced-motion: reduce)').matches
-								? 'instant'
-								: 'smooth',
+							behavior: isFull() ? 'smooth' : 'instant',
 							block: 'nearest',
 							inline: 'center'
 						});
@@ -806,12 +813,49 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 				}
 			}
 
+			// Modal dialogs: showModal() makes the rest of the page inert and keeps Tab inside.
+			// Focus moves to `focusTarget` and returns to the opener when the dialog closes.
+			const dialogs = [zoomOverlay, gridModal, shortcutsModal];
+			const openers = new WeakMap<HTMLDialogElement, HTMLElement>();
+			const anyDialogOpen = () => dialogs.some((dialog) => dialog.open);
+
+			function openDialog(dialog: HTMLDialogElement, focusTarget?: HTMLElement | null) {
+				if (dialog.open) return;
+				dialogs.forEach((other) => other.open && other.close());
+				const opener = document.activeElement;
+				if (opener instanceof HTMLElement && opener !== document.body) openers.set(dialog, opener);
+				dialog.showModal();
+				document.body.style.overflow = 'hidden';
+				focusTarget?.focus();
+			}
+
+			dialogs.forEach((dialog) => {
+				dialog.addEventListener('close', () => {
+					if (!anyDialogOpen()) document.body.style.overflow = '';
+					const opener = openers.get(dialog);
+					openers.delete(dialog);
+					if (opener?.isConnected) opener.focus();
+				});
+			});
+
 			function openGrid() {
-				gridModal.classList.remove('hidden');
+				const active = viewer.querySelector<HTMLElement>(
+					`.grid-slide-btn[data-grid-slide-num="${currentSlide}"]`
+				);
+				openDialog(gridModal, active ?? gridClose);
+				active?.scrollIntoView({ block: 'nearest', behavior: 'instant' });
 			}
 
 			function closeGrid() {
-				gridModal.classList.add('hidden');
+				gridModal.close();
+			}
+
+			function openShortcuts() {
+				openDialog(shortcutsModal, shortcutsClose);
+			}
+
+			function closeShortcuts() {
+				shortcutsModal.close();
 			}
 
 			function updateSlide(
@@ -923,7 +967,7 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 				'touchstart',
 				(e) => {
 					const touch = e.touches[0];
-					if (!touch) return;
+					if (!touch || e.touches.length > 1 || anyDialogOpen()) return;
 					touchStartX = touch.clientX;
 					touchStartY = touch.clientY;
 					isSwiping = true;
@@ -947,7 +991,7 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 			);
 
 			slideContainer?.addEventListener('touchend', (e) => {
-				if (!isSwiping) return;
+				if (!isSwiping || anyDialogOpen()) return;
 				const touch = e.changedTouches[0];
 				if (!touch) return;
 				const touchEndX = touch.clientX;
@@ -963,26 +1007,44 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 				isSwiping = false;
 			});
 
+			// Zoom: scale 1 fits the slide to the screen. One pointer pans, two pointers pinch.
+			const MIN_ZOOM = 1;
+			const MAX_ZOOM = 5;
 			let zoomScale = 1;
 			let zoomPosX = 0;
 			let zoomPosY = 0;
-			let isDragging = false;
-			let dragStartX = 0;
-			let dragStartY = 0;
+			const pointers = new Map<number, { x: number; y: number }>();
+			let panStart = { x: 0, y: 0, posX: 0, posY: 0 };
+			let pinchStart = { distance: 0, scale: 1 };
+			let gestureMoved = false;
+
+			function applyZoom() {
+				// Keep the scaled slide's edges reachable without letting it drift off screen.
+				const maxX = Math.max(0, (zoomImage.offsetWidth * zoomScale - window.innerWidth) / 2);
+				const maxY = Math.max(0, (zoomImage.offsetHeight * zoomScale - window.innerHeight) / 2);
+				zoomPosX = Math.max(-maxX, Math.min(maxX, zoomPosX));
+				zoomPosY = Math.max(-maxY, Math.min(maxY, zoomPosY));
+				zoomImage.style.transform = `translate(${zoomPosX}px, ${zoomPosY}px) scale(${zoomScale})`;
+			}
+
+			function setZoom(scale: number) {
+				zoomScale = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, scale));
+				applyZoom();
+			}
 
 			function openZoom() {
 				zoomScale = 1;
 				zoomPosX = 0;
 				zoomPosY = 0;
+				pointers.clear();
 				zoomImage.src = activeImage.src;
-				zoomImage.style.transform = `translate(${zoomPosX}px, ${zoomPosY}px) scale(${zoomScale})`;
-				zoomOverlay.classList.remove('hidden');
-				document.body.style.overflow = 'hidden';
+				zoomImage.alt = `Slide ${currentSlide} of ${slideCount}, zoomed`;
+				openDialog(zoomOverlay, zoomClose);
+				applyZoom();
 			}
 
 			function closeZoom() {
-				zoomOverlay.classList.add('hidden');
-				document.body.style.overflow = '';
+				zoomOverlay.close();
 			}
 
 			zoomBtn?.addEventListener('click', openZoom);
@@ -991,32 +1053,69 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 			zoomClose?.addEventListener('click', closeZoom);
 
 			zoomOverlay?.addEventListener('click', (e) => {
-				if (e.target === zoomOverlay) closeZoom();
+				if (e.target === zoomOverlay && !gestureMoved) closeZoom();
 			});
 
-			zoomOverlay?.addEventListener('wheel', (e) => {
-				e.preventDefault();
-				const delta = e.deltaY > 0 ? -0.2 : 0.2;
-				zoomScale = Math.max(0.5, Math.min(5, zoomScale + delta));
-				zoomImage.style.transform = `translate(${zoomPosX}px, ${zoomPosY}px) scale(${zoomScale})`;
+			zoomOverlay?.addEventListener(
+				'wheel',
+				(e) => {
+					e.preventDefault();
+					setZoom(zoomScale + (e.deltaY > 0 ? -0.2 : 0.2));
+				},
+				{ passive: false }
+			);
+
+			zoomImage?.addEventListener('dblclick', () => {
+				zoomPosX = 0;
+				zoomPosY = 0;
+				setZoom(zoomScale > 1 ? 1 : 2.5);
 			});
 
-			zoomImage?.addEventListener('mousedown', (e) => {
-				isDragging = true;
-				dragStartX = e.clientX - zoomPosX;
-				dragStartY = e.clientY - zoomPosY;
+			const pinchDistance = () => {
+				const [a, b] = [...pointers.values()];
+				return a && b ? Math.hypot(a.x - b.x, a.y - b.y) : 0;
+			};
+
+			zoomOverlay?.addEventListener('pointerdown', (e) => {
+				if ((e.target as Element).closest('.zoom-close')) return;
+				zoomOverlay.setPointerCapture(e.pointerId);
+				pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+				if (pointers.size === 1) {
+					gestureMoved = false;
+					panStart = { x: e.clientX, y: e.clientY, posX: zoomPosX, posY: zoomPosY };
+					zoomOverlay.classList.add('dragging');
+				} else if (pointers.size === 2) {
+					pinchStart = { distance: pinchDistance(), scale: zoomScale };
+				}
 			});
 
-			addDocumentListener('mousemove', ((e: MouseEvent) => {
-				if (!isDragging) return;
-				zoomPosX = e.clientX - dragStartX;
-				zoomPosY = e.clientY - dragStartY;
-				zoomImage.style.transform = `translate(${zoomPosX}px, ${zoomPosY}px) scale(${zoomScale})`;
-			}) as EventListener);
+			zoomOverlay?.addEventListener('pointermove', (e) => {
+				if (!pointers.has(e.pointerId)) return;
+				pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+				if (pointers.size >= 2 && pinchStart.distance > 0) {
+					gestureMoved = true;
+					setZoom(pinchStart.scale * (pinchDistance() / pinchStart.distance));
+				} else if (pointers.size === 1) {
+					const dx = e.clientX - panStart.x;
+					const dy = e.clientY - panStart.y;
+					if (Math.abs(dx) + Math.abs(dy) > 4) gestureMoved = true;
+					zoomPosX = panStart.posX + dx;
+					zoomPosY = panStart.posY + dy;
+					applyZoom();
+				}
+			});
 
-			addDocumentListener('mouseup', (() => {
-				isDragging = false;
-			}) as EventListener);
+			const endPointer = (e: PointerEvent) => {
+				pointers.delete(e.pointerId);
+				if (pointers.size === 1) {
+					// Continue panning from the remaining finger after a pinch.
+					const [rest] = [...pointers.values()];
+					if (rest) panStart = { x: rest.x, y: rest.y, posX: zoomPosX, posY: zoomPosY };
+				}
+				if (pointers.size === 0) zoomOverlay.classList.remove('dragging');
+			};
+			zoomOverlay?.addEventListener('pointerup', endPointer);
+			zoomOverlay?.addEventListener('pointercancel', endPointer);
 
 			addWindowListener('popstate', (() => {
 				const targetSlide = getSlideFromUrl();
@@ -1024,6 +1123,8 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 			}) as EventListener);
 
 			addDocumentListener('keydown', ((e: KeyboardEvent) => {
+				// Leave browser and OS shortcuts alone (Ctrl+F find, Ctrl+Z undo, Alt+Left back).
+				if (e.ctrlKey || e.metaKey || e.altKey) return;
 				if (
 					e.target instanceof HTMLInputElement ||
 					e.target instanceof HTMLTextAreaElement ||
@@ -1031,6 +1132,16 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 					e.target instanceof HTMLSelectElement ||
 					document.querySelector('#search-modal:not(.hidden)')
 				) {
+					return;
+				}
+
+				if (anyDialogOpen()) {
+					const key = e.key.toLowerCase();
+					if (key === 'z' && zoomOverlay.open) closeZoom();
+					else if (key === 'g' && gridModal.open) closeGrid();
+					else if (key === '?' && shortcutsModal.open) closeShortcuts();
+					else return;
+					e.preventDefault();
 					return;
 				}
 
@@ -1059,52 +1170,31 @@ const slides = Array.from({ length: slideCount }, (_, i) => ({
 					case 'z':
 					case 'Z':
 						e.preventDefault();
-						if (!zoomOverlay.classList.contains('hidden')) {
-							closeZoom();
-						} else {
-							openZoom();
-						}
+						openZoom();
 						break;
 					case 'g':
 					case 'G':
 						e.preventDefault();
-						if (gridModal.classList.contains('hidden')) {
-							openGrid();
-						} else {
-							closeGrid();
-						}
+						openGrid();
 						break;
 					case '?':
 						e.preventDefault();
-						shortcutsModal.classList.toggle('hidden');
+						openShortcuts();
 						break;
 					case 'Escape':
-						if (!zoomOverlay.classList.contains('hidden')) {
-							closeZoom();
-						} else if (!gridModal.classList.contains('hidden')) {
-							closeGrid();
-						} else if (viewer.classList.contains('fullscreen')) {
+						// Open dialogs close natively on Escape; this only leaves the expanded view.
+						if (viewer.classList.contains('fullscreen')) {
 							viewer.classList.remove('fullscreen');
 							fullscreenBtn?.querySelector('.fullscreen-expand')?.classList.remove('hidden');
 							fullscreenBtn?.querySelector('.fullscreen-compress')?.classList.add('hidden');
-						} else if (!shortcutsModal.classList.contains('hidden')) {
-							shortcutsModal.classList.add('hidden');
 						}
 						break;
 				}
 			}) as EventListener);
 
-			shortcutsBtn?.addEventListener('click', () => {
-				shortcutsModal.classList.remove('hidden');
-			});
-
-			shortcutsClose?.addEventListener('click', () => {
-				shortcutsModal.classList.add('hidden');
-			});
-
-			shortcutsBackdrop?.addEventListener('click', () => {
-				shortcutsModal.classList.add('hidden');
-			});
+			shortcutsBtn?.addEventListener('click', openShortcuts);
+			shortcutsClose?.addEventListener('click', closeShortcuts);
+			shortcutsBackdrop?.addEventListener('click', closeShortcuts);
 
 			gridBtn?.addEventListener('click', openGrid);
 			gridClose?.addEventListener('click', closeGrid);
