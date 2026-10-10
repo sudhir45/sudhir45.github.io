@@ -10,10 +10,9 @@ pullQuote: "A control that nobody can verify will decay quietly."
 tags: ["Security architecture"]
 ---
 
-import PostImage from '@/components/PostImage.astro';
+import PostFigure from '@/components/PostFigure.astro';
 import PullQuote from '@/components/PullQuote.astro';
-import secureArchitectureLight from '@/assets/images/Secure_Architecture.png';
-import secureArchitectureDark from '@/assets/images/Secure_Architecture_Dark.png';
+import BillingArchitecture from '@/components/diagrams/BillingArchitecture.astro';
 
 "Make it secure" is not a design requirement.
 
@@ -21,13 +20,9 @@ A security architect has to turn that request into decisions. Which assets matte
 
 Security architecture connects those decisions. It is not a diagram filled with product logos. It is the reasoning behind the trust boundaries, controls, and recovery paths in a system.
 
-<PostImage
-	light={secureArchitectureLight}
-	dark={secureArchitectureDark}
-	alt="Security Architecture"
-	width={700}
-	height={668}
-/>
+<PostFigure caption="The billing service. The web tier reaches the API on one port and never the database. Engineers deploy through their own path.">
+	<BillingArchitecture />
+</PostFigure>
 
 I will use a small billing service as the running example. Customers sign in through a web application. The application calls a billing API, which reads account data from a database. Support staff can issue refunds, and engineers administer the service through a separate management path.
 

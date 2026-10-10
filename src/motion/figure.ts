@@ -22,6 +22,8 @@ function ease(x: number) {
  */
 export function setupFigures(signal: AbortSignal) {
 	document.querySelectorAll<SVGSVGElement>('[data-workaround]').forEach((figure) => {
+		// A still copy inside a post body never animates, not even on hover.
+		if (figure.closest('[data-still]')) return;
 		const group = figure.closest('[data-reveal]') ?? figure;
 		const route = figure.querySelector<SVGPathElement>('[data-route]');
 		const dot = figure.querySelector<SVGCircleElement>('[data-dot]');

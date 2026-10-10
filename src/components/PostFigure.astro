@@ -1,0 +1,19 @@
+---
+/**
+ * Numbered post figure: the figure shell that PostImage and the diagrams in components/diagrams/
+ * share. prose.css numbers it and moves the caption into the margin from 1100px; data-unmask opens
+ * it once when it first enters view.
+ */
+interface Props {
+	/** Caption text. Omit it for a figure without a caption. */
+	caption?: string;
+	class?: string;
+}
+
+const { caption, class: className } = Astro.props;
+---
+
+<figure class:list={['figure', className]} data-unmask>
+	<slot />
+	{caption && <figcaption>{caption}</figcaption>}
+</figure>

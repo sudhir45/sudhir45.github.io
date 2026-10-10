@@ -1,0 +1,64 @@
+---
+/**
+ * The VPN patch example from the good-enough-security post: standard and emergency paths.
+ * Inline SVG on a 4px grid, styled by src/styles/diagrams.css, so it follows the page theme.
+ * Below 520px of container width the compact layout replaces the wide one.
+ */
+interface Props {
+	/** Prefix for the title, desc and marker ids, unique per page. */
+	uid?: string;
+}
+const { uid = 'patch' } = Astro.props;
+---
+
+<div class="dg">
+	<svg class="single" viewBox="0 0 380 520" role="img" aria-labelledby={`${uid}-single-title ${uid}-single-desc`} xmlns="http://www.w3.org/2000/svg">
+	<title id={`${uid}-single-title`}>Two patch paths for an internet-facing VPN appliance</title>
+	<desc id={`${uid}-single-desc`}>A critical update follows the standard two-week test before deployment, unless the flaw is exploited on an edge device. Then it takes the emergency path: configuration backup, tested rollback, a named approver, and validation of authentication and tunnels after the reboot.</desc>
+	<defs>
+	<marker id={`${uid}-single-arrow`} markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="mk" points="0 0, 8 3, 0 6"/></marker>
+	<marker id={`${uid}-single-arrow-acc`} markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="mk acc" points="0 0, 8 3, 0 6"/></marker>
+	</defs>
+	<rect class="zn" x="4" y="184" width="184" height="324" rx="4"/><rect class="bgm" x="12" y="492" width="100.3" height="12" rx="2"/><text class="lb" x="16" y="501.4">Standard path</text>
+	<rect class="zn" x="192" y="184" width="184" height="324" rx="4"/><rect class="bgm" x="200" y="492" width="107.4" height="12" rx="2"/><text class="lb" x="204" y="501.4">Emergency path</text>
+	<path class="ar" d="M190,64 V88" marker-end={`url(#${uid}-single-arrow)`}/>
+	<path class="ar" d="M110,128 H104 Q96,128 96,136 V212" marker-end={`url(#${uid}-single-arrow)`}/>
+	<rect class="bgm" x="104.0" y="166" width="22.2" height="12" rx="2"/><text class="lb" x="108.0" y="175.4" text-anchor="start">No</text>
+	<path class="ar acc" d="M270,128 H276 Q284,128 284,136 V212" marker-end={`url(#${uid}-single-arrow-acc)`}/>
+	<rect class="bgm" x="292.0" y="166" width="29.3" height="12" rx="2"/><text class="lb acc" x="296.0" y="175.4" text-anchor="start">Yes</text>
+	<path class="ar" d="M96,260 V284" marker-end={`url(#${uid}-single-arrow)`}/>
+	<path class="ar acc" d="M284,260 V280" marker-end={`url(#${uid}-single-arrow-acc)`}/>
+	<path class="ar acc" d="M284,328 V348" marker-end={`url(#${uid}-single-arrow-acc)`}/>
+	<path class="ar acc" d="M284,396 V416" marker-end={`url(#${uid}-single-arrow-acc)`}/>
+	<rect class="bgm" x="40" y="16" width="300" height="48" rx="24"/>
+	<rect class="nd" x="40" y="16" width="300" height="48" rx="24"/>
+	<text class="nm" x="190" y="36" text-anchor="middle">Critical security update</text>
+	<text class="sb" x="190" y="52" text-anchor="middle">internet-facing VPN appliance</text>
+	<polygon class="bgm" points="190,88 270,128 190,168 110,128"/>
+	<polygon class="nd" points="190,88 270,128 190,168 110,128"/>
+	<text class="nm" x="190" y="125" text-anchor="middle" style="font-size:12px">Exploited</text>
+	<text class="nm" x="190" y="140" text-anchor="middle" style="font-size:12px">edge-device flaw?</text>
+	<rect class="bgm" x="12" y="212" width="168" height="48" rx="3"/>
+	<rect class="nd" x="12" y="212" width="168" height="48" rx="3"/>
+	<text class="nm" x="96.0" y="233.0" text-anchor="middle">Two weeks in testing</text>
+	<text class="sb" x="96.0" y="249.0" text-anchor="middle">every update, by policy</text>
+	<rect class="bgm" x="12" y="284" width="168" height="48" rx="3"/>
+	<rect class="nd" x="12" y="284" width="168" height="48" rx="3"/>
+	<text class="nm" x="96.0" y="305.0" text-anchor="middle">Deploy</text>
+	<text class="sb" x="96.0" y="321.0" text-anchor="middle">after the test period</text>
+	<rect class="bgm" x="200" y="212" width="168" height="48" rx="3"/>
+	<rect class="nd" x="200" y="212" width="168" height="48" rx="3"/>
+	<text class="nm" x="284.0" y="240.0" text-anchor="middle">Configuration backup</text>
+	<rect class="bgm" x="200" y="280" width="168" height="48" rx="3"/>
+	<rect class="nd" x="200" y="280" width="168" height="48" rx="3"/>
+	<text class="nm" x="284.0" y="308.0" text-anchor="middle">Tested rollback</text>
+	<rect class="bgm" x="200" y="348" width="168" height="48" rx="3"/>
+	<rect class="nd" x="200" y="348" width="168" height="48" rx="3"/>
+	<text class="nm" x="284.0" y="376.0" text-anchor="middle">Named approver</text>
+	<rect class="bgm" x="200" y="416" width="168" height="64" rx="3"/>
+	<rect class="nd" x="200" y="416" width="168" height="64" rx="3"/>
+	<text class="nm" x="284.0" y="438.0" text-anchor="middle">Patch and validate</text>
+	<text class="sb" x="284.0" y="454.0" text-anchor="middle">authentication and tunnels</text>
+	<text class="sb" x="284.0" y="468.0" text-anchor="middle">after the reboot</text>
+	</svg>
+</div>

@@ -67,7 +67,6 @@ I opened the executable in Ghidra and followed `main`. It called a function name
 	light={binarySeqMain}
 	alt="Ghidra main function calling process_binary_sequence"
 	width={650}
-	height={455}
 />
 
 At the call site, I identified three inputs: an array of integers, a shift value of `7`, and a padding value of `13`. The array lived elsewhere in the binary, so I copied the values from Ghidra and checked how the function transformed each element.
@@ -76,7 +75,6 @@ At the call site, I identified three inputs: an array of integers, a shift value
 	light={functionGhidra}
 	alt="Ghidra view of the binary sequence transformation"
 	width={650}
-	height={455}
 />
 
 The transformation subtracted the index multiplied by the shift, then subtracted the padding. The compiled code kept the result to one byte.

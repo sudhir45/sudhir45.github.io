@@ -10,12 +10,10 @@ pullQuote: "The control has failed to account for the work surrounding it."
 tags: ["Security architecture"]
 ---
 
-import PostImage from '@/components/PostImage.astro';
+import PostFigure from '@/components/PostFigure.astro';
 import PullQuote from '@/components/PullQuote.astro';
-import seesawLight from '@/assets/images/seasawsecurity.png';
-import seesawDark from '@/assets/images/seasawsecuritydark.png';
-import frustratedLight from '@/assets/images/frustratedguy.png';
-import frustratedDark from '@/assets/images/frustratedguydark.png';
+import WorkaroundFigure from '@/components/WorkaroundFigure.astro';
+import PatchPaths from '@/components/diagrams/PatchPaths.astro';
 
 A control can be secure on paper and still make the system less safe.
 
@@ -23,14 +21,9 @@ Force people to create a new complex password every month and some will write it
 
 The problem is not that users dislike security. The control has failed to account for the work surrounding it.
 
-<PostImage
-	light={seesawLight}
-	dark={seesawDark}
-	alt="Security vs. Usability Seesaw"
-	width={400}
-	height={400}
-	style="float: left; margin-right: 20px;"
-/>
+<PostFigure caption="Six approvals block the task, so the work goes around them.">
+	<WorkaroundFigure still uid="essay" />
+</PostFigure>
 
 ## Friction changes behaviour
 
@@ -68,26 +61,19 @@ Auto-update works well for many personal devices because the alternative is inde
 
 Consider an internet-facing VPN appliance with a critical security update. The strict policy says every update must spend two weeks in testing. The emergency policy says exploited edge-device flaws move through a shorter path with a configuration backup, a tested rollback, a named approver, and validation of authentication and tunnels after the reboot.
 
+<PostFigure caption="The same update, two paths. Exposure and exploitability decide which one applies.">
+	<PatchPaths />
+</PostFigure>
+
 Skipping all testing is reckless. Waiting two weeks because the normal form says so is also reckless. The workable control changes the process when exposure and exploitability change.
 
 ## The same tension appears at work
-
-<PostImage
-	light={frustratedLight}
-	dark={frustratedDark}
-	alt="A frustrated user at their computer"
-	width={400}
-	height={400}
-	style="float: right; margin-left: 20px;"
-/>
 
 Bring Your Own Device policies are a common example. Employees prefer familiar hardware. The company still has to protect client data and remove access when someone leaves.
 
 A blanket ban may be correct for some work and impossible for the rest of the business. A workable policy can separate corporate and personal data, require screen lock and encryption, restrict downloads, and deny sensitive access from devices that do not meet the standard.
 
 The right control depends on the data and task. A contractor reading a public knowledge base does not need the same device posture as an administrator changing production firewall policy.
-
-<br style="clear: both;" />
 
 ## What "good enough" should mean
 

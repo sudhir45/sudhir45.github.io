@@ -4,15 +4,22 @@
  * Timings (ms) are relative to the figure entering view. Every visible mark is a primitive, so nothing
  * shows before its turn.
  * figure.ts moves the dot along [data-route] and replays the sequence on hover or focus.
+ * With `still` it renders the finished drawing with no motion and no caption, for use inside a
+ * PostFigure in a post body, which never animates while someone reads.
  */
 interface Props {
-	quote: string;
-	href: string;
+	/** Caption quote and link; required unless the figure is still. */
+	quote?: string;
+	href?: string;
+	still?: boolean;
 	delay?: number;
 	/** Prefix for the SVG mask ids, unique per page. */
 	uid?: string;
 }
-const { quote, href, delay = 0, uid = 'wa' } = Astro.props;
+const { quote, href, still = false, delay = 0, uid = 'wa' } = Astro.props;
+// Still figures start in their final state: data-in="instant" drops every primitive's animation.
+const final = still ? { 'data-in': 'instant' } : {};
+const Root = still ? 'div' : 'figure';
 const at = (ms: number) => `--delay:${delay + ms}ms`;
 const label =
 	'A task heads toward done through three controls. The approvals control blocks it, and a dashed workaround curves around that control to reach done anyway.';
@@ -61,7 +68,7 @@ const compact = {
 };
 ---
 
-<figure class="workaround" data-reveal>
+<Root class="workaround" data-reveal={still ? undefined : ""} data-still={still ? "" : undefined}>
 	{
 		[wide, compact].map((g, n) => (
 			<svg
@@ -80,42 +87,46 @@ const compact = {
 							fill="none"
 							stroke="#fff"
 							stroke-width="6"
-							data-stroke
+							data-stroke {...final}
 							style={`--d:700ms;${at(1700)}`}
 						/>
 					</mask>
 				</defs>
 				<g class="wa-ink" stroke-width="1" fill="none">
 					{g.gates.map((d, i) => (
-						<path d={d} pathLength="1" data-stroke style={`--d:450ms;${at(700 + i * 80)}`} />
+						<path d={d} pathLength="1" data-stroke {...final} style={`--d:450ms;${at(700 + i * 80)}`} />
 					))}
 				</g>
-				<g class="wa-labels" data-show style={at(950)}>
+				<g class="wa-labels" data-show {...final} style={at(950)}>
 					{g.labels.map((l) => (
 						<text x={l.x} y={l.y} text-anchor={l.anchor ?? 'middle'}>
 							{l.text}
 						</text>
 					))}
 				</g>
-				<path class="wa-dotted" d={g.dotted} data-show style={at(950)} />
-				<path class="wa-task" d={g.task} pathLength="1" data-stroke style={`--d:550ms;${at(1050)}`} />
-				<path class="wa-stop" d={g.stop} data-show style={at(1550)} />
+				<path class="wa-dotted" d={g.dotted} data-show {...final} style={at(950)} />
+				<path class="wa-task" d={g.task} pathLength="1" data-stroke {...final} style={`--d:550ms;${at(1050)}`} />
+				<path class="wa-stop" d={g.stop} data-show {...final} style={at(1550)} />
 				<path class="wa-arc" d={g.arc} mask={`url(#${g.id})`} />
-				<path class="wa-after" d={g.after} pathLength="1" data-stroke style={`--d:600ms;${at(2300)}`} />
-				<text class="wa-word" x={g.word.x} y={g.word.y} font-size={g.word.size} text-anchor="middle" data-show style={at(1950)}>
+				<path class="wa-after" d={g.after} pathLength="1" data-stroke {...final} style={`--d:600ms;${at(2300)}`} />
+				<text class="wa-word" x={g.word.x} y={g.word.y} font-size={g.word.size} text-anchor="middle" data-show {...final} style={at(1950)}>
 					the workaround
 				</text>
-				<circle class="wa-start" cx={g.start.x} cy={g.start.y} r="5" data-show style={at(700)} />
-				<circle class="wa-end" cx={g.end.x} cy={g.end.y} r="5" data-show style={at(950)} />
+				<circle class="wa-start" cx={g.start.x} cy={g.start.y} r="5" data-show {...final} style={at(700)} />
+				<circle class="wa-end" cx={g.end.x} cy={g.end.y} r="5" data-show {...final} style={at(950)} />
 				<path d={g.route} fill="none" stroke="none" data-route />
 				<circle class="wa-dot" r="4" data-dot />
 			</svg>
 		))
 	}
-	<figcaption class="ui" data-show style={at(2400)}>
-		<span class="fig">Fig. 1</span> "{quote}" <a href={href} class="grow-link hit">From the lead essay.</a>
-	</figcaption>
-</figure>
+	{
+		!still && (
+			<figcaption class="ui" data-show {...final} style={at(2400)}>
+				<span class="fig">Fig. 1</span> "{quote}" <a href={href} class="grow-link hit">From the lead essay.</a>
+			</figcaption>
+		)
+	}
+</Root>
 
 <style>
 	.workaround {
