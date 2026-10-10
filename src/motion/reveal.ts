@@ -38,6 +38,20 @@ function arrivedBefore(): boolean {
 	return false;
 }
 
+const frame = () => new Promise<void>((r) => requestAnimationFrame(() => r()));
+
+/**
+ * Resolves once the page's web fonts have loaded (or after `cap` ms) and a frame has painted.
+ * Starting animations earlier puts their first frames in the same tasks as the font swap and the
+ * boot layout, and those frames drop. The first frame comes before the font check because a face
+ * is only requested once layout uses it; until then document.fonts.ready is already resolved.
+ */
+async function settled(cap = 800) {
+	const limit = new Promise((r) => setTimeout(r, cap));
+	await Promise.race([frame().then(() => document.fonts.ready), limit]);
+	await frame();
+}
+
 /**
  * Scroll-triggered primitives start when their top passes 15% above the bottom of the viewport,
  * once per page view. [data-reveal] containers reveal all their primitives together, so the
@@ -74,6 +88,8 @@ export function setupReveal(signal: AbortSignal) {
 		},
 		{ rootMargin: '0px 0px -15% 0px' }
 	);
-	targets.forEach((el) => observer.observe(el));
 	signal.addEventListener('abort', () => observer.disconnect());
+	settled().then(() => {
+		if (!signal.aborted) targets.forEach((el) => observer.observe(el));
+	});
 }

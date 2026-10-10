@@ -26,8 +26,8 @@ export function setupFigures(signal: AbortSignal) {
 		const route = figure.querySelector<SVGPathElement>('[data-route]');
 		const dot = figure.querySelector<SVGCircleElement>('[data-dot]');
 		if (!route || !dot) return;
-		const start = Number(figure.dataset.dotDelay ?? 2600);
-		const duration = 1900;
+		const start = Number(figure.dataset.dotDelay ?? 1700);
+		const duration = 1250;
 		const length = route.getTotalLength();
 		let frame = 0;
 		let timer: ReturnType<typeof setTimeout> | undefined;
