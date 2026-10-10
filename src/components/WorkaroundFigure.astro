@@ -1,7 +1,8 @@
 ---
 /**
  * "The workaround": a task line blocked at an approvals gate, with an amber dashed path around it.
- * Timings (ms) are relative to the figure entering view.
+ * Timings (ms) are relative to the figure entering view. Every visible mark is a primitive, so nothing
+ * shows before its turn.
  * figure.ts moves the dot along [data-route] and replays the sequence on hover or focus.
  */
 interface Props {
@@ -69,7 +70,7 @@ const compact = {
 				role="img"
 				aria-label={label}
 				data-workaround
-				data-dot-delay={delay + 2600}
+				data-dot-delay={delay + 1700}
 			>
 				<defs>
 					<mask id={g.id} maskUnits="userSpaceOnUse" x="0" y="0" width="636" height="240">
@@ -80,38 +81,38 @@ const compact = {
 							stroke="#fff"
 							stroke-width="6"
 							data-stroke
-							style={`--d:1000ms;${at(2600)}`}
+							style={`--d:700ms;${at(1700)}`}
 						/>
 					</mask>
 				</defs>
 				<g class="wa-ink" stroke-width="1" fill="none">
 					{g.gates.map((d, i) => (
-						<path d={d} pathLength="1" data-stroke style={`--d:600ms;${at(1000 + i * 120)}`} />
+						<path d={d} pathLength="1" data-stroke style={`--d:450ms;${at(700 + i * 80)}`} />
 					))}
 				</g>
-				<g class="wa-labels" data-show style={at(1400)}>
+				<g class="wa-labels" data-show style={at(950)}>
 					{g.labels.map((l) => (
 						<text x={l.x} y={l.y} text-anchor={l.anchor ?? 'middle'}>
 							{l.text}
 						</text>
 					))}
 				</g>
-				<path class="wa-dotted" d={g.dotted} data-show style={at(1400)} />
-				<path class="wa-task" d={g.task} pathLength="1" data-stroke style={`--d:800ms;${at(1600)}`} />
-				<path class="wa-stop" d={g.stop} data-show style={at(2350)} />
+				<path class="wa-dotted" d={g.dotted} data-show style={at(950)} />
+				<path class="wa-task" d={g.task} pathLength="1" data-stroke style={`--d:550ms;${at(1050)}`} />
+				<path class="wa-stop" d={g.stop} data-show style={at(1550)} />
 				<path class="wa-arc" d={g.arc} mask={`url(#${g.id})`} />
-				<path class="wa-after" d={g.after} pathLength="1" data-stroke style={`--d:900ms;${at(3500)}`} />
-				<text class="wa-word" x={g.word.x} y={g.word.y} font-size={g.word.size} text-anchor="middle" data-show style={at(3000)}>
+				<path class="wa-after" d={g.after} pathLength="1" data-stroke style={`--d:600ms;${at(2300)}`} />
+				<text class="wa-word" x={g.word.x} y={g.word.y} font-size={g.word.size} text-anchor="middle" data-show style={at(1950)}>
 					the workaround
 				</text>
-				<circle class="wa-start" cx={g.start.x} cy={g.start.y} r="5" />
-				<circle class="wa-end" cx={g.end.x} cy={g.end.y} r="5" />
+				<circle class="wa-start" cx={g.start.x} cy={g.start.y} r="5" data-show style={at(700)} />
+				<circle class="wa-end" cx={g.end.x} cy={g.end.y} r="5" data-show style={at(950)} />
 				<path d={g.route} fill="none" stroke="none" data-route />
 				<circle class="wa-dot" r="4" data-dot />
 			</svg>
 		))
 	}
-	<figcaption class="ui" data-show style={at(3600)}>
+	<figcaption class="ui" data-show style={at(2400)}>
 		<span class="fig">Fig. 1</span> "{quote}" <a href={href} class="grow-link hit">From the lead essay.</a>
 	</figcaption>
 </figure>

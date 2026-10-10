@@ -4,6 +4,9 @@ import Masthead from '@/components/Masthead.astro';
 import { AppConfig, SOCIALS } from '@/utils/AppConfig';
 import '@/styles/global.css';
 import serifDisplay from '@/assets/fonts/source-serif-display-normal.woff2?url';
+import serifDisplayItalic from '@/assets/fonts/source-serif-display-italic.woff2?url';
+import inter from '@/assets/fonts/inter-normal.woff2?url';
+import serifText from '@/assets/fonts/source-serif-text-normal.woff2?url';
 import GoogleAnalytics from '@/components/GoogleAnalytics.astro';
 import { ClientRouter } from 'astro:transitions';
 
@@ -100,7 +103,17 @@ const ogImageUrl = baseOgImage.startsWith('http') ? baseOgImage : `${siteUrl}${b
 		{ogImageUrl && <meta name="twitter:image:alt" content={title} />}
 
 		<link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+		<!-- First-view cuts: display roman and italic (every RiseTitle sets its last line in italic),
+		     Inter for the masthead, and Source Serif Text for a post body. Loading them with the HTML
+		     lets the arrival start on final glyphs instead of swapping mid-animation. -->
 		<link rel="preload" href={serifDisplay} as="font" type="font/woff2" crossorigin />
+		<link rel="preload" href={serifDisplayItalic} as="font" type="font/woff2" crossorigin />
+		<link rel="preload" href={inter} as="font" type="font/woff2" crossorigin />
+		{
+			masthead.variant === 'post' && (
+				<link rel="preload" href={serifText} as="font" type="font/woff2" crossorigin />
+			)
+		}
 
 		<link rel="icon" type="image/svg+xml" href="/assets/img/favicons/favicon.svg?v=20260718" />
 		<link

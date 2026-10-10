@@ -1,14 +1,14 @@
 /*
  * Motion primitives. Markup opts in with attributes; JavaScript only sets data-in.
  * Initial states apply only under html[data-motion='full'], so text is readable without JS
- * and under reduced or off motion. Only transform, opacity, clip-path, stroke-dashoffset and
- * font-variation-settings animate.
+ * and under reduced or off motion. Only transform, opacity, clip-path and stroke-dashoffset
+ * animate.
  *
  *   data-rise    each .rise-line > span moves up out of its line box
  *   data-draw    rule scales in from the left; data-draw="y" from the top
  *   data-stroke  SVG path with pathLength="1" draws; per-path --d sets its duration
  *   data-show    opacity only
- *   data-ink     drop cap weight and opacity
+ *   data-ink     drop cap opacity (the weight stays fixed so the fade runs off the main thread)
  *   data-unmask  figure opens from the top
  *   data-band    footer band opens from the centre
  *   data-iris    portrait opens as a circle
@@ -40,9 +40,12 @@
 	}
 }
 
+/* Tight display leading lets ascenders sit above the span, and the line box keeps 0.2em below it
+   for descenders, so a percentage alone leaves the tops of k, d and l showing in the mask. The
+   extra 0.5em clears both. */
 @keyframes folio-rise {
 	from {
-		transform: translateY(108%);
+		transform: translateY(calc(100% + 0.5em));
 	}
 	to {
 		transform: none;
@@ -82,11 +85,9 @@
 }
 @keyframes folio-ink {
 	from {
-		font-variation-settings: 'wght' 200;
-		opacity: 0.1;
+		opacity: 0;
 	}
 	to {
-		font-variation-settings: 'wght' 520;
 		opacity: 1;
 	}
 }
@@ -148,7 +149,7 @@ html[data-motion='full'] {
 		animation-delay: var(--delay, 0s);
 	}
 	& [data-ink] {
-		animation: folio-ink 1600ms var(--ease-rise) both;
+		animation: folio-ink 900ms var(--ease-rise) both;
 		animation-delay: var(--delay, 0s);
 	}
 	& [data-unmask] {
