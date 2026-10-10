@@ -75,7 +75,9 @@ const ogImageUrl = baseOgImage.startsWith('http') ? baseOgImage : `${siteUrl}${b
 		}
 		<meta name="referrer" content="strict-origin-when-cross-origin" />
 
-		<link rel="canonical" href={canonicalUrl} />
+		<!-- A noindex page (404, /specs) gets no canonical: a canonical asks search engines to index
+		     the URL, and the 404's own path would point at a page that returns 404. -->
+		{!noindex && <link rel="canonical" href={canonicalUrl} />}
 
 		<meta property="og:type" content={article ? 'article' : profile ? 'profile' : 'website'} />
 		<meta property="og:title" content={title} />

@@ -10,7 +10,18 @@ import CyberdleGame from '@/components/cyberdle/Cyberdle';
 	}}
 >
 	<div class="shell game-main">
-		<CyberdleGame client:only="react"
-			><div slot="fallback" class="meta">Loading puzzle...</div></CyberdleGame>
+		<CyberdleGame client:only="react">
+			<!-- Server-rendered intro, replaced when the island loads, so the page has its h1 before
+			     (and without) JavaScript. It matches the island's own intro markup. -->
+			<div slot="fallback" class="game-layout">
+				<div class="game-intro">
+					<p class="category">Daily puzzle</p>
+					<h1>Cyberdle</h1>
+					<p>Find the five-letter security term in six tries.</p>
+					<p class="meta">Loading puzzle...</p>
+					<noscript><p class="meta">The puzzle needs JavaScript to run.</p></noscript>
+				</div>
+			</div>
+		</CyberdleGame>
 	</div>
 </Base>
