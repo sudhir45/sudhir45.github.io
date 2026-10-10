@@ -10,9 +10,9 @@ pullQuote: "That is a hypothesis, not a finding."
 tags: ["AI security", "Security architecture"]
 ---
 
-import PostImage from '@/components/PostImage.astro';
+import PostFigure from '@/components/PostFigure.astro';
 import PullQuote from '@/components/PullQuote.astro';
-import aiInCyberSec from '@/assets/images/AIinCyberSec.png';
+import AiJobs from '@/components/diagrams/AiJobs.astro';
 
 AI is already inside infrastructure and security products. Sometimes it means a statistical anomaly model. Sometimes it means a language model summarizing an alert. Vendors often put both behind the same label.
 
@@ -20,12 +20,9 @@ That makes "Does this tool use AI?" a weak evaluation question. Ask which decisi
 
 This is an evaluation framework, not a production comparison of the named products. I have not run most of them in production. Product names near the end show where the categories appear, not which vendor wins.
 
-<PostImage
-	light={aiInCyberSec}
-	alt="AI in IT Infrastructure and Cybersecurity"
-	width={972}
-	height={589}
-/>
+<PostFigure caption="Four jobs behind the AI label, and how each one fails.">
+	<AiJobs />
+</PostFigure>
 
 ## Four jobs that should not be confused
 

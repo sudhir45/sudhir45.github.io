@@ -1,0 +1,174 @@
+---
+/**
+ * The four jobs behind the AI label, from the AI-in-infrastructure post: what each does, an
+ * example, and how it fails. A table where the figure is wide; below 520px of container width,
+ * cards in a 2x2 grid.
+ */
+const jobs = [
+	{
+		name: 'Classification',
+		does: 'Assigns an event to a known category.',
+		example: 'Endpoint protection flags a process as malicious.',
+		fails: 'Misses a threat.'
+	},
+	{
+		name: 'Anomaly detection',
+		does: 'Finds behaviour that differs from a baseline.',
+		example: 'Unusual sign-ins, network or resource activity.',
+		fails: 'Floods the team with normal but rare behaviour.'
+	},
+	{
+		name: 'Correlation',
+		does: 'Groups related events.',
+		example: 'XDR joins a login, a process and an outbound connection.',
+		fails: 'Joins unrelated events.'
+	},
+	{
+		name: 'Generation',
+		does: 'Produces text or code.',
+		example: 'An assistant summarizes an incident or drafts a detection rule.',
+		fails: 'Invents facts or unsafe commands.'
+	}
+];
+const rows = [
+	{ label: 'Does', key: 'does' },
+	{ label: 'Example', key: 'example' },
+	{ label: 'Fails by', key: 'fails' }
+] as const;
+---
+
+<div class="ai-jobs">
+	<table>
+		<thead>
+			<tr>
+				<td></td>
+				{jobs.map((job) => <th scope="col">{job.name}</th>)}
+			</tr>
+		</thead>
+		<tbody>
+			{
+				rows.map((row) => (
+					<tr class:list={{ fails: row.key === 'fails' }}>
+						<th scope="row">{row.label}</th>
+						{jobs.map((job) => (
+							<td>{job[row.key]}</td>
+						))}
+					</tr>
+				))
+			}
+		</tbody>
+	</table>
+	<ul class="cards">
+		{
+			jobs.map((job) => (
+				<li>
+					<p class="name">{job.name}</p>
+					<p>
+						{job.does} {job.example}
+					</p>
+					<p class="fail">{job.fails}</p>
+				</li>
+			))
+		}
+	</ul>
+</div>
+
+<style>
+	.ai-jobs {
+		container-type: inline-size;
+		font-family: var(--font-ui);
+	}
+	table {
+		width: 100%;
+		border-collapse: collapse;
+		border-top: 1px solid var(--fg);
+		table-layout: fixed;
+	}
+	thead td {
+		width: 82px;
+	}
+	/* prose.css styles every table and list in a post; these rules undo what does not apply. */
+	th,
+	td {
+		min-width: 0;
+		padding: 12px 14px 14px 0;
+		border-bottom: 1px solid var(--line);
+		text-align: left;
+		vertical-align: top;
+		font-size: var(--text-meta);
+		line-height: 1.45;
+		color: var(--body-ink);
+	}
+	thead th {
+		font: italic 400 1.25rem / 1.15 var(--font-reading);
+		letter-spacing: normal;
+		text-transform: none;
+		color: var(--fg);
+		border-bottom-color: var(--line);
+	}
+	tbody th {
+		border-bottom-color: var(--line);
+		padding-top: 15px;
+		font-size: 10px;
+		font-weight: 500;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: var(--muted);
+	}
+	.fails th {
+		color: var(--accent);
+	}
+	.fails td {
+		font-weight: 500;
+		color: var(--fg);
+	}
+	.fails td::before,
+	.fail::before {
+		content: '';
+		display: block;
+		width: 14px;
+		height: 2px;
+		margin: 2px 0 8px;
+		background: var(--accent);
+	}
+	.cards {
+		display: none;
+	}
+	@container (max-width: 520px) {
+		table {
+			display: none;
+		}
+		.cards {
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			gap: 18px 16px;
+			margin: 0;
+			padding: 14px 0 0;
+			border-top: 1px solid var(--fg);
+			list-style: none;
+		}
+		.cards li {
+			margin: 0;
+			padding: 0;
+		}
+		.cards li::before {
+			content: none;
+		}
+		.cards p,
+		.cards p + p {
+			margin: 0 0 8px;
+			font-size: var(--text-meta);
+			line-height: 1.45;
+			color: var(--body-ink);
+		}
+		.cards .name {
+			margin-bottom: 6px;
+			font: italic 400 1.1875rem / 1.15 var(--font-reading);
+			color: var(--fg);
+		}
+		.cards .fail {
+			font-weight: 500;
+			color: var(--fg);
+		}
+	}
+</style>

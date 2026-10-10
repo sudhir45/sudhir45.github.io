@@ -1,0 +1,31 @@
+/*
+ * Post diagrams (src/components/diagrams/). Every colour and font is a theme token, so the
+ * diagrams follow the light and dark themes with no second image. Container queries switch
+ * between the wide and compact layouts by the width of the figure, not the viewport.
+ */
+@layer components {
+	.dg { container-type: inline-size; }
+	.dg svg { display: block; width: 100%; height: auto; overflow: visible; }
+	.dg .compact { display: none; }
+	.dg svg.single { max-width: 440px; margin: 0 auto; }
+	@container (max-width: 520px) {
+		.dg .wide { display: none; }
+		.dg .compact { display: block; }
+	}
+	.dg .bgm { fill: var(--bg); }
+	.dg .nd { fill: var(--bg); stroke: var(--frame); stroke-width: 1; }
+	.dg .nd.acc { fill: var(--accent-tint); stroke: var(--accent); stroke-width: 1.2; }
+	.dg .nm { font: 600 13px var(--font-ui); fill: var(--fg); }
+	.dg .sb { font: 400 11px var(--font-ui); fill: var(--muted); }
+	.dg .lb { font: 500 9.5px var(--font-ui); fill: var(--muted); letter-spacing: 0.12em; text-transform: uppercase; }
+	.dg .lb.acc { fill: var(--accent); }
+	.dg .zn { fill: none; stroke: var(--line); stroke-width: 1; stroke-dasharray: 4 4; }
+	.dg .ar { fill: none; stroke: var(--muted); stroke-width: 1.2; }
+	.dg .ar.acc { stroke: var(--accent); stroke-width: 1.4; }
+	.dg .ar.dash { stroke-dasharray: 4 3; }
+	.dg .mk { fill: var(--muted); }
+	.dg .mk.acc { fill: var(--accent); }
+	.dg .bx { fill: var(--bg); stroke: var(--accent); stroke-width: 1.2; }
+	.dg .bxl { stroke: var(--accent); stroke-width: 1.4; stroke-linecap: round; }
+	.dg .dot { fill: var(--fg); }
+}

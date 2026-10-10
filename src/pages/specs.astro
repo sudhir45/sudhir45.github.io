@@ -14,6 +14,11 @@ import TalkFeature from '@/components/TalkFeature.astro';
 import WorkaroundFigure from '@/components/WorkaroundFigure.astro';
 import DoubleRule from '@/components/DoubleRule.astro';
 import PullQuote from '@/components/PullQuote.astro';
+import PostFigure from '@/components/PostFigure.astro';
+import InjectionPath from '@/components/diagrams/InjectionPath.astro';
+import BillingArchitecture from '@/components/diagrams/BillingArchitecture.astro';
+import AiJobs from '@/components/diagrams/AiJobs.astro';
+import PatchPaths from '@/components/diagrams/PatchPaths.astro';
 import { getAllPosts } from '@/utils/posts';
 import { getTopicsWithCounts } from '@/utils/topics';
 import { getPresentations } from '@/utils/presentations';
@@ -144,6 +149,28 @@ const themes = [
 								<li>Which attack or mistake does this control address?</li>
 								<li>What happens when the control blocks legitimate work?</li>
 							</ol>
+						</div>
+					</div>
+
+					<h2 class="spec-h">Post diagrams</h2>
+					<div class="grid-12">
+						<div class="prose quote-demo diagram-demo">
+							<p>
+								PostFigure numbers each figure and moves its caption into the margin from 1100px.
+								Diagrams switch to a compact layout below 520px of figure width.
+							</p>
+							<PostFigure caption="InjectionPath, from the prompt-injection post.">
+								<InjectionPath uid={`spec-inj-${theme.id}`} />
+							</PostFigure>
+							<PostFigure caption="BillingArchitecture, from the security-architecture post.">
+								<BillingArchitecture uid={`spec-arch-${theme.id}`} />
+							</PostFigure>
+							<PostFigure caption="AiJobs, from the AI-in-infrastructure post.">
+								<AiJobs />
+							</PostFigure>
+							<PostFigure caption="PatchPaths, from the good-enough-security post.">
+								<PatchPaths uid={`spec-patch-${theme.id}`} />
+							</PostFigure>
 						</div>
 					</div>
 

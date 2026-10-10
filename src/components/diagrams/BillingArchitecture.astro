@@ -1,0 +1,114 @@
+---
+/**
+ * The billing-service running example from the security-architecture post, with its trust zones.
+ * Inline SVG on a 4px grid, styled by src/styles/diagrams.css, so it follows the page theme.
+ * Below 520px of container width the compact layout replaces the wide one.
+ */
+interface Props {
+	/** Prefix for the title, desc and marker ids, unique per page. */
+	uid?: string;
+}
+const { uid = 'architecture' } = Astro.props;
+---
+
+<div class="dg">
+	<svg class="wide" viewBox="0 0 772 336" role="img" aria-labelledby={`${uid}-wide-title ${uid}-wide-desc`} xmlns="http://www.w3.org/2000/svg">
+	<title id={`${uid}-wide-title`}>Trust boundaries in the billing service</title>
+	<desc id={`${uid}-wide-desc`}>Customers reach the public web app, which can call the billing API on one port but has no direct path to the database. Support staff send refund requests to the API, and engineers deploy it through a separate management path.</desc>
+	<defs>
+	<marker id={`${uid}-wide-arrow`} markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="mk" points="0 0, 8 3, 0 6"/></marker>
+	<marker id={`${uid}-wide-arrow-acc`} markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="mk acc" points="0 0, 8 3, 0 6"/></marker>
+	</defs>
+	<rect class="zn" x="220" y="8" width="172" height="100" rx="4"/><rect class="bgm" x="228" y="12" width="50.6" height="12" rx="2"/><text class="lb" x="232" y="21.4">Public</text>
+	<rect class="zn" x="440" y="118" width="328" height="100" rx="4"/><rect class="bgm" x="448" y="122" width="57.7" height="12" rx="2"/><text class="lb" x="452" y="131.4">Private</text>
+	<rect class="zn" x="220" y="228" width="172" height="100" rx="4"/><rect class="bgm" x="228" y="232" width="79.0" height="12" rx="2"/><text class="lb" x="232" y="241.4">Management</text>
+	<path class="ar" d="M156,66 H236" marker-end={`url(#${uid}-wide-arrow)`}/>
+	<rect class="bgm" x="167.2" y="46" width="57.7" height="12" rx="2"/><text class="lb" x="196.0" y="55.4" text-anchor="middle">Sign in</text>
+	<path class="ar" d="M376,57 H518 Q526,57 526,65 V150" marker-end={`url(#${uid}-wide-arrow)`}/>
+	<rect class="bgm" x="534.0" y="96" width="64.8" height="12" rx="2"/><text class="lb" x="538.0" y="105.4" text-anchor="start">One port</text>
+	<path class="ar dash" d="M376,75 H518 a8,8 0 0,1 16,0 H692 Q700,75 700,83 V150"/>
+	<circle class="bx" cx="612" cy="75" r="7"/><path class="bxl" d="M609,72 L615,78 M615,72 L609,78"/>
+	<rect class="bgm" x="558.3" y="49" width="107.4" height="12" rx="2"/><text class="lb acc" x="612.0" y="58.4" text-anchor="middle">No direct path</text>
+	<path class="ar" d="M156,176 H456" marker-end={`url(#${uid}-wide-arrow)`}/>
+	<rect class="bgm" x="246.3" y="156" width="107.4" height="12" rx="2"/><text class="lb" x="300.0" y="165.4" text-anchor="middle">Refund request</text>
+	<path class="ar" d="M156,286 H236" marker-end={`url(#${uid}-wide-arrow)`}/>
+	<rect class="bgm" x="174.2" y="266" width="43.5" height="12" rx="2"/><text class="lb" x="196.0" y="275.4" text-anchor="middle">Admin</text>
+	<path class="ar" d="M376,286 H518 Q526,286 526,278 V202" marker-end={`url(#${uid}-wide-arrow)`}/>
+	<rect class="bgm" x="534.0" y="238" width="50.6" height="12" rx="2"/><text class="lb" x="538.0" y="247.4" text-anchor="start">Deploy</text>
+	<path class="ar" d="M596,176 H640" marker-end={`url(#${uid}-wide-arrow)`}/>
+	<rect class="bgm" x="16" y="40" width="140" height="52" rx="3"/>
+	<rect class="nd" x="16" y="40" width="140" height="52" rx="3"/>
+	<text class="nm" x="86.0" y="63.0" text-anchor="middle">Customers</text>
+	<text class="sb" x="86.0" y="79.0" text-anchor="middle">web sign-in</text>
+	<rect class="bgm" x="16" y="150" width="140" height="52" rx="3"/>
+	<rect class="nd" x="16" y="150" width="140" height="52" rx="3"/>
+	<text class="nm" x="86.0" y="173.0" text-anchor="middle">Support staff</text>
+	<text class="sb" x="86.0" y="189.0" text-anchor="middle">support role</text>
+	<rect class="bgm" x="16" y="260" width="140" height="52" rx="3"/>
+	<rect class="nd" x="16" y="260" width="140" height="52" rx="3"/>
+	<text class="nm" x="86.0" y="283.0" text-anchor="middle">Engineers</text>
+	<text class="sb" x="86.0" y="299.0" text-anchor="middle">admin role</text>
+	<rect class="bgm" x="236" y="40" width="140" height="52" rx="3"/>
+	<rect class="nd" x="236" y="40" width="140" height="52" rx="3"/>
+	<text class="nm" x="306.0" y="63.0" text-anchor="middle">Web app</text>
+	<text class="sb" x="306.0" y="79.0" text-anchor="middle">public web tier</text>
+	<rect class="bgm" x="236" y="260" width="140" height="52" rx="3"/>
+	<rect class="nd acc" x="236" y="260" width="140" height="52" rx="3"/>
+	<text class="nm" x="306.0" y="283.0" text-anchor="middle">Management path</text>
+	<text class="sb" x="306.0" y="299.0" text-anchor="middle">separate admin access</text>
+	<rect class="bgm" x="456" y="150" width="140" height="52" rx="3"/>
+	<rect class="nd" x="456" y="150" width="140" height="52" rx="3"/>
+	<text class="nm" x="526.0" y="173.0" text-anchor="middle">Billing API</text>
+	<text class="sb" x="526.0" y="189.0" text-anchor="middle">accounts, refunds</text>
+	<rect class="bgm" x="640" y="150" width="120" height="52" rx="3"/>
+	<rect class="nd" x="640" y="150" width="120" height="52" rx="3"/>
+	<text class="nm" x="700.0" y="173.0" text-anchor="middle">Database</text>
+	<text class="sb" x="700.0" y="189.0" text-anchor="middle">payment data</text>
+	</svg><svg class="compact" viewBox="0 0 340 452" role="img" aria-labelledby={`${uid}-compact-title ${uid}-compact-desc`} xmlns="http://www.w3.org/2000/svg">
+	<title id={`${uid}-compact-title`}>Trust boundaries in the billing service</title>
+	<desc id={`${uid}-compact-desc`}>Customers reach the public web app, which can call the billing API on one port but has no direct path to the database. Support staff send refund requests to the API, and engineers deploy it through a separate management path.</desc>
+	<defs>
+	<marker id={`${uid}-compact-arrow`} markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="mk" points="0 0, 8 3, 0 6"/></marker>
+	<marker id={`${uid}-compact-arrow-acc`} markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="mk acc" points="0 0, 8 3, 0 6"/></marker>
+	</defs>
+	<rect class="zn" x="4" y="104" width="176" height="100" rx="4"/><rect class="bgm" x="12" y="108" width="50.6" height="12" rx="2"/><text class="lb" x="16" y="117.4">Public</text>
+	<rect class="zn" x="186" y="104" width="150" height="100" rx="4"/><rect class="bgm" x="194" y="108" width="79.0" height="12" rx="2"/><text class="lb" x="198" y="117.4">Management</text>
+	<rect class="zn" x="4" y="228" width="176" height="220" rx="4"/><rect class="bgm" x="12" y="232" width="57.7" height="12" rx="2"/><text class="lb" x="16" y="241.4">Private</text>
+	<path class="ar" d="M84,92 V136" marker-end={`url(#${uid}-compact-arrow)`}/>
+	<path class="ar" d="M310,92 V136" marker-end={`url(#${uid}-compact-arrow)`}/>
+	<path class="ar" d="M84,188 V260" marker-end={`url(#${uid}-compact-arrow)`}/>
+	<rect class="bgm" x="92.0" y="204" width="64.8" height="12" rx="2"/><text class="lb" x="96.0" y="213.4" text-anchor="start">One port</text>
+	<path class="ar dash" d="M156,162 H162 Q170,162 170,170 V272 a8,8 0 0,0 0,16 V292 a8,8 0 0,0 0,16 V398 Q170,406 162,406 H156"/>
+	<circle class="bx" cx="170" cy="350" r="7"/><path class="bxl" d="M167,347 L173,353 M173,347 L167,353"/>
+	<path class="ar" d="M238,188 V272 Q238,280 230,280 H156" marker-end={`url(#${uid}-compact-arrow)`}/>
+	<path class="ar" d="M284,380 V308 Q284,300 276,300 H156" marker-end={`url(#${uid}-compact-arrow)`}/>
+	<rect class="bgm" x="12" y="40" width="144" height="52" rx="3"/>
+	<rect class="nd" x="12" y="40" width="144" height="52" rx="3"/>
+	<text class="nm" x="84.0" y="63.0" text-anchor="middle">Customers</text>
+	<text class="sb" x="84.0" y="79.0" text-anchor="middle">web sign-in</text>
+	<rect class="bgm" x="194" y="40" width="134" height="52" rx="3"/>
+	<rect class="nd" x="194" y="40" width="134" height="52" rx="3"/>
+	<text class="nm" x="261.0" y="63.0" text-anchor="middle">Engineers</text>
+	<text class="sb" x="261.0" y="79.0" text-anchor="middle">admin role</text>
+	<rect class="bgm" x="12" y="136" width="144" height="52" rx="3"/>
+	<rect class="nd" x="12" y="136" width="144" height="52" rx="3"/>
+	<text class="nm" x="84.0" y="159.0" text-anchor="middle">Web app</text>
+	<text class="sb" x="84.0" y="175.0" text-anchor="middle">public web tier</text>
+	<rect class="bgm" x="194" y="136" width="134" height="52" rx="3"/>
+	<rect class="nd acc" x="194" y="136" width="134" height="52" rx="3"/>
+	<text class="nm" x="261.0" y="159.0" text-anchor="middle">Management path</text>
+	<text class="sb" x="261.0" y="175.0" text-anchor="middle">separate admin</text>
+	<rect class="bgm" x="12" y="260" width="144" height="60" rx="3"/>
+	<rect class="nd" x="12" y="260" width="144" height="60" rx="3"/>
+	<text class="nm" x="84.0" y="287.0" text-anchor="middle">Billing API</text>
+	<text class="sb" x="84.0" y="303.0" text-anchor="middle">accounts, refunds</text>
+	<rect class="bgm" x="194" y="380" width="134" height="52" rx="3"/>
+	<rect class="nd" x="194" y="380" width="134" height="52" rx="3"/>
+	<text class="nm" x="261.0" y="403.0" text-anchor="middle">Support staff</text>
+	<text class="sb" x="261.0" y="419.0" text-anchor="middle">refund requests</text>
+	<rect class="bgm" x="12" y="380" width="144" height="52" rx="3"/>
+	<rect class="nd" x="12" y="380" width="144" height="52" rx="3"/>
+	<text class="nm" x="84.0" y="403.0" text-anchor="middle">Database</text>
+	<text class="sb" x="84.0" y="419.0" text-anchor="middle">payment data</text>
+	</svg>
+</div>

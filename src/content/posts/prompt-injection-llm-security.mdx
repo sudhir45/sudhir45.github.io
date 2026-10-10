@@ -10,10 +10,9 @@ pullQuote: "The model can propose an action. Code with deterministic checks shou
 tags: ["AI security", "Offense"]
 ---
 
-import PostImage from '@/components/PostImage.astro';
+import PostFigure from '@/components/PostFigure.astro';
 import PullQuote from '@/components/PullQuote.astro';
-import promptInjectionLight from '@/assets/images/Prompt_Injection_light.png';
-import promptInjectionDark from '@/assets/images/Prompt_Injection_Dark.png';
+import InjectionPath from '@/components/diagrams/InjectionPath.astro';
 
 An LLM application often places trusted instructions and untrusted content in the same context. The model receives a system prompt, a user's request, retrieved documents, tool results, and perhaps data from email or a website. All of it is text.
 
@@ -52,14 +51,9 @@ If the tool layer accepts those calls because the signed-in user could perform t
 
 A safer design prevents the chain even if the model follows the instruction. The summarization workflow cannot call the send tool. Document search applies the user's access controls and marks returned data as sensitive. Sending to a new external recipient requires a separate user action that displays the recipient and exact content.
 
-<PostImage
-	light={promptInjectionLight}
-	dark={promptInjectionDark}
-	alt="Prompt Injection"
-	width={536}
-	height={294}
-	style="float: right; margin-left: 20px;"
-/>
+<PostFigure caption="The model follows the hidden instruction, and the tool layer stops the chain. A summary cannot send mail, and search keeps the user's own access.">
+	<InjectionPath />
+</PostFigure>
 
 ## Why input filtering is not enough
 

@@ -1,0 +1,102 @@
+---
+/**
+ * The email-assistant failure path from the prompt-injection post. The tool layer stops the chain.
+ * Inline SVG on a 4px grid, styled by src/styles/diagrams.css, so it follows the page theme.
+ * Below 520px of container width the compact layout replaces the wide one.
+ */
+interface Props {
+	/** Prefix for the title, desc and marker ids, unique per page. */
+	uid?: string;
+}
+const { uid = 'injection' } = Astro.props;
+---
+
+<div class="dg">
+	<svg class="wide" viewBox="0 0 764 300" role="img" aria-labelledby={`${uid}-wide-title ${uid}-wide-desc`} xmlns="http://www.w3.org/2000/svg">
+	<title id={`${uid}-wide-title`}>Where the injection chain stops</title>
+	<desc id={`${uid}-wide-desc`}>A hidden instruction in an attacker&#x27;s email reaches the model through a summary request. The model asks for document search and send email; the tool layer allows the search with the user&#x27;s own access and refuses the send, because the summary workflow cannot send mail.</desc>
+	<defs>
+	<marker id={`${uid}-wide-arrow`} markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="mk" points="0 0, 8 3, 0 6"/></marker>
+	<marker id={`${uid}-wide-arrow-acc`} markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="mk acc" points="0 0, 8 3, 0 6"/></marker>
+	</defs>
+	<rect class="zn" x="8" y="108" width="152" height="104" rx="4"/><rect class="bgm" x="16" y="112" width="71.9" height="12" rx="2"/><text class="lb" x="20" y="121.4">Untrusted</text>
+	<rect class="zn" x="572" y="60" width="188" height="222" rx="4"/><rect class="bgm" x="580" y="64" width="43.5" height="12" rx="2"/><text class="lb" x="584" y="73.4">Tools</text>
+	<path class="ar" d="M276,76 V140" marker-end={`url(#${uid}-wide-arrow)`}/>
+	<rect class="bgm" x="284.0" y="102" width="71.9" height="12" rx="2"/><text class="lb" x="288.0" y="111.4" text-anchor="start">Summarize</text>
+	<path class="ar" d="M152,170 H208" marker-end={`url(#${uid}-wide-arrow)`}/>
+	<rect class="bgm" x="161.8" y="150" width="36.4" height="12" rx="2"/><text class="lb" x="180.0" y="159.4" text-anchor="middle">Read</text>
+	<path class="ar" d="M344,170 H400" marker-end={`url(#${uid}-wide-arrow)`}/>
+	<rect class="bgm" x="350.2" y="150" width="43.5" height="12" rx="2"/><text class="lb" x="372.0" y="159.4" text-anchor="middle">Calls</text>
+	<path class="ar" d="M536,160 H552 Q560,160 560,152 V134 Q560,126 568,126 H584" marker-end={`url(#${uid}-wide-arrow)`}/>
+	<path class="ar dash" d="M536,180 H552 Q560,180 560,188 V226 Q560,234 568,234 H584"/>
+	<circle class="bx" cx="560" cy="207" r="7"/><path class="bxl" d="M557,204 L563,210 M563,204 L557,210"/>
+	<rect class="bgm" x="208" y="24" width="136" height="52" rx="3"/>
+	<rect class="nd" x="208" y="24" width="136" height="52" rx="3"/>
+	<text class="nm" x="276.0" y="47.0" text-anchor="middle">Signed-in user</text>
+	<text class="sb" x="276.0" y="63.0" text-anchor="middle">asks for a summary</text>
+	<rect class="bgm" x="16" y="140" width="136" height="60" rx="3"/>
+	<rect class="nd" x="16" y="140" width="136" height="60" rx="3"/>
+	<text class="nm" x="84.0" y="167.0" text-anchor="middle">Attacker email</text>
+	<text class="sb" x="84.0" y="183.0" text-anchor="middle">hidden instruction</text>
+	<rect class="bgm" x="208" y="140" width="136" height="60" rx="3"/>
+	<rect class="nd" x="208" y="140" width="136" height="60" rx="3"/>
+	<text class="nm" x="276.0" y="167.0" text-anchor="middle">Model</text>
+	<text class="sb" x="276.0" y="183.0" text-anchor="middle">follows the email</text>
+	<rect class="bgm" x="400" y="140" width="136" height="60" rx="3"/>
+	<rect class="nd acc" x="400" y="140" width="136" height="60" rx="3"/>
+	<text class="nm" x="468.0" y="167.0" text-anchor="middle">Tool layer</text>
+	<text class="sb" x="468.0" y="183.0" text-anchor="middle">checks the workflow</text>
+	<rect class="bgm" x="584" y="92" width="164" height="68" rx="3"/>
+	<rect class="nd" x="584" y="92" width="164" height="68" rx="3"/>
+	<text class="nm" x="666.0" y="116.0" text-anchor="middle">Document search</text>
+	<text class="sb" x="666.0" y="132.0" text-anchor="middle">keeps the user&#x27;s access</text>
+	<text class="sb" x="666.0" y="146.0" text-anchor="middle">marks results sensitive</text>
+	<rect class="bgm" x="584" y="200" width="164" height="68" rx="3"/>
+	<rect class="nd" x="584" y="200" width="164" height="68" rx="3"/>
+	<text class="nm" x="666.0" y="224.0" text-anchor="middle">Send email</text>
+	<text class="sb" x="666.0" y="240.0" text-anchor="middle">not allowed in a</text>
+	<text class="sb" x="666.0" y="254.0" text-anchor="middle">summary workflow</text>
+	</svg><svg class="compact" viewBox="0 0 340 424" role="img" aria-labelledby={`${uid}-compact-title ${uid}-compact-desc`} xmlns="http://www.w3.org/2000/svg">
+	<title id={`${uid}-compact-title`}>Where the injection chain stops</title>
+	<desc id={`${uid}-compact-desc`}>A hidden instruction in an attacker&#x27;s email reaches the model through a summary request. The model asks for document search and send email; the tool layer allows the search with the user&#x27;s own access and refuses the send, because the summary workflow cannot send mail.</desc>
+	<defs>
+	<marker id={`${uid}-compact-arrow`} markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="mk" points="0 0, 8 3, 0 6"/></marker>
+	<marker id={`${uid}-compact-arrow-acc`} markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon class="mk acc" points="0 0, 8 3, 0 6"/></marker>
+	</defs>
+	<rect class="zn" x="170" y="8" width="166" height="96" rx="4"/><rect class="bgm" x="178" y="12" width="71.9" height="12" rx="2"/><text class="lb" x="182" y="21.4">Untrusted</text>
+	<rect class="zn" x="4" y="308" width="332" height="112" rx="4"/><rect class="bgm" x="12" y="312" width="43.5" height="12" rx="2"/><text class="lb" x="16" y="321.4">Tools</text>
+	<path class="ar" d="M87,96 V108 Q87,116 95,116 H137 Q145,116 145,124 V136" marker-end={`url(#${uid}-compact-arrow)`}/>
+	<path class="ar" d="M253,96 V108 Q253,116 245,116 H203 Q195,116 195,124 V136" marker-end={`url(#${uid}-compact-arrow)`}/>
+	<path class="ar" d="M170,192 V232" marker-end={`url(#${uid}-compact-arrow)`}/>
+	<rect class="bgm" x="178.0" y="206" width="43.5" height="12" rx="2"/><text class="lb" x="182.0" y="215.4" text-anchor="start">Calls</text>
+	<path class="ar" d="M145,288 V304 Q145,312 137,312 H95 Q87,312 87,320 V340" marker-end={`url(#${uid}-compact-arrow)`}/>
+	<path class="ar dash" d="M195,288 V304 Q195,312 203,312 H245 Q253,312 253,320 V340"/>
+	<circle class="bx" cx="224" cy="312" r="7"/><path class="bxl" d="M221,309 L227,315 M227,309 L221,315"/>
+	<rect class="bgm" x="12" y="40" width="150" height="56" rx="3"/>
+	<rect class="nd" x="12" y="40" width="150" height="56" rx="3"/>
+	<text class="nm" x="87.0" y="65.0" text-anchor="middle">Signed-in user</text>
+	<text class="sb" x="87.0" y="81.0" text-anchor="middle">asks for a summary</text>
+	<rect class="bgm" x="178" y="40" width="150" height="56" rx="3"/>
+	<rect class="nd" x="178" y="40" width="150" height="56" rx="3"/>
+	<text class="nm" x="253.0" y="65.0" text-anchor="middle">Attacker email</text>
+	<text class="sb" x="253.0" y="81.0" text-anchor="middle">hidden instruction</text>
+	<rect class="bgm" x="95" y="136" width="150" height="56" rx="3"/>
+	<rect class="nd" x="95" y="136" width="150" height="56" rx="3"/>
+	<text class="nm" x="170.0" y="161.0" text-anchor="middle">Model</text>
+	<text class="sb" x="170.0" y="177.0" text-anchor="middle">follows the email</text>
+	<rect class="bgm" x="95" y="232" width="150" height="56" rx="3"/>
+	<rect class="nd acc" x="95" y="232" width="150" height="56" rx="3"/>
+	<text class="nm" x="170.0" y="257.0" text-anchor="middle">Tool layer</text>
+	<text class="sb" x="170.0" y="273.0" text-anchor="middle">checks the workflow</text>
+	<rect class="bgm" x="12" y="340" width="150" height="68" rx="3"/>
+	<rect class="nd" x="12" y="340" width="150" height="68" rx="3"/>
+	<text class="nm" x="87.0" y="364.0" text-anchor="middle">Document search</text>
+	<text class="sb" x="87.0" y="380.0" text-anchor="middle">keeps the user&#x27;s access</text>
+	<text class="sb" x="87.0" y="394.0" text-anchor="middle">marks results sensitive</text>
+	<rect class="bgm" x="178" y="340" width="150" height="68" rx="3"/>
+	<rect class="nd" x="178" y="340" width="150" height="68" rx="3"/>
+	<text class="nm" x="253.0" y="364.0" text-anchor="middle">Send email</text>
+	<text class="sb" x="253.0" y="380.0" text-anchor="middle">not allowed in a</text>
+	<text class="sb" x="253.0" y="394.0" text-anchor="middle">summary workflow</text>
+	</svg>
+</div>
